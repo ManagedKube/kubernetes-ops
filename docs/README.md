@@ -1,6 +1,19 @@
 kubernetes-ops
 ==================
 
+# Download CLIs
+We will be using various CLIs and tools to help create this infrastructure.
+
+## Terraform
+Currently you must use a version in the `v0.11.xx` releases.
+
+There are some major changes in `v0.12.xx` that don't seem backward compatible.
+
+## Terragrunt
+
+Currenly you must use a version in the `v0.18.x` release.
+
+
 # Setup your IP CIDR
 This document contains how your IP CIDRs are going to be laided out for your
 entire infrastructure.  Care should be taken to review this and to make sure
