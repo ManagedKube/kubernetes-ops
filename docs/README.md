@@ -1,5 +1,7 @@
 kubernetes-ops
 ==================
+This repository represents an opinionated way to structure a repository that
+holds the infrastructure level items.
 
 # Download CLIs
 We will be using various CLIs and tools to help create this infrastructure.
