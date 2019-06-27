@@ -1,0 +1,534 @@
+#
+# using kops cli 1.11.1
+  #
+  {{- $awsRegion := .awsRegion }}
+  {{- $networkPortion := .networkPortion }}
+  {{- $kopsName := .kopsName }}
+  {{- $dnsZone := .dnsZone }}
+  {{- $instanceGroups := .instanceGroups }}
+
+apiVersion: kops/v1alpha2
+kind: Cluster
+metadata:
+  name: {{ .kopsName }}.{{ .dnsZone }}
+spec:
+  fileAssets:
+    # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#audit-logging
+    - name: apiserver-audit-policy
+      path: /srv/kubernetes/audit.yaml
+      roles: [Master]
+      content: |
+        # apiVersion: audit.k8s.io/v1 # This is /v1 resource is not valid yet.
+        apiVersion: audit.k8s.io/v1beta1
+        kind: Policy
+        # Don't generate audit events for all requests in RequestReceived stage.
+        omitStages:
+          - "RequestReceived"
+        rules:
+          # Log pod changes at RequestResponse level
+          - level: RequestResponse
+            resources:
+            - group: ""
+              # Resource "pods" doesn't match requests to any subresource of pods,
+              # which is consistent with the RBAC policy.
+              resources: ["pods"]
+          # Log "pods/log", "pods/status" at Metadata level
+          - level: Metadata
+            resources:
+            - group: ""
+              resources: ["pods/log", "pods/status"]
+
+          # Don't log requests to a configmap called "controller-leader"
+          - level: None
+            resources:
+            - group: ""
+              resources: ["configmaps"]
+              resourceNames: ["controller-leader"]
+
+          # Don't log watch requests by the "system:kube-proxy" on endpoints or services
+          - level: None
+            users: ["system:kube-proxy"]
+            verbs: ["watch"]
+            resources:
+            - group: "" # core API group
+              resources: ["endpoints", "services"]
+
+          # Don't log authenticated requests to certain non-resource URL paths.
+          - level: None
+            userGroups: ["system:authenticated"]
+            nonResourceURLs:
+            - "/api*" # Wildcard matching.
+            - "/version"
+
+          # Log the request body of configmap changes in kube-system.
+          - level: Request
+            resources:
+            - group: "" # core API group
+              resources: ["configmaps"]
+            # This rule only applies to resources in the "kube-system" namespace.
+            # The empty string "" can be used to select non-namespaced resources.
+            namespaces: ["kube-system"]
+
+          # Log configmap and secret changes in all other namespaces at the Metadata level.
+          - level: Metadata
+            resources:
+            - group: "" # core API group
+              resources: ["secrets", "configmaps"]
+
+          # Log all other resources in core and extensions at the Request level.
+          - level: Request
+            resources:
+            - group: "" # core API group
+            - group: "extensions" # Version of group should NOT be included.
+
+          # A catch-all rule to log all other requests at the Metadata level.
+          - level: Metadata
+            # Long-running requests like watches that fall under this rule will not
+            # generate an audit event in RequestReceived.
+            omitStages:
+              - "RequestReceived"
+  additionalPolicies:
+    node: |
+      [
+        {"Effect":"Allow","Action":["autoscaling:DescribeAutoScalingGroups","autoscaling:DescribeAutoScalingInstances","autoscaling:DescribeLaunchConfigurations","autoscaling:DescribeTags","autoscaling:SetDesiredCapacity","autoscaling:TerminateInstanceInAutoScalingGroup"],"Resource":"*"}
+      ]
+  sshKeyName: {{ .sshKeyName }}
+  networkID: {{ .vpc }}
+  kubernetesApiAccess:
+  {{- range $key, $value := .kubernetesApiAccess }}
+  - "{{ $value }}"
+  {{- end }}
+  api:
+    dns: {}
+    loadBalancer:
+      type: Internal
+      idleTimeoutSeconds: 300
+  authorization:
+    rbac: {}
+{{- if .docker.overrides }}
+  docker:
+    bridgeIP: {{ .docker.bridgeIP }}
+    logDriver: json-file
+    logOpt:
+    - max-size=10m
+    - max-file=5
+{{- end }}
+  channel: stable
+  cloudProvider: aws
+  configBase: s3://{{ .s3BucketName }}/{{ .kopsName }}.{{ .dnsZone }}
+  etcdClusters:
+    # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#etcdclusters-v3--tls
+    - enableEtcdTLS: true
+      etcdMembers:
+      {{- range $key, $value := .availabilityZonesEtcd }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value }}
+        name: {{ $value }}
+      {{- end }}
+      name: main
+      version: {{ .etcd.version }}
+    - enableEtcdTLS: true
+      etcdMembers:
+      {{- range $key, $value := .availabilityZonesEtcd }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value }}
+        name: {{ $value }}
+      {{- end }}
+      name: events
+      version: {{ .etcd.version }}
+  iam:
+    # https://github.com/kubernetes/kops/blob/master/docs/iam_roles.md#iam-roles
+    allowContainerRegistry: {{ .iam.allowContainerRegistry }}
+    legacy: false
+  kubeAPIServer:
+    auditLogPath: /var/log/kube-apiserver-audit.log
+    auditLogMaxAge: 10
+    auditLogMaxBackups: 1
+    auditLogMaxSize: 100
+    auditPolicyFile: /srv/kubernetes/audit.yaml
+    # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#runtimeconfig
+    # runtimeConfig:
+    #   batch/v2alpha1: "true"
+    #   apps/v1alpha1: "true"
+    # Istio perm for kops: https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#automatic-sidecar-injection
+    # https://archive.istio.io/v0.5/docs/setup/kubernetes/sidecar-injection.html#aws-with-kops
+    admissionControl:
+      - NamespaceLifecycle
+      - LimitRanger
+      - ServiceAccount
+      - PersistentVolumeLabel
+      - DefaultStorageClass
+      - DefaultTolerationSeconds
+      - MutatingAdmissionWebhook
+      - ValidatingAdmissionWebhook
+      - ResourceQuota
+      - NodeRestriction
+      - Priority
+  kubelet:
+    # https://github.com/kubernetes/kops/blob/master/docs/security.md#kubelet-api
+    anonymousAuth: false
+    # kubeReserved:
+    #     cpu: "100m"
+    #     memory: "100Mi"
+    #     storage: "1Gi"
+    # kubeReservedCgroup: "/kube-reserved"
+    # systemReserved:
+    #     cpu: "100m"
+    #     memory: "100Mi"
+    #     storage: "1Gi"
+    # systemReservedCgroup: "/system-reserved"
+    # enforceNodeAllocatable: "pods,system-reserved,kube-reserved"
+  kubeDNS:
+    provider: CoreDNS
+  kubernetesVersion: {{ .kubernetesVersion }}
+  masterPublicName: api.{{ .kopsName }}.{{ .dnsZone }}
+  networkCIDR: {{ .networkCIDR }}
+  networking:
+    canal: {}
+  nonMasqueradeCIDR: 100.64.0.0/10
+  sshAccess:
+  {{- range $key, $value := .sshAccess }}
+  - "{{ $value }}"
+  {{- end }}
+  subnets:
+  # utility subnets
+  {{- range $key, $value := .availabilityZonesAll }}
+  - cidr: {{ $networkPortion }}.1{{ $key }}.0/24
+    name: {{ $awsRegion }}{{ $value }}-utility
+    type: Utility
+    zone: {{ $awsRegion }}{{ $value }}
+  {{- end }}
+
+  {{- if .enablePublicSubnets -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+  - cidr: {{ $networkPortion }}.2{{ $key }}.0/24
+    name: public-{{ $value }}
+    type: Public
+    zone: {{ $awsRegion }}{{ $value }}
+    {{- end }}
+    {{- end }}
+
+    # Kube masters subnets
+    {{- range $key, $value := .availabilityZonesKubeMaster }}
+  - cidr: {{ $networkPortion }}.3{{ $key }}.0/24
+    name: kube-master-{{ $value }}
+    type: Private
+    zone: {{ $awsRegion }}{{ $value }}
+    {{- end }}
+
+    # infrastructure subnets
+    {{- range $key, $value := .availabilityZonesAll }}
+  - cidr: {{ $networkPortion }}.4{{ $key }}.0/24
+    name: infrastructure-zone-{{ $value }}
+    type: Private
+    zone: {{ $awsRegion }}{{ $value }}
+    {{- end }}
+
+    # worker subnets
+    {{- range $key, $value := .availabilityZonesAll }}
+  - cidr: {{ $networkPortion }}.5{{ $key }}.0/24
+    name: worker-zone-{{ $value }}
+    type: Private
+    zone: {{ $awsRegion }}{{ $value }}
+    {{- end }}
+
+    # threatstackmaster subnets
+    {{- range $key, $value := .availabilityZonesAll }}
+  - cidr: {{ $networkPortion }}.6{{ $key }}.0/24
+    name: threatstack-master-zone-{{ $value }}
+    type: Private
+    zone: {{ $awsRegion }}{{ $value }}
+    {{- end }}
+
+    topology:
+      dns:
+        type: Public
+      masters: private
+      nodes: private
+    #
+    # Kubernetes Masters
+    #
+    {{- range $key, $value := .availabilityZonesKubeMaster }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: master-{{ $awsRegion }}{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.kubeMaster.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
+  image: {{ $instanceGroups.kubeMaster.image }}
+  machineType: {{ $instanceGroups.kubeMaster.machineType }}
+  maxSize: {{ $instanceGroups.kubeMaster.maxSize }}
+  minSize: {{ $instanceGroups.kubeMaster.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-{{ $awsRegion }}{{ $value }}
+    {{- range $key, $value := $instanceGroups.kubeMaster.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  role: Master
+  subnets:
+    - kube-master-{{ $value }}
+  {{- end }}
+
+  #
+  # infrastructure group
+  #
+  {{- if .enableInfrastructureGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: infrastructure-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.infrastructureGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.infrastructureGroup1.image }}
+  machineType: {{ $instanceGroups.infrastructureGroup1.machineType }}
+  maxSize: {{ $instanceGroups.infrastructureGroup1.maxSize }}
+  minSize: {{ $instanceGroups.infrastructureGroup1.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: infrastructure-zone-{{ $value }}
+    {{- range $key, $value := $instanceGroups.infrastructureGroup1.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  {{ if $instanceGroups.infrastructureGroup1.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.infrastructureGroup1.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - infrastructure-zone-{{ $value }}
+  {{- end }}
+  {{- end }}
+
+  #
+  ## Spot instances
+  #
+  {{- if .enableSpotInstanceGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: spot-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.spotGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.spotGroup1.image }}
+  machineType: {{ $instanceGroups.spotGroup1.machineType }}
+  maxPrice: {{ $instanceGroups.spotGroup1.maxPrice }}
+  maxSize: {{ $instanceGroups.spotGroup1.maxSize }}
+  minSize: {{ $instanceGroups.spotGroup1.minSize }}
+  nodeLabels:
+    {{- range $key, $value := $instanceGroups.spotGroup1.nodeLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  {{ if $instanceGroups.spotGroup1.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.spotGroup1.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - worker-zone-{{ $value }}
+  {{- end }}
+  {{- end }}
+
+  #
+  # On Damand instances
+  #
+  {{- if .enableOnDemandGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: on-demand-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.onDemandGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.onDemandGroup1.image }}
+  machineType: {{ $instanceGroups.onDemandGroup1.machineType }}
+  maxSize: {{ $instanceGroups.onDemandGroup1.maxSize }}
+  minSize: {{ $instanceGroups.onDemandGroup1.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: on-demand-zone-{{ $value }}
+    {{- range $key, $value := $instanceGroups.onDemandGroup1.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  {{ if $instanceGroups.onDemandGroup1.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.onDemandGroup1.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - worker-zone-{{ $value }}
+  {{- end }}
+  {{- end }}
+
+  #
+  # Jenkins masters group
+  #
+  {{- if .enableJenkinsGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: jenkins-master-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.jenkinsMastersGroup1.image }}
+  machineType: {{ $instanceGroups.jenkinsMastersGroup1.machineType }}
+  maxSize: {{ $instanceGroups.jenkinsMastersGroup1.maxSize }}
+  minSize: {{ $instanceGroups.jenkinsMastersGroup1.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: jenkins-master-zone-{{ $value }}
+    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  {{ if $instanceGroups.jenkinsMastersGroup1.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - worker-zone-{{ $value }}
+  {{- end }}
+  {{- end }}
+
+  #
+  # Jenkins workers group
+  #
+  {{- if .enableJenkinsGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: jenkins-workers-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.jenkinsWorkersGroup1.image }}
+  machineType: {{ $instanceGroups.jenkinsWorkersGroup1.machineType }}
+  maxSize: {{ $instanceGroups.jenkinsWorkersGroup1.maxSize }}
+  minSize: {{ $instanceGroups.jenkinsWorkersGroup1.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: jenkins-worker-zone-{{ $value }}
+    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  {{ if $instanceGroups.jenkinsWorkersGroup1.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - worker-zone-{{ $value }}
+  {{- end }}
+  {{- end }}
+
+  #
+  # Bastion workers group
+  # https://github.com/kubernetes/kops/blob/master/docs/bastion.md#configure-the-bastion-instance-group
+  #
+  {{- if .enableBastionGroup1 -}}
+  {{- range $key, $value := .availabilityZonesAll }}
+  {{- if eq $value "a" -}}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: bastion-workers-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.bastionWorkersGroup1.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  associatePublicIp: true
+  image: {{ $instanceGroups.bastionWorkersGroup1.image }}
+  machineType: {{ $instanceGroups.bastionWorkersGroup1.machineType }}
+  maxSize: {{ $instanceGroups.bastionWorkersGroup1.maxSize }}
+  minSize: {{ $instanceGroups.bastionWorkersGroup1.minSize }}
+  role: Bastion
+  subnets:
+    - public-{{ $value }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+
+  #
+  #  threatstack-master group
+  #
+  {{- if .enableThreatstackMasterGroup1 -}}
+  {{- range $key, $value := .availabilityZonesThreatstackMaster }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: threatstack-master-zone-{{ $value }}
+spec:
+  cloudLabels:
+    {{- range $key, $value := $instanceGroups.threatstackMaster.cloudLabels }}
+      {{ $key }}: "{{ $value }}"
+      {{- end }}
+  image: {{ $instanceGroups.threatstackMaster.image }}
+  machineType: {{ $instanceGroups.threatstackMaster.machineType }}
+  maxSize: {{ $instanceGroups.threatstackMaster.maxSize }}
+  minSize: {{ $instanceGroups.threatstackMaster.minSize }}
+  nodeLabels:
+    kops.k8s.io/instancegroup: threatstack-master-zone-{{ $value }}
+    {{- range $key, $value := $instanceGroups.threatstackMaster.nodeLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+  {{ if $instanceGroups.threatstackMaster.taints.enable }}
+  taints:
+    {{- range $key, $value := $instanceGroups.threatstackMaster.taints.items }}
+    - "{{ $value }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+    - threatstack-master-zone-{{ $value }}
+  {{- end }}
+  {{- end }}

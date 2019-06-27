@@ -35,7 +35,12 @@ Directory: <repo root>/tf-environment
 
 ## Easy route
 
-Change directory to: 'dev-example'
+Change directory to: '<repo root>/tf-environments/dev-example/aws/vpc'
+
+You will have to change the `bucket` in the '<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
+file.  S3 bucket names has to be globally unique which means it can only exist once
+in the all of AWS.  The easiest way is to change the `123` in the bucket name to
+some other random number.
 
 Run:
 ```
@@ -100,3 +105,132 @@ aws_vpc_id = vpc-01262c04bc41f2f1f
 Copy this VPC id and put it into the `_env_defaults/main.tf` file in the `vpc_id` parameter
 
 This ID will be used by other Terraform modules/items that are launched into this VPC.
+
+We will use this ID in the Kops creation because we are putting the Kubernetes
+cluster in this VPC.
+
+# Kubernetes Cluster creation
+
+## Kops on AWS
+
+Kops is an open source tool to help you create Kubernetes cluster.  We are going
+to use this tool to help us create a cluster on AWS.
+
+Source project: https://github.com/kubernetes/kops
+
+### Download the kops tool
+Using kops cli is very version specific.  This will determine what version
+of Kubernetes will be installed.
+
+We are currently using version 1.11.x.  You can download the `kops` CLI here:
+
+https://github.com/kubernetes/kops/releases/tag/1.11.1
+
+### Creating the cluster
+There is a sample cluster named `dev-example` that you can launch as is.
+
+From the root directory of this repo change directory to here:
+```
+cd clusters/aws/kops/
+```
+
+Put the `vpc-id` into the file: `./clusters/dev-example/values.yaml`
+
+Set the state store.  The kops state store is where kops writes information about
+the cluster during creation.  The entire state of the cluster is here.  It
+writes the information out to an AWS S3 bucket.  Since buckets are globally
+unique, you need to select a name that is unique to you.  You can simply change
+the `2345` string to something else or another number to make it unique.
+
+```
+export KOPS_STATE_STORE=s3://kubernetes-ops-2345-kops-state-store
+```
+
+Put the same bucket name in this case `kubernetes-ops-2345-kops-state-store` in
+the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field.
+
+Go to the AWS console and create the S3 bucket name: `kubernetes-ops-2345-kops-state-store`
+
+Now, export out your AWS keys to the local shell:
+
+```
+export AWS_ACCESS_KEY_ID="foo"
+export AWS_SECRET_ACCESS_KEY="bar"
+export AWS_DEFAULT_REGION=us-east-1
+```
+
+You can now run this command to output the templated values:
+
+```
+kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml > /tmp/output.yaml
+```
+
+Run this command to create the cluster:
+```
+kops create -f /tmp/output.yaml
+```
+
+At this point, it just created the configs for this cluster in S3.
+
+Get cluster name:
+```
+kops get clusters
+```
+
+Set the cluster name from the output
+```
+
+export cluster_name=dev-example.us-east-1.k8s.local
+```
+
+Create ssh keys to be able to ssh into the cluster.  You don't have to enter a
+passphrase for the key if you do not want to.  Just hit enter.
+
+```
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f ./ssh-keys/id_rsa
+```
+
+Add the ssh keys into kops so it can put it on the machines.
+```
+kops create secret --name ${cluster_name} sshpublickey admin -i ./ssh-keys/id_rsa.pub
+```
+
+Create the cluster.  This will launch EC2 nodes and start configuring the kubernetes
+cluster:
+```
+kops --name ${cluster_name} update cluster --yes
+```
+
+By default, kops will place the `kubeconfig` on your local system.  The kubeconfig
+has information on how to reach this Kubernetes cluster and authentication for it.
+
+It is placed in: `~/.kube/config`
+
+#### Accessing the cluster
+This cluster only has private IP addresses.  You will not be able to reach it directly.
+In the `dev-example` a bastion host is created for access.
+
+There is an easy tool to use to ssh and tunnel into a remote network called `sshuttle`
+
+Here is the source project:  https://github.com/sshuttle/sshuttle
+
+There are binaries and installs for Windows, OSX, and Linux.
+
+Using this you would run the this command to tunnel traffic to this VPC.
+
+In the AWS console find the host named: `bastion-workers-zone-a.dev-example.us-east-1.k8s.local`
+
+Get the Public IP of it.  For example it could be:  3.85.126.119
+
+Run the sshuttle command:
+```
+sshuttle -r ec2-user@3.85.126.119 10.10.0.0/16 -v
+```
+
+This will forward all traffic destined for `10.10.0.0/16` through this tunnel.
+
+In another shell, run a `kubectl` command to check connectivity:
+
+```
+kubectl get nodes
+```
