@@ -13,8 +13,13 @@ There are some major changes in `v0.12.xx` that don't seem backward compatible.
 
 ## Terragrunt
 
-Currenly you must use a version in the `v0.18.x` release.
+Currently, you must use a version in the `v0.18.x` release.
 
+## AWS CLI
+
+```
+aws-cli/1.16.xx
+```
 
 # Setup your IP CIDR
 This document contains how your IP CIDRs are going to be laided out for your
@@ -113,6 +118,22 @@ cluster in this VPC.
 
 # Kubernetes Cluster creation
 
+## Change directory
+From the root directory of this repo change directory to here:
+```
+cd clusters/aws/kops/
+```
+
+## Create an AWS EC2 key pair
+This will create the key, change the permissions so you can only read it, and
+add it to your shell environment for usage.
+
+```
+aws ec2 create-key-pair --key-name kubernetes_ops --query 'KeyMaterial' --output text > ./ssh-keys/kubernetes-ops.pem
+chmod 400 ./ssh-keys/kubernetes-ops.pem
+ssh-add ./ssh-keys/kubernetes-ops.pem
+```
+
 ## Kops on AWS
 
 Kops is an open source tool to help you create Kubernetes cluster.  We are going
@@ -131,11 +152,6 @@ https://github.com/kubernetes/kops/releases/tag/1.11.1
 ### Creating the cluster
 There is a sample cluster named `dev-example` that you can launch as is.
 
-From the root directory of this repo change directory to here:
-```
-cd clusters/aws/kops/
-```
-
 Put the `vpc-id` into the file: `./clusters/dev-example/values.yaml`
 
 Set the state store.  The kops state store is where kops writes information about
@@ -151,7 +167,18 @@ export KOPS_STATE_STORE=s3://kubernetes-ops-2345-kops-state-store
 Put the same bucket name in this case `kubernetes-ops-2345-kops-state-store` in
 the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field.
 
-Go to the AWS console and create the S3 bucket name: `kubernetes-ops-2345-kops-state-store`
+Run this command to create the S3 bucket
+```
+aws s3api create-bucket \
+    --bucket kubernetes-ops-2345-kops-state-store \
+    --region us-east-1 \
+    --versioning-configuration Status=Enabled
+```
+
+Enable versioning on the bucket:
+```
+aws s3api put-bucket-versioning --bucket kubernetes-ops-2345-kops-state-store  --versioning-configuration Status=Enabled
+```
 
 Now, export out your AWS keys to the local shell:
 
@@ -220,13 +247,20 @@ There are binaries and installs for Windows, OSX, and Linux.
 
 Using this you would run the this command to tunnel traffic to this VPC.
 
-In the AWS console find the host named: `bastion-workers-zone-a.dev-example.us-east-1.k8s.local`
+In the AWS console find the load balancer that is pointed to the bastion host.  In the
+EC2 Dashboard, got to "Load Balancer" and search for "bastion".  The DNS name will
+point to your bastion host:
 
-Get the Public IP of it.  For example it could be:  3.85.126.119
+DNS name: bastion-dev-example-us-ea-3gprsr-2140616004.us-east-1.elb.amazonaws.com
+
+Add the ssh private key you just generated to your local store so you can ssh in:
+```
+ssh-add ./ssh-keys/kubernetes-ops.pem
+```
 
 Run the sshuttle command:
 ```
-sshuttle -r ec2-user@3.85.126.119 10.10.0.0/16 -v
+sshuttle -r ec2-user@bastion-dev-example-us-ea-3gprsr-2140616004.us-east-1.elb.amazonaws.com 10.10.0.0/16 -v
 ```
 
 This will forward all traffic destined for `10.10.0.0/16` through this tunnel.
@@ -236,3 +270,7 @@ In another shell, run a `kubectl` command to check connectivity:
 ```
 kubectl get nodes
 ```
+
+# References
+
+Kops setup: https://github.com/kubernetes/kops/blob/master/docs/aws.md
