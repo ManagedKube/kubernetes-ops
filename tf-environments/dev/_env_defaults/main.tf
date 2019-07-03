@@ -1,5 +1,5 @@
 output environment_name {
-  value = "dev-example"
+  value = "dev"
 }
 
 output aws_region {
@@ -7,7 +7,7 @@ output aws_region {
 }
 
 output vpc_cidr {
-  value = "10.9.0.0/16"
+  value = "10.10.0.0/16"
 }
 
 output vpc_id {
