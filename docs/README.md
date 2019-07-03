@@ -212,14 +212,14 @@ the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field
 Run this command to create the S3 bucket
 ```
 aws s3api create-bucket \
-    --bucket kubernetes-ops-2345-kops-state-store \
+    --bucket ${KOPS_STATE_STORE} \
     --region us-east-1 \
     --versioning-configuration Status=Enabled
 ```
 
 Enable versioning on the bucket:
 ```
-aws s3api put-bucket-versioning --bucket kubernetes-ops-2345-kops-state-store  --versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning --bucket ${KOPS_STATE_STORE} --versioning-configuration Status=Enabled
 ```
 
 Now, export out your AWS keys to the local shell:
