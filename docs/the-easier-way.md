@@ -66,3 +66,22 @@ connect to it and create a tunnel.
 
 This will return information with a `sshuttle` command on how you can connect
 to the remote network.
+
+# Git commit the changes back to the repository
+Now that we have made all of our changes, we should commit all of the changes
+back to our repository.
+
+See what has changed:
+```
+git diff
+```
+
+Write a commit message:
+```
+git commit -m 'Launching the dev cluster and updating the VPC IDs' -a
+```
+
+Push the changes back into git
+```
+git push origin master
+```
