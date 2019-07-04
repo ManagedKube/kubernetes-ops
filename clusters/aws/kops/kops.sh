@@ -63,13 +63,16 @@ create()
     dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
     cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
 
-    ssh-keygen -t rsa -b 4096 -C "kops@kops.com" -f ./ssh-keys/id_rsa_kops_script -q -N ""
+    yes y | ssh-keygen -t rsa -b 4096 -C "kops@kops.com" -f ./ssh-keys/id_rsa_kops_script -q -N "" >/dev/null
 
     echo "[INFO] Setting to generic ssh pub key"
     kops create secret --name ${cluster_name} sshpublickey admin -i ./ssh-keys/id_rsa_kops_script.pub
 
     echo "[INFO] Applying cluster to AWS"
     kops --name ${cluster_name} update cluster --yes
+
+    echo "[INFO] Get clusters"
+    kops --name ${cluster_name} get clusters
 
     echo "[INFO] Get instance groups"
     kops --name ${cluster_name} get ig
@@ -107,7 +110,7 @@ read()
   cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
 
   echo "[INFO] Get clusters"
-  kops --name ${cluster_name} get clusters
+  kops --name ${cluster_name} get cluster
 
   echo "[INFO] Get instance groups"
   kops --name ${cluster_name} get ig
@@ -297,6 +300,47 @@ delete()
   fi
 }
 
+get_bastion()
+{
+  # Checks
+  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  TEMPLATE_FILE_PATH="./template/cluster.yml"
+
+  if [ ! -f ${VALUES_FILE_PATH} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH}"
+    exit 1
+  fi
+
+  if [ ! -f ${TEMPLATE_FILE_PATH} ]; then
+    echo "File does not exist: ${TEMPLATE_FILE_PATH}"
+    exit 1
+  fi
+
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  export KOPS_STATE_STORE=${kops_state_store}
+  echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
+
+  dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+  cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]')
+  region=$(cat ${VALUES_FILE_PATH} | grep "awsRegion: " | awk '{print $2}' | tr -d '[:space:]')
+  network_cidr=$(cat ${VALUES_FILE_PATH} | grep "networkCIDR: " | awk '{print $2}' | tr -d '[:space:]')
+
+  echo "[INFO] Getting bastion host for cluster named: ${cluster_name}"
+
+  # Get the ELB DNS name
+  bastion_dns_name=$(jq -r ".LoadBalancerDescriptions[] | .DNSName" ~/Downloads/describe-load-balancers.json | grep "bastion-${kops_name}-${region}")
+
+  # Get the Kubernetes API server out of the kubeconfig file
+  kubernetes_api_server=$(kubectl config view --minify | grep server | cut -f 2- -d ":" | tr -d " " | grep -oP "internal.*")
+
+  echo "[INFO] bastion_dns_name: ${bastion_dns_name}"
+  echo "[INFO] Add ssh keys into your ssh-agent: ssh-add ./ssh-keys/kubernetes-ops.pem"
+  # echo "[INFO] run: sudo ssh -i ./ssh-keys/kubernetes-ops.pem -L 443:${kubernetes_api_server}:443 ec2-user@${bastion_dns_name}"
+  echo "[INFO] sshuttle command: sshuttle -r ec2-user@${bastion_dns_name} ${network_cidr} -v"
+  echo "[INFO] In another terminal run: kubectl get nodes"
+
+}
+
 
 ##########################################
 ##### Main
@@ -306,6 +350,7 @@ kops_name="none"
 dry_run="true"
 create="false"
 read="false"
+get_bastion="false"
 update="false"
 delete="false"
 rolling_update="false"
@@ -339,6 +384,9 @@ while [ "$1" != "" ]; do
                                 ;;
         -x | --delete )        shift
                                 delete=true
+                                ;;
+        -b | --get-bastion )    shift
+                                get_bastion=true
                                 ;;
         -h | --help )           usage
                                 exit
@@ -376,4 +424,8 @@ fi
 
 if [ "${delete}" == "true" ]; then
   delete $kops_name
+fi
+
+if [ "${get_bastion}" == "true" ]; then
+  get_bastion $kops_name
 fi
