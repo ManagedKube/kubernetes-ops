@@ -73,3 +73,9 @@ find . -type f | xargs sed -i '' 's/kubernetes-ops-1234/kubernetes-ops-xxxxxx/g'
 ```
 
 You can alternatively use your IDE to search and replace this string
+
+# Environments
+
+What are the env
+
+why so many?
