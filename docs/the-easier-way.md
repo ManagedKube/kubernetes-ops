@@ -52,3 +52,17 @@ Run:
 cd clusters/aws/kops
 ./kops.sh --name dev --create true --dry-run false
 ```
+
+# Interacting with the new Kubernetes cluster
+The Kubernetes cluster that is created is a fully private Kubernetes cluster with
+no public IP addresses.  This means that you will have to get to the cluster some
+how via a bastion host to be able to interact with it.  During the setup, a
+bastion host was created for you and the following steps shows you how to
+connect to it and create a tunnel.
+
+```
+./kops.sh --name dev --get-bastion true --dry-run false
+```
+
+This will return information with a `sshuttle` command on how you can connect
+to the remote network.
