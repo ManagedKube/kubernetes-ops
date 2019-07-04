@@ -76,6 +76,30 @@ You can alternatively use your IDE to search and replace this string
 
 # Environments
 
-What are the env
+Environments are a self contained VPC for your application.  Usually you would have
+at least a `dev` and a `prod` environment if not a full series from `dev` ->
+`qa` -> `staging` -> `prod`.
+
+Ideally each environment are mostly the same.  It is created via the same method,
+has the same items in it, operates the same way, updated the same way, runs the
+same infrastructure and application in it.
+
+The difference usually are the the sizes of the nodes, data stores, numbers of nodes.
+For example, `dev` might be a 3 node cluster while `prod` might be double that to
+account for high availability or extra load on the systems.
+
+Another difference might be security levels or access.  In the `dev` or `qa`
+environments, there is no customer data, no private data of any kind which means
+generally any developer can have access to it without much worries.  On a `prod`
+environment running live applications that your customers interact with and putting
+personal information onto, these systems might be a little bit more sensitive and
+not everyone has access to it.  Depending on your requirements, you might limit
+access or even have to go through some approvals to get access to any parts of this
+infrastructure.
 
 why so many?
+
+By doing this you have environments like `dev` where developers and delivering
+new application code into it while they are working and testing it.  This code
+can be not fully functional and tested.  You want this environment and other non
+`prod` environments to vet out the code before your end customer uses it.
