@@ -1,0 +1,14 @@
+nginx-ingress:
+  controller:
+    electionID: ingress-controller-leader-external
+    ingressClass: nginx-external
+
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:11111111111:certificate/1111111-1111-1111-1111-111111111"
+
+      # Whitelisting IPs inbound
+      # loadBalancerSourceRanges:
+      # # Temporary ManagedKube
+      # - 38.30.8.138/32
+      # - 1.1.1.1/32
