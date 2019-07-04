@@ -23,32 +23,7 @@ and require some kind of large scale migration or cut over.
 We suggest you take the `cidr-ranges.md` file as a good place to start.
 
 # Replace all of the S3 buckets used
-In the examples, S3 buckets are used for Terraform and Kops as the state store.
-This allows you to not hold the state of what you launched local to your machine and
-on a remote machine.  This is useful if you accidentally remove the files from your
-local machine or if multiple people or machines will be updating these resources.
-
-One problem is that S3 bucket names are global meaning only one can exist.  If I
-used a bucket name, that means you can not use that same name.
-
-For you to use this, you will need to update the bucket names in this repository
-to what you want to use.  We are using the bucket name `kubernetes-ops-1234-terraform-state`
-
-The following is a way to replace all of the occurrences of `kubernetes-ops-1234-terraform-state`
-with `kubernetes-ops-xxxxxx-terraform-state`.  A suggestion would be to replace the
-`xxxxxx` with another random number.
-
-Linux:
-```
-find . -name '*' -exec sed -i -e 's/kubernetes-ops-1234-terraform-state/kubernetes-ops-xxxxxx-terraform-state/g' {} \;
-```
-
-OSX:
-```
-find . -type f | xargs sed -i '' 's/kubernetes-ops-1234-terraform-state/kubernetes-ops-xxxxx-terraform-state/g'
-```
-
-You can alternatively use your IDE to search and replace this string
+See [s3 buckets replacement](README.md#Setting up the S3 buckets)
 
 # VPC Creation
 
