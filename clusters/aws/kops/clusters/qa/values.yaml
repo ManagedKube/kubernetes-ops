@@ -1,5 +1,5 @@
 kopsName: qa.us-east-1
-s3BucketName: kubernetes-ops-2345-kops-state-store
+s3BucketName: kubernetes-ops-1234-kops-state-store
 kubernetesVersion: 1.11.7
 dnsZone: k8s.local
 awsRegion: us-east-1

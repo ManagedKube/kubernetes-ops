@@ -1,318 +1,47 @@
 kubernetes-ops
 ==================
-This repository represents an opinionated way to structure a repository that
-holds the infrastructure level items.
 
-# Download CLIs
-We will be using various CLIs and tools to help create this infrastructure.
 
-## Terraform
-Currently you must use a version in the `v0.11.xx` releases.
-
-There are some major changes in `v0.12.xx` that don't seem backward compatible.
-
-Download location: https://releases.hashicorp.com/terraform/
-
-## Terragrunt
-
-Currently, you must use a version in the `v0.18.x` release.
-
-Download location: https://github.com/gruntwork-io/terragrunt/releases/tag/v0.18.7
-
-## Kops
-
-Currently, you must use a version in the `1.11.x` release.
-
-Download location:  https://github.com/kubernetes/kops/releases/tag/1.11.1
-
-## AWS CLI
-Any recent version of the aws cli should work.  The version it was tested on
-was:
-
-```
-aws-cli/1.16.xx
-```
-
-Install instructions:  https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-
-# Setup your IP CIDR
-This document contains how your IP CIDRs are going to be laided out for your
-entire infrastructure.  Care should be taken to review this and to make sure
-this fits your needs.  
-
-While getting started quick you can just go with any IP CIDR scheme just to test
-it out but if you were to roll out a real world setup where people will consume
-this infrastructure, not thinking this out a little bit might make it difficult
-to do certain things later.  It is unfortunate that this has to come so early in
-the process.  The IP CIDR is pretty much at the bottom of the stack which means
-it touches everything.  Making changes to this later will probably be very difficult
-and require some kind of large scale migration or cut over.
-
-We suggest you take the `cidr-ranges.md` file as a good place to start.
-
-# Replace all of the S3 buckets used
-In the examples, S3 buckets are used for Terraform and Kops as the state store.
-This allows you to not hold the state of what you launched local to your machine and
-on a remote machine.  This is useful if you accidentally remove the files from your
-local machine or if multiple people or machines will be updating these resources.
-
-One problem is that S3 bucket names are global meaning only one can exist.  If I
-used a bucket name, that means you can not use that same name.
-
-For you to use this, you will need to update the bucket names in this repository
-to what you want to use.  We are using the bucket name `kubernetes-ops-123-terraform-state`
-
-The following is a way to replace all of the occurrences of `kubernetes-ops-123-terraform-state`
-with `kubernetes-ops-xxxxxx-terraform-state`.  A suggestion would be to replace the
-`xxxxxx` with another random number.
-
-Linux:
-```
-find . -name '*' -exec sed -i -e 's/kubernetes-ops-123-terraform-state/kubernetes-ops-xxxxxx-terraform-state/g' {} \;
-```
-
-OSX:
-```
-find . -type f | xargs sed -i '' 's/kubernetes-ops-123-terraform-state/kubernetes-ops-xxxxx-terraform-state/g'
-```
-
-You can alternatively use your IDE to search and replace this string
-
-# VPC Creation
-
-Directory: <repo root>/tf-environment
-
-## Easy route
-
-Change directory to: '<repo root>/tf-environments/dev-example/aws/vpc'
-
-You will have to change the `bucket` in the '<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
-file.  S3 bucket names has to be globally unique which means it can only exist once
-in the all of AWS.  The easiest way is to change the `123` in the bucket name to
-some other random number.
-
-Run:
-```
-terragrunt init
-terragrunt plan
-terragrunt apply
-```
-
-This will create the VPC.
-
-## Custom production route
-
-Copy the directory `dev-example` to a name of the environment you want to create.
-If this is the first environment, `dev` is a good name.
-
-### Update parameters
-Now we have to update some parameter values in the files that we just copied in
-the `dev` directory.
-
-#### `_env_defaults/main.tf`
-Update the parameter
-- `environment_name` to `dev`
-- `vpc_cidr` to the CIDR you chose
-- `aws_availability_zone_1` and the availability zones if this needs to be updated
-
-#### `terraform.tfvars`
-This specifies where to store the Terraform remote state store.
-- `bucket` - this has to be globally unique to S3.  Easiest way is to change the number to some other arbitrary number
-- `key` - change `dev-example` to `dev` or whatever you named this environment to
-
-#### `aws/vpc/main.tf`
-Update the parameters:
-- `public_cidrs` to the CIDR range you choose
-- `private_cidrs` to the CIDR range you choose
-
-## Launch
-
-Run:
-```
-terragrunt init
-terragrunt plan
-terragrunt apply
-```
-
-## Post launch
-The Terraform output would have given you a VPC ID
-
-```
-...
-...
-module.main.aws_route.private[0]: Creation complete after 1s (ID: r-rtb-015ee00a4ceb2c77b1080289494)
-module.main.aws_route.private[2]: Creation complete after 1s (ID: r-rtb-0f342ec1f38c7dd7f1080289494)
-module.main.aws_route.private[1]: Creation complete after 1s (ID: r-rtb-089e933a218c235121080289494)
-
-Apply complete! Resources: 29 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-aws_vpc_id = vpc-01262c04bc41f2f1f
-```
-
-Copy this VPC id and put it into the `_env_defaults/main.tf` file in the `vpc_id` parameter
-
-This ID will be used by other Terraform modules/items that are launched into this VPC.
-
-We will use this ID in the Kops creation because we are putting the Kubernetes
-cluster in this VPC.
-
-# Kubernetes Cluster creation
-
-## Change directory
-From the root directory of this repo change directory to here:
-```
-cd clusters/aws/kops/
-```
-
-## Create an AWS EC2 key pair
-This will create the key, change the permissions so you can only read it, and
-add it to your shell environment for usage.
-
-```
-aws ec2 create-key-pair --key-name kubernetes_ops --query 'KeyMaterial' --output text > ./ssh-keys/kubernetes-ops.pem
-chmod 400 ./ssh-keys/kubernetes-ops.pem
-ssh-add ./ssh-keys/kubernetes-ops.pem
-```
-
-## Kops on AWS
-
-Kops is an open source tool to help you create Kubernetes cluster.  We are going
-to use this tool to help us create a cluster on AWS.
-
-Source project: https://github.com/kubernetes/kops
-
-### Download the kops tool
-Using kops cli is very version specific.  This will determine what version
-of Kubernetes will be installed.
-
-We are currently using version 1.11.x.  You can download the `kops` CLI here:
-
-https://github.com/kubernetes/kops/releases/tag/1.11.1
-
-### Creating the cluster
-There is a sample cluster named `dev-example` that you can launch as is.
-
-Put the `vpc-id` into the file: `./clusters/dev-example/values.yaml`
-
-Set the state store.  The kops state store is where kops writes information about
-the cluster during creation.  The entire state of the cluster is here.  It
-writes the information out to an AWS S3 bucket.  Since buckets are globally
-unique, you need to select a name that is unique to you.  You can simply change
-the `2345` string to something else or another number to make it unique.
-
-```
-export KOPS_STATE_STORE=s3://kubernetes-ops-2345-kops-state-store
-```
-
-Put the same bucket name in this case `kubernetes-ops-2345-kops-state-store` in
-the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field.
-
-Run this command to create the S3 bucket
-```
-aws s3api create-bucket \
-    --bucket ${KOPS_STATE_STORE} \
-    --region us-east-1 \
-    --versioning-configuration Status=Enabled
-```
-
-Enable versioning on the bucket:
-```
-aws s3api put-bucket-versioning --bucket ${KOPS_STATE_STORE} --versioning-configuration Status=Enabled
-```
-
-Now, export out your AWS keys to the local shell:
-
-```
-export AWS_ACCESS_KEY_ID="foo"
-export AWS_SECRET_ACCESS_KEY="bar"
-export AWS_DEFAULT_REGION=us-east-1
-```
-
-You can now run this command to output the templated values:
-
-```
-kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml > /tmp/output.yaml
-```
-
-Run this command to create the cluster:
-```
-kops create -f /tmp/output.yaml
-```
-
-At this point, it just created the configs for this cluster in S3.
-
-Get cluster name:
-```
-kops get clusters
-```
-
-Set the cluster name from the output
-```
-
-export cluster_name=dev-example.us-east-1.k8s.local
-```
-
-Create ssh keys to be able to ssh into the cluster.  You don't have to enter a
-passphrase for the key if you do not want to.  Just hit enter.
-
-```
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f ./ssh-keys/id_rsa
-```
-
-Add the ssh keys into kops so it can put it on the machines.
-```
-kops create secret --name ${cluster_name} sshpublickey admin -i ./ssh-keys/id_rsa.pub
-```
-
-Create the cluster.  This will launch EC2 nodes and start configuring the kubernetes
-cluster:
-```
-kops --name ${cluster_name} update cluster --yes
-```
-
-By default, kops will place the `kubeconfig` on your local system.  The kubeconfig
-has information on how to reach this Kubernetes cluster and authentication for it.
-
-It is placed in: `~/.kube/config`
-
-#### Accessing the cluster
-This cluster only has private IP addresses.  You will not be able to reach it directly.
-In the `dev-example` a bastion host is created for access.
-
-There is an easy tool to use to ssh and tunnel into a remote network called `sshuttle`
-
-Here is the source project:  https://github.com/sshuttle/sshuttle
-
-There are binaries and installs for Windows, OSX, and Linux.
-
-Using this you would run the this command to tunnel traffic to this VPC.
-
-In the AWS console find the load balancer that is pointed to the bastion host.  In the
-EC2 Dashboard, got to "Load Balancer" and search for "bastion".  The DNS name will
-point to your bastion host:
-
-DNS name: bastion-dev-example-us-ea-3gprsr-2140616004.us-east-1.elb.amazonaws.com
-
-Add the ssh private key you just generated to your local store so you can ssh in:
-```
-ssh-add ./ssh-keys/kubernetes-ops.pem
-```
-
-Run the sshuttle command:
-```
-sshuttle -r ec2-user@bastion-dev-example-us-ea-3gprsr-2140616004.us-east-1.elb.amazonaws.com 10.10.0.0/16 -v
-```
-
-This will forward all traffic destined for `10.10.0.0/16` through this tunnel.
-
-In another shell, run a `kubectl` command to check connectivity:
-
-```
-kubectl get nodes
-```
-
-# References
-
-Kops setup: https://github.com/kubernetes/kops/blob/master/docs/aws.md
+# The cloud
+Every cloud has a concept of a "network".  AWS and GCP calls it the VPC.  The VPC
+will hold everything that you will ever run or create in the cloud.  Items such as instances,
+subnets, firewall rules, databases, queues, load balancers, etc.  Since it is
+such a foundational piece that sits at pretty much the bottom of the stack it
+is very important to get this correct because trying to make changes to this laster
+with everything running on it could turn out to be very difficult or impossible
+without downtime and/or a lot of reconfiguration of items that are running in
+this VPC.  
+
+We also want to take control of creation and managing this VPC exclusively.  A lot
+of tools that creates Kubernetes clusters for you has the option of creating the
+VPC, subnets, NATs, etc for you but in practice this is generally a bad idea.  If
+Kubernetes was the only item in this VPC, then that is ok but usually we don't just
+run a Kubernetes cluster.  Our workload/application will want to use cloud databases
+such as RDS, SQS, Lambda, other instances that are not Kubernetes nodes, etc.  We
+will need to create subnets and other items for them to live in.  For that reason
+we create our own VPC and tell the Kubernetes cluster to use our VPCs and our
+settings (and not the other way around).
+
+## CIDR / IP Scheme
+This is probably one of the most important decision when getting started.  What
+will my IP scheme be?  Not thinking about this in the beginning can have big
+repercussions down the road.  If you use the same CIDR for two VPC now and sometime
+in the future you want to peer them so that the two VPC can communicate with each
+other directly, you are pretty much out of luck here.  You will either need to
+re-IP one of the VPCs (which sounds like a lot of work) or setup a NAT between
+them and translate (which also sound like a lot of work) instead of a 30 minute
+peering job, it turns into days if not more for the alternatives.
+
+We might think that in this day and age, we don't need to worry about IPs.  I
+wish we were.  This is the underpinning of the entire infrastructure.
+
+This is why we have setup a CIDR/IP Scheme for you that you can use.  
+
+[cidr-ranges.md](cidr-ranges.md)
+
+# What does the stack look like?
+
+<put picture of the stack, orange pic>
+
+# Tools you will need
+[tools.md](tools.md)
