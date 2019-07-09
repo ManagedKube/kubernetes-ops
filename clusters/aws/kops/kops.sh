@@ -327,8 +327,10 @@ get_bastion()
 
   echo "[INFO] Getting bastion host for cluster named: ${cluster_name}"
 
+  DESCRIBE_LOAD_BALANCER_OUTPUT=$(aws elb describe-load-balancers)
+
   # Get the ELB DNS name
-  bastion_dns_name=$(jq -r ".LoadBalancerDescriptions[] | .DNSName" ~/Downloads/describe-load-balancers.json | grep "bastion-${kops_name}-${region}")
+  bastion_dns_name=$(echo ${DESCRIBE_LOAD_BALANCER_OUTPUT} | jq -r ".LoadBalancerDescriptions[] | .DNSName" | grep "bastion-${kops_name}-${region}")
 
   # Get the Kubernetes API server out of the kubeconfig file
   kubernetes_api_server=$(kubectl config view --minify | grep server | cut -f 2- -d ":" | tr -d " " | grep -oP "internal.*")
