@@ -57,7 +57,7 @@ cd clusters/aws/kops
 The Kubernetes cluster that is created is a fully private Kubernetes cluster with
 no public IP addresses.  This means that you will have to get to the cluster some
 how via a bastion host to be able to interact with it.  During the setup, a
-bastion host was created for you and the following steps shows you how to
+bastion host was created for you and the fbastionollowing steps shows you how to
 connect to it and create a tunnel.
 
 ```
@@ -84,4 +84,21 @@ git commit -m 'Launching the dev cluster and updating the VPC IDs' -a
 Push the changes back into git
 ```
 git push origin master
+```
+
+# Deleting
+
+# kops
+Delete the kops cluster first
+
+```
+./kops.sh --name dev --delete true --dry-run false
+```
+
+# VPC
+Delete the VPC next
+
+```
+cd ops
+./vpc.sh -n dev --delete true --dry-run false
 ```
