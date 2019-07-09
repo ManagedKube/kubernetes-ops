@@ -12,15 +12,16 @@ http://www.subnet-calculator.com/cidr.php
 | Name                              | CIDR          |
 |-----------------------------------|---------------|
 | docker0                           | 172.26.0.0/16 |
-| Kubernetes - dev-example          | 10.9.0.0/16   |
-| Kubernetes - dev                  | 10.10.0.0/16  |
-| Kubernetes - qa                   | 10.11.0.0/16  |
-| Kubernetes - staging              | 10.12.0.0/16  |
-| Kubernetes - prod                 | 10.13.0.0/16  |
-| Kubernetes - xxx                  | 10.14.0.0/16  |
-| Kubernetes - xxx                  | 10.15.0.0/16  |
-| Kubernetes - xxx                  | 10.16.0.0/16  |
-| Kubernetes - xxx                  | 10.17.0.0/16  |
+| Kubernetes aws - dev-example      | 10.9.0.0/16   |
+| Kubernetes aws - dev              | 10.10.0.0/16  |
+| Kubernetes aws - qa               | 10.11.0.0/16  |
+| Kubernetes aws - staging          | 10.12.0.0/16  |
+| Kubernetes aws - prod             | 10.13.0.0/16  |
+| Kubernetes aws - ....             | 10.13.0.0/16  |
+| Kubernetes gcp - dev              | 10.20.0.0/16  |
+| Kubernetes gcp - qa               | 10.21.0.0/16  |
+| Kubernetes gcp - staging          | 10.22.0.0/16  |
+| Kubernetes gcp - prod             | 10.23.0.0/16  |
 
 ## Reserved ranged for each environment
 Each envrionment has a bunch of initial reserved ranges to bring up the entire
