@@ -82,15 +82,14 @@ if you want to create it.
 You will have to create the S3 bucket that Kops uses manually.
 
 ```
-export KOPS_S3_BUCKET=s3://kubernetes-ops-xxxxxx-kops-state-store
+export KOPS_S3_BUCKET=kubernetes-ops-xxxxxx-kops-state-store
 ```
 
 Run this command to create the S3 bucket
 ```
 aws s3api create-bucket \
     --bucket ${KOPS_S3_BUCKET} \
-    --region us-east-1 \
-    --versioning-configuration Status=Enabled
+    --region us-east-1
 ```
 
 Enable versioning on the bucket:
