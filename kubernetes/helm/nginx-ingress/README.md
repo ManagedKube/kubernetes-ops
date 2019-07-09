@@ -3,6 +3,10 @@ nginx-ingress
 
 Source helm chart:  https://github.com/helm/charts/tree/master/stable/nginx-ingress
 
+# Topology this creates
+
+![Alt text](./diagrams/nginx-ingress-diagram.svg)
+
 # Usage:
 
 ## internal
