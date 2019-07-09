@@ -8,7 +8,7 @@ to learn what exactly it is doing and we encourage you to go through the [the-ma
 once sometime.
 
 # Replace all of the S3 buckets used
-See [s3 buckets replacement](README.md#Setting up the S3 buckets)
+See [s3 buckets replacement](README.md)
 
 # Create VPC
 
