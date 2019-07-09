@@ -3,7 +3,8 @@ s3BucketName: kubernetes-ops-1234-kops-state-store
 kubernetesVersion: 1.11.7
 dnsZone: k8s.local
 awsRegion: us-east-1
-vpc: vpc-id-from-the-terraform-output
+# vpc: vpc-id-from-the-terraform-output
+vpc: vpc-002f54f10f2f820ca
 sshKeyName: kubernetes_ops
 
 availabilityZonesEtcd:
