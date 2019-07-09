@@ -280,7 +280,7 @@ spec:
   #
   {{- if .enableBastionGroup1 -}}
   {{- range $key, $value := .availabilityZonesAll }}
-  {{- if eq $value "a" -}}
+  {{- if eq $value "a" }}
 ---
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
@@ -354,6 +354,7 @@ spec:
 #######################################################
 {{- range $azKey, $azValue := $availabilityZonesAll }}
 ---
+apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
