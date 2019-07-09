@@ -275,202 +275,12 @@ spec:
   {{- end }}
 
   #
-  # infrastructure group
-  #
-  {{- if .enableInfrastructureGroup1 -}}
-  {{- range $key, $value := .availabilityZonesAll }}
----
-apiVersion: kops/v1alpha2
-kind: InstanceGroup
-metadata:
-  labels:
-    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: infrastructure-zone-{{ $value }}
-spec:
-  cloudLabels:
-    {{- range $key, $value := $instanceGroups.infrastructureGroup1.cloudLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  image: {{ $instanceGroups.infrastructureGroup1.image }}
-  machineType: {{ $instanceGroups.infrastructureGroup1.machineType }}
-  maxSize: {{ $instanceGroups.infrastructureGroup1.maxSize }}
-  minSize: {{ $instanceGroups.infrastructureGroup1.minSize }}
-  nodeLabels:
-    kops.k8s.io/instancegroup: infrastructure-zone-{{ $value }}
-    {{- range $key, $value := $instanceGroups.infrastructureGroup1.nodeLabels }}
-    {{ $key }}: "{{ $value }}"
-    {{- end }}
-  {{ if $instanceGroups.infrastructureGroup1.taints.enable }}
-  taints:
-    {{- range $key, $value := $instanceGroups.infrastructureGroup1.taints.items }}
-    - "{{ $value }}"
-    {{- end }}
-  {{- end }}
-  role: Node
-  subnets:
-    - infrastructure-zone-{{ $value }}
-  {{- end }}
-  {{- end }}
-
-  #
-  ## Spot instances
-  #
-  {{- if .enableSpotInstanceGroup1 -}}
-  {{- range $key, $value := .availabilityZonesAll }}
----
-apiVersion: kops/v1alpha2
-kind: InstanceGroup
-metadata:
-  labels:
-    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: spot-zone-{{ $value }}
-spec:
-  cloudLabels:
-    {{- range $key, $value := $instanceGroups.spotGroup1.cloudLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  image: {{ $instanceGroups.spotGroup1.image }}
-  machineType: {{ $instanceGroups.spotGroup1.machineType }}
-  maxPrice: {{ $instanceGroups.spotGroup1.maxPrice }}
-  maxSize: {{ $instanceGroups.spotGroup1.maxSize }}
-  minSize: {{ $instanceGroups.spotGroup1.minSize }}
-  nodeLabels:
-    {{- range $key, $value := $instanceGroups.spotGroup1.nodeLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  {{ if $instanceGroups.spotGroup1.taints.enable }}
-  taints:
-    {{- range $key, $value := $instanceGroups.spotGroup1.taints.items }}
-    - "{{ $value }}"
-    {{- end }}
-  {{- end }}
-  role: Node
-  subnets:
-    - worker-zone-{{ $value }}
-  {{- end }}
-  {{- end }}
-
-  #
-  # On Damand instances
-  #
-  {{- if .enableOnDemandGroup1 -}}
-  {{- range $key, $value := .availabilityZonesAll }}
----
-apiVersion: kops/v1alpha2
-kind: InstanceGroup
-metadata:
-  labels:
-    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: on-demand-zone-{{ $value }}
-spec:
-  cloudLabels:
-    {{- range $key, $value := $instanceGroups.onDemandGroup1.cloudLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  image: {{ $instanceGroups.onDemandGroup1.image }}
-  machineType: {{ $instanceGroups.onDemandGroup1.machineType }}
-  maxSize: {{ $instanceGroups.onDemandGroup1.maxSize }}
-  minSize: {{ $instanceGroups.onDemandGroup1.minSize }}
-  nodeLabels:
-    kops.k8s.io/instancegroup: on-demand-zone-{{ $value }}
-    {{- range $key, $value := $instanceGroups.onDemandGroup1.nodeLabels }}
-    {{ $key }}: "{{ $value }}"
-    {{- end }}
-  {{ if $instanceGroups.onDemandGroup1.taints.enable }}
-  taints:
-    {{- range $key, $value := $instanceGroups.onDemandGroup1.taints.items }}
-    - "{{ $value }}"
-    {{- end }}
-  {{- end }}
-  role: Node
-  subnets:
-    - worker-zone-{{ $value }}
-  {{- end }}
-  {{- end }}
-
-  #
-  # Jenkins masters group
-  #
-  {{- if .enableJenkinsGroup1 -}}
-  {{- range $key, $value := .availabilityZonesAll }}
----
-apiVersion: kops/v1alpha2
-kind: InstanceGroup
-metadata:
-  labels:
-    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: jenkins-master-zone-{{ $value }}
-spec:
-  cloudLabels:
-    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.cloudLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  image: {{ $instanceGroups.jenkinsMastersGroup1.image }}
-  machineType: {{ $instanceGroups.jenkinsMastersGroup1.machineType }}
-  maxSize: {{ $instanceGroups.jenkinsMastersGroup1.maxSize }}
-  minSize: {{ $instanceGroups.jenkinsMastersGroup1.minSize }}
-  nodeLabels:
-    kops.k8s.io/instancegroup: jenkins-master-zone-{{ $value }}
-    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.nodeLabels }}
-    {{ $key }}: "{{ $value }}"
-    {{- end }}
-  {{ if $instanceGroups.jenkinsMastersGroup1.taints.enable }}
-  taints:
-    {{- range $key, $value := $instanceGroups.jenkinsMastersGroup1.taints.items }}
-    - "{{ $value }}"
-    {{- end }}
-  {{- end }}
-  role: Node
-  subnets:
-    - worker-zone-{{ $value }}
-  {{- end }}
-  {{- end }}
-
-  #
-  # Jenkins workers group
-  #
-  {{- if .enableJenkinsGroup1 -}}
-  {{- range $key, $value := .availabilityZonesAll }}
----
-apiVersion: kops/v1alpha2
-kind: InstanceGroup
-metadata:
-  labels:
-    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: jenkins-workers-zone-{{ $value }}
-spec:
-  cloudLabels:
-    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.cloudLabels }}
-      {{ $key }}: "{{ $value }}"
-      {{- end }}
-  image: {{ $instanceGroups.jenkinsWorkersGroup1.image }}
-  machineType: {{ $instanceGroups.jenkinsWorkersGroup1.machineType }}
-  maxSize: {{ $instanceGroups.jenkinsWorkersGroup1.maxSize }}
-  minSize: {{ $instanceGroups.jenkinsWorkersGroup1.minSize }}
-  nodeLabels:
-    kops.k8s.io/instancegroup: jenkins-worker-zone-{{ $value }}
-    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.nodeLabels }}
-    {{ $key }}: "{{ $value }}"
-    {{- end }}
-  {{ if $instanceGroups.jenkinsWorkersGroup1.taints.enable }}
-  taints:
-    {{- range $key, $value := $instanceGroups.jenkinsWorkersGroup1.taints.items }}
-    - "{{ $value }}"
-    {{- end }}
-  {{- end }}
-  role: Node
-  subnets:
-    - worker-zone-{{ $value }}
-  {{- end }}
-  {{- end }}
-
-  #
   # Bastion workers group
   # https://github.com/kubernetes/kops/blob/master/docs/bastion.md#configure-the-bastion-instance-group
   #
   {{- if .enableBastionGroup1 -}}
   {{- range $key, $value := .availabilityZonesAll }}
-  {{- if eq $value "a" -}}
+  {{- if eq $value "a" }}
 ---
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
@@ -532,3 +342,45 @@ spec:
     - threatstack-master-zone-{{ $value }}
   {{- end }}
   {{- end }}
+
+#######################################################
+# Worker node group - all zones
+#######################################################
+{{- $availabilityZonesAll := .availabilityZonesAll }}
+
+{{- range $key, $value := .workerInstanceGroupsAllZones }}
+#######################################################
+# Worker node group - all zones - {{ $key }}
+#######################################################
+{{- range $azKey, $azValue := $availabilityZonesAll }}
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
+  name: {{ $key }}-zone-{{ $azValue }}
+spec:
+  cloudLabels:
+    {{- range $keyCloudLabels, $valueCloudLabels := $value.cloudLabels }}
+      {{ $keyCloudLabels }}: "{{ $valueCloudLabels }}"
+      {{- end }}
+  image: {{ $value.image }}
+  machineType: {{ $value.machineType }}
+  maxSize: {{ $value.maxSize }}
+  minSize: {{ $value.minSize }}
+  nodeLabels:
+    {{- range $nodeLabelsKey, $nodeLabelsValue := $value.nodeLabels }}
+    {{ $nodeLabelsKey }}: "{{ $nodeLabelsValue }}"
+    {{- end }}
+  {{- if $value.taints }}
+  taints:
+    {{- range $taintsKey, $taintsValue := $value.taints }}
+    - "{{ $taintsValue }}"
+    {{- end }}
+  {{- end }}
+  role: Node
+  subnets:
+  - worker-zone-{{ $azValue }}
+{{- end }}
+{{- end }}
