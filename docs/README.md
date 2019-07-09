@@ -74,6 +74,35 @@ find . -type f | xargs sed -i '' 's/kubernetes-ops-1234/kubernetes-ops-xxxxxx/g'
 
 You can alternatively use your IDE to search and replace this string
 
+## Create the S3 buckets for Terraform
+Terraform will create it's own bucket during the Terraform run.  It will ask you
+if you want to create it.
+
+## Create the S3 buckets for kops
+You will have to create the S3 bucket that Kops uses manually.
+
+```
+export KOPS_S3_BUCKET=s3://kubernetes-ops-xxxxxx-kops-state-store
+```
+
+Run this command to create the S3 bucket
+```
+aws s3api create-bucket \
+    --bucket ${KOPS_S3_BUCKET} \
+    --region us-east-1 \
+    --versioning-configuration Status=Enabled
+```
+
+Enable versioning on the bucket:
+```
+aws s3api put-bucket-versioning --bucket ${KOPS_S3_BUCKET} --versioning-configuration Status=Enabled
+```
+
+Using default encryption:
+```
+aws s3api put-bucket-encryption --bucket ${KOPS_S3_BUCKET} --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+```
+
 # Environments
 
 Environments are a self contained VPC for your application.  Usually you would have
