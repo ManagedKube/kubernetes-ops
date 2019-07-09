@@ -5,7 +5,22 @@ Source helm chart:  https://github.com/helm/charts/tree/master/stable/nginx-ingr
 
 # Topology this creates
 
-![Alt text](./diagrams/nginx-ingress-diagram.svg)
+![nginx ingress traffic flow](./diagrams/nginx-ingress-diagram.png)
+
+# Why an external and internal nginx-ingress?
+The `internal` is set with to us an internal ELB.  This ELB will have an private
+IP address reachable only from your internal network.
+
+The `external` has a public IP address that is reachable from anywhere from
+the internet.
+
+Launching both of these will create two setups of the above diagram.  The external
+setup is usually for your traffic to your application that you want external
+users to be able to access (like your customers).
+
+The internal setup is for internal items which internal users should only have
+access to such as employees.  Items like Prometheus monitoring, Grafana, or
+any other internal only applications you are running on the cluster.
 
 # Usage:
 
