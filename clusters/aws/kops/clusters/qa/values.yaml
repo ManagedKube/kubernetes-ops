@@ -170,51 +170,51 @@ workerInstanceGroupsAllZones:
     taints:
       items:
       - application=infrastructure:NoSchedule
-  # jenkinsMastersGroup1:
-  #   # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-  #   image: 595879546273/CoreOS-stable-2023.5.0-hvm
-  #   machineType: t3.medium
-  #   maxSize: 10
-  #   minSize: 0
-  #   cloudLabels:
-  #     CostCenter: kubernetes-saas
-  #     Owner: kubernetes
-  #     Project: cloud
-  #     Purpose: kubernetes-spot-node
-  #     managed_by: kops
-  #     # https://github.com/kubernetes/autoscaler/issues/511#issuecomment-354616866
-  #     k8s.io/cluster-autoscaler/node-template/label/prod.us-east-1.k8s.local/role: scale-zero
-  #   nodeLabels:
-  #     prod.us-east-1.k8s.local/role: scale-zero
-  #     kubernetes-ops/isSpot: "false"
-  #     kubernetes-ops/instanceType: t3.medium
-  #     kubernetes-ops/hasPublicIP: "false"
-  #     kubernetes-ops/application: jenkins-masters
-  #   taints:
-  #     enable: true
-  #     items:
-  #     - application=jenkins-master:NoSchedule
-  # jenkinsWorkersGroup1:
-  #   # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-  #   image: 595879546273/CoreOS-stable-2023.5.0-hvm
-  #   machineType: t3.medium
-  #   maxSize: 10
-  #   minSize: 0
-  #   cloudLabels:
-  #     CostCenter: kubernetes-saas
-  #     Owner: kubernetes
-  #     Project: cloud
-  #     Purpose: kubernetes-spot-node
-  #     managed_by: kops
-  #     # https://github.com/kubernetes/autoscaler/issues/511#issuecomment-354616866
-  #     k8s.io/cluster-autoscaler/node-template/label/prod.us-east-1.k8s.local/role: scale-zero
-  #   nodeLabels:
-  #     prod.us-east-1.k8s.local/role: scale-zero
-  #     kubernetes-ops/isSpot: "false"
-  #     kubernetes-ops/instanceType: t3.medium
-  #     kubernetes-ops/hasPublicIP: "false"
-  #     kubernetes-ops/application: jenkins-workers
-  #   taints:
-  #     enable: true
-  #     items:
-  #     - application=jenkins-workers:NoSchedule
+  jenkinsMastersGroup1:
+    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
+    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    machineType: t3.medium
+    maxSize: 10
+    minSize: 0
+    cloudLabels:
+      CostCenter: kubernetes-saas
+      Owner: kubernetes
+      Project: cloud
+      Purpose: kubernetes-spot-node
+      managed_by: kops
+      # https://github.com/kubernetes/autoscaler/issues/511#issuecomment-354616866
+      k8s.io/cluster-autoscaler/node-template/label/prod.us-east-1.k8s.local/role: scale-zero
+    nodeLabels:
+      prod.us-east-1.k8s.local/role: scale-zero
+      kubernetes-ops/isSpot: "false"
+      kubernetes-ops/instanceType: t3.medium
+      kubernetes-ops/hasPublicIP: "false"
+      kubernetes-ops/application: jenkins-masters
+    taints:
+      enable: true
+      items:
+      - application=jenkins-master:NoSchedule
+  jenkinsWorkersGroup1:
+    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
+    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    machineType: t3.medium
+    maxSize: 10
+    minSize: 0
+    cloudLabels:
+      CostCenter: kubernetes-saas
+      Owner: kubernetes
+      Project: cloud
+      Purpose: kubernetes-spot-node
+      managed_by: kops
+      # https://github.com/kubernetes/autoscaler/issues/511#issuecomment-354616866
+      k8s.io/cluster-autoscaler/node-template/label/prod.us-east-1.k8s.local/role: scale-zero
+    nodeLabels:
+      prod.us-east-1.k8s.local/role: scale-zero
+      kubernetes-ops/isSpot: "false"
+      kubernetes-ops/instanceType: t3.medium
+      kubernetes-ops/hasPublicIP: "false"
+      kubernetes-ops/application: jenkins-workers
+    taints:
+      enable: true
+      items:
+      - application=jenkins-workers:NoSchedule
