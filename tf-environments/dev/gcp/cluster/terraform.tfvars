@@ -9,12 +9,9 @@ terragrunt = {
 
 vpc_name = "dev"
 region = "us-central1"
-region_zone = "us-central1-b"
 project_name = "managedkube"
 network_name = "dev"
-# remote_state_bucket = "qadium-dev-terraform-state"
-# remote_state_bucket_region = "us-east-1"
-cluster_name = "devops-gke"
+cluster_name = "dev"
 
 enable_private_kube_master_endpoint = false
 
@@ -25,9 +22,11 @@ oauth_scopes = [
   "monitoring"
 ]
 
-tags = []
+tags = ["dev"]
 
 labels = {}
+
+taints = []
 
 node_version = "1.12.8-gke.10"
 machine_type = "n1-standard-4"
@@ -45,7 +44,6 @@ master_authorized_networks_cidr = [
   { cidr_block = "10.0.0.0/8", display_name = "10x" },
   { cidr_block = "172.16.0.0/12", display_name = "172x" },
   { cidr_block = "192.168.0.0/16", display_name = "192x" },
-  { cidr_block = "38.30.8.138/32", display_name = "sf-office-outbound-ip" },
 ]
 
 

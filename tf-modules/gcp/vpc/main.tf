@@ -6,14 +6,14 @@ provider "google" {
   region      = "${var.region}"
   project     = "${var.project_name}"
   credentials = "${file("${var.credentials_file_path}")}"
-  version     = "~> 0.1.3"
+  version     = "~> 2.10.0"
 }
 
 provider "google-beta" {
   region      = "${var.region}"
   project     = "${var.project_name}"
   credentials = "${file("${var.credentials_file_path}")}"
-  version     = "~> 1.20"
+  version     = "~> 2.10.0"
 }
 
 resource "google_compute_network" "main" {
@@ -94,7 +94,7 @@ resource "google_compute_instance" "bastion" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.public_subnet.name}"
-    address    = "${var.bastion_internal_ip}"
+    network_ip = "${var.bastion_internal_ip}"
 
     access_config {
       nat_ip = "${google_compute_address.bastion_ip.address}"
