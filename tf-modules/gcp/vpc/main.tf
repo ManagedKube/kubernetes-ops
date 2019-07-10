@@ -41,9 +41,9 @@ resource "google_compute_subnetwork" "public_subnet" {
 # GCP Cloud NAT
 ###################################################
 resource "google_compute_router" "router" {
-  name    = "router"
-  region  = "${var.region}"
-  network = "${google_compute_network.main.self_link}"
+  name                   = "${var.vpc_name}-outbound-through-nat"
+  region                 = "${var.region}"
+  network                = "${google_compute_network.main.self_link}"
   bgp {
     asn = 64514
   }

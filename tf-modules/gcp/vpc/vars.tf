@@ -41,3 +41,9 @@ variable "bastion_internal_ip" {
 variable "internal_services_bastion_cidr" {
   description = "The /32 address of the single bastion server that can access servers in the VPC over ssh."
 }
+
+# # https://www.terraform.io/docs/providers/google/r/compute_route.html#tags
+variable "outbound_through_nat_tags" {
+  description = "A tag selector for nodes that should use the NAT as an external gateway"
+  type        = "list"
+}

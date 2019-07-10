@@ -33,7 +33,7 @@ be applied to any of the above CIDRs.
 |------------------|--------------|---------------|
 | xxx              | 10.xx.0.0/16 | xxxxx - xxxxx |
 
-## Services Subnets
+## AWS Services Subnets
 | Name                                  | CIDR             | Address Range               |
 |---------------------------------------|------------------|-----------------------------|
 | RDS  - subnet 1                       | 10.xx.100.0/28   | 10.xx.100.0  - 10.xx.100.15 |
@@ -44,3 +44,14 @@ be applied to any of the above CIDRs.
 | app one - subnet 2                    | 10.xx.100.64/28  | 10.xx.100.64 - 10.xx.100.79 |
 | app two - subnet 1                    | 10.xx.100.64/28  | 10.xx.100.64 - 10.xx.100.79 |
 | app two - subnet 2                    | 10.xx.100.64/28  | 10.xx.100.64 - 10.xx.100.79 |
+
+## GCP Subnets
+| Name                                  | CIDR             | Address Range               |
+|---------------------------------------|------------------|-----------------------------|
+| VPC - default public subnet           | 10.xx.10.0/24    | 10.xx.10.0  - 10.xx.10.255  |
+| VPC - default private subnet          | 10.xx.20.0/24    | 10.xx.20.0 - 10.xx.20.255   |
+| GKE cluster public subnet             | 10.xx.11.0/24    | 10.xx.11.0 - 10.xx.11.255   |
+| GKE cluster private subnet            | 10.xx.21.0/24    | 10.xx.21.0 - 10.xx.21.255   |
+| GKE master CIDR block                 | 10.xx.22.0/28    | 10.xx.22.0 - 10.xx.22.15    |
+| GKE pod CIDR range                    | 10.xx.64.0/19    | 10.xx.64.0 - 10.xx.95.255   |
+| GKE service CIDR range                | 10.xx.96.0/19    | 10.xx.96.0 - 10.xx.127.255  |
