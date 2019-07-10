@@ -6,14 +6,14 @@ provider "google" {
   region      = "${var.region}"
   project     = "${var.project_name}"
   credentials = "${file("${var.credentials_file_path}")}"
-  version     = "~> 0.1.3"
+  version     = "~> 2.10.0"
 }
 
 provider "google-beta" {
   region      = "${var.region}"
   project     = "${var.project_name}"
   credentials = "${file("${var.credentials_file_path}")}"
-  version     = "~> 1.20"
+  version     = "~> 2.10.0"
 }
 
 # resource "google_compute_network" "main" {
@@ -52,7 +52,7 @@ resource "google_compute_subnetwork" "public_subnet" {
 resource "google_container_cluster" "primary" {
   provider           = "google-beta"
   name               = "${var.cluster_name}"
-  zone               = "${var.region_zone}"
+  location           = "${var.region}"
   node_version       = "${var.node_version}"
   min_master_version = "${var.node_version}"
   network            = "${var.network_name}"
@@ -105,6 +105,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
+  remove_default_node_pool = true
+  initial_node_count = 1
+
   # node_config {
   #   oauth_scopes = "${var.oauth_scopes}"
   #   labels       = "${var.labels}"
@@ -112,26 +118,45 @@ resource "google_container_cluster" "primary" {
   #   machine_type = "${var.machine_type}"
   #   disk_size_gb = "${var.disk_size_gb}"
   #   image_type   = "${var.image_type}"
+
+  # labels = {
+  #     foo = "bar"
+  #   }
+  #
+  #   tags = ["foo", "bar"]
   # }
+
+  depends_on = ["google_compute_subnetwork.private_subnet"]
 }
 
-# resource "google_container_node_pool" "primary_preemptible_nodes" {
-#   name       = "my-node-pool"
-#   location   = "us-central1"
-#   cluster    = "${google_container_cluster.primary.name}"
-#   node_count = 1
-#
-#   node_config {
-#     preemptible  = true
-#     machine_type = "n1-standard-1"
-#
-#     metadata = {
-#       disable-legacy-endpoints = "true"
-#     }
-#
-#     oauth_scopes = [
-#       "https://www.googleapis.com/auth/logging.write",
-#       "https://www.googleapis.com/auth/monitoring",
-#     ]
-#   }
-# }
+resource "google_container_node_pool" "primary_preemptible_nodes" {
+  name       = "generic-pool"
+  location   = "${var.region}"
+  cluster    = "${google_container_cluster.primary.name}"
+  node_count = 1
+  autoscaling = {
+    min_node_count = 0
+    max_node_count = 5
+  }
+
+  node_config {
+    preemptible  = true
+    machine_type = "n1-standard-1"
+
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+
+    labels = "${var.labels}"
+
+    tags = "${var.tags}"
+
+    # taints = "${var.taints}"
+
+  }
+}

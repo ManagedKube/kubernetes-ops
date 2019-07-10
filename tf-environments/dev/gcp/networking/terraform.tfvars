@@ -29,3 +29,4 @@ internal_services_bastion_cidr = "10.20.10.253/32"
 # services_ip_cidr_range="10.104.48.0/20"
 #
 outbound_through_bastion_tags=["private-subnet", "gke-private-nodes"]
+outbound_through_nat_tags=["private-subnet", "gke-private-nodes"]

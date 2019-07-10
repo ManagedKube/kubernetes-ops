@@ -6,10 +6,6 @@ variable "region" {
   description = "The region to launch the vpc in."
 }
 
-variable "region_zone" {
-  description = "The zone to launch the NAT in."
-}
-
 variable "asn" {
   default = "-1"
   description = "ASN for the GCP router.  This value must not overlap with anyother ASNs"
@@ -78,10 +74,17 @@ variable "oauth_scopes" {
 
 variable "labels" {
   type = "map"
+  default = {}
 }
 
 variable "tags" {
   type = "list"
+  default = []
+}
+
+variable "taints" {
+  type = "list"
+  default = []
 }
 
 variable "node_version" {
