@@ -1,6 +1,6 @@
 terragrunt = {
   terraform {
-    source = "../../../../tf-modules/gcp/private-gke-networks/"
+    source = "../../../../tf-modules/gcp/private-gke-cluster/"
   }
   include {
     path = "${find_in_parent_folders()}"
