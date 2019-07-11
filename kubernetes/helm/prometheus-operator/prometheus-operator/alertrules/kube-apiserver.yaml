@@ -1,0 +1,24 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+    app: prometheus-operator
+    release: monitoring-prometheus-operator
+  name: kube-apiserver.rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: kube.state.metric.pod
+    rules:
+    - alert: K8SApiserverDown
+      expr: absent(kube_pod_container_status_running{container="kube-apiserver"} == 1)
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        description: Prometheus failed to scrape Kube API server(s), or all API servers
+          have disappeared from service discovery.
+        summary: API server unreachable
