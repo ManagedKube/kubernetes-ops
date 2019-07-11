@@ -1,0 +1,97 @@
+
+prometheus-operator:
+
+  ## Create default rules for monitoring the cluster
+  ##
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: false
+      general: true
+      k8s: true
+      kubeApiserver: true
+      kubePrometheusNodeAlerting: true
+      kubePrometheusNodeRecording: true
+      kubeScheduler: true
+      kubernetesAbsent: true
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: true
+      node: true
+      prometheusOperator: true
+      prometheus: true
+
+  ## Deploy a Prometheus instance
+  ##
+  prometheus:
+
+    ## Settings affecting prometheusSpec
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
+    ##
+    prometheusSpec:
+
+      retention: "14d"
+
+      ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
+      ## prometheus resource to be created with selectors based on values in the helm deployment,
+      ## which will also match the servicemonitors created
+      ##
+      # serviceMonitorSelectorNilUsesHelmValues: false
+
+      ## serviceMonitorSelector will limit which servicemonitors are used to create scrape
+      ## configs in Prometheus. See serviceMonitorSelectorUseHelmLabels
+      ##
+      # serviceMonitorSelector: {}
+
+      # serviceMonitorSelector:
+      #   matchLabels:
+      #     prometheus-monitoring-scrape: "true"
+        # matchExpressions:
+        # - key: prometheus-scrape
+        #   operator: Exists
+
+      ## serviceMonitorNamespaceSelector will limit namespaces from which serviceMonitors are used to create scrape
+      ## configs in Prometheus. By default all namespaces will be used
+      ##
+      # serviceMonitorNamespaceSelector:
+      #   any: true
+        # matchLabels:
+        #   prometheus: doScrape
+
+      ## Resource limits & requests
+      ##
+      resources: {}
+      # requests:
+      #   memory: 400Mi
+
+      ## Prometheus StorageSpec for persistent data
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
+      ##
+      storageSpec:
+       volumeClaimTemplate:
+         spec:
+           # storageClassName: gluster
+           accessModes: ["ReadWriteOnce"]
+           resources:
+             requests:
+               storage: 10Gi
+         selector: {}
+
+
+  ## Using default values from https://github.com/helm/charts/blob/master/stable/grafana/values.yaml
+  ##
+  grafana:
+    enabled: true
+
+    adminPassword: grafana1234
+
+    grafana.ini:
+      auth.anonymous:
+        enabled: true
+
+  ## Component scraping etcd
+  ##
+  kubeEtcd:
+    enabled: false
