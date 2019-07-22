@@ -168,8 +168,7 @@ workerInstanceGroupsAllZones:
       kubernetes-ops/hasPublicIP: "false"
       kubernetes-ops/application: infrastructure
     taints:
-      items:
-      - application=infrastructure:NoSchedule
+    - application=infrastructure:NoSchedule
   jenkinsMastersGroup1:
     # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
     image: 595879546273/CoreOS-stable-2023.5.0-hvm
@@ -191,9 +190,7 @@ workerInstanceGroupsAllZones:
       kubernetes-ops/hasPublicIP: "false"
       kubernetes-ops/application: jenkins-masters
     taints:
-      enable: true
-      items:
-      - application=jenkins-master:NoSchedule
+    - application=jenkins-master:NoSchedule
   jenkinsWorkersGroup1:
     # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
     image: 595879546273/CoreOS-stable-2023.5.0-hvm
@@ -215,6 +212,4 @@ workerInstanceGroupsAllZones:
       kubernetes-ops/hasPublicIP: "false"
       kubernetes-ops/application: jenkins-workers
     taints:
-      enable: true
-      items:
-      - application=jenkins-workers:NoSchedule
+    - application=jenkins-workers:NoSchedule
