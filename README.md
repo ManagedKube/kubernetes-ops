@@ -91,33 +91,26 @@ Kubernetes clusters:
 * GKE
 * EKS
 
+## How do I start using this?
 
+There are various docs and guides in the `docs` directory.
 
+## Read the setup
+This is the first thing you should read.  This has all of the setup information
+that you will need to get started.
 
+[main doc](docs/)
 
+### The manual way for a Kops cluster
+This is a more manual walk through on how to create a cluster using this project.
+The intention here is to give you a deep dive into what goes
+into creating a Kops cluster:
 
+[the-manual-way](docs/the-manual-way.md)
 
+### Creating a Kops cluster on AWS the easier way
 
+the "easier way" takes the manual steps in the previous example and hides most
+of the steps in a script where you can just run:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-d
+[the-easier-way](docs/the-easier-way.md)
