@@ -6,6 +6,7 @@
   {{- $kopsName := .kopsName }}
   {{- $dnsZone := .dnsZone }}
   {{- $instanceGroups := .instanceGroups }}
+  {{- $availabilityZonesAll := .availabilityZonesAll }}
 
 apiVersion: kops/v1alpha2
 kind: Cluster
@@ -121,16 +122,16 @@ spec:
     - enableEtcdTLS: true
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
-      - instanceGroup: master-{{ $awsRegion }}{{ $value }}
-        name: {{ $value }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterSubnetGroupName }}
+        name: {{ $value.etcdName }}
       {{- end }}
       name: main
       version: {{ .etcd.version }}
     - enableEtcdTLS: true
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
-      - instanceGroup: master-{{ $awsRegion }}{{ $value }}
-        name: {{ $value }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterSubnetGroupName }}
+        name: {{ $value.etcdName }}
       {{- end }}
       name: events
       version: {{ .etcd.version }}
@@ -192,50 +193,50 @@ spec:
   # utility subnets
   {{- range $key, $value := .availabilityZonesAll }}
   - cidr: {{ $networkPortion }}.1{{ $key }}.0/24
-    name: {{ $awsRegion }}{{ $value }}-utility
+    name: {{ $awsRegion }}{{ $value.name }}-utility
     type: Utility
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
   {{- end }}
 
   {{- if .enablePublicSubnets -}}
   {{- range $key, $value := .availabilityZonesAll }}
   - cidr: {{ $networkPortion }}.2{{ $key }}.0/24
-    name: public-{{ $value }}
+    name: public-{{ $value.name }}
     type: Public
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
     {{- end }}
 
     # Kube masters subnets
     {{- range $key, $value := .availabilityZonesKubeMaster }}
   - cidr: {{ $networkPortion }}.3{{ $key }}.0/24
-    name: kube-master-{{ $value }}
+    name: kube-master-{{ $value.name }}
     type: Private
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
     # infrastructure subnets
     {{- range $key, $value := .availabilityZonesAll }}
   - cidr: {{ $networkPortion }}.4{{ $key }}.0/24
-    name: infrastructure-zone-{{ $value }}
+    name: infrastructure-zone-{{ $value.name }}
     type: Private
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
     # worker subnets
     {{- range $key, $value := .availabilityZonesAll }}
   - cidr: {{ $networkPortion }}.5{{ $key }}.0/24
-    name: worker-zone-{{ $value }}
+    name: worker-zone-{{ $value.name }}
     type: Private
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
     # threatstackmaster subnets
     {{- range $key, $value := .availabilityZonesAll }}
   - cidr: {{ $networkPortion }}.6{{ $key }}.0/24
-    name: threatstack-master-zone-{{ $value }}
+    name: threatstack-master-zone-{{ $value.name }}
     type: Private
-    zone: {{ $awsRegion }}{{ $value }}
+    zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
     topology:
@@ -253,7 +254,7 @@ kind: InstanceGroup
 metadata:
   labels:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: master-{{ $awsRegion }}{{ $value }}
+  name: master-{{ $awsRegion }}{{ $value.name }}
 spec:
   cloudLabels:
     {{- range $key, $value := $instanceGroups.kubeMaster.cloudLabels }}
@@ -265,13 +266,13 @@ spec:
   maxSize: {{ $instanceGroups.kubeMaster.maxSize }}
   minSize: {{ $instanceGroups.kubeMaster.minSize }}
   nodeLabels:
-    kops.k8s.io/instancegroup: master-{{ $awsRegion }}{{ $value }}
+    kops.k8s.io/instancegroup: master-{{ $awsRegion }}{{ $value.name }}
     {{- range $key, $value := $instanceGroups.kubeMaster.nodeLabels }}
     {{ $key }}: "{{ $value }}"
     {{- end }}
   role: Master
   subnets:
-    - kube-master-{{ $value }}
+    - kube-master-{{ $value.name }}
   {{- end }}
 
   #
@@ -280,14 +281,14 @@ spec:
   #
   {{- if .enableBastionGroup1 -}}
   {{- range $key, $value := .availabilityZonesAll }}
-  {{- if eq $value "a" }}
+  {{- if eq $value.zone (index $availabilityZonesAll 0).zone }}
 ---
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: bastion-workers-zone-{{ $value }}
+  name: bastion-workers-zone-{{ $value.name }}
 spec:
   cloudLabels:
     {{- range $key, $value := $instanceGroups.bastionWorkersGroup1.cloudLabels }}
@@ -300,7 +301,7 @@ spec:
   minSize: {{ $instanceGroups.bastionWorkersGroup1.minSize }}
   role: Bastion
   subnets:
-    - public-{{ $value }}
+    - public-{{ $value.name }}
   {{- end }}
   {{- end }}
   {{- end }}
@@ -316,7 +317,7 @@ kind: InstanceGroup
 metadata:
   labels:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: threatstack-master-zone-{{ $value }}
+  name: threatstack-master-zone-{{ $value.name }}
 spec:
   cloudLabels:
     {{- range $key, $value := $instanceGroups.threatstackMaster.cloudLabels }}
@@ -327,7 +328,7 @@ spec:
   maxSize: {{ $instanceGroups.threatstackMaster.maxSize }}
   minSize: {{ $instanceGroups.threatstackMaster.minSize }}
   nodeLabels:
-    kops.k8s.io/instancegroup: threatstack-master-zone-{{ $value }}
+    kops.k8s.io/instancegroup: threatstack-master-zone-{{ $value.name }}
     {{- range $key, $value := $instanceGroups.threatstackMaster.nodeLabels }}
     {{ $key }}: "{{ $value }}"
     {{- end }}
@@ -339,7 +340,7 @@ spec:
   {{- end }}
   role: Node
   subnets:
-    - threatstack-master-zone-{{ $value }}
+    - threatstack-master-zone-{{ $value.name }}
   {{- end }}
   {{- end }}
 
@@ -359,7 +360,7 @@ kind: InstanceGroup
 metadata:
   labels:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
-  name: {{ $key }}-zone-{{ $azValue }}
+  name: {{ $key }}-zone-{{ $azValue.name }}
 spec:
   cloudLabels:
     {{- range $keyCloudLabels, $valueCloudLabels := $value.cloudLabels }}
@@ -381,6 +382,6 @@ spec:
   {{- end }}
   role: Node
   subnets:
-  - worker-zone-{{ $azValue }}
+  - worker-zone-{{ $azValue.name }}
 {{- end }}
 {{- end }}
