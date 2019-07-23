@@ -7,11 +7,11 @@ vpc: vpc-id-from-the-terraform-output
 sshKeyName: kubernetes_ops
 
 availabilityZonesEtcd:
-- masterSubnetGroupName: a
+- masterZoneName: a
   etcdName: a
-- masterSubnetGroupName: b
+- masterZoneName: b
   etcdName: b
-- masterSubnetGroupName: c
+- masterZoneName: c
   etcdName: c
 
 availabilityZonesKubeMaster:

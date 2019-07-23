@@ -122,7 +122,7 @@ spec:
     - enableEtcdTLS: true
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
-      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterSubnetGroupName }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
         name: {{ $value.etcdName }}
       {{- end }}
       name: main
@@ -130,7 +130,7 @@ spec:
     - enableEtcdTLS: true
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
-      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterSubnetGroupName }}
+      - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
         name: {{ $value.etcdName }}
       {{- end }}
       name: events
