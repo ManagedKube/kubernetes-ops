@@ -139,7 +139,7 @@ prometheus-operator:
 
       - name: 'slack-tests'
         slack_configs:
-        - api_url: https://hooks.slack.com/services/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
+        - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
           channel: kube-alerts
           send_resolved: true
           text: |-
@@ -157,7 +157,7 @@ prometheus-operator:
 
       - name: slack-critical
         slack_configs:
-        - api_url: https://hooks.slack.com/services/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
+        - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
           channel: kube-alerts
           send_resolved: true
           text: |-
@@ -175,7 +175,7 @@ prometheus-operator:
 
       - name: 'slack-warning'
         slack_configs:
-        - api_url: https://hooks.slack.com/services/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
+        - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
           channel: kube-alerts
           send_resolved: true
           text: |-
