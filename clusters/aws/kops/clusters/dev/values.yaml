@@ -7,23 +7,33 @@ vpc: vpc-id-from-the-terraform-output
 sshKeyName: kubernetes_ops
 
 availabilityZonesEtcd:
-- a
-- b
-- c
+- masterSubnetGroupName: a
+  etcdName: a
+- masterSubnetGroupName: b
+  etcdName: b
+- masterSubnetGroupName: c
+  etcdName: c
 
 availabilityZonesKubeMaster:
-- a
-- b
-- c
+- name: a
+  zone: a
+- name: b
+  zone: b
+- name: c
+  zone: c
 
 availabilityZonesAll:
-- a
-- b
-- c
+- name: a
+  zone: a
+- name: b
+  zone: b
+- name: c
+  zone: c
 
 #limit to one zone
 availabilityZonesThreatstackMaster:
-- a
+- name: a
+  zone: a
 
 enablePublicSubnets: true
 
