@@ -1,6 +1,5 @@
 terragrunt = {
   terraform {
-    # source = "git::ssh://git@github.q-internal.tech/qadium/terraform-modules.git/kubernetes/gcp/private-gke-networks?ref=master"
     source = "../../../../tf-modules/gcp/vpc/"
   }
   include {
@@ -12,9 +11,6 @@ region = "us-central1"
 region_zone = "us-central1-b"
 project_name = "managedkube"
 vpc_name = "dev"
-# network_name = "devops-gke"
-# https://github.q-internal.tech/qadium/devops-docs/wiki/cidr#bgp-allocations
-# asn = 65449
 
 public_subnet_cidr_range = "10.20.10.0/24"
 private_subnet_cidr_range = "10.20.20.0/24"
