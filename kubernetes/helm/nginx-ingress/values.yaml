@@ -1,8 +1,6 @@
 nginx-ingress:
-  defaultBackend:
-    service:
-      omitClusterIP: true
   controller:
+    replicaCount: 2
     ## Name of the ingress class to route through this controller
     ##
     # ingressClass: nginx-external
@@ -38,3 +36,31 @@ nginx-ingress:
         enabled: true
         additionalLabels:
           release: monitoring-prometheus-operator
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - nginx-ingress
+          topologyKey: "kubernetes.io/hostname"
+
+  defaultBackend:
+    replicaCount: 2
+
+    service:
+      omitClusterIP: true
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - nginx-ingress
+          topologyKey: "kubernetes.io/hostname"
