@@ -45,5 +45,6 @@ variable "internal_services_bastion_cidr" {
 # # https://www.terraform.io/docs/providers/google/r/compute_route.html#tags
 variable "outbound_through_nat_tags" {
   description = "A tag selector for nodes that should use the NAT as an external gateway"
-  type        = "list"
+  type        = list(string)
 }
+
