@@ -94,6 +94,13 @@ resource "google_container_cluster" "primary" {
 
   enable_legacy_abac = false
 
+  maintenance_policy {
+  daily_maintenance_window {
+      start_time = "03:00"
+    }
+  }
+
+
   addons_config {
     http_load_balancing {
       disabled = "${var.http_load_balancing}"
@@ -129,34 +136,34 @@ resource "google_container_cluster" "primary" {
   depends_on = ["google_compute_subnetwork.private_subnet"]
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "generic-pool"
-  location   = "${var.region}"
-  cluster    = "${google_container_cluster.primary.name}"
-  node_count = 1
-  autoscaling = {
-    min_node_count = 0
-    max_node_count = 5
-  }
-
-  node_config {
-    preemptible  = true
-    machine_type = "n1-standard-1"
-
-    metadata = {
-      disable-legacy-endpoints = "true"
-    }
-
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-    ]
-
-    labels = "${var.labels}"
-
-    tags = "${var.tags}"
-
-    # taints = "${var.taints}"
-
-  }
-}
+# resource "google_container_node_pool" "primary_preemptible_nodes" {
+#   name       = "generic-pool"
+#   location   = "${var.region}"
+#   cluster    = "${google_container_cluster.primary.name}"
+#   node_count = 1
+#   autoscaling = {
+#     min_node_count = 0
+#     max_node_count = 5
+#   }
+#
+#   node_config {
+#     preemptible  = true
+#     machine_type = "n1-standard-1"
+#
+#     metadata = {
+#       disable-legacy-endpoints = "true"
+#     }
+#
+#     oauth_scopes = [
+#       "https://www.googleapis.com/auth/logging.write",
+#       "https://www.googleapis.com/auth/monitoring",
+#     ]
+#
+#     labels = "${var.labels}"
+#
+#     tags = "${var.tags}"
+#
+#     # taints = "${var.taints}"
+#
+#   }
+# }
