@@ -65,11 +65,6 @@ resource "google_container_cluster" "primary" {
     dynamic "cidr_blocks" {
       for_each = var.master_authorized_networks_cidr
       content {
-        # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-        # which keys might be set in maps assigned here, so it has
-        # produced a comprehensive set here. Consider simplifying
-        # this after confirming which keys can be set in practice.
-
         cidr_block   = cidr_blocks.value.cidr_block
         display_name = lookup(cidr_blocks.value, "display_name", null)
       }
