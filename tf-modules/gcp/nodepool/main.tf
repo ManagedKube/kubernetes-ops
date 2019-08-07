@@ -44,20 +44,16 @@ resource "google_container_node_pool" "node_nodes" {
 
     tags = var.tags
 
-    # taint = var.taints
-
     dynamic "taint" {
       for_each = var.taints
-      content {
-        # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-        # which keys might be set in maps assigned here, so it has
-        # produced a comprehensive set here. Consider simplifying
-        # this after confirming which keys can be set in practice.
 
+      content {
         effect = taint.value.effect
         key    = taint.value.key
         value  = taint.value.value
       }
     }
+
+
   }
 }

@@ -30,8 +30,8 @@ variable "tags" {
 }
 
 variable "taints" {
-  type    = list(string)
-  default = []
+  type    = list(map(string))
+  # default = {}
 }
 
 variable "node_version" {
