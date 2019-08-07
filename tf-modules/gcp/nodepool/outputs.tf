@@ -1,7 +1,6 @@
 # output "network_name" {
 #   value = "${google_compute_network.main.name}"
 # }
-
 # output "network" {
 #   value = "${google_compute_network.main.self_link}"
 # }

@@ -10,25 +10,27 @@ variable "credentials_file_path" {
   description = "A local path to a service account json credentials file."
 }
 
-variable "cluster_name" {}
+variable "cluster_name" {
+  default = "dev"
+}
 
 variable "oauth_scopes" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
 variable "labels" {
-  type = "map"
+  type    = map(string)
   default = {}
 }
 
 variable "tags" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
 variable "taints" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
@@ -70,4 +72,12 @@ variable "max_node_count" {
 
 variable "is_preemtible" {
   default = "false"
+}
+
+variable "auto_upgrade" {
+  default = false
+}
+
+variable "auto_repair" {
+  default = true
 }
