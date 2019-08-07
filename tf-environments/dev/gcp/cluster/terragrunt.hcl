@@ -7,6 +7,7 @@ terraform {
 }
 
 inputs = {
+  vpc_name = "dev"
   network_name = "dev"
   cluster_name = "dev"
 
