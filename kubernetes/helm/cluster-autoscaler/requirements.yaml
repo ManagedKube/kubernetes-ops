@@ -1,0 +1,5 @@
+---
+dependencies:
+- name: cluster-autoscaler
+  version: 0.13.3
+  repository: https://kubernetes-charts.storage.googleapis.com/
