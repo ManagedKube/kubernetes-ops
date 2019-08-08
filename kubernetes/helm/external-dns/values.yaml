@@ -1,0 +1,31 @@
+---
+external-dns:
+
+  resources:
+    limits:
+      memory: 50Mi
+    requests:
+      memory: 50Mi
+      cpu: 10m
+
+  ## The dns provider
+  provider: aws
+
+  # DNS Creation
+  # upsert-only: would prevent ExternalDNS from deleting any records, omit to enable full synchronization
+  # sync: would allow for deletes
+  policy: upsert-only
+
+  # These help tell which records are owned by external-dns.
+  registry: "txt"
+  txtOwnerId: "k8s"
+
+  logLevel: debug
+
+  rbac:
+    create: true
+
+  aws:
+    accessKey: foo
+    secretKey: bar
+    region: us-east-1
