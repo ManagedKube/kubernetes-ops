@@ -1,0 +1,5 @@
+---
+dependencies:
+- name: prometheus-blackbox-exporter
+  version: 0.3.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
