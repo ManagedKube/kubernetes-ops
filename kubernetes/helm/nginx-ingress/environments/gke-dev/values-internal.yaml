@@ -1,0 +1,8 @@
+nginx-ingress:
+  controller:
+    electionID: ingress-controller-leader-internal
+    ingressClass: nginx-internal
+
+    service:
+      annotations:
+        cloud.google.com/load-balancer-type: "Internal"
