@@ -1,0 +1,20 @@
+cluster-autoscaler:
+  cloudProvider: aws
+  awsRegion: us-east-1
+
+  autoscalingGroups:
+  - name: on-demand-zone-a.dev2.us-east-1.k8s.local
+    maxSize: 20
+    minSize: 0
+  - name: on-demand-zone-b.dev2.us-east-1.k8s.local
+    maxSize: 20
+    minSize: 0
+  - name: infrastructure-zone-a.dev2.us-east-1.k8s.local
+    maxSize: 10
+    minSize: 0
+  - name: infrastructure-zone-b.dev2.us-east-1.k8s.local
+    maxSize: 10
+    minSize: 0
+  - name: infrastructure-zone-c.dev2.us-east-1.k8s.local
+    maxSize: 10
+    minSize: 0
