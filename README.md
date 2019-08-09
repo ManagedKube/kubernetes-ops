@@ -34,6 +34,10 @@ workflow to create and update infrastructure pieces.  From working with many
 clients, we have come to a place where managing the infrastructure in this way
 has made sense and has worked out really well in large and small teams.
 
+## The stack this will create
+
+![the stack](/docs/images/the-stack/kubernetes-managed-service-stack-v2.png)
+
 ## Whys
 
 ### Why do all of this?  
