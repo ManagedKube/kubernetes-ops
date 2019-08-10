@@ -1,0 +1,44 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1alpha1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+  namespace: elasticsearch
+spec:
+  version: 7.2.0
+  nodes:
+  - nodeCount: 3
+    config:
+      node.attr.attr_name: attr_value
+      node.master: true
+      node.data: true
+      node.ingest: true
+      node.ml: true
+    podTemplate:
+      # metadata:
+      #   labels:
+      #     # additional labels for pods
+      #     foo: bar
+      spec:
+        containers:
+        - name: elasticsearch
+          # specify resource limits and requests
+          resources:
+            limits:
+              memory: 4Gi
+              cpu: 1
+            request:
+              memory: 1Gi
+              cpu: 200m
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms2g -Xmx2g"
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # note: elasticsearch-data must be the name of the Elasticsearch volume
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        #storageClassName: standard # can be any available storage class
