@@ -106,12 +106,15 @@ export S3_BUCKET=<bucket name where the flowlogs are stored
 Set Elasticsarch endpoint:
 ```
 export ELASTICSEARCH_ENDPOINT=http://34.67.98.186:80
+export ELASTICSEARCH_USERNAME=elastic
+export ELASTICSEARCH_PASSWORD=7sjftt44lbrrvlnm45c6p8lx
+export ELASTICSEARCH_INDEX_NAME_PREFIX=my-index8
 ```
 
 Build and run
 ```
 docker build -t garland/logstash-input-s3:dev .
-docker run --rm -it --net=host -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} -e S3_BUCKET=${S3_BUCKET} -e ELASTICSEARCH_ENDPOINT=${ELASTICSEARCH_ENDPOINT} -v $PWD/logstash.conf:/usr/share/logstash/pipeline/logstash.conf garland/logstash-input-s3:dev
+docker run --rm -it --net=host -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} -e S3_BUCKET=${S3_BUCKET} -e ELASTICSEARCH_ENDPOINT=${ELASTICSEARCH_ENDPOINT} -e ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME} -e ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD} -e ELASTICSEARCH_INDEX_NAME_PREFIX=${ELASTICSEARCH_INDEX_NAME_PREFIX} -v $PWD/logstash.conf:/usr/share/logstash/pipeline/logstash.conf garland/logstash-input-s3:dev
 ```
 
 Pipeline path:
