@@ -107,7 +107,7 @@ Set Elasticsarch endpoint:
 ```
 export ELASTICSEARCH_ENDPOINT=http://34.67.98.186:80
 export ELASTICSEARCH_USERNAME=elastic
-export ELASTICSEARCH_PASSWORD=7sjftt44lbrrvlnm45c6p8lx
+export ELASTICSEARCH_PASSWORD=password-here
 export ELASTICSEARCH_INDEX_NAME_PREFIX=my-index8
 ```
 
