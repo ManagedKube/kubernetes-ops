@@ -57,3 +57,18 @@ make ENVIRONMENT=dev external-apply
 ```
 make ENVIRONMENT=dev external-delete
 ```
+
+# Ingress usage:
+An annotation on the ingress needs to be placed on every ingress:
+
+External routes:
+```
+annotations:
+  kubernetes.io/ingress.class:: nginx-external
+```
+
+Internal routes:
+```
+annotations:
+  kubernetes.io/ingress.class:: nginx-internal
+```
