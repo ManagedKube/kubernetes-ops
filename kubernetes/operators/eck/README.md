@@ -167,3 +167,37 @@ Searching for items 8/9 and after
 ## Azure
 
 Flowlogs example:  https://logz.io/blog/azure-nsg-elk/
+
+# Dashboards
+
+Ideas for dashboard items
+
+## Source address from external IP address
+
+Will answer:
+
+What external IP addresses are making connections to our nodes in our VPC?
+
+## Destination port 22
+
+Will answer:
+
+What SSH connections are being used and to where
+
+## Destination port to common database ports
+
+Will answer:
+
+What connections are made to common database ports
+
+* MySQL - 3306
+* Postgres -
+* MongoDB
+* Redis
+
+## Biggest data movers
+Will answer:
+
+What has transferred the most data
+
+What connections has transferred the most data
