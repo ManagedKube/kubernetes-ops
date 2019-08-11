@@ -12,9 +12,10 @@ inputs = {
   node_pool_name = "pool-2"
 
   initial_node_count = "1"
+  is_preemtible = true
   min_node_count = "0"
   max_node_count = "6"
-  machine_type = "n1-standard-4"
+  machine_type = "n1-standard-8"
   disk_size_gb = "100"
 
   image_type = "COS"
