@@ -18,8 +18,11 @@ spec:
       - name: kibana
         resources:
           limits:
-            memory: 4Gi
-            cpu: 1500m
+            cpu: 7000m
+            memory: 24Gi
           request:
-            memory: 4Gi
-            cpu: 1500m
+            cpu: 7000m
+            memory: 24Gi
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms22g -Xmx22g"
