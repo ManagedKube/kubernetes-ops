@@ -24,14 +24,14 @@ spec:
           # specify resource limits and requests
           resources:
             limits:
-              memory: 11Gi
-              cpu: 3500m
+              cpu: 7000m
+              memory: 24Gi
             request:
-              cpu: 3500m
-              memory: 11Gi
+              cpu: 7000m
+              memory: 24Gi
           env:
           - name: ES_JAVA_OPTS
-            value: "-Xms10g -Xmx10g"
+            value: "-Xms22g -Xmx22g"
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data # note: elasticsearch-data must be the name of the Elasticsearch volume

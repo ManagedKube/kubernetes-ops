@@ -178,6 +178,20 @@ Will answer:
 
 What external IP addresses are making connections to our nodes in our VPC?
 
+Not:
+```
+{
+  "query": {
+    "regexp": {
+      "srcaddr": {
+        "value": "172.*",
+        "flags": "ALL"
+      }
+    }
+  }
+}
+```
+
 ## Destination port 22
 
 Will answer:
