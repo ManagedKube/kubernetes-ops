@@ -172,6 +172,10 @@ Flowlogs example:  https://logz.io/blog/azure-nsg-elk/
 
 Ideas for dashboard items
 
+Visualization docs: https://www.elastic.co/guide/en/kibana/current/tutorial-visualizing.html
+
+Aggregation doc: https://qbox.io/blog/elasticsearch-aggregations
+
 ## Source address from external IP address
 
 Will answer:
@@ -198,6 +202,34 @@ Will answer:
 
 What SSH connections are being used and to where
 
+Not:
+```
+{
+  "query": {
+    "regexp": {
+      "srcaddr": {
+        "value": "172.*",
+        "flags": "ALL"
+      }
+    }
+  }
+}
+```
+
+```
+{
+  "query": {
+    "regexp": {
+      "dstport": {
+        "value": "22",
+        "flags": "ALL"
+      }
+    }
+  }
+}
+```
+
+
 ## Destination port to common database ports
 
 Will answer:
@@ -215,3 +247,16 @@ Will answer:
 What has transferred the most data
 
 What connections has transferred the most data
+
+## Protocol number pie chart
+
+A pie chart showing the breakout of percentage of all the protocol numbers
+
+
+## Action Accept/Reject pie chart
+
+A pie chart showing the breakout of the Accepted packets versus the Rejected packets
+
+## Direction of transferred pie chart
+
+A pie chart showing the percentage of inbound versus outbound transfer
