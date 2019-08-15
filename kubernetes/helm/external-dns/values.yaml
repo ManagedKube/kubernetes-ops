@@ -8,9 +8,6 @@ external-dns:
       memory: 50Mi
       cpu: 10m
 
-  ## The dns provider
-  provider: aws
-
   # DNS Creation
   # upsert-only: would prevent ExternalDNS from deleting any records, omit to enable full synchronization
   # sync: would allow for deletes
@@ -24,8 +21,3 @@ external-dns:
 
   rbac:
     create: true
-
-  aws:
-    accessKey: foo
-    secretKey: bar
-    region: us-east-1

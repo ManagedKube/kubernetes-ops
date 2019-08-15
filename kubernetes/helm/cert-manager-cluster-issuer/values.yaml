@@ -1,0 +1,14 @@
+---
+email: devops@managedkube.com
+
+letsencrypt:
+  server: https://acme-v02.api.letsencrypt.org/directory
+
+issuer:
+  dns:
+    enabled: true
+    name: issuer-dns01
+
+  http:
+    enabled: true
+    name: issuer-http01

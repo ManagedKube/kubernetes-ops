@@ -1,15 +1,19 @@
-Kong:
+Cert Manager
 ========
 
 Helm Hub: https://hub.helm.sh/charts/jetstack/cert-manager
+
 Github: https://github.com/jetstack/cert-manager/tree/master/deploy/charts/cert-manager
+
 Documentation: https://cert-manager.readthedocs.io
 
 
+# Install the Cert Manager's CRD
 
-# Using with make file:
+This has to be done first
+
 ```
-export KUBE_NAMESPACE=ingress
+make apply-crd
 ```
 
 ## apply:
@@ -31,6 +35,12 @@ make template
 ## Deleting:
 ```
 make delete
+```
+
+Delete the CRDs for a clean removal:
+
+```
+make delete-crd
 ```
 
 ## Listing helm charts:
@@ -67,10 +77,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - gar.example.com
+    - gar.q-internal.tech
     secretName: foo-tls-secret
   rules:
-  - host: gar.example.com
+  - host: gar.q-internal.tech
     http:
       paths:
       - path: /
