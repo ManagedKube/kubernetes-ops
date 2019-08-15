@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-conf
+data:
+  logstash.conf: |
+    input {
+      s3 {
+        access_key_id => "${AWS_ACCESS_KEY_ID}"
+        bucket => "${S3_BUCKET}"
+        region => "${AWS_DEFAULT_REGION}"
+        secret_access_key => "${AWS_SECRET_ACCESS_KEY}"
+        type => "s3"
+      }
+    }
+
+
+
+    filter {
+      dissect {
+        mapping => {
+          "message" => "%{version} %{account-id} %{interface-id} %{srcaddr} %{dstaddr} %{srcport} %{dstport} %{protocol} %{packets} %{bytes} %{start} %{end} %{action} %{log-status}"
+        }
+      }
+      mutate {
+        convert => {"start" => "integer"}
+        convert => {"end" => "integer"}
+        convert => {"protocol" => "integer"}
+        convert => {"bytes" => "integer"}
+        convert => {"packets" => "integer"}
+      }
+      # Sets the "start" to the timestamp
+      date{
+        match => ["start" , "UNIX"]
+      }
+    }
+
+    output {
+      #stdout {
+      #  codec => rubydebug
+      #}
+      elasticsearch {
+        hosts => ['${ELASTICSEARCH_ENDPOINT}']
+        user => '${ELASTICSEARCH_USERNAME}'
+        password => '${ELASTICSEARCH_PASSWORD}'
+        index => "${ELASTICSEARCH_INDEX_NAME_PREFIX}-%{+YYYY.MM.dd}"
+        #ssl => true
+        #ssl_certificate_verification => false
+      }
+    }
