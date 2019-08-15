@@ -5,17 +5,23 @@ metadata:
   name: elasticsearch
   annotations:
     kubernetes.io/ingress.class: nginx-external
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "false"
     # nginx.ingress.kubernetes.io/secure-backends: "true"
     # nginx.org/ssl-services: "quickstart-es-http"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     # ingress.kubernetes.io/ssl-passthrough: "true"
+    certmanager.k8s.io/cluster-issuer: issuer-dns01
+    external-dns.alpha.kubernetes.io/hostname: elasticsearch.dev.k8s.managedkube.com
 spec:
   rules:
-  # - host: "*"
-  - http:
+  - host: elasticsearch.dev.k8s.managedkube.com
+    http:
       paths:
       - path: /
         backend:
           serviceName: quickstart-es-http
           servicePort: 9200
+  tls:
+  - hosts:
+    - elasticsearch.dev.k8s.managedkube.com
+    secretName: elasticsearch-tls

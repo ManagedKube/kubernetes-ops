@@ -42,3 +42,8 @@ spec:
           requests:
             storage: 200Gi
         #storageClassName: standard # can be any available storage class
+
+  http:
+    tls:
+      certificate:
+        secretName: my-cert
