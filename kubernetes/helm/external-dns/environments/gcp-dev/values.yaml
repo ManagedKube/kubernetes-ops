@@ -1,0 +1,23 @@
+---
+external-dns:
+  ## The dns provider
+  provider: google
+
+  txtOwnerId: "k8s-gcp-dev"
+
+  ## List of domains that can be managed
+  domainFilters: ["dev.k8s.managedkube.com"]
+
+  google:
+    ## Google Project to use
+    ##
+    project: "managedkube"
+    ## Google Application Credentials
+    ##
+    # Sepcify a secret containing the credentials.json file
+    #
+    # The file name has to be "credentials.json".  The file name is put into the secret
+    # as the key name and the chart is looking for the key name "credentials.json"
+    # kubectl -n external-dns create secret generic gcp-credentials-json  --from-file=/credentials.json
+    serviceAccountSecret: "gcp-credentials-json"
+    # serviceAccountKey: ""

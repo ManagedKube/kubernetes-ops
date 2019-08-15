@@ -1,0 +1,20 @@
+---
+provider: google
+
+# Google Cloud DNS
+clouddns:
+  # The ID of the GCP project
+  project: managedkube
+  # This is the secret used to access the service account
+  # The file name has to be "credentials.json".  The file name is put into the secret
+  # as the key name and the chart is looking for the key name "credentials.json"
+  # kubectl -n cert-manager create secret generic gcp-credentials-json  --from-file=/credentials.json
+  serviceAccountSecretRef:
+    name: "gcp-credentials-json"
+    key: credentials.json
+
+# AWS Route53
+# aws:
+#   region: us-east-1
+#   accessKeyID: xxx
+#   secretKey: xxx
