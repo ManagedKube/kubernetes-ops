@@ -10,6 +10,7 @@ data:
         bucket => "${S3_BUCKET}"
         region => "${AWS_DEFAULT_REGION}"
         secret_access_key => "${AWS_SECRET_ACCESS_KEY}"
+        sincedb_path => "/sincedb/sincedb_file"
         type => "s3"
       }
     }
