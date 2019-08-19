@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logstash-conf
+  name: logstash-conf-{{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 data:
   logstash.conf: |
     input {

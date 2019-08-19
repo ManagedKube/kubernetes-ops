@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "logstash-input-s3-to-elasticsearch.name" . }}-{{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  serviceName: "{{ template "logstash-input-s3-to-elasticsearch.name" . }}-{{ .Values.name }}"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "logstash-input-s3-to-elasticsearch.name" . }}-{{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "logstash-input-s3-to-elasticsearch.name" . }}-{{ .Values.name }}
+    spec:
+      initContainers:
+      - name: init-volume
+        image: busybox:1.28
+        command: ['sh', '-c', 'touch  /sincedb/sincedb_file && chmod  777 /sincedb/sincedb_file']
+        volumeMounts:
+        - name: sincedb
+          mountPath: /sincedb
+      containers:
+      - name: logstash
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        # ports:
+        # - containerPort: 80
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: {{ .Values.aws.accessKeyId }}
+        - name: AWS_SECRET_ACCESS_KEY
+          value: {{ .Values.aws.secretAccessKey }}
+        - name: AWS_DEFAULT_REGION
+          value: {{ .Values.aws.region }}
+        - name: S3_BUCKET
+          value: {{ .Values.aws.bucket }}
+        - name: ELASTICSEARCH_ENDPOINT
+          # Need the ":443" or Logstash will add the default port 9200 port after the URL
+          value: {{ .Values.elasticsearch.endpoint }}
+        - name: ELASTICSEARCH_USERNAME
+          value: {{ .Values.elasticsearch.username }}
+        - name: ELASTICSEARCH_PASSWORD
+          value: {{ .Values.elasticsearch.password }}
+        - name: ELASTICSEARCH_INDEX_NAME_PREFIX
+          value: {{ .Values.elasticsearch.indexPrefix }}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/share/logstash/pipeline
+        - name: sincedb
+          mountPath: /sincedb
+      volumes:
+        - name: config-volume
+          configMap:
+            name: logstash-conf-{{ .Values.name }}
+  volumeClaimTemplates:
+  - metadata:
+      name: sincedb
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.storage.size }}
