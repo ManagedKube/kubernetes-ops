@@ -19,7 +19,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: quickstart-kb-http
+          serviceName: kibana-kb-http
           servicePort: 5601
   tls:
   - hosts:
