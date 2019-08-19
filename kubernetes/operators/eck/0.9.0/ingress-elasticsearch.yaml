@@ -19,7 +19,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: quickstart-es-http
+          serviceName: elasticsearch-cluster-es-http
           servicePort: 9200
   tls:
   - hosts:

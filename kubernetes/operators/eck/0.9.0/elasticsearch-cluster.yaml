@@ -1,7 +1,7 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1alpha1
 kind: Elasticsearch
 metadata:
-  name: quickstart
+  name: elasticsearch-cluster
   namespace: elasticsearch
 spec:
   version: 7.2.0
@@ -27,8 +27,8 @@ spec:
               cpu: 7000m
               memory: 24Gi
             request:
-              cpu: 7000m
-              memory: 24Gi
+              cpu: 4000m
+              memory: 16Gi
           env:
           - name: ES_JAVA_OPTS
             value: "-Xms22g -Xmx22g"
@@ -40,10 +40,10 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 200Gi
+            storage: 1000Gi
         #storageClassName: standard # can be any available storage class
 
-  http:
-    tls:
-      certificate:
-        secretName: my-cert
+  # http:
+  #   tls:
+  #     certificate:
+  #       secretName: my-cert

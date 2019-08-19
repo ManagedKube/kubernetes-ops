@@ -29,7 +29,7 @@ kubectl apply -f elasticsearch-cluster.yaml
 
 Get cluster info:
 ```
-kubectl -n elasticsearch get elasticsearc
+kubectl -n elasticsearch get elasticsearch
 ```
 
 ## Node affinity settings
@@ -42,13 +42,13 @@ User: elastic
 
 Get password:
 ```
-kubectl -n elasticsearch get secret quickstart-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode
+kubectl -n elasticsearch get secret elasticsearch-cluster-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode
 ```
 
 ## Port-forward to kibana
 
 ```
-kubectl -n elasticsearch port-forward service/quickstart-kb-http 5601
+kubectl -n elasticsearch port-forward service/elasticsearch-cluster-kb-http 5601
 ```
 
 In your browser, go to:  https://localhost:5601
@@ -56,7 +56,7 @@ In your browser, go to:  https://localhost:5601
 ## Port-forward to Elasticsearch
 
 ```
-kubectl -n elasticsearch port-forward service/quickstart-es-http 9200
+kubectl -n elasticsearch port-forward service/elasticsearch-cluster-es-http 9200
 ```
 
 # Not supporting nginx-ingress
