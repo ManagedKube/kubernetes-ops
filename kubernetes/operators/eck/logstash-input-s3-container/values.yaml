@@ -1,0 +1,24 @@
+---
+image:
+  repository: garland/logstash-input-s3
+  tag: dev
+
+namespace: elasticsearch
+
+name: flowlog-aws
+
+aws:
+  accessKeyId: xxx
+  secretAccessKey: xxxx
+  region: us-east-1
+  bucket: xxxx
+
+elasticsearch:
+  # Need the ":443" or Logstash will add the default port 9200 port after the URL
+  endpoint: https://elasticsearch.dev.k8s.managedkube.com:443
+  username: elastic
+  password: xxxx
+  indexPrefix: my-index1
+
+storage:
+  size: 1Gi
