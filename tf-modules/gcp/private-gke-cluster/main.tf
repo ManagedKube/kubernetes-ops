@@ -50,7 +50,7 @@ resource "google_container_cluster" "primary" {
   node_version       = var.node_version
   min_master_version = var.node_version
   network            = var.network_name
-  subnetwork         = var.subnetwork
+  subnetwork         = google_compute_subnetwork.private_subnet.name
   initial_node_count = var.initial_node_count
 
   # set private cluster properties

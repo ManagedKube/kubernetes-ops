@@ -123,8 +123,5 @@ variable "disk_size_gb" {
 variable "image_type" {
 }
 
-variable "subnetwork" {
-}
-
 variable "initial_node_count" {
 }

@@ -29,7 +29,6 @@ inputs = {
   node_version = "1.12.8-gke.10"
   machine_type = "n1-standard-4"
   image_type = "COS"
-  subnetwork = "dev-gke-private-subnet"
   disk_size_gb = "20"
   initial_node_count = "1"
 
