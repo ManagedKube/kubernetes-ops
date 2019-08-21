@@ -7,7 +7,7 @@ variable "region" {
 }
 
 variable "asn" {
-  default = "-1"
+  default     = "-1"
   description = "ASN for the GCP router.  This value must not overlap with anyother ASNs"
 }
 
@@ -47,11 +47,11 @@ variable "public_subnet_cidr_range" {
 #   description = "The /32 address of the single bastion server that can access servers in the VPC over ssh."
 # }
 
-variable pods_ip_cidr_range {
+variable "pods_ip_cidr_range" {
   description = "The secondary ip range to use for pods"
 }
 
-variable services_ip_cidr_range {
+variable "services_ip_cidr_range" {
   description = "The secondary ip range to use for services"
 }
 
@@ -61,29 +61,29 @@ variable services_ip_cidr_range {
 #   type        = "list"
 # }
 
-
 #####################################
 ####################################
 # variable "remote_state_bucket" {}
 # variable "remote_state_bucket_region" {}
-variable "cluster_name" {}
+variable "cluster_name" {
+}
 
 variable "oauth_scopes" {
-  type = "list"
+  type = list(string)
 }
 
 variable "labels" {
-  type = "map"
+  type    = map(string)
   default = {}
 }
 
 variable "tags" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
 variable "taints" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
@@ -91,31 +91,37 @@ variable "node_version" {
   default = "1.7.6"
 }
 
-variable master_ipv4_cidr_block {
+variable "master_ipv4_cidr_block" {
   description = "Set the master ipv4 cidr block"
 }
 
-variable http_load_balancing {
+variable "http_load_balancing" {
   description = "Set this to false to ensure that the HTTP L7 load balancing controller addon is enabled"
   default     = false
 }
 
 variable "enable_private_kube_master_endpoint" {
   description = "Whether the master's internal IP address is used as the cluster endpoint"
-  default = "true"
+  default     = "true"
 }
 
 variable "enable_private_nodes" {
   description = "Sets the nodes to only private with no public IPs or not"
-  default = "true"
+  default     = "true"
 }
 
-variable master_authorized_networks_cidr {
-  type = "list"
+variable "master_authorized_networks_cidr" {
+  type = list
 }
 
-variable "machine_type" {}
-variable "disk_size_gb" {}
-variable "image_type" {}
-variable "subnetwork" {}
-variable "initial_node_count" {}
+variable "machine_type" {
+}
+
+variable "disk_size_gb" {
+}
+
+variable "image_type" {
+}
+
+variable "initial_node_count" {
+}
