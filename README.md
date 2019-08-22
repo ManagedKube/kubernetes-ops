@@ -118,3 +118,12 @@ the "easier way" takes the manual steps in the previous example and hides most
 of the steps in a script where you can just run:
 
 [the-easier-way](docs/the-easier-way.md)
+
+#### The AWS Kops topology
+
+![aws kops topology](docs/images/aws-kops/Topology-aws-kops.png)
+
+* A very isolated VPC with only a few public IP address exposed to the internet
+* Dedicated subnets for each item types.  This allows you to segregate items better.
+* Redundant Kubernetes masters in 3 availability zones
+* Redundant Kubernetes worker nodes in 3 availability zones
