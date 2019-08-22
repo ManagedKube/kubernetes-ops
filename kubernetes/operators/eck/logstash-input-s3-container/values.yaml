@@ -5,7 +5,11 @@ image:
 
 namespace: elasticsearch
 
-name: flowlog-aws
+# To be able to create more than one of these logstash-to-s3 collectors
+# you will need to override this name in the "environments" values.yaml
+# file to something unique.
+# example: flowlog-aws-dev-us-cluster-1
+name: flowlog
 
 aws:
   accessKeyId: xxx
