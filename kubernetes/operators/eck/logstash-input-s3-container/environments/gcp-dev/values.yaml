@@ -1,4 +1,6 @@
 ---
+name: flowlog-aws-dev
+
 aws:
   accessKeyId: xxxx
   secretAccessKey: xxxxxx
