@@ -127,3 +127,15 @@ of the steps in a script where you can just run:
 * Dedicated subnets for each item types.  This allows you to segregate items better.
 * Redundant Kubernetes masters in 3 availability zones
 * Redundant Kubernetes worker nodes in 3 availability zones
+
+# GCP GKE
+Kubernetes on GCP via GKE clusters
+
+## Topology
+
+![aws kops topology](docs/images/gcp-gke/topology-gcp-gke.png)
+
+* A very isolated VPC with only a few public IP address exposed to the internet
+* Dedicated subnets for each item types.  This allows you to segregate items better.
+* Redundant Kubernetes masters in 3 availability zones
+* Redundant Kubernetes worker nodes in 3 availability zones
