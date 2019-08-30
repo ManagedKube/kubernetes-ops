@@ -139,3 +139,24 @@ Kubernetes on GCP via GKE clusters
 * Dedicated subnets for each item types.  This allows you to segregate items better.
 * Redundant Kubernetes masters in 3 availability zones
 * Redundant Kubernetes worker nodes in 3 availability zones
+
+# Supported built in services
+These are the list of services that are maintained for each cloud
+
+| Service Name                    | Supported in AWS  | Supported in GCP  | source             |
+|---                              |---                |---                |---      |
+| cert-manager                    | yes               | yes               | helm/stable        |
+| cluster-autoscaler              | yes               | no                | helm/stable        |
+| external-dns                    | yes               | yes               | helm/stable        |
+| graylog                         | yes               | yes               | helm/stable        |
+| jenkins                         | yes               | yes               | helm/stable        |
+| kube-bench                      | yes               | yes               | helm/stable        |
+| kube-downscaler                 | yes               | yes               | helm/stable        |
+| loki                            | yes               | yes               | loki               |
+| nginx-ingress                   | yes               | yes               | helm/stable        |
+| prometheus blackbox exporter    | yes               | yes               | helm/stable        |
+| prometheus operator             | yes               | yes               | helm/stable        |
+| sumologic-fluentd               | yes               | yes               | helm/stable        |
+| threatstack                     | yes               | yes               | Threatstack        |
+| helm tiller -rbac enabled       | yes               | yes               | -                  |
+| vault-helm                      | yes               | yes               | Hashicorp          |
