@@ -24,3 +24,7 @@ Grafana Loki data source URL:
 ```
 http://loki:3100/
 ```
+
+# Searching in Grafana
+
+https://github.com/grafana/loki/blob/master/docs/usage.md#searching-with-labels-and-distributed-grep

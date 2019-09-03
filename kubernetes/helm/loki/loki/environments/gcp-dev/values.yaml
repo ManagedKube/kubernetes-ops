@@ -1,1 +1,4 @@
 ---
+loki-stack:
+  loki:
+    replicas: 1
