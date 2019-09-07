@@ -1,17 +1,18 @@
 terraform {
-  backend "s3" {}
+  backend "s3" {
+  }
 }
 
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 # VPC
 resource "aws_vpc" "main" {
-  cidr_block           = "${var.vpc_cidr}"
+  cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags                 = "${var.tags}"
+  tags                 = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -20,16 +21,16 @@ resource "aws_vpc" "main" {
 
 # Gateway
 resource "aws_internet_gateway" "main" {
-  vpc_id = "${aws_vpc.main.id}"
-  tags   = "${var.tags}"
+  vpc_id = aws_vpc.main.id
+  tags   = var.tags
 }
 
 resource "aws_nat_gateway" "main" {
-  count         = "${length(var.availability_zones)}"
-  allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
-  subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
-  depends_on    = ["aws_internet_gateway.main"]
-  tags          = "${var.tags}"
+  count         = length(var.availability_zones)
+  allocation_id = element(aws_eip.nat.*.id, count.index)
+  subnet_id     = element(aws_subnet.public.*.id, count.index)
+  depends_on    = [aws_internet_gateway.main]
+  tags          = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -37,9 +38,9 @@ resource "aws_nat_gateway" "main" {
 }
 
 resource "aws_eip" "nat" {
-  count = "${length(var.availability_zones)}"
+  count = length(var.availability_zones)
   vpc   = true
-  tags  = "${var.tags}"
+  tags  = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -48,13 +49,13 @@ resource "aws_eip" "nat" {
 
 # Subnets
 resource "aws_subnet" "public" {
-  count                   = "${length(var.availability_zones)}"
-  vpc_id                  = "${aws_vpc.main.id}"
-  cidr_block              = "${element(var.public_cidrs, count.index)}"
-  availability_zone       = "${element(var.availability_zones, count.index)}"
+  count                   = length(var.availability_zones)
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = element(var.public_cidrs, count.index)
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
 
-  tags = "${var.tags}"
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -62,12 +63,12 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count             = "${length(var.availability_zones)}"
-  vpc_id            = "${aws_vpc.main.id}"
-  cidr_block        = "${element(var.private_cidrs, count.index)}"
-  availability_zone = "${element(var.availability_zones, count.index)}"
+  count             = length(var.availability_zones)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = element(var.private_cidrs, count.index)
+  availability_zone = element(var.availability_zones, count.index)
 
-  tags = "${var.tags}"
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -78,22 +79,22 @@ resource "aws_subnet" "private" {
 
 // Public
 resource "aws_route_table" "public" {
-  vpc_id = "${aws_vpc.main.id}"
+  vpc_id = aws_vpc.main.id
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 resource "aws_route" "public" {
-  route_table_id         = "${aws_route_table.public.id}"
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.main.id}"
+  gateway_id             = aws_internet_gateway.main.id
 }
 
 resource "aws_route_table" "private" {
-  count  = "${length(var.availability_zones)}"
-  vpc_id = "${aws_vpc.main.id}"
+  count  = length(var.availability_zones)
+  vpc_id = aws_vpc.main.id
 
-  tags = "${var.tags}"
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -101,10 +102,10 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private" {
-  count                  = "${length(var.availability_zones)}"
-  route_table_id         = "${element(aws_route_table.private.*.id, count.index)}"
+  count                  = length(var.availability_zones)
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = "${element(aws_nat_gateway.main.*.id, count.index)}"
+  nat_gateway_id         = element(aws_nat_gateway.main.*.id, count.index)
 }
 
 /**
@@ -112,9 +113,9 @@ resource "aws_route" "private" {
  */
 
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.availability_zones)}"
-  subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"
-  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
+  count          = length(var.availability_zones)
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
 
   lifecycle {
     create_before_destroy = true
@@ -122,9 +123,9 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route_table_association" "public" {
-  count          = "${length(var.availability_zones)}"
-  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
-  route_table_id = "${aws_route_table.public.id}"
+  count          = length(var.availability_zones)
+  subnet_id      = element(aws_subnet.public.*.id, count.index)
+  route_table_id = aws_route_table.public.id
 
   lifecycle {
     create_before_destroy = true
@@ -138,8 +139,8 @@ resource "aws_route_table_association" "public" {
  */
 
 resource "aws_default_security_group" "default" {
-  vpc_id = "${aws_vpc.main.id}"
-  tags   = "${var.tags}"
+  vpc_id = aws_vpc.main.id
+  tags   = var.tags
 
   ingress {
     protocol  = -1
@@ -152,6 +153,7 @@ resource "aws_default_security_group" "default" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = "${var.security_group_default_egress}"
+    cidr_blocks = var.security_group_default_egress
   }
 }
+
