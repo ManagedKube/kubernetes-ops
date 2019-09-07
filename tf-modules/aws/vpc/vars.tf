@@ -40,3 +40,7 @@ variable "optional_vpc_tags" {
   default = {}
   type    = "map"
 }
+
+variable "security_group_default_egress" {
+  default = ["0.0.0.0/0"]
+}
