@@ -4,11 +4,23 @@ terragrunt = {
   }
   terraform {
     source = "../../../../tf-modules/aws/vpc/"
+
+    extra_arguments "custom_vars" {
+      commands = [
+        "apply",
+        "plan",
+        "import",
+        "push",
+        "refresh",
+        "destroy",
+      ]
+
+      arguments = [
+        "-var-file=${get_tfvars_dir()}/../../_env_defaults/aws.tfvars",
+      ]
+    }
   }
 }
-
-region                        = "us-east-1"
-vpc_cidr                      = "10.10.0.0/16"
 
 availability_zones            = ["us-east-1a", "us-east-1b", "us-east-1c"]
 
