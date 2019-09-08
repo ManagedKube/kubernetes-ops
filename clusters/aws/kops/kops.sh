@@ -7,7 +7,7 @@
 ##########################################
 
 TIME_NOW=$(date +"%x %r %Z")
-KOPS_VERSION="1.11."
+KOPS_VERSION="1.13."
 
 ##########################################
 ##### Functions
@@ -34,11 +34,12 @@ check_kops_version()
 create()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_COMMONS="./clusters/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -47,21 +48,21 @@ create()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
     echo "[INFO] Templating out"
-    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH} > ./kops-templated-${kops_name}.yaml
+    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT} > ./kops-templated-${kops_name}.yaml
     cat kops-templated-${kops_name}.yaml
 
     echo "[INFO] Creating the cluster"
     kops create -f ./kops-templated-${kops_name}.yaml
 
-    dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-    cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+    dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+    cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
 
     yes y | ssh-keygen -t rsa -b 4096 -C "kops@kops.com" -f ./ssh-keys/id_rsa_kops_script -q -N "" >/dev/null
 
@@ -79,7 +80,7 @@ create()
 
   else
     echo "[INFO] Dry run"
-    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH}
+    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT}
   fi
 
   echo "Finished"
@@ -89,11 +90,11 @@ create()
 read()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -102,12 +103,12 @@ read()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
-  dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-  cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+  dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+  cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
 
   echo "[INFO] Get clusters"
   kops --name ${cluster_name} get cluster
@@ -119,11 +120,12 @@ read()
 template()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_COMMONS="./clusters/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -132,12 +134,12 @@ template()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
   echo "[INFO] Dry run"
-  kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH}
+  kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT}
 
   echo "Finished"
 }
@@ -148,11 +150,12 @@ update()
   # echo "[INFO] Updating cluster named: ${cluster_name}"
 
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_COMMONS="./clusters/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -161,18 +164,18 @@ update()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
     echo "[INFO] Templating out"
-    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH} > ./kops-templated-${kops_name}.yaml
+    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT} > ./kops-templated-${kops_name}.yaml
     cat kops-templated-${kops_name}.yaml
 
-    dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-    cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+    dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+    cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
     echo "[INFO] Updating cluster named: ${cluster_name}"
 
     echo "[INFO] Updating the cluster"
@@ -189,11 +192,11 @@ update()
   else
     echo "[INFO] Dry run"
     echo "[INFO] Templating out"
-    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH} > ./kops-templated-${kops_name}.yaml
+    kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT} > ./kops-templated-${kops_name}.yaml
     cat kops-templated-${kops_name}.yaml
 
-    dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-    cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+    dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+    cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
     echo "[INFO] Updating cluster named: ${cluster_name}"
 
     echo "[INFO] Updating the cluster"
@@ -214,11 +217,11 @@ update()
 rolling_update()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -227,7 +230,7 @@ rolling_update()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
@@ -240,8 +243,8 @@ rolling_update()
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
 
-    dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-    cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+    dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+    cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
     echo "[INFO] Rolling cluster named: ${cluster_name}"
 
     kops --name ${cluster_name} rolling-update cluster --yes ${USE_CLOUD_ONLY_FLAG}
@@ -252,8 +255,8 @@ rolling_update()
   else
     echo "[INFO] Dry run"
 
-    dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-    cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+    dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+    cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
     echo "[INFO] Rolling cluster named: ${cluster_name}"
 
     kops --name ${cluster_name} rolling-update cluster ${USE_CLOUD_ONLY_FLAG}
@@ -268,11 +271,11 @@ rolling_update()
 delete()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -281,12 +284,12 @@ delete()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
-  dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-  cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
+  dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+  cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
   echo "[INFO] Deleting cluster named: ${cluster_name}"
 
   if [ "${dry_run}" == "false" ]; then
@@ -303,11 +306,11 @@ delete()
 get_bastion()
 {
   # Checks
-  VALUES_FILE_PATH="./clusters/${kops_name}/values.yaml"
+  VALUES_FILE_PATH_ENVIRONMENT="./clusters/${kops_name}/values.yaml"
   TEMPLATE_FILE_PATH="./template/cluster.yml"
 
-  if [ ! -f ${VALUES_FILE_PATH} ]; then
-    echo "File does not exist: ${VALUES_FILE_PATH}"
+  if [ ! -f ${VALUES_FILE_PATH_ENVIRONMENT} ]; then
+    echo "File does not exist: ${VALUES_FILE_PATH_ENVIRONMENT}"
     exit 1
   fi
 
@@ -316,14 +319,14 @@ get_bastion()
     exit 1
   fi
 
-  kops_state_store=s3://$(cat ${VALUES_FILE_PATH} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
+  kops_state_store=s3://$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "s3BucketName: " | awk '{print $2}' | tr -d '[:space:]')
   export KOPS_STATE_STORE=${kops_state_store}
   echo "[INFO] Setting KOPS_STATE_STORE: ${kops_state_store}"
 
-  dns_zone=$(cat ${VALUES_FILE_PATH} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
-  cluster_name=$(cat ${VALUES_FILE_PATH} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]')
-  region=$(cat ${VALUES_FILE_PATH} | grep "awsRegion: " | awk '{print $2}' | tr -d '[:space:]')
-  network_cidr=$(cat ${VALUES_FILE_PATH} | grep "networkCIDR: " | awk '{print $2}' | tr -d '[:space:]')
+  dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
+  cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]')
+  region=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "awsRegion: " | awk '{print $2}' | tr -d '[:space:]')
+  network_cidr=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "networkCIDR: " | awk '{print $2}' | tr -d '[:space:]')
 
   echo "[INFO] Getting bastion host for cluster named: ${cluster_name}"
 
