@@ -1,6 +1,6 @@
 kopsName: dev-example.us-east-1
 s3BucketName: kubernetes-ops-1234-kops-state-store
-kubernetesVersion: 1.11.7
+kubernetesVersion: 1.13.10
 dnsZone: k8s.local
 awsRegion: us-east-1
 vpc: vpc-id-from-the-terraform-output
@@ -50,16 +50,8 @@ kubernetesApiAccess:
 iam:
   allowContainerRegistry: true
 
-# etcd
-etcd:
-  version: 3.2.18
-
 networkCIDR: 10.10.0.0/16
 networkPortion: "10.10"
-
-docker:
-  overrides: false
-  bridgeIP: 172.26.0.1/16
 
 enableBastionGroup1: true
 enableThreatstackMasterGroup1: false
