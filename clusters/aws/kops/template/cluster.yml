@@ -1,5 +1,5 @@
 #
-# using kops cli 1.11.1
+# using kops cli 1.13.0
   #
   {{- $awsRegion := .awsRegion }}
   {{- $networkPortion := .networkPortion }}
@@ -13,6 +13,21 @@ kind: Cluster
 metadata:
   name: {{ .kopsName }}.{{ .dnsZone }}
 spec:
+  hooks:
+  # Adding here since the kubeAPIServer.DisableBasicAuth is not working in this kops version yet
+  - before:
+    - kubelet.service
+    manifest: |
+      Type=oneshot
+      ExecStart=/usr/bin/sed -i 's/\-\-basic-auth-file=\/srv\/kubernetes\/basic_auth.csv//' /etc/kubernetes/manifests/kube-apiserver.manifest
+    name: remove_basic_auth
+  # Adding here since the kubeAPIServer.DisableBasicAuth is not working in this kops version yet
+  - before:
+    - kubelet.service
+    manifest: |
+      Type=oneshot
+      ExecStart=/usr/bin/sed -i 's/\-\-token-auth-file=\/srv\/kubernetes\/known_tokens.csv //' /etc/kubernetes/manifests/kube-apiserver.manifest
+    name: remove_token_auth
   fileAssets:
     # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#audit-logging
     - name: apiserver-audit-policy
@@ -103,7 +118,7 @@ spec:
     dns: {}
     loadBalancer:
       type: Internal
-      idleTimeoutSeconds: 300
+      idleTimeoutSeconds: 1800
   authorization:
     rbac: {}
 {{- if .docker.overrides }}
@@ -120,6 +135,8 @@ spec:
   etcdClusters:
     # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#etcdclusters-v3--tls
     - enableEtcdTLS: true
+      cpuRequest: 200m
+      memoryRequest: 128Mi
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
       - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
@@ -128,6 +145,8 @@ spec:
       name: main
       version: {{ .etcd.version }}
     - enableEtcdTLS: true
+      cpuRequest: 200m
+      memoryRequest: 128Mi
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
       - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
@@ -140,11 +159,16 @@ spec:
     allowContainerRegistry: {{ .iam.allowContainerRegistry }}
     legacy: false
   kubeAPIServer:
+    # configs: https://github.com/kubernetes/kops/blob/master/pkg/apis/kops/componentconfig.go
     auditLogPath: /var/log/kube-apiserver-audit.log
-    auditLogMaxAge: 10
-    auditLogMaxBackups: 1
+    auditLogMaxAge: 30
+    auditLogMaxBackups: 10
     auditLogMaxSize: 100
     auditPolicyFile: /srv/kubernetes/audit.yaml
+    AnonymousAuth: false
+    DisableBasicAuth: false
+    tlsMinVersion: VersionTLS12
+    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
     # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#runtimeconfig
     # runtimeConfig:
     #   batch/v2alpha1: "true"
@@ -163,9 +187,14 @@ spec:
       - ResourceQuota
       - NodeRestriction
       - Priority
+  kubeControllerManager:
+    tlsMinVersion: VersionTLS12
+    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
   kubelet:
     # https://github.com/kubernetes/kops/blob/master/docs/security.md#kubelet-api
     anonymousAuth: false
+    tlsMinVersion: VersionTLS12
+    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
     # kubeReserved:
     #     cpu: "100m"
     #     memory: "100Mi"
