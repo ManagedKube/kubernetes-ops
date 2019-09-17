@@ -125,3 +125,7 @@ variable "image_type" {
 
 variable "initial_node_count" {
 }
+
+variable "authenticator_groups_config" {
+  default = "gke-security-groups@example.com"
+}

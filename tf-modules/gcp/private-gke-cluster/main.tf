@@ -53,6 +53,10 @@ resource "google_container_cluster" "primary" {
   subnetwork         = google_compute_subnetwork.private_subnet.name
   initial_node_count = var.initial_node_count
 
+  authenticator_groups_config {
+    security_group = var.authenticator_groups_config
+  }
+
   # set private cluster properties
   private_cluster_config {
     enable_private_nodes    = var.enable_private_nodes
