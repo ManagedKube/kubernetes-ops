@@ -1,0 +1,8 @@
+---
+# etcd
+etcd:
+  version: 3.3.10
+
+docker:
+  overrides: false
+  bridgeIP: 172.26.0.1/16
