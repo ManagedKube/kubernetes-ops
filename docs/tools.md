@@ -48,5 +48,4 @@ OSX
 brew install sshuttle
 ```
 
-Linxu:
-Download from: 
+Linux install instructions: https://github.com/sshuttle/sshuttle#obtaining-sshuttle
