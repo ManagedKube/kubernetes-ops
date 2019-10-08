@@ -1,0 +1,10 @@
+apiVersion: apm.k8s.elastic.co/v1alpha1
+kind: ApmServer
+metadata:
+  name: apm-server-quickstart
+  namespace: elasticsearch
+spec:
+  version: 7.2.0
+  nodeCount: 1
+  elasticsearchRef:
+    name: quickstart

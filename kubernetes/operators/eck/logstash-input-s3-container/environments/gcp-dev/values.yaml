@@ -1,0 +1,15 @@
+---
+name: flowlog-aws-dev
+
+aws:
+  accessKeyId: xxxx
+  secretAccessKey: xxxxxx
+  region: us-east-1
+  bucket: xxxxxx
+
+elasticsearch:
+  # Need the ":443" or Logstash will add the default port 9200 port after the URL
+  endpoint: https://elasticsearch.dev.k8s.example.com:443
+  username: elastic
+  password: xxxxxx
+  indexPrefix: my-index1

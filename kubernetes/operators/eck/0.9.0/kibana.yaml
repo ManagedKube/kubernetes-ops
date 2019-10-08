@@ -1,0 +1,28 @@
+apiVersion: kibana.k8s.elastic.co/v1alpha1
+kind: Kibana
+metadata:
+  name: kibana
+  namespace: elasticsearch
+spec:
+  version: 7.2.0
+  nodeCount: 1
+  elasticsearchRef:
+    name: elasticsearch-cluster
+
+  podTemplate:
+    # metadata:
+    #   labels:
+    #     foo: bar
+    spec:
+      containers:
+      - name: kibana
+        resources:
+          limits:
+            cpu: 7000m
+            memory: 24Gi
+          request:
+            cpu: 7000m
+            memory: 24Gi
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms22g -Xmx22g"

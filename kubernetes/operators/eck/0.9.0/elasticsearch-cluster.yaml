@@ -1,0 +1,49 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1alpha1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch-cluster
+  namespace: elasticsearch
+spec:
+  version: 7.2.0
+  nodes:
+  - nodeCount: 3
+    config:
+      node.attr.attr_name: attr_value
+      node.master: true
+      node.data: true
+      node.ingest: true
+      node.ml: true
+    podTemplate:
+      # metadata:
+      #   labels:
+      #     # additional labels for pods
+      #     foo: bar
+      spec:
+        containers:
+        - name: elasticsearch
+          # specify resource limits and requests
+          resources:
+            limits:
+              cpu: 7000m
+              memory: 24Gi
+            request:
+              cpu: 4000m
+              memory: 16Gi
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms22g -Xmx22g"
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # note: elasticsearch-data must be the name of the Elasticsearch volume
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1000Gi
+        #storageClassName: standard # can be any available storage class
+
+  # http:
+  #   tls:
+  #     certificate:
+  #       secretName: my-cert
