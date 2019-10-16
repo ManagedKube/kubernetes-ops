@@ -36,6 +36,7 @@ delete:
 	${KUBECTL_BINARY} delete crd prometheuses.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd prometheusrules.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd servicemonitors.monitoring.coreos.com
+	${KUBECTL_BINARY} delete crd podmonitors.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd alertmanagers.monitoring.coreos.com
 
 delete-crd:
@@ -43,7 +44,11 @@ delete-crd:
 	${KUBECTL_BINARY} delete crd prometheuses.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd prometheusrules.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd servicemonitors.monitoring.coreos.com
+	${KUBECTL_BINARY} delete crd podmonitors.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd alertmanagers.monitoring.coreos.com
+
+dependency-build:
+	${HELM_BINARY} dependency build
 
 list:
 	${HELM_BINARY} list
