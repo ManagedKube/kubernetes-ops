@@ -32,12 +32,6 @@ template:
 
 delete:
 	${HELM_BINARY} delete --tiller-namespace ${KUBE_NAMESPACE} --purge ${KUBE_NAMESPACE}-${APPLICATION_NAME}
-	# https://github.com/helm/charts/tree/master/stable/prometheus-operator#uninstalling-the-chart
-	${KUBECTL_BINARY} delete crd prometheuses.monitoring.coreos.com
-	${KUBECTL_BINARY} delete crd prometheusrules.monitoring.coreos.com
-	${KUBECTL_BINARY} delete crd servicemonitors.monitoring.coreos.com
-	${KUBECTL_BINARY} delete crd podmonitors.monitoring.coreos.com
-	${KUBECTL_BINARY} delete crd alertmanagers.monitoring.coreos.com
 
 delete-crd:
 	# https://github.com/helm/charts/tree/master/stable/prometheus-operator#uninstalling-the-chart
