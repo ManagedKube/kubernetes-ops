@@ -193,7 +193,7 @@ prometheus-operator:
 
       - name: 'pagerduty-critical'
         pagerduty_configs:
-        - service_key: 4dd991d60c044a9982093e7618da2867
+        - service_key: xxxxx
 
     ## Configuration for Alertmanager service
     ##
