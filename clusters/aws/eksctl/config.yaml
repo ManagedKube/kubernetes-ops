@@ -6,6 +6,9 @@ metadata:
 vpc:
   id: "vpc-0f13269709c9a4822"
   cidr: "172.17.0.0/16"
+  clusterEndpoints:
+    publicAccess: false
+    privateAccess: true
   subnets:
     private:
       us-east-1a:
