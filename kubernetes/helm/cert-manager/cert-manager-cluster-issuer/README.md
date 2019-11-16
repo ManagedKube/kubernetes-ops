@@ -47,19 +47,22 @@ Creating keys: https://docs.cert-manager.io/en/latest/tasks/issuers/setup-acme/d
 
 Adding a request for a certificate via a dns01 verification
 
+doc: https://docs.cert-manager.io/en/release-0.11/tutorials/acme/dns-validation.html
+
 ```
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: test1-dev-k8s-managedkube-com-tls
   namespace: default
 spec:
+  secretName: test1-dev-k8s-managedkube-com-tls
+  issuerRef:
+    # kind: ClusterIssuer
+    name: issuer-dns01
   dnsNames:
   - test1.dev.k8s.managedkube.com
   - test2.dev.k8s.managedkube.com
-  issuerRef:
-    kind: ClusterIssuer
-    name: issuer-dns01
-  secretName: test1-dev-k8s-managedkube-com-tls
+
 ```
