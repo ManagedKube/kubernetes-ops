@@ -183,6 +183,16 @@ of the steps in a script where you can just run:
 
 [the-easier-way](docs/the-easier-way.md)
 
+# Need a DevOps consultant?
+
+ManagedKube is a boutique DevOps consulting firm that helps companies run large-scale, reliable applications in a GitOps workflow.
+
+We work side-by-side with our client's development team to architect, design, build, optimize, and operate infrastructure in the cloud (AWS and GCP).
+
+We specialize in Docker/Kubernetes containerized infrastructure. 
+
+Check us out at: [https://managedkube.com/](https://managedkube.com/)
+
 # License
 
 ```
