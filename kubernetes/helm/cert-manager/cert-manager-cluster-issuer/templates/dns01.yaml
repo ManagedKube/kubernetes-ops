@@ -1,7 +1,7 @@
 {{- if .Values.issuer.dns.enabled }}
 # doc: http://docs.cert-manager.io/en/latest/reference/issuers/acme/dns01.html
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: {{ .Values.issuer.dns.name }}
@@ -10,7 +10,7 @@ spec:
     email: {{ .Values.email }}
     server: {{ .Values.letsencrypt.server }}
     privateKeySecretRef:
-      name: letsencrypt-private-key
+      name: letsencrypt-private-key-dns-01
     solvers:
     - dns01:
 
@@ -27,7 +27,7 @@ spec:
         {{- end }}
 
         {{ if eq .Values.provider "google" }}
-        # Google Provider
+        # Google Provider - https://docs.cert-manager.io/en/release-0.11/tasks/issuers/setup-acme/dns01/google.html
         clouddns:
           # The ID of the GCP project
           project: {{ .Values.clouddns.project }}

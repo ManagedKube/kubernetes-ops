@@ -8,13 +8,17 @@ clouddns:
   # This is the secret used to access the service account
   # The file name has to be "credentials.json".  The file name is put into the secret
   # as the key name and the chart is looking for the key name "credentials.json"
-  # kubectl -n cert-manager create secret generic gcp-credentials-json  --from-file=/credentials.json
+  # kubectl -n cert-manager create secret generic clouddns-dns01-solver-svc-acct --from-file=credentials.json
+  # Doc: https://docs.cert-manager.io/en/latest/tasks/issuers/setup-acme/dns01/google.html#create-a-service-account-secret
   serviceAccountSecretRef:
-    name: "gcp-credentials-json"
+    name: "clouddns-dns01-solver-svc-acct"
     key: credentials.json
 
-# AWS Route53
-# aws:
-#   region: us-east-1
-#   accessKeyID: xxx
-#   secretKey: xxx
+issuer:
+  dns:
+    enabled: true
+    name: issuer-dns01
+
+  http:
+    enabled: true
+    name: issuer-http01
