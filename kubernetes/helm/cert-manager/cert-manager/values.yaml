@@ -1,0 +1,5 @@
+---
+cert-manager:
+  webhook:
+    enabled: false
+

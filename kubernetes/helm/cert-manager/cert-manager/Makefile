@@ -7,7 +7,7 @@ BASE_PATH=.
 APPLCATION_CHART_NAME=./
 # APPLCATION_CHART_NAME=jetstack/cert-manager
 APPLICATION_NAME=cert-manager
-VERSION=0.8
+VERSION=0.11
 
 VALUES_FILE?=values.yaml
 
@@ -17,7 +17,7 @@ dependency:
 	${HELM_BINARY} dependency build
 
 apply-crd:
-	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-${VERSION}/deploy/manifests/00-crds.yaml
+	kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-${VERSION}/deploy/manifests/00-crds.yaml
 
 delete-crd:
 	kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-${VERSION}/deploy/manifests/00-crds.yaml
