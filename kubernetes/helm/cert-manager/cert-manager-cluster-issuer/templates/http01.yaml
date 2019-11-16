@@ -1,16 +1,19 @@
+{{- if .Values.issuer.http.enabled }}
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: issuer-http01
 spec:
   acme:
     # The ACME server URL
-    server: https://acme-v02.api.letsencrypt.org/directory
+    server: {{ .Values.letsencrypt.server }}
     # Email address used for ACME registration
-    email: devops@managedkube.com
+    email: {{ .Values.email }}
     # Name of a secret used to store the ACME account private key from step 3
     privateKeySecretRef:
-      name: letsencrypt-private-key
+      name: letsencrypt-private-key-http-01
     # Enable the HTTP-01 challenge provider
     http01: {}
+
+{{- end }}
