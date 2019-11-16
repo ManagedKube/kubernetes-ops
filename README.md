@@ -193,6 +193,8 @@ We specialize in Docker/Kubernetes containerized infrastructure.
 
 Check us out at: [https://managedkube.com/](https://managedkube.com/)
 
+Or email us at: support@managedkube.com
+
 # License
 
 ```
