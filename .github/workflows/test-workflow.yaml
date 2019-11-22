@@ -2,6 +2,15 @@ name: Greet Everyone
 # This workflow is triggered on pushes to the repository.
 on: [push]
 
+# Environment variables available to all jobs and steps in this workflow
+env:
+  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+  GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
+  GITHUB_SHA: ${{ github.sha }}
+  GKE_ZONE: us-west1-a
+  GKE_CLUSTER: example-gke-cluster
+  IMAGE: gke-test
+
 jobs:
   build:
     # Job name is Greeting
@@ -9,6 +18,9 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v1    
       # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
       - name: Hello world
         uses: actions/hello-world-javascript-action@v1
@@ -17,4 +29,6 @@ jobs:
         id: hello
       # This step prints an output (time) from the previous step's action.
       - name: Echo the greeting's time
-        run: echo 'The time was ${{ steps.hello.outputs.time }}.'
+        run: |
+          echo 'The time was ${{ steps.hello.outputs.time }}.'
+          ls -l
