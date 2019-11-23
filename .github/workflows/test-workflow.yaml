@@ -10,6 +10,10 @@ env:
   GKE_ZONE: us-west1-a
   GKE_CLUSTER: example-gke-cluster
   IMAGE: gke-test
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
+  KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
 
 jobs:
   build:
