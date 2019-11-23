@@ -41,4 +41,5 @@ jobs:
           ls -l
           cd ./clusters/aws/kops
           ls -l
+          kops version
           ./kops.sh --name dev-expanse --update true --dry-run false
