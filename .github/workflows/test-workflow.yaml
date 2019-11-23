@@ -29,18 +29,18 @@ jobs:
           export PATH=$(pwd):$PATH
           kops version
       # This step prints an output (time) from the previous step's action.
-      - name: Apply kops update DRY RUN
+      - name: Apply kops update [DRY RUN]
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
           ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
-      - name: Apply kops update NOT DRY RUN
+      - name: Apply kops update [NOT DRY RUN]
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
           ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
-      - name: Apply kops rolling update DRY RUN
+      - name: Apply kops rolling update [DRY RUN]
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloud-only true --dry-run false          
+          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false          
