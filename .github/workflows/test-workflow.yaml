@@ -43,4 +43,17 @@ jobs:
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false          
+          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run true
+      - name: Apply kops rolling update [NOT DRY RUN]
+        run: |
+          export PATH=$(pwd):$PATH
+          cd ./clusters/aws/kops
+          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false
+      - name: Run Kubernetes e2e tests
+        run: |
+          export PATH=$(pwd):$PATH
+          echo "Running e2e tests"
+      - name: Run Kubernetes statefulset test
+        run: |
+          export PATH=$(pwd):$PATH
+          echo "Running statefulset tests"
