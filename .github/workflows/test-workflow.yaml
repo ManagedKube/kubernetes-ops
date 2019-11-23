@@ -40,4 +40,5 @@ jobs:
           echo 'The time was ${{ steps.hello.outputs.time }}.'
           ls -l
           cd ./clusters/aws/kops
+          ls -l
           ./kops.sh --name dev-expanse --update true --dry-run false
