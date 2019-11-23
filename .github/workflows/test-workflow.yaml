@@ -36,24 +36,15 @@ jobs:
       - name: Apply kops update DRY RUN
         run: |
           export PATH=$(pwd):$PATH
-          ls -l
           cd ./clusters/aws/kops
-          ls -l
-          kops version
           ./kops.sh --name dev-ex --update true --dry-run true
       - name: Apply kops update NOT DRY RUN
         run: |
           export PATH=$(pwd):$PATH
-          ls -l
           cd ./clusters/aws/kops
-          ls -l
-          kops version
           ./kops.sh --name dev-ex --update true --dry-run false
       - name: Apply kops rolling update DRY RUN
         run: |
           export PATH=$(pwd):$PATH
-          ls -l
           cd ./clusters/aws/kops
-          ls -l
-          kops version
-          ./kops.sh --name dev-ex --rolling-update true --dry-run false          
+          ./kops.sh --name dev-ex --rolling-update true --cloud-only true --dry-run false          
