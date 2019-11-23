@@ -1,24 +1,20 @@
-name: Greet Everyone
+name: kops update
 # This workflow is triggered on pushes to the repository.
 on: [push]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
-  GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
-  GITHUB_SHA: ${{ github.sha }}
-  GKE_ZONE: us-west1-a
-  GKE_CLUSTER: example-gke-cluster
-  IMAGE: gke-test
+  KOPS_BINARY: "https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64"
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-east-1
   KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
+  ENVIRONMENT_NAME: dev-ex
 
 jobs:
   build:
-    # Job name is Greeting
-    name: Greeting
+    # Job name is Update
+    name: Update
     # This job runs on Linux
     runs-on: ubuntu-18.04
     steps:
@@ -28,7 +24,7 @@ jobs:
       # Set up kops
       - name: Set up kops
         run: |
-          curl -o kops --location https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64
+          curl -o kops --location ${KOPS_BINARY}
           chmod u+x ./kops
           export PATH=$(pwd):$PATH
           kops version
@@ -37,14 +33,14 @@ jobs:
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
-          ./kops.sh --name dev-ex --update true --dry-run true
+          ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
       - name: Apply kops update NOT DRY RUN
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
-          ./kops.sh --name dev-ex --update true --dry-run false
+          ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
       - name: Apply kops rolling update DRY RUN
         run: |
           export PATH=$(pwd):$PATH
           cd ./clusters/aws/kops
-          ./kops.sh --name dev-ex --rolling-update true --cloud-only true --dry-run false          
+          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloud-only true --dry-run false          
