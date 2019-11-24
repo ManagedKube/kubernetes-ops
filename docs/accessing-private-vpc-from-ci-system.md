@@ -112,3 +112,21 @@ Example Github Action:
 		  aws fargate get logs ${FARGATE_TASK_ID}
 		  # output to stdout so that the CI/CD system can show the log to the operator
 ```
+
+Example of what the `managedkube.com/update-kops-cluster:0.1.1` will do:
+
+```bash
+#!/bin/bash -ex
+
+# [DRY RUN] Run the kops update
+./kops.sh --name dev --update true --dry-run true
+
+# [Not DRY RUN] Run the kops update
+./kops.sh --name dev --update true --dry-run false
+
+# Run e2e tests
+./e2e-test.sh --name dev
+
+# Roll the nodes with testing on each node group
+./kops.sh --name dev --rolling-update --run-tests true --dry-run false
+```
