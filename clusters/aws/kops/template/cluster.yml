@@ -117,7 +117,7 @@ spec:
   api:
     dns: {}
     loadBalancer:
-      type: Internal
+      type: {{ .api.loadBalancer.type }}
       idleTimeoutSeconds: 1800
   authorization:
     rbac: {}
@@ -270,9 +270,9 @@ spec:
 
     topology:
       dns:
-        type: Public
-      masters: private
-      nodes: private
+        type: {{ .topology.dns.type }}
+      masters: {{ .topology.masters }}
+      nodes: {{ .topology.nodes }}
     #
     # Kubernetes Masters
     #
