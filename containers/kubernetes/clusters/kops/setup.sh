@@ -15,7 +15,7 @@ echo "Setup kubectl"
 curl -LO ${KUBECTL_BINARY}
 chmod 755 kubectl
 cp kubectl /usr/local/bin/
-kubectl version
+kubectl version || true
 
 echo "Setup kops"
 curl -o kops --location ${KOPS_BINARY}

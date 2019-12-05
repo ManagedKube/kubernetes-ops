@@ -2,6 +2,14 @@
 
 ## Local workflow
 
+### Build
+
+Run from the root of the repository:
+
+```bash
+docker build -t managedkube/kops:dev -f ./containers/kubernetes/clusters/kops/Dockerfile .
+```
+
 ### Dev local
 Run from the root of this repository:
 
@@ -13,15 +21,13 @@ docker run -ti \
 -e AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 -e KOPS_STATE_STORE=${KOPS_STATE_STORE} \
 -v ${PWD}:/opt/repo \
-managedkube/kops-update:dev bash
+managedkube/kops:dev bash
 ```
 
-### Build
-
-Run from the root of the repository:
+### Push
 
 ```bash
-docker build -t managedkube/kops-update:dev -f ./containers/kops-update/Dockerfile .
+docker push managedkube/kops:dev
 ```
 
 ### Running
@@ -41,15 +47,15 @@ docker run -ti \
 -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
 -e AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
 -e KOPS_STATE_STORE=${KOPS_STATE_STORE} \
-managedkube/kops-update:dev bash
+managedkube/kops:dev bash
 ```
 
 run the cluster update:
 ```
-./containers/kops-update/update-cluster.sh
+./containers/kops/update-cluster.sh
 ```
 
 run the Kubernetes e2e tests:
 ```
-./containers/kops-update/e2e-tests.sh
+./containers/kops/e2e-tests.sh
 ```
