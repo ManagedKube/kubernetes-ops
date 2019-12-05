@@ -7,7 +7,7 @@
 ##########################################
 
 TIME_NOW=$(date +"%x %r %Z")
-KOPS_VERSION="1.13."
+KOPS_VERSION="1.14."
 
 ##########################################
 ##### Functions
@@ -64,10 +64,12 @@ create()
     dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
     cluster_name=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "kopsName: " | awk '{print $2}' | tr -d '[:space:]').${dns_zone}
 
-    yes y | ssh-keygen -t rsa -b 4096 -C "kops@kops.com" -f ./ssh-keys/id_rsa_kops_script -q -N "" >/dev/null
+    mkdir ./ssh-keys/${cluster_name}
+
+    yes y | ssh-keygen -t rsa -b 4096 -C "kops@kops.com" -f ./ssh-keys/${cluster_name}/id_rsa_kops_script -q -N "" >/dev/null
 
     echo "[INFO] Setting to generic ssh pub key"
-    kops create secret --name ${cluster_name} sshpublickey admin -i ./ssh-keys/id_rsa_kops_script.pub
+    kops create secret --name ${cluster_name} sshpublickey admin -i ./ssh-keys/${cluster_name}/id_rsa_kops_script.pub
 
     echo "[INFO] Applying cluster to AWS"
     kops --name ${cluster_name} update cluster --yes
@@ -171,7 +173,9 @@ update()
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
     echo "[INFO] Templating out"
+    set -x
     kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT} > ./kops-templated-${kops_name}.yaml
+    set +x
     cat kops-templated-${kops_name}.yaml
 
     dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
@@ -181,18 +185,26 @@ update()
     echo "[INFO] Updating the cluster"
     #--force is required so that any resources (ie new instance groups) are created;
     # without this flag the call fails with a resource DNE error
+    set -x
     kops --name ${cluster_name} replace -f ./kops-templated-${kops_name}.yaml --force
+    set +x
 
     echo "[INFO] Applying cluster to AWS"
+    set -x
     kops --name ${cluster_name} update cluster --yes
+    set +x
 
     echo "[INFO] Cluster instance groups:"
+    set -x
     kops --name ${cluster_name} get ig
+    set +x
 
   else
     echo "[INFO] Dry run"
     echo "[INFO] Templating out"
+    set -x
     kops toolbox template --template ${TEMPLATE_FILE_PATH} --values ${VALUES_FILE_PATH_COMMONS} --values ${VALUES_FILE_PATH_ENVIRONMENT} > ./kops-templated-${kops_name}.yaml
+    set +x
     cat kops-templated-${kops_name}.yaml
 
     dns_zone=$(cat ${VALUES_FILE_PATH_ENVIRONMENT} | grep "dnsZone: " | awk '{print $2}' | tr -d '[:space:]')
@@ -202,13 +214,19 @@ update()
     echo "[INFO] Updating the cluster"
     #--force is required so that any resources (ie new instance groups) are created;
     # without this flag the call fails with a resource DNE error
+    set -x
     kops --name ${cluster_name} replace -f ./kops-templated-${kops_name}.yaml --force
+    set +x
 
     echo "[INFO] Applying cluster to AWS"
+    set -x
     kops --name ${cluster_name} update cluster
+    set +x
 
     echo "[INFO] Cluster instance groups:"
+    set -x
     kops --name ${cluster_name} get ig
+    set +x
   fi
 
   echo "Finished"
@@ -339,8 +357,8 @@ get_bastion()
   kubernetes_api_server=$(kubectl config view --minify | grep server | cut -f 2- -d ":" | tr -d " " | grep -oP "internal.*")
 
   echo "[INFO] bastion_dns_name: ${bastion_dns_name}"
-  echo "[INFO] Add ssh keys into your ssh-agent: ssh-add ./ssh-keys/kubernetes-ops.pem"
-  # echo "[INFO] run: sudo ssh -i ./ssh-keys/kubernetes-ops.pem -L 443:${kubernetes_api_server}:443 ec2-user@${bastion_dns_name}"
+  echo "[INFO] Add ssh keys into your ssh-agent: ssh-add ./ssh-keys/${cluster_name}/kubernetes-ops.pem"
+  # echo "[INFO] run: sudo ssh -i ./ssh-keys/${cluster_name}/kubernetes-ops.pem -L 443:${kubernetes_api_server}:443 ec2-user@${bastion_dns_name}"
   echo "[INFO] sshuttle command: sshuttle -r ec2-user@${bastion_dns_name} ${network_cidr} -v"
   echo "[INFO] In another terminal run: kubectl get nodes"
 
