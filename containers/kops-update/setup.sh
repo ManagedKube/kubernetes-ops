@@ -1,8 +1,11 @@
 #!/bin/bash -e
 
-KOPS_BINARY="https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64"
-SONOBUOY_URL="https://github.com/vmware-tanzu/sonobuoy/releases/download/v0.14.3/"
-SONOBUOY_TAR_FILE="sonobuoy_0.14.3_linux_amd64"
+KOPS_VERSION=1.13.2
+SONOBUOY_VERSION=0.14.3
+
+KOPS_BINARY="https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64"
+SONOBUOY_URL="https://github.com/vmware-tanzu/sonobuoy/releases/download/v${SONOBUOY_VERSION}/"
+SONOBUOY_TAR_FILE="sonobuoy_${SONOBUOY_VERSION}_linux_amd64"
 
 echo "Setup ubuntu"
 apt-get update && apt-get install -y curl
