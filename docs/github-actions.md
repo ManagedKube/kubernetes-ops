@@ -7,3 +7,11 @@ Workflow syntax: [https://help.github.com/en/actions/automating-your-workflow-wi
 Secrets/Environment vars: [https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)
 
 Google example to build and deploy to a GKE cluster: [https://github.com/actions/starter-workflows/blob/master/ci/google.yml](https://github.com/actions/starter-workflows/blob/master/ci/google.yml)
+
+
+
+# Other workflows
+
+## Deployment
+
+https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/m-p/31517#M813
