@@ -9,7 +9,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-east-1
   KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
-  ENVIRONMENT_NAME: dev-ex
+  ENVIRONMENT_NAME: dev-test
 
 jobs:
   build:
