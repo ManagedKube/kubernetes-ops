@@ -34,6 +34,7 @@ jobs:
       - name: Set up sonobuoy
         run: |
           curl -o ${SONOBUOY_TAR_FILE}.tar.gz --location ${SONOBUOY_URL}/${SONOBUOY_TAR_FILE}.tar.gz
+          ls -l
           tar -zxvf ${SONOBUOY_TAR_FILE}.tar.gz
           ls -l
           cd ${SONOBUOY_TAR_FILE}
