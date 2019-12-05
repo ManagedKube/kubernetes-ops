@@ -1,4 +1,22 @@
-# kops-update
+# kops
+
+## What the scripts do:
+
+### setup.sh
+This sets up the container.  Downloads things like:
+* curl
+* kops
+* kubectl
+* etc
+
+### create-cluster.sh
+This script creates a temporary kops cluster.
+
+### e2e-tests.sh
+This script runs the e2e tests
+
+### update-cluster.sh
+This script updates the cluster
 
 ## Local workflow
 

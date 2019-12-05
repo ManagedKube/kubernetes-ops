@@ -1,5 +1,12 @@
 #!/bin/bash -ex
 
+# Set the environment name to the tmp-output name if it exist
+if [ -a ./tmp-output/cluster-name.txt ]; then
+    echo "hello"
+    ENVIRONMENT_NAME=$(cat ./tmp-output/cluster-name.txt)
+    echo ${ENVIRONMENT_NAME}
+fi
+
 cd ./clusters/aws/kops
 
 echo "Apply kops update [DRY RUN]"
