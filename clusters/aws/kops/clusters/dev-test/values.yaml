@@ -48,10 +48,11 @@ sshAccess:
 
 kubernetesApiAccess:
 # Internal routes
-- 10.0.0.0/8
-- 172.0.0.0/8
-# External access
-- 38.30.8.138/32
+# - 10.0.0.0/8
+# - 172.0.0.0/8
+# # External access
+# - 38.30.8.138/32
+- 0.0.0.0/0
 
 iam:
   allowContainerRegistry: true
