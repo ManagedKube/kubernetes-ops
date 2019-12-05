@@ -15,3 +15,14 @@ Google example to build and deploy to a GKE cluster: [https://github.com/actions
 ## Deployment
 
 https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/m-p/31517#M813
+
+
+# Github status page
+
+Github Action is still new, there can be problems with it triggering.  If you are noticing issues check their
+status page:
+
+https://www.githubstatus.com/
+
+
+..
