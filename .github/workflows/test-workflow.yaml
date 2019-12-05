@@ -35,6 +35,7 @@ jobs:
         run: |
           curl -o ${SONOBUOY_TAR_FILE}.tar.gz --location ${SONOBUOY_URL}/${SONOBUOY_TAR_FILE}.tar.gz
           tar -zxvf ${SONOBUOY_TAR_FILE}.tar.gz
+          ls -l
           cd ${SONOBUOY_TAR_FILE}
           export PATH=$(pwd):$PATH
           sonobuoy version
