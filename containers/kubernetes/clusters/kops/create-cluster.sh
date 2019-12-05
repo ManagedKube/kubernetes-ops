@@ -1,16 +1,25 @@
 #!/bin/bash -ex
 
-cd ./containers/kubernetes/clusters/kops
+CLUSTER_NAME=ci-pipeline
 
-echo "Apply kops update [DRY RUN]"
-./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
-sleep 5
+echo "Generate random UUID"
+NEW_UUID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
 
-echo "Apply kops update [NOT DRY RUN]"
-./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
+CLUSTER_NAME=ci-pipeline-${NEW_UUID}
 
-echo "Apply kops rolling update [DRY RUN]"
-./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run true
+echo "Copy ci-pipeline folder for this CI run's usage"
+cp -a ./clusters/aws/kops/clusters/ci-pipeline ./clusters/aws/kops/clusters/${CLUSTER_NAME}
 
-echo "Apply kops rolling update [NOT DRY RUN]"
-./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false
+echo "Output cluster name into the cluster's values directory"
+echo "${CLUSTER_NAME}" > ./clusters/aws/kops/clusters/${CLUSTER_NAME}/cluster-name.txt
+
+echo "Replace kops values file with the correct name parameters"
+sed -i "s/ci-pipeline/${CLUSTER_NAME}/g" ./clusters/aws/kops/clusters/${CLUSTER_NAME}/values.yaml
+
+cd ./clusters/aws/kops/
+
+echo "Creating a new kops cluster [DRY RUN]"
+./kops.sh --name ${CLUSTER_NAME} --create true --dry-run true
+
+echo "Creating a new kops cluster [NOT DRY RUN]"
+./kops.sh --name ${CLUSTER_NAME} --create true --dry-run false
