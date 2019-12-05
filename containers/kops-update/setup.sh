@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-KOPS_VERSION=1.13.2
-SONOBUOY_VERSION=0.14.3
+KOPS_VERSION=1.14.1
+SONOBUOY_VERSION=0.15.3
 
 KOPS_BINARY="https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64"
 SONOBUOY_URL="https://github.com/vmware-tanzu/sonobuoy/releases/download/v${SONOBUOY_VERSION}/"

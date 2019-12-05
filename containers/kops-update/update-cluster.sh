@@ -4,6 +4,7 @@ cd ./clusters/aws/kops
 
 echo "Apply kops update [DRY RUN]"
 ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
+sleep 5
 
 echo "Apply kops update [NOT DRY RUN]"
 ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
