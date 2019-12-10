@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 KUBECTL_VERSION=v1.16.0
 KOPS_VERSION=1.14.1

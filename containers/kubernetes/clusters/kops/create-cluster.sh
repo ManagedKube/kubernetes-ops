@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 # Initial base cluster name (before random UUID is appended)
 CLUSTER_NAME=ci-pipeline
@@ -36,7 +40,7 @@ echo "Creating a new kops cluster [NOT DRY RUN]"
 echo "cluster name: ${CLUSTER_NAME}"
 
 function wait_for_kube_api_ready() {
-    IS_DONE=-1
+    IS_DONE=false
     until ${IS_DONE}
     do
         echo "Cannot reach the Kubernetes cluster yet.  Wait and try again..."
@@ -44,7 +48,7 @@ function wait_for_kube_api_ready() {
 
         STATUS=$(kubectl get nodes | grep "Ready" | wc -l)
         if [ ${STATUS} -gt 2 ]; then
-            IS_DONE=1
+            IS_DONE=true
         fi
     done
 }
