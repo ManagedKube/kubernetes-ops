@@ -73,7 +73,7 @@ message_banner "git checkout ${UPDATE_TO_BRANCH}"
 git checkout ${UPDATE_TO_BRANCH}
 
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml
-cp -a ./clusters/aws/kops/clusters/ci-pipeline ./clusters/aws/kops/clusters/${CLUSTER_NAME}
+cp -a ./clusters/aws/kops/clusters/ci-pipeline/* ./clusters/aws/kops/clusters/${CLUSTER_NAME}/
 
 exit 1
 
