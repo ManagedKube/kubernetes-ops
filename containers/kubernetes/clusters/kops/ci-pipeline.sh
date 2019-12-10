@@ -54,8 +54,8 @@ message_banner "git checkout ${INITIAL_BRANCH}"
 git checkout ${INITIAL_BRANCH}
 
 # Create initial cluster
-# message_banner "Creating initial cluster"
-# ${BASE_FILE_PATH}/create-cluster.sh
+message_banner "Creating initial cluster"
+${BASE_FILE_PATH}/create-cluster.sh
 
 # Wait for kube api to be ready:
 wait_for_kube_api_ready
@@ -65,8 +65,7 @@ CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 
 # Run e2e tests
 message_banner "Running e2e tests"
-# ${BASE_FILE_PATH}/e2e-tests.sh
-
+${BASE_FILE_PATH}/e2e-tests.sh
 
 # Checkout the UPDATE_TO_BRANCH branch
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
