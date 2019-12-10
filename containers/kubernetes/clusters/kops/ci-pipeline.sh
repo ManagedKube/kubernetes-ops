@@ -75,8 +75,6 @@ git checkout ${UPDATE_TO_BRANCH}
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml
 cp -a ./clusters/aws/kops/clusters/ci-pipeline/* ./clusters/aws/kops/clusters/${CLUSTER_NAME}/
 
-exit 1
-
 # Update the cluster
 message_banner "Updating the cluster"
 ${BASE_FILE_PATH}/update-cluster.sh
