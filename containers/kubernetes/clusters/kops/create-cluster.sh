@@ -1,5 +1,6 @@
 #!/bin/bash -ex
 
+# Initial base cluster name (before random UUID is appended)
 CLUSTER_NAME=ci-pipeline
 
 TMP_OUTPUT_LOCATION=./tmp-output
