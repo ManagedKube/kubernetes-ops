@@ -71,6 +71,9 @@ message_banner "Running e2e tests"
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
 git checkout ${UPDATE_TO_BRANCH}
 
+# Copy ci-pipeline kops yaml to the newly created cluster's yaml
+cp ./clusters/aws/kops/clusters/ci-pipeline/values.yaml ./clusters/aws/kops/clusters/ci-pipeline-${CLUSTER_NAME}
+
 # Update the cluster
 message_banner "Updating the cluster"
 ${BASE_FILE_PATH}/update-cluster.sh
