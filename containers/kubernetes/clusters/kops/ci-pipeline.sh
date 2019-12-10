@@ -45,8 +45,8 @@ message_banner "git checkout ${INITIAL_BRANCH}"
 git checkout ${INITIAL_BRANCH}
 
 # # Create initial cluster
-# message_banner "Creating initial cluster"
-# ${BASE_FILE_PATH}/create-cluster.sh
+message_banner "Creating initial cluster"
+${BASE_FILE_PATH}/create-cluster.sh
 
 # Get the cluster name
 CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
