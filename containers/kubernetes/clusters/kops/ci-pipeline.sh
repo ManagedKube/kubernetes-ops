@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 # Parse inputs
 while [ "$1" != "" ]; do
@@ -36,6 +40,15 @@ message_banner() {
     echo "#################################"
 }
 
+wait_for_kube_api_ready() {
+    until kubectl get nodes
+    do
+        echo "Cannot reach the Kubernetes cluster yet.  Wait and try again..."
+        sleep 2
+    done
+}
+
+
 # Checkout the INITIAL_BRANCH branch
 message_banner "git checkout ${INITIAL_BRANCH}"
 git checkout ${INITIAL_BRANCH}
@@ -43,6 +56,8 @@ git checkout ${INITIAL_BRANCH}
 # Create initial cluster
 message_banner "Creating initial cluster"
 ${BASE_FILE_PATH}/create-cluster.sh
+
+wait_for_kube_api_ready()
 
 # Get the cluster name
 CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
