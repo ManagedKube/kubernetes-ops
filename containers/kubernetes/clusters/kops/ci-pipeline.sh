@@ -71,6 +71,8 @@ message_banner "Running e2e tests"
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
 git checkout ${UPDATE_TO_BRANCH}
 
+exit 1
+
 # Update the cluster
 message_banner "Updating the cluster"
 ${BASE_FILE_PATH}/update-cluster.sh
