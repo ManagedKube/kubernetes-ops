@@ -65,7 +65,7 @@ CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 
 # Run e2e tests
 message_banner "Running e2e tests"
-${BASE_FILE_PATH}/e2e-tests.sh
+# ${BASE_FILE_PATH}/e2e-tests.sh
 
 # Checkout the UPDATE_TO_BRANCH branch
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
