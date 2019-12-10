@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 # Set the environment name to the tmp-output name if it exist
 if [ -a ./tmp-output/cluster-name.txt ]; then

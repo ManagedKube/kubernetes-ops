@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 echo "Run sonobuoy Kubernetes e2e tests"
 echo "Running e2e tests"
