@@ -34,3 +34,19 @@ echo "Creating a new kops cluster [NOT DRY RUN]"
 ./kops.sh --name ${CLUSTER_NAME} --create true --dry-run false
 
 echo "cluster name: ${CLUSTER_NAME}"
+
+function wait_for_kube_api_ready() {
+    IS_DONE=-1
+    until ${IS_DONE}
+    do
+        echo "Cannot reach the Kubernetes cluster yet.  Wait and try again..."
+        sleep 2
+
+        STATUS=$(kubectl get nodes | grep "Ready" | wc -l)
+        if [ ${STATUS} -gt 2 ]; then
+            IS_DONE=1
+        fi
+    done
+}
+
+wait_for_kube_api_ready
