@@ -67,12 +67,15 @@ CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 message_banner "Running e2e tests"
 # ${BASE_FILE_PATH}/e2e-tests.sh
 
+
 # Checkout the UPDATE_TO_BRANCH branch
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
 git checkout ${UPDATE_TO_BRANCH}
 
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml
 cp ./clusters/aws/kops/clusters/ci-pipeline/values.yaml ./clusters/aws/kops/clusters/ci-pipeline-${CLUSTER_NAME}
+
+exit 1
 
 # Update the cluster
 message_banner "Updating the cluster"
