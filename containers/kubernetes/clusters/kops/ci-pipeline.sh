@@ -75,6 +75,9 @@ git checkout ${UPDATE_TO_BRANCH}
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml
 cp -a ./clusters/aws/kops/clusters/ci-pipeline/* ./clusters/aws/kops/clusters/${CLUSTER_NAME}/
 
+echo "Replace kops values file with the correct name parameters"
+sed -i "s/ci-pipeline/${CLUSTER_NAME}/g" ./clusters/aws/kops/clusters/${CLUSTER_NAME}/values.yaml
+
 # Update the cluster
 message_banner "Updating the cluster"
 ${BASE_FILE_PATH}/update-cluster.sh
