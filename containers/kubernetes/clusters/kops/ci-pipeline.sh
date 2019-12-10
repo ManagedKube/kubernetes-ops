@@ -26,6 +26,8 @@ if [ -z "${UPDATE_TO_BRANCH}" ]; then
   exit 1
 fi
 
+BASE_FILE_PATH="./containers/kubernetes/clusters/kops"
+
 message_banner() {
     echo "#################################"
     echo "#################################"
@@ -40,14 +42,14 @@ git checkout ${INITIAL_BRANCH}
 
 # Create initial cluster
 message_banner "Creating initial cluster"
-./create-cluster.sh
+${BASE_FILE_PATH}/create-cluster.sh
 
 # Get the cluster name
 CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 
 # Run e2e tests
 message_banner "Running e2e tests"
-./e2e-tests.sh ${CLUSTER_NAME}
+${BASE_FILE_PATH}/e2e-tests.sh ${CLUSTER_NAME}
 
 # Checkout the UPDATE_TO_BRANCH branch
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
@@ -55,8 +57,8 @@ git checkout ${UPDATE_TO_BRANCH}
 
 # Update the cluster
 message_banner "Updating the cluster"
-./update-cluster.sh
+${BASE_FILE_PATH}/update-cluster.sh
 
 # Run e2e tests
 message_banner "Running e2e tests"
-./e2e-tests.sh ${CLUSTER_NAME}
+${BASE_FILE_PATH}/e2e-tests.sh ${CLUSTER_NAME}
