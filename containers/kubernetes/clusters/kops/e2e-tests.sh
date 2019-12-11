@@ -10,11 +10,13 @@ echo "Running e2e tests"
 # Delete previous test
 sonobuoy delete --all --wait
 
-# Long test
-# sonobuoy run --e2e-focus="\\[Conformance\\]" --e2e-skip="(\[Serial\])" --wait
-
-# Quick test
-sonobuoy run --mode quick --wait
+if [ ! -z "${E2E_TESTS_QUICK_MODE}" ]; then
+  # Quick test
+  sonobuoy run --mode quick --wait
+else
+  # Long test
+  sonobuoy run --e2e-focus="\\[Conformance\\]" --e2e-skip="(\[Serial\])" --wait
+fi
 
 # Get results
 results=$(sonobuoy retrieve)
