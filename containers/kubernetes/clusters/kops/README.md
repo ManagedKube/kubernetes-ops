@@ -1,5 +1,21 @@
 # kops
 
+## What you get
+Yes, this is a very opinionated way of doing the upgrade.  It is also very generic.  Nothing that special about it.
+It runs through `kops` update process in an automated way.  This is using pure `kops` tooling with Github Actions and
+some glue code (mostly in Bash).  
+
+Why do this then?  The only way to "glue" everything together and have it consitently working version to version is to
+define how the cluster is defined and created.  Then the automation knows how to handle it.  Without you "subscribing" to
+this method on how to manage your `kops` cluster, you would have to maintain all of this yourself.  
+
+While this is just one of many ways to managed a `kops` cluster, we have found that managing a `kops` cluster this way is
+very reasonable.  Over the years of our consultancy, we have managed a lot of `kops` clusters this way with a lot of varying
+technical "asks" and it mostly handled anything that was asked for.
+
+You get a fully automated `kops` update pipeline to update your kops cluster (with the correct binaries for everything), testing
+the cluster after creation, and posting info back to PRs or comments on the output of the update.
+
 ## What the scripts do:
 
 ### setup.sh
