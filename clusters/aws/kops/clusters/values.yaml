@@ -19,3 +19,7 @@ etcd:
 docker:
   overrides: false
   bridgeIP: 172.26.0.1/16
+
+coreos:
+  # Disables CoreOS auto update: https://github.com/kubernetes/kops/pull/4909
+  disableAutoUpgrade: true

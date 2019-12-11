@@ -13,6 +13,10 @@ kind: Cluster
 metadata:
   name: {{ .kopsName }}.{{ .dnsZone }}
 spec:
+  {{- if .coreos.disableAutoUpgrade }}
+  # Disables CoreOS auto update: https://github.com/kubernetes/kops/pull/4909
+  updatePolicy: external
+  {{- end }}
   hooks:
   # Adding here since the kubeAPIServer.DisableBasicAuth is not working in this kops version yet
   - before:
