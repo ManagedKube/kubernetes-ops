@@ -1,6 +1,6 @@
 kopsName: ci-pipeline.us-east-1
 s3BucketName: kubernetes-ops-expanse-1234-kops-state-store
-kubernetesVersion: 1.14.8
+kubernetesVersion: 1.14.9
 dnsZone: k8s.local
 awsRegion: us-east-1
 vpc: vpc-040b894f25ade9ef4
