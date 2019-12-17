@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-bench-node
+spec:
+  template:
+    spec:
+      hostPID: true
+      containers:
+      - name: kube-bench
+        image: aquasec/kube-bench:latest
+        imagePullPolicy: Always
+        # command: ["kube-bench","node", "--version", "1.11", "--json"]
+        command: ["kube-bench", "--version", "1.11"]
+        # command: ["kube-bench","node"]
+        volumeMounts:
+        - name: var-lib-kubelet
+          mountPath: /var/lib/kubelet
+        - name: etc-systemd
+          mountPath: /etc/systemd
+        - name: etc-kubernetes
+          mountPath: /etc/kubernetes
+          # /usr/bin is mounted to access kubectl / kubelet, for auto-detecting the Kubernetes version.
+          # You can omit this mount if you specify --version as part of the command.
+        - name: usr-bin
+          mountPath: /usr/bin
+      restartPolicy: Never
+      volumes:
+      - name: var-lib-kubelet
+        hostPath:
+          path: "/var/lib/kubelet"
+      - name: etc-systemd
+        hostPath:
+          path: "/etc/systemd"
+      - name: etc-kubernetes
+        hostPath:
+          path: "/etc/kubernetes"
+      # CoreOS path to where the kubelet binary is
+      - name: usr-bin
+        hostPath:
+          path: "/opt/kubernetes/bin"
