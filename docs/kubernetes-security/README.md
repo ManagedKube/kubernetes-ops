@@ -1,4 +1,6 @@
 # Kubernetes Security
+This page is here to describe security challenages and possible solutions to various security concerns in a 
+Kubernetes deployment.
 
 ## Control plane
 
