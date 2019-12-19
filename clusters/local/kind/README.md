@@ -41,3 +41,11 @@ There is also a verbose flag to give you more information on what it is doing: `
 
 ## nginx-ingress
 
+```
+cd kubernetes/helm/nginx-ingress/
+```
+
+Deploy:
+```
+make ENVIRONMENT=kind external-apply
+```

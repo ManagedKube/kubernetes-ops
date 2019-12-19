@@ -12,3 +12,9 @@ nginx-ingress:
       # # Temporary ManagedKube
       # - 38.30.8.138/32
       # - 1.1.1.1/32
+
+    service:
+      type: NodePort
+      nodePorts:
+        http: "30080"
+        https: "30443"
