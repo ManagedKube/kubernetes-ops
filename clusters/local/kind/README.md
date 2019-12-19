@@ -49,3 +49,15 @@ Deploy:
 ```
 make ENVIRONMENT=kind external-apply
 ```
+
+## http-echo app
+
+```
+cd kubernetes/helm/http-echo
+```
+
+Deploy:
+```
+kubectl apply -f namespace.yaml
+kubectl -n http-echo apply -f .
+```
