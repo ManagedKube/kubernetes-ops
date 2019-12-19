@@ -2,6 +2,11 @@
 This page is here to describe security challenages and possible solutions to various security concerns in a 
 Kubernetes deployment.
 
+## Traditional n-tier archtecture
+This diagram represents a non-containerized n-tier architecture:
+
+![the stack](/docs/kubernetes-security/images/n-tier-application-architecture.png)
+
 ## Control plane
 
 ![the stack](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
