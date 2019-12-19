@@ -42,10 +42,10 @@ nginx-ingress:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
-            - key: app
+            - key: component
               operator: In
               values:
-              - nginx-ingress
+              - controller
           topologyKey: "kubernetes.io/hostname"
 
   defaultBackend:
@@ -59,8 +59,8 @@ nginx-ingress:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
-            - key: app
+            - key: component
               operator: In
               values:
-              - nginx-ingress
+              - default-backend
           topologyKey: "kubernetes.io/hostname"
