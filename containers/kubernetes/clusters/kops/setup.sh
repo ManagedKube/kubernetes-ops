@@ -13,7 +13,7 @@ KOPS_BINARY="https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION
 SONOBUOY_URL="https://github.com/vmware-tanzu/sonobuoy/releases/download/v${SONOBUOY_VERSION}/sonobuoy_${SONOBUOY_VERSION}_linux_amd64.tar.gz"
 
 echo "Setup ubuntu"
-apt-get update && apt-get install -y curl keychain
+apt-get update && apt-get install -y curl keychain git
 
 echo "Setup kubectl"
 curl -LO ${KUBECTL_BINARY}
