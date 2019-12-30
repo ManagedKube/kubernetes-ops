@@ -34,6 +34,12 @@ This script runs the e2e tests
 ### update-cluster.sh
 This script updates the cluster
 
+### ci-pipeline.sh
+
+```
+./ci-pipeline.sh --initial-branch master --updated-to-branch kops-update-1.4.7
+```
+
 ## Local workflow
 
 ### Build
@@ -86,10 +92,10 @@ managedkube/kops:dev bash
 
 run the cluster update:
 ```
-./containers/kops/update-cluster.sh
+./containers/kubernetes/clusters/kops/update-cluster.sh
 ```
 
 run the Kubernetes e2e tests:
 ```
-./containers/kops/e2e-tests.sh
+./containers/kubernetes/clusters/kops/e2e-tests.sh
 ```
