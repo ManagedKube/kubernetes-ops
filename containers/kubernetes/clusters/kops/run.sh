@@ -31,7 +31,7 @@ do
     sleep 2
 
     STATUS=$(aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN} | jq -r .tasks[0].lastStatus)
-    if [ "${STATUS}" == "RUNNING" ]; then
+    if [ "${STATUS}" == "STOPPED" ]; then
         IS_DONE=true
     fi
 done
@@ -40,5 +40,5 @@ TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
 # Follow logs until it has completed
 set -x
-ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID} --follow
+ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}
 set +x
