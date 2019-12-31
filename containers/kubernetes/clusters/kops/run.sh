@@ -1,4 +1,8 @@
-#!/bin/bash -ex
+#!/bin/bash -e
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
 
 CLUSTER_NAME="fargate-cluster"
 PIPELINE_VERSION=20
