@@ -16,6 +16,10 @@ technical "asks" and it mostly handled anything that was asked for.
 You get a fully automated `kops` update pipeline to update your kops cluster (with the correct binaries for everything), testing
 the cluster after creation, and posting info back to PRs or comments on the output of the update.
 
+## Docs
+
+Task definition doc: [https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#family](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#family)
+
 ## What the scripts do:
 
 ### setup.sh
