@@ -67,6 +67,12 @@ jobs:
       #   run: |
       #     export PATH=$(pwd):$PATH
       #     echo "Running statefulset tests"
+      - name: Set up ecs-cli
+        run: |
+          curl -o ./ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
+          export PATH=$(pwd):$PATH
+          ecs-cli --version
       - name: Run Fargate job
         run: |
+           export PATH=$(pwd):$PATH
           ./containers/kubernetes/clusters/kops/run.sh
