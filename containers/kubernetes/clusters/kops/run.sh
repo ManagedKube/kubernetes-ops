@@ -23,6 +23,10 @@ set -x
 aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN}
 set +x
 
+echo "#########################################"
+echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}"
+echo "#########################################"
+
 # Poll until lastStatus is RUNNING
 IS_DONE=false
 until ${IS_DONE}
