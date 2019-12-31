@@ -74,5 +74,5 @@ jobs:
           ecs-cli --version
       - name: Run Fargate job
         run: |
-           export PATH=$(pwd):$PATH
+          export PATH=$(pwd):$PATH
           ./containers/kubernetes/clusters/kops/run.sh
