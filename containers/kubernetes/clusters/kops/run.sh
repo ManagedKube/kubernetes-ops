@@ -11,7 +11,9 @@ PIPELINE_VERSION=20
 TASK_ARN=$(aws ecs run-task --cluster ${CLUSTER_NAME}  --task-definition pipeline:${PIPELINE_VERSION} --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0121a9057485fbe72],securityGroups=[sg-01b56214e8d158906]}" | jq -r .tasks[0].taskArn)
 
 # Output Fargate task description
+set -x
 aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN}
+set +x
 
 # Poll until lastStatus is RUNNING
 IS_DONE=false
@@ -29,4 +31,6 @@ done
 TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
 # Follow logs until it has completed
+set -x
 ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID} --follow
+set +x
