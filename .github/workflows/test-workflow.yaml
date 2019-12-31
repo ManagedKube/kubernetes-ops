@@ -71,6 +71,7 @@ jobs:
         run: |
           curl -o ./ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
           export PATH=$(pwd):$PATH
+          chmod 755 ecs-cli
           ecs-cli --version
       - name: Run Fargate job
         run: |
