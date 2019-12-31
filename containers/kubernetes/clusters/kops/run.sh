@@ -1,5 +1,13 @@
 #!/bin/bash -e
 
+###################################################
+##
+## This script run inside of Github Actions.
+##
+## Need to rebuild Docker container on edit: false
+##
+###################################################
+
 if [ ! -z "${DEBUG}" ]; then
   set -x
 fi

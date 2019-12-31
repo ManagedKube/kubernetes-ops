@@ -1,5 +1,13 @@
 #!/bin/bash -e
 
+###################################################
+##
+## This script run inside of the Fargate Docker container.
+##
+## Need to rebuild Docker container on edit: true
+##
+###################################################
+
 if [ ! -z "${DEBUG}" ]; then
   set -x
 fi
