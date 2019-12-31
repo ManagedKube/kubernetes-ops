@@ -20,9 +20,9 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-18.04
     steps:
-      # # Checkout the repository
-      # - name: Checkout
-      #   uses: actions/checkout@v1
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v1
       # # Set up kops
       # - name: Set up kops
       #   run: |
@@ -69,4 +69,4 @@ jobs:
       #     echo "Running statefulset tests"
       - name: Run Fargate job
         run: |
-          aws ecs run-task --cluster fargate-cluster  --task-definition pipeline:10 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0121a9057485fbe72],securityGroups=[sg-01b56214e8d158906]}"
+          ./containers/kubernetes/clusters/kops/run.sh
