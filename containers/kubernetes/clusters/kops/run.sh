@@ -17,7 +17,7 @@ do
     if [ "${STATUS}" == "RUNNING" ]; then
         IS_DONE=true
     fi
-done    
+done
 
 TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
