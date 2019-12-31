@@ -20,50 +20,53 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-18.04
     steps:
-      # Checkout the repository
-      - name: Checkout
-        uses: actions/checkout@v1
-      # Set up kops
-      - name: Set up kops
+      # # Checkout the repository
+      # - name: Checkout
+      #   uses: actions/checkout@v1
+      # # Set up kops
+      # - name: Set up kops
+      #   run: |
+      #     curl -o kops --location ${KOPS_BINARY}
+      #     chmod u+x ./kops
+      #     export PATH=$(pwd):$PATH
+      #     kops version
+      # # Set up sonobuoy
+      # - name: Set up sonobuoy
+      #   run: |
+      #     curl -o ${SONOBUOY_TAR_FILE}.tar.gz --location ${SONOBUOY_URL}/${SONOBUOY_TAR_FILE}.tar.gz
+      #     tar -zxvf ${SONOBUOY_TAR_FILE}.tar.gz
+      #     export PATH=$(pwd):$PATH
+      #     sonobuoy version
+      # # This step prints an output (time) from the previous step's action.
+      # - name: Apply kops update [DRY RUN]
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     cd ./clusters/aws/kops
+      #     ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
+      # - name: Apply kops update [NOT DRY RUN]
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     cd ./clusters/aws/kops
+      #     ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
+      # - name: Apply kops rolling update [DRY RUN]
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     cd ./clusters/aws/kops
+      #     ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run true
+      # - name: Apply kops rolling update [NOT DRY RUN]
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     cd ./clusters/aws/kops
+      #     ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false
+      # - name: Run sonobuoy Kubernetes e2e tests
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     echo "Running e2e tests"
+      #     sonobuoy run --e2e-focus="\\[Conformance\\]" --e2e-skip="(\[Serial\])" --wait
+      # - name: Run Kubernetes statefulset test
+      #   run: |
+      #     export PATH=$(pwd):$PATH
+      #     echo "Running statefulset tests"
+      - name: Run Fargate job
         run: |
-          curl -o kops --location ${KOPS_BINARY}
-          chmod u+x ./kops
-          export PATH=$(pwd):$PATH
-          kops version
-      # Set up sonobuoy
-      - name: Set up sonobuoy
-        run: |
-          curl -o ${SONOBUOY_TAR_FILE}.tar.gz --location ${SONOBUOY_URL}/${SONOBUOY_TAR_FILE}.tar.gz
-          tar -zxvf ${SONOBUOY_TAR_FILE}.tar.gz
-          export PATH=$(pwd):$PATH
-          sonobuoy version
-      # This step prints an output (time) from the previous step's action.
-      - name: Apply kops update [DRY RUN]
-        run: |
-          export PATH=$(pwd):$PATH
-          cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
-      - name: Apply kops update [NOT DRY RUN]
-        run: |
-          export PATH=$(pwd):$PATH
-          cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
-      - name: Apply kops rolling update [DRY RUN]
-        run: |
-          export PATH=$(pwd):$PATH
-          cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run true
-      - name: Apply kops rolling update [NOT DRY RUN]
-        run: |
-          export PATH=$(pwd):$PATH
-          cd ./clusters/aws/kops
-          ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false
-      - name: Run sonobuoy Kubernetes e2e tests
-        run: |
-          export PATH=$(pwd):$PATH
-          echo "Running e2e tests"
-          sonobuoy run --e2e-focus="\\[Conformance\\]" --e2e-skip="(\[Serial\])" --wait
-      - name: Run Kubernetes statefulset test
-        run: |
-          export PATH=$(pwd):$PATH
-          echo "Running statefulset tests"
+          aws ecs run-task --cluster fargate-cluster  --task-definition pipeline:10 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0121a9057485fbe72],securityGroups=[sg-01b56214e8d158906]}"
