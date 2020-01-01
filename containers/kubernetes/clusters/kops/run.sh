@@ -26,7 +26,7 @@ set +x
 TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
 echo "#########################################"
-echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}"
+echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
 echo "#########################################"
 
 # Poll until lastStatus is RUNNING
