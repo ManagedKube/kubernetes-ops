@@ -12,6 +12,7 @@ env:
   AWS_DEFAULT_REGION: us-east-1
   KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
   ENVIRONMENT_NAME: dev-test
+  DELETE_PREVIOUS_CLUSTER: "true"
 
 jobs:
   build:
