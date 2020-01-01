@@ -23,6 +23,8 @@ set -x
 aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN}
 set +x
 
+TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
+
 echo "#########################################"
 echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}"
 echo "#########################################"
@@ -39,8 +41,6 @@ do
         IS_DONE=true
     fi
 done
-
-TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
 # Follow logs until it has completed
 set -x
