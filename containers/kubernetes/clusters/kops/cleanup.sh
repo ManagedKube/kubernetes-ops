@@ -1,8 +1,23 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 CLUSTER_NAME_PREFIX="ci-pipeline"
 
 if [ "${DELETE_PREVIOUS_CLUSTER}" == "true" ]; then
-    # Delete all cluster staring with ${CLUSTER_NAME_PREFIX} in the name
-    kops get clusters --skip_headers | grep -e "^${CLUSTER_NAME_PREFIX}.*" | awk '{print $1}' | xargs kops delete cluster --yes
+    
+    # Loop through the kops get clusters output and get each cluster name
+    for row in $(kops get clusters --output json | jq -r '.[] | @base64'); do
+        _jq() {
+            echo ${row} | base64 --decode | jq -r ${1}
+        }
+
+        CLUSTER_NAME=$(_jq '.metadata.name')
+
+        # Delete all cluster staring with ${CLUSTER_NAME_PREFIX} in the name
+        if echo ${CLUSTER_NAME} | grep -e "^${CLUSTER_NAME_PREFIX}"; then
+
+            echo "Deleting cluster: ${CLUSTER_NAME}"
+            kops delete cluster ${CLUSTER_NAME} --yes
+        fi
+    done
+
 fi
