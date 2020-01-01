@@ -5,13 +5,10 @@ on: [push]
 # Environment variables available to all jobs and steps in this workflow
 env:
   KOPS_BINARY: "https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64"
-  SONOBUOY_URL: "https://github.com/vmware-tanzu/sonobuoy/releases/download/v0.14.3/"
-  SONOBUOY_TAR_FILE: "sonobuoy_0.14.3_linux_amd64"
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-east-1
   KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
-  ENVIRONMENT_NAME: dev-test
   DELETE_PREVIOUS_CLUSTER: "true"
 
 jobs:
@@ -31,43 +28,6 @@ jobs:
           chmod u+x ./kops
           export PATH=$(pwd):$PATH
           kops version
-      # # Set up sonobuoy
-      # - name: Set up sonobuoy
-      #   run: |
-      #     curl -o ${SONOBUOY_TAR_FILE}.tar.gz --location ${SONOBUOY_URL}/${SONOBUOY_TAR_FILE}.tar.gz
-      #     tar -zxvf ${SONOBUOY_TAR_FILE}.tar.gz
-      #     export PATH=$(pwd):$PATH
-      #     sonobuoy version
-      # # This step prints an output (time) from the previous step's action.
-      # - name: Apply kops update [DRY RUN]
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     cd ./clusters/aws/kops
-      #     ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run true
-      # - name: Apply kops update [NOT DRY RUN]
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     cd ./clusters/aws/kops
-      #     ./kops.sh --name ${ENVIRONMENT_NAME} --update true --dry-run false
-      # - name: Apply kops rolling update [DRY RUN]
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     cd ./clusters/aws/kops
-      #     ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run true
-      # - name: Apply kops rolling update [NOT DRY RUN]
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     cd ./clusters/aws/kops
-      #     ./kops.sh --name ${ENVIRONMENT_NAME} --rolling-update true --cloudonly true --dry-run false
-      # - name: Run sonobuoy Kubernetes e2e tests
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     echo "Running e2e tests"
-      #     sonobuoy run --e2e-focus="\\[Conformance\\]" --e2e-skip="(\[Serial\])" --wait
-      # - name: Run Kubernetes statefulset test
-      #   run: |
-      #     export PATH=$(pwd):$PATH
-      #     echo "Running statefulset tests"
       - name: Set up ecs-cli
         run: |
           curl -o ./ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
