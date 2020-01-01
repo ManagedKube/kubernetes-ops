@@ -23,13 +23,13 @@ jobs:
       # Checkout the repository
       - name: Checkout
         uses: actions/checkout@v1
-      # # Set up kops
-      # - name: Set up kops
-      #   run: |
-      #     curl -o kops --location ${KOPS_BINARY}
-      #     chmod u+x ./kops
-      #     export PATH=$(pwd):$PATH
-      #     kops version
+      # Set up kops
+      - name: Set up kops
+        run: |
+          curl -o kops --location ${KOPS_BINARY}
+          chmod u+x ./kops
+          export PATH=$(pwd):$PATH
+          kops version
       # # Set up sonobuoy
       # - name: Set up sonobuoy
       #   run: |
@@ -73,7 +73,16 @@ jobs:
           export PATH=$(pwd):$PATH
           chmod 755 ecs-cli
           ecs-cli --version
+      - name: Run cleanup
+        run: |
+          export PATH=$(pwd):$PATH
+          ./containers/kubernetes/clusters/kops/cleanup.sh
       - name: Run Fargate job
         run: |
           export PATH=$(pwd):$PATH
           ./containers/kubernetes/clusters/kops/run.sh
+      - name: Run cleanup
+        run: |
+          export PATH=$(pwd):$PATH
+          ./containers/kubernetes/clusters/kops/cleanup.sh
+
