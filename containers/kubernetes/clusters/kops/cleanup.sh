@@ -1,5 +1,13 @@
 #!/bin/bash -e
 
+###################################################
+##
+## This script run inside of Github Actions.
+##
+## Need to rebuild Docker container on edit: false
+##
+###################################################
+
 CLUSTER_NAME_PREFIX="ci-pipeline"
 
 if [ "${DELETE_PREVIOUS_CLUSTER}" == "true" ]; then
