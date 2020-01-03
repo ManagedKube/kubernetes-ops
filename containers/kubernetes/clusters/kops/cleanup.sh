@@ -29,7 +29,9 @@ if [ "${DELETE_PREVIOUS_CLUSTER}" == "true" ]; then
         if echo ${CLUSTER_NAME} | grep -e "^${CLUSTER_NAME_PREFIX}"; then
 
             echo "Deleting cluster: ${CLUSTER_NAME}"
+            set -x
             kops delete cluster ${CLUSTER_NAME} --yes
+            set +x
         fi
     else
 
@@ -45,7 +47,9 @@ if [ "${DELETE_PREVIOUS_CLUSTER}" == "true" ]; then
             if echo ${CLUSTER_NAME} | grep -e "^${CLUSTER_NAME_PREFIX}"; then
 
                 echo "Deleting cluster: ${CLUSTER_NAME}"
+                set -x
                 kops delete cluster ${CLUSTER_NAME} --yes
+                set +x
             fi
         done
 
