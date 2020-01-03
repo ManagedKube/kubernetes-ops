@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
+
 ###################################################
 ##
 ## This script run inside of Github Actions.
