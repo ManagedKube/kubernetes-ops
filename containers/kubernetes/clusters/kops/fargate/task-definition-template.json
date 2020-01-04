@@ -18,7 +18,7 @@
             "environment" : [
                 { "name" : "KOPS_STATE_STORE", "value": "s3://xxxx"},
                 { "name" : "ENVIRONMENT_NAME", "value" : "dev-test" },
-                { "name" : "E2E_TESTS_QUICK_MODE", "value": "true"}
+                { "name" : "E2E_TESTS_QUICK_MODE", "value": "false"}
             ],
             "logConfiguration": {
                 "logDriver": "awslogs",
