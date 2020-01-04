@@ -7,11 +7,12 @@
             "image": "managedkube/kops:dev", 
             "essential": true, 
             "entryPoint": [
-                "sh",
-		        "-c"
+                "./containers/kubernetes/clusters/kops/ci-pipeline.sh"
             ], 
             "command": [
-                "./containers/kubernetes/clusters/kops/ci-pipeline.sh -i master -u",
+                "-i",
+                "master",
+                "-u",
                 "master"
             ],
             "environment" : [
