@@ -49,7 +49,9 @@ message_banner() {
 }
 
 # Checkout the INITIAL_BRANCH branch
+git fetch
 message_banner "git checkout ${INITIAL_BRANCH}"
+git pull origin ${INITIAL_BRANCH}
 git checkout ${INITIAL_BRANCH}
 
 # # Create initial cluster
