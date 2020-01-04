@@ -6,10 +6,6 @@ awsRegion: us-east-1
 vpc: vpc-040b894f25ade9ef4
 sshKeyName: kubernetes_ops
 
-api:
-  loadBalancer:
-    type: Public
-
 availabilityZonesEtcd:
 - masterZoneName: a
   etcdName: a

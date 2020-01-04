@@ -11,9 +11,11 @@
 		        "-c"
             ], 
             "command": [
-                "./containers/kubernetes/clusters/kops/ci-pipeline.sh -i master -u master"
+                "./containers/kubernetes/clusters/kops/ci-pipeline.sh -i master -u",
+                "master"
             ],
             "environment" : [
+                { "name" : "KOPS_STATE_STORE", "value": "s3://xxxx"},
                 { "name" : "ENVIRONMENT_NAME", "value" : "dev-test" },
                 { "name" : "E2E_TESTS_QUICK_MODE", "value": "true"}
             ],
