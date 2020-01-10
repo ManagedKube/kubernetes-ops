@@ -45,6 +45,33 @@ public IP address and an internal IP address spanning the two networks.  It has 
 usually appliances which has limited functionality and are hardend for security.  However, this is again just software and over the years, there has been numerous
 remotely exploitable vulnerabilities against top VPN vendors.
 
+### [6] Availability zones
+In this particular example there are two availability zones.  These are usually physical segments of the network where each availability zone is isolated in a sense where a zone can have it's own power, racks, routers, switches, and servers.  This means that if there is a physical problem or a configuration issue on these set of items, it will only affect this zone.  The other zone(s) should be still good.
+
+In this setup, we are using 2 zones and the load balancer is pointed to both zones and we have the same servers one in each zone for high availability and
+redundancy.
+
+### [7] Web tier subnet
+The web tier holds the externally facing web servers.  This is the only subnet that the load balancers are pointed to and to specific servers sitting on specific
+set of ports.
+* This subnet has access control rules (ACLs) to allow traffic from the load balancer to it's servers in this subnet
+* Ther are no other inbound traffic that is allowed into this subnet (except for management traffic)
+
+### [8] Business tier
+The business tier is just one or more set(s) of subnets and server(s) that does backend work.  These items are not exposed externally that has an external load balancer pointed to it.  This set of workload provides support functionality to the application.  This could be supporting the web tier to retrieve some information or it could be
+a set of batch jobs that runs on some interval to crunch data.  
+
+The picture depicts one subnet in each zone but it could be a bunch of different subnets with different types of workload(s) living in it.  The main point
+here is that these set of servers are isolated from the internet and has no direct connections.  Further more, it can have only limited connections inbound
+to it.  If this set of servers only serves the web tier, then inbound traffic should only be able to come from the web tier.  If there are additional business
+tier that does a batch job and it doesnt need any incoming connections and all it needs is to go and fetch data from the database, it might not allow any
+incomming connections to it (except for management traffic).
+
+### [9] Datastore
+The datastore tier is one or more set of subnets and servers that provide data storage functionality.  These can be databases, object stores, NoSQL clusters, etc.
+Since the datastores is where a lot of valuable information is kept, it is usually isolated off and monitored heavily.  It has tight controls on what can connect
+to it.
+
 ## Control plane
 
 ![the stack](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
