@@ -139,6 +139,22 @@ Same as "server configuration", this is just denoting that the bastion host is u
 ### [9] Datastore configuration
 Depending on what the datastore is, it might or might not be under the configuration management's control.  Services like AWS RDS, will not allow you to do this.  All configuration changes will be done through Terraform.  However, if these were regular machines, then it would be under the configuration managements control.
 
+## Transition to Kubernetes
+The transition to Kubernetes has a lot of similarities to the "n-tier architecture" setup.  At the end of the day, it is trying to provide the same functionality but with more ease of use in the workflow and cheaper compute cost by colocating more items to make your usage of the cloud more dense.
+
+Easier workflow:
+* With the "n-tier architecture" and the control plane above, the machanism to update code was not so great.  To update code, you were basically dealing with infrastructure to perform the upgrade.  It was very hard to test the setup locally because you just didn't have the machines locally and if you did, you need it under the control of the Chef Master.  This made it hard to create something and then reasonably test it locally to make sure it works like how it will be deployed in production.
+* This usually meant that developers had a development environment locally where they created the application.  They tested the application to the best of their abilities locally.  Then they would send the application off to the CI/CD system.  If the application called for adding a library or updating something, they had to either go to the Chef code and make the changes there or ask the infrastructure people to make that change.  Then they would have to coordinate on when those changes will be pushed out.  Can it be pushed out before the new application code gets pushed out?  Can the current application version handle that?  Does the infra changes have to happen at the same time as the application code gets pushed out?  There were just a lot of dependencies here which make updating anything a tricky process.
+
+Cost:
+* Usually each of the server(s) is running only one application.  How utilized is this server?  Servers are usually only 20% utilized (point to some sources of this 20% number here) which means 80% of what you are paying the cloud provider is going to waste.
+* It also cost a company more when there has to be a high degree of coordination between teams like the above example between dev and infrastructure teams to deploy something out.  This usually mean that you had one or more person from each team to attend the deployment.  Sometime you can only do deployments during off hours.  Now you have these people at some odd hours of the night performing these tasks.  Not only will they not like it, their productivity the next day will surely suffer.
+
+Moving to the Kubernetes infrastructure and workflow tries to solve some of these problems.
+
+
+List out how the above maps to kubernetes here:
+
 ## Control plane
 
 ![the stack](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
