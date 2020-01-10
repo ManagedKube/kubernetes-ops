@@ -85,7 +85,7 @@ Terraform, is a tool to help you create infrastructure as code.  You define what
 
 Chef, is a configuration management tool to configure servers.  There is a Chef agent running on each of the servers connected to a Chef master to get what configuration should go onto it.  Depending on the servers Chef configuration it can go and get the web server's setup, the backend tier server setup or any other server setup and configuration you might define.  This tool will help you setup the virtual machine and perform actions like setup the host file, install Apache, install and setup Java, or update the machine.  Basically anything you can do on a Linux command line, you can program Chef to do it in an automated way on one or more machines.  This make it easy to control hundreds if not thousands of machine and have them configured just the way you want them.  When you want to change something like the version of Apache or Java running on the machines, you update your Chef recipe(s) (the configuration code) with what you want to change and then publish it to the Chef Master.  The machines checks for new configurations periodically and once it sees a new configuration for itself, it will start applying it.  If the change was to update the version of Apache, it will go and update the version of Apache.
 
-[1] The network
+### [1] The network
 The cloud providers usually gives you a construct mostly known as a virtual private cloud (VPC).  You can think of this as your datacenter or a logical contruct that holds everything else in side of it.  Everything in the grey box will be inside of tihs VPC.
 
 Creating this logical contruct you usually define items such as:
@@ -95,12 +95,12 @@ Creating this logical contruct you usually define items such as:
 
 In the diagram, the Terraform tool creates these items.
 
-[2] Subnets
+### [2] Subnets
 The next thing to define are subnets.  You won't be able to create any resources such as VM instances, load balancer, databases without a subnet because you have to put these items in a subnet.
 
 In this diagram, the Terraform tool creates these items.
 
-[3] Load Balancer
+### [3] Load Balancer
 The load balancer needs to be created and the Terraform tool can create that for us.  
 
 We define the parameters such as:
@@ -112,7 +112,7 @@ We define the parameters such as:
 * Routing algorithms
 * etc
 
-[4] Server groups
+### [4] Server groups
 While this arrow is only pointing to one set of server groups.  Each server groups similar to this will be created in a similar way.  Server groups is one or more servers that are identical in configuration.  You create server groups for high availability or to handle more load.  
 
 Configurations:
@@ -124,19 +124,19 @@ Configurations:
 * Startup configurations - what server type is it
 * etc
 
-[5] Bastion host
+### [5] Bastion host
 This is similar to the "server groups" but instead this is usually just one server.  You would still use Terraform to create this server because you don't want to do this manually.  This also makes recreating it easy since all of the configuration on how it was created is in code.
 
-[6] Databases
+### [6] Databases
 Databases are also created with Terraform.  Most cloud providers has some kind of a managed database option and for the most part Terraform can help you create those also.  For example it can help you create AWS RDS which is a managed database service from AWS.  At the end of the day, these managed database services are still machine and configurating them ask you the same questions as if you were configuration a machine (like the configurations above).
 
-[7] Server configuration
+### [7] Server configuration
 After the machine (virtual machine instance) has been created by Terraform, the machine will boot up and start doing what you configured it to do.  In this scenario, the machine will connect to it's Chef master and get the configs for itself.  In Terraform when we created this server group or machine we also gave it information on what type of server it is and access to the Chef Master.  The machine will use this information when contacting the Chef Master for it's configuration and then proceed to provision itself and bring it up to a ready state.
 
-[8] Bastion configuration
+### [8] Bastion configuration
 Same as "server configuration", this is just denoting that the bastion host is under the same controls
 
-[9] Datastore configuration
+### [9] Datastore configuration
 Depending on what the datastore is, it might or might not be under the configuration management's control.  Services like AWS RDS, will not allow you to do this.  All configuration changes will be done through Terraform.  However, if these were regular machines, then it would be under the configuration managements control.
 
 ## Control plane
