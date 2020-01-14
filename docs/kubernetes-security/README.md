@@ -154,8 +154,22 @@ Moving to the Kubernetes infrastructure and workflow tries to solve some of thes
 
 This does not necessarily mean that Kubernetes is easier.  In fact, Kubernetes makes everything more complicated.  Think about when we went from bare metal servers to virtualization.  That added a layer of complexity.  Just like that, we are now not only using virtualization and containers, there is the Kubernetes layer that is placed on top of all of that.  With more layers and each layer interacting with the layer below and above it, there is just more to know about the entire stack.  However, these layers also helps us abstract things we do not want to deal with.  For example, performing a "rolling deployment" of an application.  Prior to Kubernetes, we mostly had to create a scheme or write something up to do this.  It would bring up a new node or application with the new version, make sure it is up and running, and then put it behind the load balancer.  That was usually custom code.  With Kubernetes, that concept and workflow is already built into Kubernetes.  If you follow their opinionated way of doing it, you don't have to create anything custom and you can just use it.  There are many more examples like that but the point here is that with the added complexity you get added functionality.  The downside (there is always a downside to something you get for free), is that it makes everything more complex and difficult to understand and troubleshoot.  I think the projects like these have to strike a balance between giving useful functionality to the users and keeping it to a level where people can reasonable learn how to make this work for them and be able to troubleshoot it.  I do think that Kubernetes is leaning a little on the more difficult side though.
 
+## How the n-teir architecture maps to Kubernetes
 
-List out how the above maps to kubernetes here:
+### Control plane
+There are still two levels here:
+
+1) Infrastructure building
+* This is mostly the same.  Terraform has less duties in the Kubernetes architecture
+* Terraform still creates the VPC and some some subnets but it does not create the server nodes anymore
+* Kubernetes will create the subnets, nodes, load balancers, etc that it needs.  
+
+2) Orchestration and scheduling
+* Chef will not be used anymore
+* Kubernetes will handle scheduling workloads onto a node
+* There are still various groups of nodes in various subnets but Kubernetes will be controlling all of this
+* There can now also be shared workload nodes where a generic type of workload can run on to gain more node usage efficiency
+
 
 ## Control plane
 
