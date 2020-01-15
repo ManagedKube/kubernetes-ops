@@ -173,10 +173,32 @@ There are still two levels here:
 
 ## Control plane
 
-![the stack](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
+![kubernetes control plane](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
 
-### 1
-All pieces communicates with the Kubernetes API via the same interface through a RESTful API.
+### [1] Kubernetes API
+The "Kubernetes API" (RESTful API) is composed of a few services composed in a microservice fashion.  The main point we will go over here is that this is how you interact with Kubernetes and how the kubernetes ecosystem interacts with Kubernetes.  This is the single (redundant) interface where everything talks to Kubernetes through.  If you are using the `kubectl` tool or an Kubernetes SDK.  This handles authentication, authorization, and accounting. 
+
+That makes these items one of the most important pieces in the environment.  If these items are compromised that can likely mean that the intruder can do whatever they feel like on your cluster.  This means that these items should be protected very very well.
+
+For example you should:
+* Not put the Kubernetes API on the internet.  You should not be able to reach this API endpoint directly.  This is basically your main control point for the Kubernetes cluster.  While this endpoint does have authentication, there has been numerous vulnerabilities with this endpoint where a user can bypass authentication or authorization and who's to say that there are no more of these bugs in this API.  It is best just to not put this directly on the internet without anyother layer of protection.  At a minimum there should be an IP whitelist to only allow certain IPs to be able to reach this endpoint.  The best thing to do is to set the Kubernetes API only with a private IP address and only accessible from your internal network.  Then the only way to reach it is to get into your internal network first either via a VPN or some other method and then the user can reach this endpoint.
+* All of the machines in this group should only have private IPs and not on the internet
+* Firewall rules to only allow source IPs to it that needs access even on your internal network
+* Use TLS for every communication link
+
+
+### [2] etcd
+This is the datastore where all persistent information is stored that the Kubernetes API uses.  This is usually a high available redundant system.
+
+### [3] kubelet
+This is the process that runs on worker nodes which reports back to the Kubernetes API.  This process gives information and takes orders from the Kubernetes API on what to schedule onto the nodes.
+
+### [4] The cloud
+The cloud is your cloud.  This could be AWS, GCP, Azure, Digital Ocean, etc.  This is the platform that you are renting compute and network from.  Securing this down is a whole other big topic by itself.  Each cloud has authentication, authorization, and accounting (AAA) and each cloud does it a little differently.  You should take these items for your cloud seriously because if this is compromised and depending on the access level of which credentials are compromised that can give full access to your cloud.  That basically means no matter what other security measures you have set or how many security layers you have, it can most likely be bypassed with an admin level type credential.
+
+Some security considerations:
+* Don't allow the entire internet access your cloud account's API.  
+* Use assume type roles and use single sign on (SSO)
 
 ## Example application
 
