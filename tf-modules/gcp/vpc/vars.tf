@@ -6,7 +6,7 @@ variable "region" {
   description = "The region to launch the vpc in."
 }
 
-variable "region_zone" {
+variable "bastion_region_zone" {
   description = "The zone to launch the bastion in."
 }
 
