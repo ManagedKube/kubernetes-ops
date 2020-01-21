@@ -36,6 +36,11 @@ The input variables for the `route_table_id_list` and the `routes-list` are the 
 
 It will set these routes and then set the destination to the Transit Gateway.
 
+## [6] A full example
+There is a full example of the network it can create in the diagram in the next section.  
+
+The example is in: `<Repo root>/tf-environments/aws/infrastructure/aws/transit-gateway`
+
 # A detailed walk through on how to troubleshoot a routing path through the AWS Transit Gateway
 Troubleshooting a path through the transit gateway can seem like a hard task since you won't have visibility into every single piece of networking that the packet will go through.  By following a systematic approach you can make sure that everything that is needed to be able to route successfully from an EC2 host in one VPC in a region going through a transit gateway to another region and back down to another EC2 host in that VPC is setup correctly.
 
