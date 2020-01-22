@@ -171,6 +171,13 @@ There are still two levels here:
 * There can now also be shared workload nodes where a generic type of workload can run on to gain more node usage efficiency
 
 
+|             | Chef / Virtualization                 |  Docker / Containers / Kubernetes                                                                                                                                              |
+|-------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| An Instance | This usually means a virtual machine. |  The terminology here gets a little fuzzy depending on the context.  Someone can be referring   the virtual machine or a container instance.  It is best to be specific here.S |
+|             |                                       |                                                                                                                                                                                |
+|             |                                       |                                                                                                                                                                                |
+(Table generated with [https://www.tablesgenerator.com/markdown_tables](https://www.tablesgenerator.com/markdown_tables))
+
 ## Control plane
 
 ![kubernetes control plane](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
@@ -188,24 +195,93 @@ For example you should:
 
 
 ### [2] etcd
-This is the datastore where all persistent information is stored that the Kubernetes API uses.  This is usually a high available redundant system.
+This is the datastore where all persistent information is stored that the Kubernetes API uses.  This is usually a highly available redundant system.
+
+Security considerations:
+* This datastore is generally note shared with any other applications.  This datastore is very important and stores all state information about the cluster.  This should be a one application datastore.
+* Limited network access should be configured to this datastore.  This datastore can either run on their own hosts or as containers inside of the Kubernetes clusters. No matter where it is running, only the Kubernetes masters should have network access to this datastore.
+* Encryption on the transport layer.  TLS should be used on the transport layer
+* Authentication should be used
+* A regular backup of this datastore should be performed
 
 ### [3] kubelet
 This is the process that runs on worker nodes which reports back to the Kubernetes API.  This process gives information and takes orders from the Kubernetes API on what to schedule onto the nodes.
 
+Security considerations:
+* Encryption on the transport layer.  TLS should be used.
+* Anonymous access is turned off
+
 ### [4] The cloud
 The cloud is your cloud.  This could be AWS, GCP, Azure, Digital Ocean, etc.  This is the platform that you are renting compute and network from.  Securing this down is a whole other big topic by itself.  Each cloud has authentication, authorization, and accounting (AAA) and each cloud does it a little differently.  You should take these items for your cloud seriously because if this is compromised and depending on the access level of which credentials are compromised that can give full access to your cloud.  That basically means no matter what other security measures you have set or how many security layers you have, it can most likely be bypassed with an admin level type credential.
 
-Some security considerations:
+Security considerations:
 * Don't allow the entire internet access your cloud account's API.  
 * Use assume type roles and use single sign on (SSO)
 
-## Example application
+### [5] Namespaces
+Namespaces are logical boundries on the cluster.
 
-![the stack](/docs/kubernetes-security/images/example-application.png)
+![Kubernetes Namepsace](/docs/kubernetes-security/images/kubernetes-namespaces.png)
 
-### 1
-This is the only external entry point into the Kubernetes cluster from the internet.
+A namespace can cross the host boundry.  This means that a pod running on two different hosts can be in the same namespace and multiple namespaces can be on a single host depending what pods are running on it.  This might add complexity but it allows the pod owner not have to worry about lower level implementation on where the pod will run.  The pod owner just knows that it asked for a certain number of pods to run and Kubernetes will go and make that happen on the cluster (if it can).  
+
+This does mean that the isolation mechanisms are a little bit more complex.  You can set network boundries between namespaces.  You can tell Kubernetes to only allow the pods in `namespace 1` to be able to open network connections to other pods on the same namespace and not to let any other namespace to be able to reach it.  You have fine grain controls over the network and you can even tell Kubernetes that another namespace can contact a certain pod's sevice on a certain port only.  With these semantics all on the Kubernetes level, these concepts and configurations of it is cloud agnostic and is portable between clouds with no change.
+
+### Pod
+A pod is one of the smallest units in Kubernetes.  This is a logical contruct that holds containers and the configurations around it.  You can think of this as a "server" and developers should think of it mostly this way.  They have mostly full control of this unit of work.  For example, each Pod will get an unique IP.  This means that the ports that this pod exposes will never collide with anything else, just like a server.  Internally to the server, there can not be overlapping ports because they will all try to bind to the same IP which will cause a collision.  
+
+Some items that can be defined:
+* Container image
+* Run commands and args
+* Docker security settings
+* CPU/Memory requests and limits
+* Config files, disks, secrets to mount into it
+* Environment variables to add
+* Labels for naming and other querying uses
+
+
+## n-tier application in Kubernetes
+This is a re-implementation of the n-tier application but in Kubernetes.
+
+![the stack](/docs/kubernetes-security/images/n-tier-in-kubernetes.png)
+
+### [1] Internet
+The Internet is the Internet in general.  Items placed here can be reach by any node on the Internet.
+
+### [2] Internal Network
+The internal network is a network that has IPs in the [RFC 1918](https://tools.ietf.org/html/rfc1918) ranges.  These IPs are not routable via the internet.  This portion is the same as before.
+
+While this diagram does not show the availability zones, it can be in one or more availability zones like before.  When using Kubernetes the mindset on deploying applications changes from looking at it from a network perspective and "physicallY" definining that a web or a db server should be in two different availablity zones.  It shifts over to looking at deploying an application to the application itself.  You are telling Kubernetes what you want the end state to be and Kubernetes tries to make that happen for you.  This means that yes...your Kubernetes cluster has to have workers (kubelets) in different availablity zones or else no workload can ever get there.  However, from an applications owner's point of view, they are expecting that already and they are telling the deployment of their application that it should be in different availability zones.
+
+The various different types of subnets are also removed.  There might be various subnets for various Kubernetes workers but they might not map one to one on the application workload.  With the use of Kubernetes namespaces we can simulate these network boundries.  If we want to tightly control the network between two different types of applications we can do this on the Kubernetes level and not have to re-arrange the network level.
+
+In our previous setup, we had dedicated hosts for each application.  This usually tends to lead to under use of the servers.  In Kubernetes we tell Kubernetes how much CPU/Memory/Disk that each pod wants and Kubernetes handles turning on worker nodes for us.
+
+Security Considerations:
+* You are now potentially dealing with diverse workloads all running on the same host.  Before you had a host that was dedicated to a certain application.  With Kubernetes, you generally don't tell it where to run your application (but you can).  If you need strict host isolation you will need to set the Kubernetes taints so that only certain workloads can run on those nodes. 
+* Detecting network traffic per application is more difficult now due to the fact that multiple workload(s) can run on the same node and these nodes are not dedicated to one thing where you can monitor that for.  Your monitoring will have to be dynamic now and know what is running on the node.  This mainly means your security application(s) needs to be Kubernetes aware and go to the Kubernetes API for information on what is running on each node.
+
+### [3] Load Balancers
+Just like before, we still have a load balancer here that spans the external network (internet) and our internal network.  This is still the main way we get traffic inbound from the internet into our application.  With the Kubernetes setup, there is some flexibility here on how this is setup.  You can have you cloud load blancer off load the main TLS (just like before) or make it a layer 4 load balancer and it will simiply forward traffic inbound to a Kubernetes ingress (in this example, it is using the nginx-ingress but there are many other ingress controllers you can use).  This Kubernetes ingress controller can offload the TLS.  Kubernetes also makes it easy to get free certificates from Let's Encrypt or to use your own certificates.  This is all driven by Kubernetes configurations and most of these items are portable across clouds.
+
+Security considerations:
+* Generally the same considerations here as before
+
+### [4] API Service
+This is a representation of a web application being exposed outwards to the external internet.  Traffic from the internet will hit these pods.  It could be one or more pods (in this example there are 3).  
+
+Security considerations:
+* This is still the first point where external traffic hits the application.  Anything that is sent here should be considered untrusted just like in the previous architecture.  Strict checking of authentication and payload should be performed on all inputs and outputs.
+* Kubernetes RBAC should be used for access controls on who can administer and make changes to this application
+
+### [5] Datastores
+The datastore is the same as before but now it is under Kubernetes control.  These can be on shared or dedicated hosts.  Usually databases would be on a dedicated host.
+
+Security considerations:
+* Kubernetes RBAC should be used for access controls on who can administer and make changes to this application
+* You should treat this like any other application running on Kubernetes and apply the standard set of security controls for this application as well.
+
+
 
 ## Deployment workflow
 
