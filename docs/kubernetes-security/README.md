@@ -2,6 +2,48 @@
 This page is here to describe security challenages and possible solutions to various security concerns in a 
 Kubernetes deployment.
 
+- [Kubernetes Security](#kubernetes-security)
+  * [Traditional n-tier archtecture](#traditional-n-tier-archtecture)
+    + [[1] Internet](#-1--internet)
+    + [[2] Internal Network](#-2--internal-network)
+    + [[3] Loadbalancer](#-3--loadbalancer)
+    + [[4] Bastion host](#-4--bastion-host)
+    + [[5] VPN](#-5--vpn)
+    + [[6] Availability zones](#-6--availability-zones)
+    + [[7] Web tier subnet](#-7--web-tier-subnet)
+    + [[8] Business tier](#-8--business-tier)
+    + [[9] Datastore](#-9--datastore)
+  * [Traditional n-tier archtecture controle plane](#traditional-n-tier-archtecture-controle-plane)
+    + [[1] The network](#-1--the-network)
+    + [[2] Subnets](#-2--subnets)
+    + [[3] Load Balancer](#-3--load-balancer)
+    + [[4] Server groups](#-4--server-groups)
+    + [[5] Bastion host](#-5--bastion-host)
+    + [[6] Databases](#-6--databases)
+    + [[7] Server configuration](#-7--server-configuration)
+    + [[8] Bastion configuration](#-8--bastion-configuration)
+    + [[9] Datastore configuration](#-9--datastore-configuration)
+  * [Transition to Kubernetes](#transition-to-kubernetes)
+  * [How the n-teir architecture maps to Kubernetes](#how-the-n-teir-architecture-maps-to-kubernetes)
+    + [Control plane](#control-plane)
+  * [Kubernetes Control plane](#kubernetes-control-plane)
+    + [[1] Kubernetes API](#-1--kubernetes-api)
+    + [[2] etcd](#-2--etcd)
+    + [[3] kubelet](#-3--kubelet)
+    + [[4] The cloud](#-4--the-cloud)
+    + [[5] Namespaces](#-5--namespaces)
+    + [Pod](#pod)
+  * [n-tier application in Kubernetes](#n-tier-application-in-kubernetes)
+    + [[1] Internet](#-1--internet-1)
+    + [[2] Internal Network](#-2--internal-network-1)
+    + [[3] Load Balancers](#-3--load-balancers)
+    + [[4] API Service](#-4--api-service)
+    + [[5] Datastores](#-5--datastores)
+  * [Deployment workflow](#deployment-workflow)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 ## Traditional n-tier archtecture
 This diagram represents a non-containerized n-tier architecture:
 
@@ -178,7 +220,7 @@ There are still two levels here:
 |             |                                       |                                                                                                                                                                                |
 (Table generated with [https://www.tablesgenerator.com/markdown_tables](https://www.tablesgenerator.com/markdown_tables))
 
-## Control plane
+## Kubernetes Control plane
 
 ![kubernetes control plane](/docs/kubernetes-security/images/kubernetes-controle-plane.png)
 
