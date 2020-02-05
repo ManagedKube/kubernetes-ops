@@ -39,12 +39,13 @@ starting to refer to as "day 2" problems (where "day 1" is creation).  The "day 
 problems are well documented and there are plenty of tutorials out there for it.
 The problem with these tutorials and examples are that they mostly leave you hanging
 on how to move forward with the infrastructure pieces.  Day 2 problems are: what is the upgrade, patching,
-and modification strategy, how do I manage the infrastructure git repository, etc?  
+and modification strategy, how do I manage the infrastructure git repository, etc?
+
 This is where we think we can provide some contribution.
 With our experience in managing many Kubernetes clusters over the years, we think
 we can provide this information.  Creation of your cluster is about 10 to maybe
 20 percent of the infrastructure activity (if that), making changes to the infrastructure
-to suite your needs as time moves on is the bulk of the activity and finally
+to suit your needs as time moves on is the bulk of the activity and finally
 deletion of the entire or parts of the infrastructure as new items comes into play.
 
 If you follow through the instructions, you might think this is overly complex.
