@@ -23,7 +23,7 @@ and require some kind of large scale migration or cut over.
 We suggest you take the `cidr-ranges.md` file as a good place to start.
 
 # Replace all of the S3 buckets used
-See [s3 buckets replacement](README.md#Setting up the S3 buckets)
+See [s3 buckets replacement](README.md#setting-up-the-s3-buckets)
 
 # VPC Creation
 
