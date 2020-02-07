@@ -23,17 +23,17 @@ and require some kind of large scale migration or cut over.
 We suggest you take the `cidr-ranges.md` file as a good place to start.
 
 # Replace all of the S3 buckets used
-See [s3 buckets replacement](README.md#Setting up the S3 buckets)
+See [s3 buckets replacement](README.md#setting-up-the-s3-buckets)
 
 # VPC Creation
 
-Directory: <repo root>/tf-environment
+Directory: `<repo root>/tf-environment`
 
 ## Easy route
 
-Change directory to: '<repo root>/tf-environments/dev-example/aws/vpc'
+Change directory to: `<repo root>/tf-environments/dev-example/aws/vpc`
 
-You will have to change the `bucket` in the '<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
+You will have to change the `bucket` in the `<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
 file.  S3 bucket names has to be globally unique which means it can only exist once
 in the all of AWS.  The easiest way is to change the `123` in the bucket name to
 some other random number.
@@ -197,7 +197,6 @@ kops get clusters
 
 Set the cluster name from the output
 ```
-
 export cluster_name=dev-example.us-east-1.k8s.local
 ```
 
