@@ -60,7 +60,6 @@ the `dev` directory.
 Update the parameter
 - `environment_name` to `dev`
 - `vpc_cidr` to the CIDR you chose
-- `vpc_id` to the VPC ID from the first step
 - `aws_availability_zone_1` and the availability zones if this needs to be updated
 
 #### `terraform.tfvars`
