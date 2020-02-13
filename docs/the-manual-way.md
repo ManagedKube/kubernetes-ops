@@ -180,7 +180,7 @@ export AWS_DEFAULT_REGION=us-east-1
 You can now run this command to output the templated values:
 
 ```
-kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml > /tmp/output.yaml
+kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml --values ./clusters/values.yaml > /tmp/output.yaml
 ```
 
 Run this command to create the cluster:
