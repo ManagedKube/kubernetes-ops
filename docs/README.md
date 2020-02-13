@@ -10,7 +10,7 @@ such a foundational piece that sits at pretty much the bottom of the stack it
 is very important to get this correct because trying to make changes to this laster
 with everything running on it could turn out to be very difficult or impossible
 without downtime and/or a lot of reconfiguration of items that are running in
-this VPC.  
+this VPC.
 
 We also want to take control of creation and managing this VPC exclusively.  A lot
 of tools that creates Kubernetes clusters for you has the option of creating the
@@ -56,7 +56,7 @@ One problem is that S3 bucket names are global meaning only one can exist.  If I
 used a bucket name, that means you can not use that same name.
 
 For you to use this, you will need to update the bucket names in this repository
-to what you want to use.  We are using the bucket name `kubernetes-ops-1234-terraform-state`
+to what you want to use.  We are using the bucket name `kubernetes-ops-1234-kops-state-store`
 
 The following is a way to replace all of the occurrences of `kubernetes-ops-1234`
 with `kubernetes-ops-xxxxxx`.  A suggestion would be to replace the
