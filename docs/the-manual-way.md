@@ -33,7 +33,7 @@ Directory: `<repo root>/tf-environment`
 
 Change directory to: `<repo root>/tf-environments/dev-example/aws/vpc`
 
-You will have to change the `bucket` in the `<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
+You will have to change the `bucket` in the `<repo root>/tf-environments/dev-example/terraform.tfvars`
 file.  S3 bucket names has to be globally unique which means it can only exist once
 in the all of AWS.  The easiest way is to change the `123` in the bucket name to
 some other random number.
