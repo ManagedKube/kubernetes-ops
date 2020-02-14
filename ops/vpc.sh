@@ -8,8 +8,8 @@
 
 TIME_NOW=$(date +"%x %r %Z")
 
-TERRAFORM_VERSION="v0.11."
-TERRAGRUNT_VERSION="v0.18."
+TERRAFORM_VERSION="v0.12."
+TERRAGRUNT_VERSION="v0.21."
 
 ##########################################
 ##### Functions
@@ -49,19 +49,19 @@ check_terragrunt_version()
 create()
 {
   # Checks
-  if [ ! -f ../tf-environments/$vpc_name/_env_defaults/main.tf ]; then
-    echo "File does not exist: ../tf-environments/$vpc_name/_env_defaults/main.tf"
+  if [ ! -f ../tf-environments/${cloud}/${vpc_name}/_env_defaults/main.tf ]; then
+    echo "File does not exist: ../tf-environments/${cloud}/${vpc_name}/_env_defaults/main.tf "
     exit 1
   fi
 
-  if [ ! -f ../tf-environments/$vpc_name/${cloud}/vpc/main.tf ]; then
-    echo "File does not exist: ../tf-environments/$vpc_name/${cloud}/vpc/main.tf"
+  if [ ! -f ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/terragrunt.hcl ]; then
+    echo "File does not exist: ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/terragrunt.hcl"
     exit 1
   fi
 
   echo "[INFO] Adding new VPC named: $vpc_name"
 
-  cd ../tf-environments/$vpc_name/${cloud}/vpc
+  cd ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/
 
   terragrunt init
   terragrunt plan
@@ -89,7 +89,7 @@ delete()
 {
   echo "[INFO] Deleting vpc named: ${vpc_name}"
 
-  cd ../tf-environments/$vpc_name/${cloud}/vpc
+  cd ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc
 
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
