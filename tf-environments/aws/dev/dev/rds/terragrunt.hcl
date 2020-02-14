@@ -3,7 +3,7 @@ include {
 }
 
 terraform {
-  source = "../../../../tf-modules/aws/rds/"
+  source = "../../../../../tf-modules/aws/rds/"
 }
 
 dependency "vpc" {

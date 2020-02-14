@@ -31,12 +31,9 @@ Directory: `<repo root>/tf-environment`
 
 ## Easy route
 
-Change directory to: `<repo root>/tf-environments/dev/aws/vpc`
+Change directory to: `<repo root>/tf-environments/aws/dev/dev/vpc`
 
-You will have to change the `bucket` in the `<repo root>/tf-environments/dev/aws/terragrunt.hcl`
-file.  S3 bucket names has to be globally unique which means it can only exist once
-in the all of AWS.  The easiest way is to change the `1234` in the bucket name to
-some other random number.
+A note about the Terraform statestore.  We are using S3 for the statestore and S3 bucket names has to be globally unique.  The file `<repo root>/tf-environments/aws/dev/terragrunt.hcl` holds the state store configurations.  It is set to `kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state`.  It puts your AWS Account ID in there as the "unique" key.
 
 Run:
 ```
@@ -47,10 +44,10 @@ terragrunt apply
 
 This will create the VPC.
 
-## Custom production route
+## Creating additional environments that is not named "dev"
 
 Copy the directory `dev` to a name of the environment you want to create.
-If this is the first environment, `dev` or `dev-testing` is a good name.
+Like `dev-testing` is a good name.
 
 ### Update parameters
 Now we have to update some parameter values in the files that we just copied in
@@ -58,14 +55,9 @@ the `dev` directory.
 
 #### `_env_defaults/main.tf`
 Update the parameter
-- `environment_name` to `dev`
+- `environment_name` to `dev-testing`
 - `vpc_cidr` to the CIDR you chose
 - `aws_availability_zone_1` and the availability zones if this needs to be updated
-
-#### `terragrunt.hcl`
-This specifies where to store the Terraform remote state store.
-- `bucket` - this has to be globally unique to S3.  Easiest way is to change the number to some other arbitrary number
-- `key` - change `dev` to the name you named this environment to
 
 #### `aws/vpc/main.tf`
 Update the parameters:
