@@ -31,12 +31,9 @@ Directory: `<repo root>/tf-environment`
 
 ## Easy route
 
-Change directory to: `<repo root>/tf-environments/dev-example/aws/vpc`
+Change directory to: `<repo root>/tf-environments/aws/dev/dev/vpc`
 
-You will have to change the `bucket` in the `<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
-file.  S3 bucket names has to be globally unique which means it can only exist once
-in the all of AWS.  The easiest way is to change the `123` in the bucket name to
-some other random number.
+A note about the Terraform statestore.  We are using S3 for the statestore and S3 bucket names has to be globally unique.  The file `<repo root>/tf-environments/aws/dev/terragrunt.hcl` holds the state store configurations.  It is set to `kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state`.  It puts your AWS Account ID in there as the "unique" key.
 
 Run:
 ```
@@ -47,10 +44,10 @@ terragrunt apply
 
 This will create the VPC.
 
-## Custom production route
+## Creating additional environments that is not named "dev"
 
-Copy the directory `dev-example` to a name of the environment you want to create.
-If this is the first environment, `dev` is a good name.
+Copy the directory `dev` to a name of the environment you want to create.
+Like `dev-testing` is a good name.
 
 ### Update parameters
 Now we have to update some parameter values in the files that we just copied in
@@ -58,14 +55,9 @@ the `dev` directory.
 
 #### `_env_defaults/main.tf`
 Update the parameter
-- `environment_name` to `dev`
+- `environment_name` to `dev-testing`
 - `vpc_cidr` to the CIDR you chose
 - `aws_availability_zone_1` and the availability zones if this needs to be updated
-
-#### `terraform.tfvars`
-This specifies where to store the Terraform remote state store.
-- `bucket` - this has to be globally unique to S3.  Easiest way is to change the number to some other arbitrary number
-- `key` - change `dev-example` to `dev` or whatever you named this environment to
 
 #### `aws/vpc/main.tf`
 Update the parameters:
@@ -150,10 +142,10 @@ unique, you need to select a name that is unique to you.  You can simply change
 the `2345` string to something else or another number to make it unique.
 
 ```
-export KOPS_STATE_STORE=s3://kubernetes-ops-12344-kops-state-store
+export KOPS_STATE_STORE=s3://kubernetes-ops-1234-kops-state-store
 ```
 
-Put the same bucket name in this case `kubernetes-ops-12344-kops-state-store` in
+Put the same bucket name in this case `kubernetes-ops-1234-kops-state-store` in
 the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field.
 
 Run this command to create the S3 bucket
