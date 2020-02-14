@@ -1,6 +1,0 @@
-environment_name = "dev"
-region = "us-east-1"
-vpc_cidr = "10.10.0.0/16"
-aws_availability_zone_1 = "a"
-aws_availability_zone_2 = "b"
-aws_availability_zone_3 = "c"
