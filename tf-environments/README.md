@@ -1,32 +1,25 @@
 Folder Layout
 ==============
 
-This folder is here to hold all Terraform resources for our GCP deployments.
+The folders are split into clouds.  There is a folder for `aws` and another folder for `gcp`.  The main reason for this is that the state store configurations are a little different for each of these clouds.  To keep everything "DRY" it is easier to split them up by clouds instead of by the environment it is.
 
-# ./gcp folder
-This folder holds each named environment we have: dev, qa, stage, prod, special-project, etc
+# AWS
 
-This can hold any number of environments
-
-# ./gcp/<environment name>
-Under the named environment folder we have another folder that is named exactly the same.  Yes, this is a little redundant and not too DRY but let me explain why this is done.
-
-In the folder `./gcp/<environment name>/` folder we have a `terragrunt.hcl` file that holds the state store information:
+In the `aws` folder there is a `terragrunt.hcl` file the puts the state store into:
 
 ```
-remote_state {
-  backend = "gcs"
-  config = {
-    bucket = "kubernetes-ops-terraform-state-${get_env("STATE_STORE_UNIQUE_KEY", "default-value-1234")}"
-    prefix  = path_relative_to_include()
-    project = "managedkube"
-    location = "us-central1"
-  }
-}
+bucket = "kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state"
 ```
 
-Creating a directory structure like this allows us to keep this file "DRY" and with no specific changes needed for it besides the `project` var if you wanted to store the state in another GCP project.
+S3 buckets has to be globally unique accross all of their customers.  The `terragrunt.hcl` file is set to get the current AWS account number and put it in the bucket name making it unique.  For most cases this should work well.
 
-The alternative is to hold this file in each of the top level named environment dir and then set the `prefix` with the environment name.  However, this means that if I create another environment I have to copy this file over to that directory and remember to change the environment name in the `prefix` variable.  While I like that idea, I have seen many times when someone creates a new environment they don't chane that var and then start overwritting another environment's state store.  With this method, the environment name (which is the directory name) is always there and in the GCS bucket that means these paths will always be unique because on your local file system you cannot create a folder name with the same name.
+Usually you would use new account for dev, qa, and prod.  This means launching those environments, it would put the state store in the correct account's S3 bucket with the accounts ID in the bucket name.
 
-Another thing that this provide us is a way to keep the state store in another GCP project.  Your pre-production infra might be in one GCP project and your production infra could be in another project.  This allows us to specify which project to target.
+# GCP
+In the `gcp` folder there is a `terragrunt.hcl` file that puts the state store into:
+
+```
+bucket = "kubernetes-ops-terraform-state-${get_env("STATE_STORE_UNIQUE_KEY", "default-value-1234")}"
+```
+
+Terragrunt does not provide us with a handy function to get the account or project id.  We have to set that as a unique key.  A good key to use would be the project name or the ID.  You have to export the variable to your environment: `STATE_STORE_UNIQUE_KEY`
