@@ -12,7 +12,6 @@ http://www.subnet-calculator.com/cidr.php
 | Name                              | CIDR          |
 |-----------------------------------|---------------|
 | docker0                           | 172.26.0.0/16 |
-| Kubernetes aws - dev-example      | 10.9.0.0/16   |
 | Kubernetes aws - dev              | 10.10.0.0/16  |
 | Kubernetes aws - qa               | 10.11.0.0/16  |
 | Kubernetes aws - staging          | 10.12.0.0/16  |
