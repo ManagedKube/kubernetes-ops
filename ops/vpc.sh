@@ -54,14 +54,14 @@ create()
     exit 1
   fi
 
-  if [ ! -f ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/terragrunt.hcl ]; then
-    echo "File does not exist: ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/terragrunt.hcl"
+  if [ ! -f ../tf-environments/${cloud}/${vpc_name}/vpc/terragrunt.hcl ]; then
+    echo "File does not exist: ../tf-environments/${cloud}/${vpc_name}/vpc/terragrunt.hcl"
     exit 1
   fi
 
   echo "[INFO] Adding new VPC named: $vpc_name"
 
-  cd ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc/
+  cd ../tf-environments/${cloud}/${vpc_name}/vpc/
 
   terragrunt init
   terragrunt plan
@@ -89,7 +89,7 @@ delete()
 {
   echo "[INFO] Deleting vpc named: ${vpc_name}"
 
-  cd ../tf-environments/${cloud}/${vpc_name}/${vpc_name}/vpc
+  cd ../tf-environments/${cloud}/${vpc_name}/vpc
 
   if [ "${dry_run}" == "false" ]; then
     echo "[INFO] Not a dry run"
