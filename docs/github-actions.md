@@ -44,7 +44,7 @@ in the workflow.
           sonobuoy version
 ```
 
-This is a working verison of it but there were many itterations before I got the tar output correct
+This is a working venison of it but there were many iterations before I got the tar output correct
 and what it outputted and where the `sonobuoy` (tool) binary was.  To debug this you start doing stuff like:
 
 ```yaml
@@ -109,6 +109,6 @@ are community maintained.  The developer didn't have to know much about Airflow 
 know the Airflow entry points and how to hook into it.
 
 This leads us back to my problem.  I am having all of the same problems that they describe in the blog and all of the same solutions
-would work for my problem.  In my case, the Github Action is equivelent to Airflow which I really do not want to debug.  Github Action
+would work for my problem.  In my case, the Github Action is equivalent to Airflow which I really do not want to debug.  Github Action
 also can just run a Docker container for me.  If I made Github Action run my container, then I can develop all I want locally until it works
 then try to have Github Actions to run it for me.

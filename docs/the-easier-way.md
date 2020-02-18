@@ -26,7 +26,7 @@ From the output of the Terraform run, a VPC ID was outputted in the format of
 The following paths all starts from the root of this repository.
 
 ## Terraform environment \_env_defaults file
-This file holds default values about this environment.  We are adding in the
+This file hold default values about this environment.  We are adding in the
 VPC ID here because there will be subsequent Terraforms that will use this ID
 and place itself into this VPC.  
 
@@ -57,7 +57,7 @@ cd clusters/aws/kops
 The Kubernetes cluster that is created is a fully private Kubernetes cluster with
 no public IP addresses.  This means that you will have to get to the cluster some
 how via a bastion host to be able to interact with it.  During the setup, a
-bastion host was created for you and the following steps shows you how to
+bastion host was created for you. The following steps shows you how to
 connect to it and create a tunnel.
 
 ```

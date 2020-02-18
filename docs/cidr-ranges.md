@@ -23,7 +23,7 @@ http://www.subnet-calculator.com/cidr.php
 | Kubernetes gcp - prod             | 10.23.0.0/16  |
 
 ## Reserved ranged for each environment
-Each envrionment has a bunch of initial reserved ranges to bring up the entire
+Each environment has a bunch of initial reserved ranges to bring up the entire
 application.  The following defines these ranges in a generic sense that can
 be applied to any of the above CIDRs.
 
