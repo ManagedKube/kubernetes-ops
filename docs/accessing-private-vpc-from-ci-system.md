@@ -4,10 +4,10 @@ A lot of the popular CI/CD systems that are hosted and are on the internet:
 
 * Github Actions
 * Gitlab
-* CiricleCI
+* CircleCI
 * CodeFresh
 
-The best practice for our VPCs and Kubernetes cluster is to have only internal addresses.
+The best practice for our VPCs and Kubernetes cluster is to have only an internal addresses.
 
 The problem is how do these CI/CD systems get access to our private VPC and Kubernetes clusters
 which do not any any public IPs it can reach?
@@ -39,7 +39,7 @@ Doc: [https://aws.amazon.com/blogs/aws/new-port-forwarding-using-aws-system-mana
 
 This can potentially span access from the CI/CD system to a private VPC network. 
 
-This is however, a unquiely an AWS only solution since other cloud providers does not have something like this.
+This is however, a uniquely an AWS only solution since other cloud providers do not have something like this.
 
 ## Slack overlay network
 This is an interesting idea on how to span networks: [https://slack.engineering/introducing-nebula-the-open-source-global-overlay-network-from-slack-884110a5579](https://slack.engineering/introducing-nebula-the-open-source-global-overlay-network-from-slack-884110a5579)
@@ -65,31 +65,31 @@ back the output.
 1) The CI/CD system is instructed to run this Fargate container
 
 2) Launching the Fargate container
-* This "step" should have the approapriate AWS IAM access to launch this.  
+* This "step" should have the appropriate AWS IAM access to launch this.  
 * It will launch the predetermined container on Fargate in the targeted private VPC.
-* This step will call the AWS API with the appropriate information to launch the Fargate task
+* This step will call the AWS API with the appropriate information to launch the Fargate task.
 
 3) Fargate container launches
-* The Fargate container launches inside the VPC that was targeted
-* This container runs 
+* The Fargate container launches inside the VPC that was targeted.
+* This container runs.
 
 4) The Kubernetes update process
-* The container runs through to update Kubernetes and whatever else this container is programed to do
+* The container runs through to update Kubernetes and whatever else this container is programmed to do.
 
 5) Fargate container logs
-* Logs from the Fargate container is extracted and outputted to the CI/CD systems output
-* This allows someone to inspect this pipeline run from the CI/CD system on what happend
+* Logs from the Fargate container is extracted and outputted to the CI/CD systems output.
+* This allows someone to inspect this pipeline run from the CI/CD system on what happened.
 
 There are some pros and cons to this solution:
 
 Pros:
-* Does not require any VPN type connections between the CI/CD system and the remote private VPC
+* Does not require any VPN type connections between the CI/CD system and the remote private VPC.
 * A developer can test the update logic (#4) locally.  Generally these pipelines cannot be tested locally because the CI/CD system has to run the pipeline.  Since it is disconnected, this means the developer can run this locally to test if it is working as expected.
-* This scheme would work on most major cloud provider that has a "container as a service" offering
+* This scheme would work on most major cloud provider that has a "container as a service" offering.
 
 Cons:
-* This disconnects the CI/CD system from the actual run
-* Changing the update logic (#4) will mean having to push a new container to the Fargate runner
+* This disconnects the CI/CD system from the actual run.
+* Changing the update logic (#4) will mean having to push a new container to the Fargate runner.
 
 Example Github Action:
 
