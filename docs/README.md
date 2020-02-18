@@ -10,7 +10,7 @@ such a foundational piece that sits at pretty much the bottom of the stack it
 is very important to get this correct because trying to make changes to this laster
 with everything running on it could turn out to be very difficult or impossible
 without downtime and/or a lot of reconfiguration of items that are running in
-this VPC.  
+this VPC.
 
 We also want to take control of creation and managing this VPC exclusively.  A lot
 of tools that creates Kubernetes clusters for you has the option of creating the
