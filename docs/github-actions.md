@@ -44,7 +44,7 @@ in the workflow.
           sonobuoy version
 ```
 
-This is a working venison of it but there were many iterations before I got the tar output correct
+This is a working version of it but there were many iterations before I got the tar output correct
 and what it outputted and where the `sonobuoy` (tool) binary was.  To debug this you start doing stuff like:
 
 ```yaml
