@@ -35,7 +35,7 @@ Install instructions:  https://docs.aws.amazon.com/cli/latest/userguide/cli-chap
 
 ## sshuttle
 `sshuttle` is a tool that will create an SSH tunnel from your local laptop
-to a remote network and forward everything destine for that IP space over there
+to a remote network and forward everything destined for that IP space over there
 with DNS resolution.  It uses ssh to create the tunnel.  
 
 Why not just use SSH?  SSH does not have the functionality to forward the entire

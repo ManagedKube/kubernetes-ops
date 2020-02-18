@@ -8,7 +8,7 @@ holds the infrastructure level items.
 See [tools.md](tools.md)
 
 # Setup your IP CIDR
-This document contains how your IP CIDRs are going to be laided out for your
+This document contains how your IP CIDRs are going to be laid out for your
 entire infrastructure.  Care should be taken to review this and to make sure
 this fits your needs.  
 
@@ -33,7 +33,9 @@ Directory: `<repo root>/tf-environment`
 
 Change directory to: `<repo root>/tf-environments/aws/dev/dev/vpc`
 
-A note about the Terraform statestore.  We are using S3 for the statestore and S3 bucket names has to be globally unique.  The file `<repo root>/tf-environments/aws/dev/terragrunt.hcl` holds the state store configurations.  It is set to `kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state`.  It puts your AWS Account ID in there as the "unique" key.
+A note about the Terraform state store.  We are using S3 for the state store and S3 bucket names has to be globally unique. 
+The file `<repo root>/tf-environments/aws/dev/terragrunt.hcl` holds the state store configurations. 
+It is set to `kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state`.  It puts your AWS Account ID in there as the "unique" key.
 
 Run:
 ```
