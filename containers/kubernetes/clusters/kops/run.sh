@@ -40,22 +40,24 @@ echo "#########################################"
 IS_DONE=false
 until ${IS_DONE}
 do
-    echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
+    echo "[INFO] Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
     
     STATUS=$(aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN} | jq -r .tasks[0].lastStatus)
     if [ "${STATUS}" == "STOPPED" ]; then
         ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID} --since 1
-        
+
+        echo "[INFO] The Fargate job has completed"
+
         IS_DONE=true
     elif [ "${STATUS}" == "RUNNING" ]; then
       
         # Return logs that are 1 min old
         ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID} --since 1
 
-        echo "Sleeping 60 seconds then outputting logs from the Fargate run..."
+        echo "[INFO] [Status: ${STATUS}] Sleeping 60 seconds then outputting logs from the Fargate run..."
         sleep 60
     else
-      echo "Fargate task is not in a running state yet...wait and poll again. | lastStatus: ${STATUS}"
+      echo "[INFO] Fargate task is not in a running state yet...wait and poll again. | lastStatus: ${STATUS}"
       sleep 2
 
     fi
