@@ -57,6 +57,11 @@ function wait_for_kube_api_ready() {
         STATUS=$(kubectl get nodes | grep "Ready" | wc -l)
         if [ ${STATUS} -gt 2 ]; then
             IS_DONE=true
+
+            # Output cluster info
+            kubectl version
+            kubectl get nodes
+            kubectl get pods -o wide --all-namespaces
         fi
     done
 }
