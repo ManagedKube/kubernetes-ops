@@ -8,6 +8,10 @@
 ##
 ###################################################
 
+echo "###################################################"
+echo "running: ci-pipeline.sh"
+echo "###################################################"
+
 if [ ! -z "${DEBUG}" ]; then
   set -x
 fi
@@ -53,11 +57,18 @@ message_banner() {
     echo "#################################"
 }
 
+# Removing "/refs/heads/" from the branch name
+UPDATE_TO_BRANCH_PRUNED=$(echo "refs/heads/dynamic-branch" | sed 's/refs\/heads\///')
+
 # Checkout the INITIAL_BRANCH branch
+set -x
 git fetch
+set +x
 message_banner "git checkout ${INITIAL_BRANCH}"
+set -x
 git pull origin ${INITIAL_BRANCH}
 git checkout ${INITIAL_BRANCH}
+set +x
 
 # # Create initial cluster
 message_banner "Creating initial cluster"
@@ -70,10 +81,10 @@ CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 message_banner "Running e2e tests"
 ${BASE_FILE_PATH}/e2e-tests.sh || true
 
-# Checkout the UPDATE_TO_BRANCH branch
-message_banner "git checkout ${UPDATE_TO_BRANCH}"
+# Checkout the UPDATE_TO_BRANCH_PRUNED branch
+message_banner "git checkout ${UPDATE_TO_BRANCH_PRUNED}"
 set -x
-git checkout ${UPDATE_TO_BRANCH}
+git checkout ${UPDATE_TO_BRANCH_PRUNED}
 set +x
 
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml

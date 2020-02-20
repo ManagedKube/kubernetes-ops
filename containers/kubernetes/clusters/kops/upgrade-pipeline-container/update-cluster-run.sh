@@ -8,6 +8,9 @@
 ##
 ###################################################
 
+echo "###################################################"
+echo "running: update-cluster-run.sh"
+echo "###################################################"
 
 if [ ! -z "${DEBUG}" ]; then
   set -x
@@ -46,6 +49,7 @@ fi
 
 
 # Clone out the repository
+echo "Cloning out source repository..."
 git clone ${GIT_URL_WITH_DEPLOY_KEY} /opt/repo
 cd repo
 
