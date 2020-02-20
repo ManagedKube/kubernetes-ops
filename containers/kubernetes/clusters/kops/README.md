@@ -103,3 +103,16 @@ run the Kubernetes e2e tests:
 ```
 ./containers/kubernetes/clusters/kops/e2e-tests.sh
 ```
+
+# Fargate
+
+## IAM Policies
+The script `fargate-task-definition.sh` which runs inside of the pipeline will create the policies needed to run a Fargate job.
+
+For now, the AWS permissions given to the pipeline needs to be admin (until we figure out all of the permissions needed).
+
+## Checking a job:
+
+### AWS Console
+
+ECS->Clusters-><cluster name>->Task tab
