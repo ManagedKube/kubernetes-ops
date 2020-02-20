@@ -4,7 +4,7 @@
 ##
 ## This script run inside of the Fargate Docker container.
 ##
-## Need to rebuild Docker container on edit: true
+## Need to rebuild the upgrade-pipeline-container Docker container on edit: false
 ##
 ###################################################
 
@@ -47,6 +47,9 @@ if [ -z "${UPDATE_TO_BRANCH}" ]; then
   exit 1
 fi
 
+# Change directory into the /opt/repo-application
+cd /opt/repo-application
+
 BASE_FILE_PATH="./containers/kubernetes/clusters/kops"
 
 message_banner() {
@@ -58,7 +61,7 @@ message_banner() {
 }
 
 # Removing "/refs/heads/" from the branch name
-UPDATE_TO_BRANCH_PRUNED=$(echo "refs/heads/dynamic-branch" | sed 's/refs\/heads\///')
+UPDATE_TO_BRANCH_PRUNED=$(echo "${UPDATE_TO_BRANCH}" | sed 's/refs\/heads\///')
 
 # Checkout the INITIAL_BRANCH branch
 set -x

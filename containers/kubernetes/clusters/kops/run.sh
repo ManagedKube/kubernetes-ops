@@ -32,6 +32,7 @@ set +x
 TASK_ID=$(echo ${TASK_ARN} | grep -o -e "\/.*" | grep -o -e "[0-9a-z].*")
 
 echo "#########################################"
+echo "This is unable to tail the Fargate logs while this runs because there is no ending indication to when the tail should stop.  If we simply tailed the Fargate logs, the tail would hang there after the job has stopped."
 echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
 echo "#########################################"
 
@@ -40,6 +41,8 @@ IS_DONE=false
 until ${IS_DONE}
 do
     echo "Fargate task is not in a running state yet...wait and poll again. | lastStatus: ${STATUS}"
+    echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
+
     sleep 2
 
     STATUS=$(aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN} | jq -r .tasks[0].lastStatus)

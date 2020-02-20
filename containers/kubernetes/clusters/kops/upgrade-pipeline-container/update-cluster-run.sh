@@ -8,6 +8,8 @@
 ##
 ###################################################
 
+CI_PIPELINE_BRANCH="dynamic-branch"
+
 echo "###################################################"
 echo "running: update-cluster-run.sh"
 echo "###################################################"
@@ -50,8 +52,21 @@ fi
 
 # Clone out the repository
 echo "Cloning out source repository..."
-git clone ${GIT_URL_WITH_DEPLOY_KEY} /opt/repo
-cd repo
+
+# Repo usage:
+# /opt/repo-ci-pipeline 
+#       - used for the source of the CI pipeline scripts
+#       - Having a separate working around for the CI pipeline scripts allows us to use one branch for these script and another for the kubernetes update files
+#       - You might have a tagged release of the CI pipeline to use and you can set that here to peg it
+# /opt/repo-application - used for the source of Kubernetes updates
+git clone ${GIT_URL_WITH_DEPLOY_KEY} /opt/repo-ci-pipeline
+cp -a /opt/repo-ci-pipeline /opt/repo-application
+pwd
+
+# Branch to use for the pipeline scripts
+cd /opt/repo-ci-pipeline
+pwd
+git checkout ${CI_PIPELINE_BRANCH}
 
 # Run the ci-pipeline.sh
 ./containers/kubernetes/clusters/kops/ci-pipeline.sh --initial-branch ${INITIAL_BRANCH} --updated-to-branch ${UPDATE_TO_BRANCH}

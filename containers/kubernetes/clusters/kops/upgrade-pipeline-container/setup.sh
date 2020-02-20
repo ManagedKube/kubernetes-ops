@@ -4,7 +4,7 @@
 ##
 ## This script run inside of the Dockerfile
 ##
-## Need to rebuild Docker container on edit: true
+## Need to rebuild the upgrade-pipeline-container Docker container on edit: true
 ##
 ###################################################
 
