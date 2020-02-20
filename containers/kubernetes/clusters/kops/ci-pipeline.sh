@@ -12,6 +12,11 @@ if [ ! -z "${DEBUG}" ]; then
   set -x
 fi
 
+usage()
+{
+    echo "usage: TBD"
+}
+
 # Parse inputs
 while [ "$1" != "" ]; do
     case $1 in

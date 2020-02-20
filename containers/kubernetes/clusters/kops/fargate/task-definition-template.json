@@ -4,10 +4,10 @@
     "containerDefinitions": [
         {
             "name": "worker", 
-            "image": "managedkube/kubernetes-pipeline:dev",
+            "image": "docker.io/managedkube/kubernetes-pipeline:dev",
             "essential": true, 
             "entryPoint": [
-                "/opt/repo/update-cluster-run.sh"
+                "/opt/update-cluster-run.sh"
             ], 
             "command": [
                 "--initial-branch",
