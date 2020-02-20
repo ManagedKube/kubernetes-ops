@@ -21,7 +21,9 @@ PIPELINE_VERSION=$(./containers/kubernetes/clusters/kops/fargate-task-definition
 
 # Start Fargate Task
 set -x
-TASK_ARN=$(aws ecs run-task --cluster ${CLUSTER_NAME}  --task-definition pipeline:${PIPELINE_VERSION} --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0121a9057485fbe72],securityGroups=[sg-01b56214e8d158906]}" | jq -r .tasks[0].taskArn)
+FARGATE_AWS_SUBNET_ID="subnet-01c91da37b7a71221"
+FARGATE_AWS_SECURITY_GROUP_ID="sg-0b633832e78dc4a09"
+TASK_ARN=$(aws ecs run-task --cluster ${CLUSTER_NAME}  --task-definition pipeline:${PIPELINE_VERSION} --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[${FARGATE_AWS_SUBNET_ID}],securityGroups=[${FARGATE_AWS_SECURITY_GROUP_ID}]}" | jq -r .tasks[0].taskArn)
 set +x
 
 # Output Fargate task description
