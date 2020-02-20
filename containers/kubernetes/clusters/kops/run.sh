@@ -42,7 +42,11 @@ until ${IS_DONE}
 do
     echo "Fargate task is not in a running state yet...wait and poll again. | lastStatus: ${STATUS}"
 
-    sleep 2
+    echo "Sleeping 60 seconds then outputting logs from the Fargate run..."
+    sleep 60
+
+    # Return logs that are 1 min old
+    ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID} --since 1
 
     STATUS=$(aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN} | jq -r .tasks[0].lastStatus)
     if [ "${STATUS}" == "STOPPED" ]; then
