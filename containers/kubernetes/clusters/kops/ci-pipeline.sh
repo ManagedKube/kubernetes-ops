@@ -48,6 +48,10 @@ message_banner() {
     echo "#################################"
 }
 
+# Clone out the repository
+git clone GIT_URL_WITH_DEPLOY_KEY /opt/repo
+cd repo
+
 # Checkout the INITIAL_BRANCH branch
 git fetch
 message_banner "git checkout ${INITIAL_BRANCH}"

@@ -4,21 +4,22 @@
     "containerDefinitions": [
         {
             "name": "worker", 
-            "image": "managedkube/kops:dev", 
+            "image": "managedkube/kubernetes-pipeline:dev",
             "essential": true, 
             "entryPoint": [
                 "./containers/kubernetes/clusters/kops/ci-pipeline.sh"
             ], 
             "command": [
-                "-i",
+                "--initial-branch",
                 "master",
-                "-u",
+                "--updated-to-branch",
                 "master"
             ],
             "environment" : [
                 { "name" : "KOPS_STATE_STORE", "value": "s3://xxxx"},
                 { "name" : "ENVIRONMENT_NAME", "value" : "dev-test" },
-                { "name" : "E2E_TESTS_QUICK_MODE", "value": "false"}
+                { "name" : "E2E_TESTS_QUICK_MODE", "value": "false"},
+                { "name" : "GIT_URL_WITH_DEPLOY_KEY", "value": "https://xxxDEPLOY_KEYxxxx@github.com/ManagedKube/kubernetes-ops.git"}
             ],
             "logConfiguration": {
                 "logDriver": "awslogs",

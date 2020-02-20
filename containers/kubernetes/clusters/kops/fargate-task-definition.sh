@@ -132,7 +132,7 @@ aws iam attach-role-policy --role-name kubernetesOpsKopsFargateTask --policy-arn
 #######################
 # Create Fargate task definition
 #######################
-cat ./containers/kubernetes/clusters/kops/fargate/task-definition-template.json | jq  '.executionRoleArn=env.ROLE_ARN_EXECUTION' | jq '.taskRoleArn=env.ROLE_ARN_TASK' | jq '.containerDefinitions[0].environment[0].value=env.KOPS_STATE_STORE'                   | jq '.containerDefinitions[0].command[3]=env.GITHUB_REF'           > ./containers/kubernetes/clusters/kops/fargate/task-definition.json
+cat ./containers/kubernetes/clusters/kops/fargate/task-definition-template.json | jq  '.executionRoleArn=env.ROLE_ARN_EXECUTION' | jq '.taskRoleArn=env.ROLE_ARN_TASK' | jq '.containerDefinitions[0].environment[0].value=env.KOPS_STATE_STORE'   | jq '.containerDefinitions[0].environment[3].value=env.GIT_URL_WITH_DEPLOY_KEY'                   | jq '.containerDefinitions[0].command[3]=env.GITHUB_REF'           > ./containers/kubernetes/clusters/kops/fargate/task-definition.json
 
 #######################
 # Register Fargate task definition

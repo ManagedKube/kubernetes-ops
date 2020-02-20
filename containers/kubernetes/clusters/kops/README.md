@@ -45,6 +45,9 @@ This script updates the cluster
 ```
 
 ## Local workflow
+This container is here if you want to simulate running the entire pipeline locally and instead of in Github Actions.
+
+This container will still spawn a Fargate Task (container) to run the pipeline update task.
 
 ### Build
 
