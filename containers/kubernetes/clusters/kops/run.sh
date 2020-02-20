@@ -41,13 +41,15 @@ IS_DONE=false
 until ${IS_DONE}
 do
     echo "Fargate task is not in a running state yet...wait and poll again. | lastStatus: ${STATUS}"
-    echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
 
     sleep 2
 
     STATUS=$(aws ecs describe-tasks --cluster ${CLUSTER_NAME} --tasks ${TASK_ARN} | jq -r .tasks[0].lastStatus)
     if [ "${STATUS}" == "STOPPED" ]; then
         IS_DONE=true
+    fi
+    if [ "${STATUS}" == "RUNNING" ]; then
+        echo "Command to tail logs while this runs: ecs-cli logs --cluster ${CLUSTER_NAME} --task-id ${TASK_ID}" --follow
     fi
 done
 

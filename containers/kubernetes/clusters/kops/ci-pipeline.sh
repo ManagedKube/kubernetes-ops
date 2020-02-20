@@ -81,7 +81,7 @@ ${BASE_FILE_PATH}/create-cluster.sh
 CLUSTER_NAME=$(cat ./tmp-output/cluster-name.txt)
 
 # Run e2e tests
-message_banner "Running e2e tests"
+message_banner "Running e2e tests [1]"
 ${BASE_FILE_PATH}/e2e-tests.sh || true
 
 # Checkout the UPDATE_TO_BRANCH_PRUNED branch
@@ -105,5 +105,8 @@ message_banner "Updating the cluster"
 ${BASE_FILE_PATH}/update-cluster.sh
 
 # Run e2e tests
-message_banner "Running e2e tests"
+message_banner "Running e2e tests [2]"
 ${BASE_FILE_PATH}/e2e-tests.sh || true
+
+# End
+message_banner "End of ci-pipeline.sh"
