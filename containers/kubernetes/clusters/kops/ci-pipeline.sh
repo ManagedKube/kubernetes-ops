@@ -72,13 +72,19 @@ ${BASE_FILE_PATH}/e2e-tests.sh || true
 
 # Checkout the UPDATE_TO_BRANCH branch
 message_banner "git checkout ${UPDATE_TO_BRANCH}"
+set -x
 git checkout ${UPDATE_TO_BRANCH}
+set +x
 
 # Copy ci-pipeline kops yaml to the newly created cluster's yaml
+set -x
 cp -a ./clusters/aws/kops/clusters/ci-pipeline/* ./clusters/aws/kops/clusters/${CLUSTER_NAME}/
+set +x
 
 echo "Replace kops values file with the correct name parameters"
+set -x
 sed -i "s/ci-pipeline/${CLUSTER_NAME}/g" ./clusters/aws/kops/clusters/${CLUSTER_NAME}/values.yaml
+set +x
 
 # Update the cluster
 message_banner "Updating the cluster"
