@@ -23,7 +23,8 @@ PIPELINE_VERSION=$(./containers/kubernetes/clusters/kops/fargate-task-definition
 set -x
 FARGATE_AWS_SUBNET_ID="subnet-0066be9c16e4f2ec3"
 FARGATE_AWS_SECURITY_GROUP_ID="sg-0fab64bbb10ae556d"
-TASK_ARN=$(aws ecs run-task --cluster ${CLUSTER_NAME}  --task-definition pipeline:${PIPELINE_VERSION} --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[${FARGATE_AWS_SUBNET_ID}],securityGroups=[${FARGATE_AWS_SECURITY_GROUP_ID}]}" | jq -r .tasks[0].taskArn)
+FARGATE_AWS_ASSIGN_PUBLIC_IP="ENABLED"
+TASK_ARN=$(aws ecs run-task --cluster ${CLUSTER_NAME}  --task-definition pipeline:${PIPELINE_VERSION} --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[${FARGATE_AWS_SUBNET_ID}],securityGroups=[${FARGATE_AWS_SECURITY_GROUP_ID}],assignPublicIp=${FARGATE_AWS_ASSIGN_PUBLIC_IP}}" | jq -r .tasks[0].taskArn)
 set +x
 
 # Output Fargate task description

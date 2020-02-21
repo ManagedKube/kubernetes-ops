@@ -109,6 +109,10 @@ run the Kubernetes e2e tests:
 
 # Fargate
 
+## Fargate networking
+
+[https://aws.amazon.com/blogs/compute/task-networking-in-aws-fargate/](https://aws.amazon.com/blogs/compute/task-networking-in-aws-fargate/)
+
 ## IAM Policies
 The script `fargate-task-definition.sh` which runs inside of the pipeline will create the policies needed to run a Fargate job.
 
