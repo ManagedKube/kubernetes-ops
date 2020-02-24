@@ -15,3 +15,7 @@ spec:
         name: echoserver
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "500m"

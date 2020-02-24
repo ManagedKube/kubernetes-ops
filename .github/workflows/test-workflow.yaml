@@ -12,6 +12,8 @@ env:
   GIT_URL_WITH_DEPLOY_KEY: ${{ secrets.GIT_URL_WITH_DEPLOY_KEY }}
   DELETE_PREVIOUS_CLUSTER: "true"
   DEBUG: "true"
+  # Param to set which branch does the pipeline scripts source from
+  CI_PIPELINE_BRANCH: "dynamic-branch"
 
 jobs:
   build:

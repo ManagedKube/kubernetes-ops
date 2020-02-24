@@ -8,8 +8,6 @@
 ##
 ###################################################
 
-CI_PIPELINE_BRANCH="dynamic-branch"
-
 echo "###################################################"
 echo "running: update-cluster-run.sh"
 echo "###################################################"
@@ -49,6 +47,10 @@ if [ -z "${UPDATE_TO_BRANCH}" ]; then
   exit 1
 fi
 
+if [ -z "${CI_PIPELINE_BRANCH}" ]; then
+  echo "The CI_PIPELINE_BRANCH env param must be set. This param sets which branch does the pipeline scripts source from"
+  exit 1
+fi
 
 # Clone out the repository
 echo "Cloning out source repository..."
