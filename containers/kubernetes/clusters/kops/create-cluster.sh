@@ -62,10 +62,12 @@ function wait_for_kube_api_ready() {
         if [ ${STATUS} -gt 2 ]; then
             IS_DONE=true
 
+            set -x
             # Output cluster info
             kubectl version
             kubectl get nodes
             kubectl get pods -o wide --all-namespaces
+            set +x
         fi
     done
 }
