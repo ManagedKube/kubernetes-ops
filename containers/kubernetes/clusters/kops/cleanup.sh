@@ -14,6 +14,11 @@ fi
 
 CLUSTER_NAME_PREFIX="ci-pipeline"
 
+echo "###################################################"
+echo "running: cleanup.sh"
+echo "###################################################"
+
+
 if [ "${DELETE_PREVIOUS_CLUSTER}" == "true" ]; then
 
     # Kops returns an array of clusters if there are more than one.
