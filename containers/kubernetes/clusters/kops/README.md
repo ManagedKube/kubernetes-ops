@@ -108,6 +108,13 @@ run the Kubernetes e2e tests:
 ```
 
 # Fargate
+Fargate is used to run the pipeline that builds or interacts with your Kubernetes Kops cluster.  
+
+Why? - Most production systems do not have a public IP or allow public access to it from the internet without going through some layers of security such as a VPN.  This means that if we run our CI pipeline with a public SaaS service, we will need a way for it to run internally on our internal network.  Fargate is a way to help us do that.  The public SaaS CI system launches a Fargate job for us with our parameters and the pipeline runs on Fargate internally in our VPCs.
+
+## Fargate cluster
+
+How do I create a cluster?
 
 ## Fargate networking
 
