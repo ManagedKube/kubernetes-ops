@@ -116,6 +116,10 @@ Why? - Most production systems do not have a public IP or allow public access to
 
 How do I create a cluster?
 
+```
+aws ecs create-cluster --cluster-name kops-ci-pipeline
+```
+
 ## Fargate networking
 
 [https://aws.amazon.com/blogs/compute/task-networking-in-aws-fargate/](https://aws.amazon.com/blogs/compute/task-networking-in-aws-fargate/)
