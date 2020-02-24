@@ -71,4 +71,4 @@ pwd
 git checkout ${CI_PIPELINE_BRANCH}
 
 # Run the ci-pipeline.sh
-./containers/kubernetes/clusters/kops/ci-pipeline.sh --initial-branch ${INITIAL_BRANCH} --updated-to-branch ${UPDATE_TO_BRANCH}
+./containers/kubernetes/clusters/kops/ci-pipeline.sh --initial-branch "${INITIAL_BRANCH}" --updated-to-branch "${UPDATE_TO_BRANCH}"
