@@ -11,9 +11,9 @@
             ],
             "command": [
                 "--initial-branch",
-                "dynamic-branch",
+                "from env var: INITIAL_BRANCH",
                 "--updated-to-branch",
-                "master"
+                "from env var GIT_URL_WITH_DEPLOY_KEY"
             ],
             "environment" : [
                 { "name" : "KOPS_STATE_STORE", "value": "s3://xxxx"},

@@ -17,6 +17,8 @@ env:
   FARGATE_CLUSTER_NAME: "kops-ci-pipeline"
   FARGATE_AWS_SUBNET_ID: "subnet-0066be9c16e4f2ec3"
   FARGATE_AWS_SECURITY_GROUP_ID: "sg-0fab64bbb10ae556d"
+  # This is the initial branch where the Kops cluster is created from
+  INITIAL_BRANCH: "dynamic-branch"
 
 jobs:
   build:
