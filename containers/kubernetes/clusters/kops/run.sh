@@ -16,7 +16,7 @@ if [ ! -z "${DEBUG}" ]; then
   set -x
 fi
 
-CLUSTER_NAME="fargate-cluster"
+CLUSTER_NAME="fargate-cluster" # Fargate cluster name
 PIPELINE_VERSION=$(./containers/kubernetes/clusters/kops/fargate-task-definition.sh --create true | grep TASK_DEFINITION_REVISION | grep -o -E "[[:digit:]]+")
 
 # Start Fargate Task
