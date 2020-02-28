@@ -1,3 +1,7 @@
+output "region" {
+  value = var.region
+}
+
 output "network_name" {
   value = google_compute_network.main.name
 }

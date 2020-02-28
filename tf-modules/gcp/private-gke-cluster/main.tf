@@ -21,8 +21,8 @@ resource "google_container_cluster" "primary" {
   provider           = google-beta
   name               = var.cluster_name
   location           = var.region
-  node_version       = var.node_version
-  min_master_version = var.node_version
+  node_version       = var.gke_version
+  min_master_version = var.gke_version
   network            = var.network_name
   subnetwork         = var.private_subnet_name
   initial_node_count = var.initial_node_count
