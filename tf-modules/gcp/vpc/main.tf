@@ -51,10 +51,10 @@ resource "google_compute_router" "router" {
   }
 }
 
-resource "google_compute_address" "address" {
-  count  = 2
-  name   = "${var.vpc_name}-nat-external-address-${count.index}"
-  region = var.region
+# Using static IPs created outside of this Terraform module.
+data "google_compute_address" "address" {
+  count = var.number_of_nat_ip_address_to_use
+  name = "${var.vpc_name}-nat-external-address-${count.index}"
 }
 
 resource "google_compute_router_nat" "advanced-nat" {
@@ -62,13 +62,9 @@ resource "google_compute_router_nat" "advanced-nat" {
   name                   = "${var.vpc_name}-nat-1"
   router                 = google_compute_router.router.name
   region                 = var.region
-  nat_ip_allocate_option = "AUTO_ONLY" #"MANUAL_ONLY"
 
-  # nat_ip_allocate_option             = "MANUAL_ONLY"
-  # nat_ips                            = ["${google_compute_address.address.*.self_link}"]
+  nat_ip_allocate_option             = "MANUAL_ONLY"
+  nat_ips                            = data.google_compute_address.address[*].self_link
+
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
-  # subnetwork {
-  #   name                    = "${google_compute_subnetwork.subnetwork.self_link}"
-  #   source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
-  # }
 }

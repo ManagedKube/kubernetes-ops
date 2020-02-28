@@ -20,5 +20,7 @@ inputs = {
   public_subnet_cidr_range = "10.32.1.0/24"
   private_subnet_cidr_range = "10.32.5.0/24"
 
+  number_of_nat_ip_address_to_use = 1
+
   outbound_through_nat_tags=["private-subnet", "gke-private-nodes"]
 }
