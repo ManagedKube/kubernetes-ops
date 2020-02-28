@@ -10,7 +10,6 @@ inputs = {
   vpc_name = "dev"
   network_name = "dev"
   cluster_name = "dev"
-  # private_subnet_name = "dev-gke-private-subnet"
   private_subnet_name = trimspace(run_cmd("terragrunt", "output", "private_subnet_name", "--terragrunt-working-dir", "../gke-subnets"))
 
   enable_private_kube_master_endpoint = false
