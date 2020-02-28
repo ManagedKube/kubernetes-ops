@@ -17,32 +17,6 @@ provider "google-beta" {
   version     = "~> v3.9.0"
 }
 
-resource "google_compute_subnetwork" "private_subnet" {
-  name                     = "${var.network_name}-gke-private-subnet"
-  ip_cidr_range            = var.private_subnet_cidr_range
-  network                  = var.vpc_name
-  region                   = var.region
-  private_ip_google_access = "true"
-
-  # enable secondary IP range for pods and services:
-  secondary_ip_range {
-    range_name    = "${var.network_name}-gke-pods"
-    ip_cidr_range = var.pods_ip_cidr_range
-  }
-  secondary_ip_range {
-    range_name    = "${var.network_name}-gke-services"
-    ip_cidr_range = var.services_ip_cidr_range
-  }
-}
-
-resource "google_compute_subnetwork" "public_subnet" {
-  name                     = "${var.network_name}-gke-public-subnet"
-  ip_cidr_range            = var.public_subnet_cidr_range
-  network                  = var.vpc_name
-  region                   = var.region
-  private_ip_google_access = "true"
-}
-
 resource "google_container_cluster" "primary" {
   provider           = google-beta
   name               = var.cluster_name
@@ -50,7 +24,7 @@ resource "google_container_cluster" "primary" {
   node_version       = var.node_version
   min_master_version = var.node_version
   network            = var.network_name
-  subnetwork         = google_compute_subnetwork.private_subnet.name
+  subnetwork         = var.private_subnet_name
   initial_node_count = var.initial_node_count
 
   authenticator_groups_config {
@@ -108,11 +82,6 @@ resource "google_container_cluster" "primary" {
     http_load_balancing {
       disabled = var.http_load_balancing
     }
-
-    # disable the  k8s dashboard as it is insecure
-    kubernetes_dashboard {
-      disabled = true
-    }
   }
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -120,5 +89,4 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
 
-  depends_on = [google_compute_subnetwork.private_subnet]
 }

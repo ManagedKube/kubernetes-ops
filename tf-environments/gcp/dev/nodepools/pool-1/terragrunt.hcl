@@ -3,7 +3,7 @@ include {
 }
 
 terraform {
-  source = "../../../../../../tf-modules/gcp/nodepool/"
+  source = "../../../../../tf-modules/gcp/nodepool/"
 }
 
 inputs = {

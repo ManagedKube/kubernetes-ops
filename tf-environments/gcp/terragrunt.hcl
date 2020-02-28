@@ -15,7 +15,7 @@ terraform {
      arguments = [
       #  "-var-file=${get_parent_terragrunt_dir()}/_env_defaults/gcp.tfvars",
       # "-var-file=${get_terragrunt_dir()}/../_env_defaults/gcp.tfvars",
-      "-var-file=${get_parent_terragrunt_dir()}/_env_defaults/gcp.tfvars",
+      "-var-file=${get_terragrunt_dir()}/../_env_defaults/gcp.tfvars",
      ]
   }
 }

@@ -23,13 +23,17 @@ variable "network_name" {
   description = "The name of this network"
 }
 
-variable "private_subnet_cidr_range" {
-  description = "The private subnet CIDR range. This should be a /24."
+variable "private_subnet_name" {
+  description = "The name of the private subnet to use"
 }
 
-variable "public_subnet_cidr_range" {
-  description = "The public subnet CIDR range. This should be a /24."
-}
+# variable "private_subnet_cidr_range" {
+#   description = "The private subnet CIDR range. This should be a /24."
+# }
+
+# variable "public_subnet_cidr_range" {
+#   description = "The public subnet CIDR range. This should be a /24."
+# }
 
 # variable "nat_machine_type" {
 #   description = "The instance type for the NAT server."
@@ -47,13 +51,13 @@ variable "public_subnet_cidr_range" {
 #   description = "The /32 address of the single bastion server that can access servers in the VPC over ssh."
 # }
 
-variable "pods_ip_cidr_range" {
-  description = "The secondary ip range to use for pods"
-}
+# variable "pods_ip_cidr_range" {
+#   description = "The secondary ip range to use for pods"
+# }
 
-variable "services_ip_cidr_range" {
-  description = "The secondary ip range to use for services"
-}
+# variable "services_ip_cidr_range" {
+#   description = "The secondary ip range to use for services"
+# }
 
 # # https://www.terraform.io/docs/providers/google/r/compute_route.html#tags
 # variable "outbound_through_nat_tags" {
