@@ -93,20 +93,6 @@ resource "google_container_cluster" "primary" {
 
       enabled = var.cluster_autoscaling_enabled
 
-      # resource_limits {
-      #   resource_type = var.cluster_autoscaling_resource_limits_type
-      #   minimum       = var.cluster_autoscaling_resource_limits_minimum
-      #   maximum       = var.cluster_autoscaling_resource_limits_maximum
-      # }
-
-      # dynamic "resource_limits" {
-      #   for_each = var.resource_limits_enable
-      #   content {
-      #     resource_type = resource_limits.value
-      #     minimum       = var.cluster_autoscaling_resource_limits_minimum
-      #     maximum       = var.cluster_autoscaling_resource_limits_maximum
-      #   }
-      # }
       dynamic "resource_limits" {
         for_each = var.resource_limits_enable
         content {
