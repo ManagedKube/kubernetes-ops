@@ -22,7 +22,7 @@ inputs = {
 
   enable_private_kube_master_endpoint = false
 
-  gke_version = "1.14.10-gke.17"
+  gke_version = "1.16.5-gke.2"
   initial_node_count = "1"
 
   master_ipv4_cidr_block="10.32.11.0/28"
@@ -37,6 +37,24 @@ inputs = {
   ]
 
   outbound_through_nat_tags=["private-subnet", "gke-private-nodes"]
+
+  cluster_autoscaling_enabled = true
+
+  resource_limits_enable = [
+    {
+      type = "cpu",
+      max = 10,
+      min = 0,
+    }, {
+      type = "memory",
+      max = 16,
+      min = 0,
+    }
+  ]
+
+  release_channel_channel = "RAPID"
+
+  enable_intranode_visibility = true
 }
 
 dependencies {

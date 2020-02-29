@@ -45,6 +45,10 @@ variable "http_load_balancing" {
   default     = false
 }
 
+variable "horizontal_pod_autoscaling" {
+  default = true
+}
+
 variable "enable_private_kube_master_endpoint" {
   description = "Whether the master's internal IP address is used as the cluster endpoint"
   default     = "true"
@@ -106,4 +110,16 @@ variable "cluster_autoscaling_auto_provisioning_defaults_service_account" {
 
 variable "cluster_autoscaling_autoscaling_profile" {
   default = "OPTIMIZE_UTILIZATION"
+}
+
+variable "enable_shielded_nodes" {
+  default = true
+}
+
+variable "release_channel_channel" {
+  default = "UNSPECIFIED"
+}
+
+variable "enable_intranode_visibility" {
+  default = "false"
 }

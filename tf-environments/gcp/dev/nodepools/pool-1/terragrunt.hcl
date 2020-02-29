@@ -25,6 +25,7 @@ inputs = {
   is_preemtible = true
   machine_type = "n1-standard-2"
   disk_size_gb = "100"
+  auto_upgrade = true
 
   image_type = "COS"
 

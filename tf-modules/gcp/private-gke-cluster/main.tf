@@ -82,6 +82,10 @@ resource "google_container_cluster" "primary" {
     http_load_balancing {
       disabled = var.http_load_balancing
     }
+
+    horizontal_pod_autoscaling {
+      disabled = var.horizontal_pod_autoscaling
+    }
   }
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -110,5 +114,13 @@ resource "google_container_cluster" "primary" {
       autoscaling_profile = var.cluster_autoscaling_autoscaling_profile
 
   }
+
+  enable_shielded_nodes = var.enable_shielded_nodes
+
+  release_channel {
+    channel = var.release_channel_channel
+  }
+
+  enable_intranode_visibility = var.enable_intranode_visibility
 
 }

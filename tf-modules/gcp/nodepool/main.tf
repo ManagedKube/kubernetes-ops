@@ -53,6 +53,12 @@ resource "google_container_node_pool" "node_nodes" {
         value  = taint.value.value
       }
     }
+
+    shielded_instance_config {
+      enable_secure_boot = var.shielded_instance_config_enable_secure_boot
+
+      enable_integrity_monitoring = var.shielded_instance_config_enable_integrity_monitoring
+    }
   }
 
 }
