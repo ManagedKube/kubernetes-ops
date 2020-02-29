@@ -7,7 +7,7 @@ provider "google" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 data "google_compute_network" "main-network" {

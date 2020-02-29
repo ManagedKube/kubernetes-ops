@@ -7,7 +7,7 @@ provider "google-beta" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 resource "google_container_node_pool" "node_nodes" {
@@ -53,7 +53,6 @@ resource "google_container_node_pool" "node_nodes" {
         value  = taint.value.value
       }
     }
-
-
   }
+
 }

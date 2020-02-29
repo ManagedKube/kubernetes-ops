@@ -7,14 +7,14 @@ provider "google" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 provider "google-beta" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 resource "google_container_cluster" "primary" {
@@ -88,5 +88,41 @@ resource "google_container_cluster" "primary" {
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
   remove_default_node_pool = true
+
+    cluster_autoscaling {
+
+      enabled = var.cluster_autoscaling_enabled
+
+      # resource_limits {
+      #   resource_type = var.cluster_autoscaling_resource_limits_type
+      #   minimum       = var.cluster_autoscaling_resource_limits_minimum
+      #   maximum       = var.cluster_autoscaling_resource_limits_maximum
+      # }
+
+      # dynamic "resource_limits" {
+      #   for_each = var.resource_limits_enable
+      #   content {
+      #     resource_type = resource_limits.value
+      #     minimum       = var.cluster_autoscaling_resource_limits_minimum
+      #     maximum       = var.cluster_autoscaling_resource_limits_maximum
+      #   }
+      # }
+      dynamic "resource_limits" {
+        for_each = var.resource_limits_enable
+        content {
+          resource_type = resource_limits.value["type"]
+          minimum       = resource_limits.value["min"]
+          maximum       = resource_limits.value["max"]
+        }
+      }
+
+      auto_provisioning_defaults {
+        oauth_scopes = var.cluster_autoscaling_auto_provisioning_defaults_oauth_scopes
+        service_account = var.cluster_autoscaling_auto_provisioning_defaults_service_account
+      }
+
+      autoscaling_profile = var.cluster_autoscaling_autoscaling_profile
+
+  }
 
 }

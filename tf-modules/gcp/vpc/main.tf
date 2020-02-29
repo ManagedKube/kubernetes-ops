@@ -8,14 +8,14 @@ provider "google" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 provider "google-beta" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> v3.9.0"
+  version     = "~> v3.10.0"
 }
 
 resource "google_compute_network" "main" {

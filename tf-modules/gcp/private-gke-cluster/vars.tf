@@ -8,7 +8,7 @@ variable "region" {
 
 variable "asn" {
   default     = "-1"
-  description = "ASN for the GCP router.  This value must not overlap with anyother ASNs"
+  description = "ASN for the GCP router.  This value must not overlap with another ASNs"
 }
 
 variable "credentials_file_path" {
@@ -28,7 +28,7 @@ variable "private_subnet_name" {
 }
 
 #####################################
-####################################
+#####################################
 variable "cluster_name" {
 }
 
@@ -64,4 +64,46 @@ variable "initial_node_count" {
 
 variable "authenticator_groups_config" {
   default = "gke-security-groups@example.com"
+}
+
+variable "cluster_autoscaling_enabled" {
+  description = "To enable cluster_autoscaling_enabled or not"
+  default = false
+}
+
+variable "resource_limits_enable" {
+  type = list(any)
+  description = "This controls if the resource_limits block is enabled or not"
+  # When cluster_autoscaling_enabled==false
+  default = []
+  # When cluster_autoscaling_enabled==true, to configure the resource limits
+  # default = [{
+  #   type = "cpu",
+  #   max = 1,
+  #   min = 1,
+  # }, {
+  #   type = "memory",
+  #   max = 1,
+  #   min = 1,
+  # }]
+}
+
+variable "cluster_autoscaling_auto_provisioning_defaults_oauth_scopes" {
+  type    = list(string)
+  default = [
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append",
+  ]
+}
+
+variable "cluster_autoscaling_auto_provisioning_defaults_service_account" {
+  default = ""
+}
+
+variable "cluster_autoscaling_autoscaling_profile" {
+  default = "OPTIMIZE_UTILIZATION"
 }
