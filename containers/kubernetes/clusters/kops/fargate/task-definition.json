@@ -1,0 +1,47 @@
+{
+  "family": "pipeline",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "worker",
+      "image": "managedkube/kops:dev",
+      "essential": true,
+      "entryPoint": [
+        "sh",
+        "-c"
+      ],
+      "command": [
+        "./containers/kubernetes/clusters/kops/ci-pipeline.sh -i master -u master"
+      ],
+      "environment": [
+        {
+          "name": "ENVIRONMENT_NAME",
+          "value": "dev-test"
+        },
+        {
+          "name": "E2E_TESTS_QUICK_MODE",
+          "value": "true"
+        },
+        {
+          "name": "KOPS_STATE_STORE",
+          "value": "s3://kubernetes-ops-expanse-1234-kops-state-store"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "ci-pipeline",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "worker"
+        }
+      }
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam:::role/kubernetesOpsKopsFargateTaskExecution",
+  "taskRoleArn": "arn:aws:iam:::role/kubernetesOpsKopsFargateTask"
+}

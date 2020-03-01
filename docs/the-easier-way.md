@@ -57,7 +57,7 @@ cd clusters/aws/kops
 The Kubernetes cluster that is created is a fully private Kubernetes cluster with
 no public IP addresses.  This means that you will have to get to the cluster some
 how via a bastion host to be able to interact with it.  During the setup, a
-bastion host was created for you and the fbastionollowing steps shows you how to
+bastion host was created for you. The following steps shows you how to
 connect to it and create a tunnel.
 
 ```

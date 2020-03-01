@@ -12,7 +12,6 @@ http://www.subnet-calculator.com/cidr.php
 | Name                              | CIDR          |
 |-----------------------------------|---------------|
 | docker0                           | 172.26.0.0/16 |
-| Kubernetes aws - dev-example      | 10.9.0.0/16   |
 | Kubernetes aws - dev              | 10.10.0.0/16  |
 | Kubernetes aws - qa               | 10.11.0.0/16  |
 | Kubernetes aws - staging          | 10.12.0.0/16  |
@@ -24,7 +23,7 @@ http://www.subnet-calculator.com/cidr.php
 | Kubernetes gcp - prod             | 10.23.0.0/16  |
 
 ## Reserved ranged for each environment
-Each envrionment has a bunch of initial reserved ranges to bring up the entire
+Each environment has a bunch of initial reserved ranges to bring up the entire
 application.  The following defines these ranges in a generic sense that can
 be applied to any of the above CIDRs.
 
@@ -55,3 +54,6 @@ be applied to any of the above CIDRs.
 | GKE master CIDR block                 | 10.xx.22.0/28    | 10.xx.22.0 - 10.xx.22.15    |
 | GKE pod CIDR range                    | 10.xx.64.0/19    | 10.xx.64.0 - 10.xx.95.255   |
 | GKE service CIDR range                | 10.xx.96.0/19    | 10.xx.96.0 - 10.xx.127.255  |
+| Transit Gateway - subnet1             | 10.xx.104.16/28  | 10.xx.104.16 - 10.xx.104.31 |
+| Transit Gateway - subnet2             | 10.xx.104.32/28  | 10.xx.104.32 - 10.xx.104.47 |
+| Transit Gateway - subnet3             | 10.xx.104.48/28  | 10.xx.104.48 - 10.xx.104.63 |

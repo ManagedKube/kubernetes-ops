@@ -1,7 +1,7 @@
 terraform {
-  backend "s3" {
-  }
-  # backend "gcs" {}
+  # backend "s3" {
+  # }
+  backend "gcs" {}
 }
 
 provider "google" {
@@ -83,7 +83,7 @@ resource "google_compute_address" "bastion_ip" {
 resource "google_compute_instance" "bastion" {
   name           = "${var.vpc_name}-bastion-b"
   machine_type   = var.bastion_machine_type
-  zone           = var.region_zone
+  zone           = var.bastion_region_zone
   can_ip_forward = "true"
 
   tags = ["bastion"]

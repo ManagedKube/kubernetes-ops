@@ -39,12 +39,13 @@ starting to refer to as "day 2" problems (where "day 1" is creation).  The "day 
 problems are well documented and there are plenty of tutorials out there for it.
 The problem with these tutorials and examples are that they mostly leave you hanging
 on how to move forward with the infrastructure pieces.  Day 2 problems are: what is the upgrade, patching,
-and modification strategy, how do I manage the infrastructure git repository, etc?  
+and modification strategy, how do I manage the infrastructure git repository, etc?
+
 This is where we think we can provide some contribution.
 With our experience in managing many Kubernetes clusters over the years, we think
 we can provide this information.  Creation of your cluster is about 10 to maybe
 20 percent of the infrastructure activity (if that), making changes to the infrastructure
-to suite your needs as time moves on is the bulk of the activity and finally
+to suit your needs as time moves on is the bulk of the activity and finally
 deletion of the entire or parts of the infrastructure as new items comes into play.
 
 If you follow through the instructions, you might think this is overly complex.
@@ -182,6 +183,18 @@ the "easier way" takes the manual steps in the previous example and hides most
 of the steps in a script where you can just run:
 
 [the-easier-way](docs/the-easier-way.md)
+
+# Need a DevOps consultant?
+
+ManagedKube is a boutique DevOps consulting firm that helps companies run large-scale, reliable applications in a GitOps workflow.
+
+We work side-by-side with our client's development team to architect, design, build, optimize, and operate infrastructure in the cloud (AWS and GCP).
+
+We specialize in Docker/Kubernetes containerized infrastructure. 
+
+Check us out at: [https://managedkube.com/](https://managedkube.com/)
+
+Or email us at: support@managedkube.com
 
 # License
 

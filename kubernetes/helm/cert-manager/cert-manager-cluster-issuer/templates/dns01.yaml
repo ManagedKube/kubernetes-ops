@@ -1,0 +1,42 @@
+{{- if .Values.issuer.dns.enabled }}
+# doc: http://docs.cert-manager.io/en/latest/reference/issuers/acme/dns01.html
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.issuer.dns.name }}
+spec:
+  acme:
+    email: {{ .Values.email }}
+    server: {{ .Values.letsencrypt.server }}
+    privateKeySecretRef:
+      name: letsencrypt-private-key-dns-01
+    solvers:
+    - dns01:
+
+        {{ if eq .Values.provider "aws" }}
+        # AWS Provider
+        route53:
+          region: {{ .Values.aws.region }}
+
+          # optional if ambient credentials are available; see ambient credentials documentation
+          accessKeyID: {{ .Values.aws.accessKeyID }}
+          secretAccessKeySecretRef:
+            name: aws-route53-credentials-secret
+            key: secret-access-key
+        {{- end }}
+
+        {{ if eq .Values.provider "google" }}
+        # Google Provider - https://docs.cert-manager.io/en/release-0.11/tasks/issuers/setup-acme/dns01/google.html
+        clouddns:
+          # The ID of the GCP project
+          project: {{ .Values.clouddns.project }}
+          # This is the secret used to access the service account
+          serviceAccountSecretRef:
+            name: {{ .Values.clouddns.serviceAccountSecretRef.name }}
+            key: {{ .Values.clouddns.serviceAccountSecretRef.key }}
+        {{- end }}
+
+
+
+{{- end }}

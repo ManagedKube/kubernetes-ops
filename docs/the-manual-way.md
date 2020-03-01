@@ -8,7 +8,7 @@ holds the infrastructure level items.
 See [tools.md](tools.md)
 
 # Setup your IP CIDR
-This document contains how your IP CIDRs are going to be laided out for your
+This document contains how your IP CIDRs are going to be laid out for your
 entire infrastructure.  Care should be taken to review this and to make sure
 this fits your needs.  
 
@@ -23,20 +23,19 @@ and require some kind of large scale migration or cut over.
 We suggest you take the `cidr-ranges.md` file as a good place to start.
 
 # Replace all of the S3 buckets used
-See [s3 buckets replacement](README.md#Setting up the S3 buckets)
+See [s3 buckets replacement](README.md#setting-up-the-s3-buckets)
 
 # VPC Creation
 
-Directory: <repo root>/tf-environment
+Directory: `<repo root>/tf-environment`
 
 ## Easy route
 
-Change directory to: '<repo root>/tf-environments/dev-example/aws/vpc'
+Change directory to: `<repo root>/tf-environments/aws/dev/dev/vpc`
 
-You will have to change the `bucket` in the '<repo root>/tf-environments/dev-example/aws/terraform.tfvars`
-file.  S3 bucket names has to be globally unique which means it can only exist once
-in the all of AWS.  The easiest way is to change the `123` in the bucket name to
-some other random number.
+A note about the Terraform state store.  We are using S3 for the state store and S3 bucket names has to be globally unique. 
+The file `<repo root>/tf-environments/aws/dev/terragrunt.hcl` holds the state store configurations. 
+It is set to `kubernetes-ops-tf-state-${get_aws_account_id()}-terraform-state`.  It puts your AWS Account ID in there as the "unique" key.
 
 Run:
 ```
@@ -47,10 +46,10 @@ terragrunt apply
 
 This will create the VPC.
 
-## Custom production route
+## Creating additional environments that is not named "dev"
 
-Copy the directory `dev-example` to a name of the environment you want to create.
-If this is the first environment, `dev` is a good name.
+Copy the directory `dev` to a name of the environment you want to create.
+Like `dev-testing` is a good name.
 
 ### Update parameters
 Now we have to update some parameter values in the files that we just copied in
@@ -58,14 +57,9 @@ the `dev` directory.
 
 #### `_env_defaults/main.tf`
 Update the parameter
-- `environment_name` to `dev`
+- `environment_name` to `dev-testing`
 - `vpc_cidr` to the CIDR you chose
 - `aws_availability_zone_1` and the availability zones if this needs to be updated
-
-#### `terraform.tfvars`
-This specifies where to store the Terraform remote state store.
-- `bucket` - this has to be globally unique to S3.  Easiest way is to change the number to some other arbitrary number
-- `key` - change `dev-example` to `dev` or whatever you named this environment to
 
 #### `aws/vpc/main.tf`
 Update the parameters:
@@ -150,10 +144,10 @@ unique, you need to select a name that is unique to you.  You can simply change
 the `2345` string to something else or another number to make it unique.
 
 ```
-export KOPS_STATE_STORE=s3://kubernetes-ops-12344-kops-state-store
+export KOPS_STATE_STORE=s3://kubernetes-ops-1234-kops-state-store
 ```
 
-Put the same bucket name in this case `kubernetes-ops-12344-kops-state-store` in
+Put the same bucket name in this case `kubernetes-ops-1234-kops-state-store` in
 the file `./clusters/dev-example/values.yaml` in the `s3BucketName` values field.
 
 Run this command to create the S3 bucket
@@ -180,7 +174,7 @@ export AWS_DEFAULT_REGION=us-east-1
 You can now run this command to output the templated values:
 
 ```
-kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml > /tmp/output.yaml
+kops toolbox template --template ./template/cluster.yml --values ./clusters/dev-example/values.yaml --values ./clusters/values.yaml > /tmp/output.yaml
 ```
 
 Run this command to create the cluster:
@@ -197,7 +191,6 @@ kops get clusters
 
 Set the cluster name from the output
 ```
-
 export cluster_name=dev-example.us-east-1.k8s.local
 ```
 

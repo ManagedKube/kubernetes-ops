@@ -7,7 +7,7 @@ Every cloud has a concept of a "network".  AWS and GCP calls it the VPC.  The VP
 will hold everything that you will ever run or create in the cloud.  Items such as instances,
 subnets, firewall rules, databases, queues, load balancers, etc.  Since it is
 such a foundational piece that sits at pretty much the bottom of the stack it
-is very important to get this correct because trying to make changes to this laster
+is very important to get this correct because trying to make changes to this later
 with everything running on it could turn out to be very difficult or impossible
 without downtime and/or a lot of reconfiguration of items that are running in
 this VPC.  
@@ -125,7 +125,7 @@ not everyone has access to it.  Depending on your requirements, you might limit
 access or even have to go through some approvals to get access to any parts of this
 infrastructure.
 
-why so many?
+### Why so many?
 
 By doing this you have environments like `dev` where developers and delivering
 new application code into it while they are working and testing it.  This code
