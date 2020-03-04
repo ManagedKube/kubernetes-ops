@@ -8,7 +8,7 @@ variable "region" {
 
 variable "asn" {
   default     = "-1"
-  description = "ASN for the GCP router.  This value must not overlap with anyother ASNs"
+  description = "ASN for the GCP router.  This value must not overlap with another ASNs"
 }
 
 variable "credentials_file_path" {
@@ -23,71 +23,16 @@ variable "network_name" {
   description = "The name of this network"
 }
 
-variable "private_subnet_cidr_range" {
-  description = "The private subnet CIDR range. This should be a /24."
+variable "private_subnet_name" {
+  description = "The name of the private subnet to use"
 }
-
-variable "public_subnet_cidr_range" {
-  description = "The public subnet CIDR range. This should be a /24."
-}
-
-# variable "nat_machine_type" {
-#   description = "The instance type for the NAT server."
-# }
-#
-# variable "nat_image" {
-#   description = "The prebuild NAT image."
-# }
-#
-# variable "nat_internal_ip" {
-#   description = "The IP address for the NAT server. This should usually be .253"
-# }
-#
-# variable "internal_services_bastion_cidr" {
-#   description = "The /32 address of the single bastion server that can access servers in the VPC over ssh."
-# }
-
-variable "pods_ip_cidr_range" {
-  description = "The secondary ip range to use for pods"
-}
-
-variable "services_ip_cidr_range" {
-  description = "The secondary ip range to use for services"
-}
-
-# # https://www.terraform.io/docs/providers/google/r/compute_route.html#tags
-# variable "outbound_through_nat_tags" {
-#   description = "A tag selector for nodes that should use the NAT as an external gateway"
-#   type        = "list"
-# }
 
 #####################################
-####################################
-# variable "remote_state_bucket" {}
-# variable "remote_state_bucket_region" {}
+#####################################
 variable "cluster_name" {
 }
 
-variable "oauth_scopes" {
-  type = list(string)
-}
-
-variable "labels" {
-  type    = map(string)
-  default = {}
-}
-
-variable "tags" {
-  type    = list(string)
-  default = []
-}
-
-variable "taints" {
-  type    = list(string)
-  default = []
-}
-
-variable "node_version" {
+variable "gke_version" {
   default = "1.7.6"
 }
 
@@ -98,6 +43,10 @@ variable "master_ipv4_cidr_block" {
 variable "http_load_balancing" {
   description = "Set this to false to ensure that the HTTP L7 load balancing controller addon is enabled"
   default     = false
+}
+
+variable "horizontal_pod_autoscaling" {
+  default = true
 }
 
 variable "enable_private_kube_master_endpoint" {
@@ -114,18 +63,63 @@ variable "master_authorized_networks_cidr" {
   type = list
 }
 
-variable "machine_type" {
-}
-
-variable "disk_size_gb" {
-}
-
-variable "image_type" {
-}
-
 variable "initial_node_count" {
 }
 
 variable "authenticator_groups_config" {
   default = "gke-security-groups@example.com"
+}
+
+variable "cluster_autoscaling_enabled" {
+  description = "To enable cluster_autoscaling_enabled or not"
+  default = false
+}
+
+variable "resource_limits_enable" {
+  type = list(any)
+  description = "This controls if the resource_limits block is enabled or not"
+  # When cluster_autoscaling_enabled==false
+  default = []
+  # When cluster_autoscaling_enabled==true, to configure the resource limits
+  # default = [{
+  #   type = "cpu",
+  #   max = 1,
+  #   min = 1,
+  # }, {
+  #   type = "memory",
+  #   max = 1,
+  #   min = 1,
+  # }]
+}
+
+variable "cluster_autoscaling_auto_provisioning_defaults_oauth_scopes" {
+  type    = list(string)
+  default = [
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append",
+  ]
+}
+
+variable "cluster_autoscaling_auto_provisioning_defaults_service_account" {
+  default = ""
+}
+
+variable "cluster_autoscaling_autoscaling_profile" {
+  default = "OPTIMIZE_UTILIZATION"
+}
+
+variable "enable_shielded_nodes" {
+  default = true
+}
+
+variable "release_channel_channel" {
+  default = "UNSPECIFIED"
+}
+
+variable "enable_intranode_visibility" {
+  default = "false"
 }
