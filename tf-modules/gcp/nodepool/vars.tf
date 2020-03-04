@@ -81,3 +81,11 @@ variable "auto_upgrade" {
 variable "auto_repair" {
   default = true
 }
+
+variable "shielded_instance_config_enable_secure_boot" {
+  default = true
+}
+
+variable "shielded_instance_config_enable_integrity_monitoring" {
+  default = true
+}
