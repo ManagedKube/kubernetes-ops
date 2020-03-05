@@ -6,15 +6,6 @@ Source project docs:  https://eksctl.io
 This is a great page on the schema of the config files and options available when creating the cluster:
 https://github.com/weaveworks/eksctl/blob/master/site/content/usage/20-schema.md
 
-# Making the Kubernetes API a private endpoint
-
-Current this is not supported via CloudFormation and since `eksctl` uses Cloudformation to bring up
-a cluster, it currently cannot set this setting.
-
-Ticket tracking this issue: https://github.com/weaveworks/eksctl/issues/649
-
-As a work around, you can manually go to the AWS EKS console and change the endpoint type.
-
 # Export your AWS keys to your local shell
 eksctl will use these to interact with your AWS account.
 
@@ -28,6 +19,12 @@ export AWS_DEFAULT_REGION=us-east-1
 
 ```
 eksctl create cluster -f config.yaml
+```
+
+# Create a node group
+
+```
+eksctl create nodegroup -f nodegroup.yaml
 ```
 
 # sshuttle into the environment
@@ -64,4 +61,22 @@ eksctl delete nodegroup  --cluster gar-test --name ng-1
 
 ```
 eksctl delete cluster gar-test
+```
+
+# Getting the kubeconfig for a cluster
+
+```
+eksctl utils write-kubeconfig --cluster=<name> [--kubeconfig=<path>][--set-kubeconfig-context=<bool>]
+```
+
+# Update a cluster
+
+```
+eksctl update cluster -f ~/Documents/managedkube/kubernetes-ops/clusters/aws/eksctl/config.yaml     
+```
+
+# Update publicAccessCidrs
+
+```
+eksctl utils set-public-access-cidrs -f ~/Documents/managedkube/kubernetes-ops/clusters/aws/eksctl/config.yaml --approve
 ```
