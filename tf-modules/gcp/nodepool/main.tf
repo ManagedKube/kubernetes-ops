@@ -13,7 +13,7 @@ provider "google-beta" {
 resource "google_container_node_pool" "node_nodes" {
   provider   = google-beta
   name       = var.node_pool_name
-  location   = var.region
+  location   = var.google_container_cluster_location
   cluster    = var.cluster_name
   node_count = var.initial_node_count
   autoscaling {
