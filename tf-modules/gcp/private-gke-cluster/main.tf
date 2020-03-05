@@ -7,50 +7,24 @@ provider "google" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> 2.10.0"
+  version     = "~> v3.10.0"
 }
 
 provider "google-beta" {
   region      = var.region
   project     = var.project_name
   credentials = file(var.credentials_file_path)
-  version     = "~> 2.10.0"
-}
-
-resource "google_compute_subnetwork" "private_subnet" {
-  name                     = "${var.network_name}-gke-private-subnet"
-  ip_cidr_range            = var.private_subnet_cidr_range
-  network                  = var.vpc_name
-  region                   = var.region
-  private_ip_google_access = "true"
-
-  # enable secondary IP range for pods and services:
-  secondary_ip_range {
-    range_name    = "${var.network_name}-gke-pods"
-    ip_cidr_range = var.pods_ip_cidr_range
-  }
-  secondary_ip_range {
-    range_name    = "${var.network_name}-gke-services"
-    ip_cidr_range = var.services_ip_cidr_range
-  }
-}
-
-resource "google_compute_subnetwork" "public_subnet" {
-  name                     = "${var.network_name}-gke-public-subnet"
-  ip_cidr_range            = var.public_subnet_cidr_range
-  network                  = var.vpc_name
-  region                   = var.region
-  private_ip_google_access = "true"
+  version     = "~> v3.10.0"
 }
 
 resource "google_container_cluster" "primary" {
   provider           = google-beta
   name               = var.cluster_name
   location           = var.region
-  node_version       = var.node_version
-  min_master_version = var.node_version
+  node_version       = var.gke_version
+  min_master_version = var.gke_version
   network            = var.network_name
-  subnetwork         = google_compute_subnetwork.private_subnet.name
+  subnetwork         = var.private_subnet_name
   initial_node_count = var.initial_node_count
 
   authenticator_groups_config {
@@ -109,9 +83,8 @@ resource "google_container_cluster" "primary" {
       disabled = var.http_load_balancing
     }
 
-    # disable the  k8s dashboard as it is insecure
-    kubernetes_dashboard {
-      disabled = true
+    horizontal_pod_autoscaling {
+      disabled = var.horizontal_pod_autoscaling
     }
   }
 
@@ -120,5 +93,34 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
 
-  depends_on = [google_compute_subnetwork.private_subnet]
+    cluster_autoscaling {
+
+      enabled = var.cluster_autoscaling_enabled
+
+      dynamic "resource_limits" {
+        for_each = var.resource_limits_enable
+        content {
+          resource_type = resource_limits.value["type"]
+          minimum       = resource_limits.value["min"]
+          maximum       = resource_limits.value["max"]
+        }
+      }
+
+      auto_provisioning_defaults {
+        oauth_scopes = var.cluster_autoscaling_auto_provisioning_defaults_oauth_scopes
+        service_account = var.cluster_autoscaling_auto_provisioning_defaults_service_account
+      }
+
+      autoscaling_profile = var.cluster_autoscaling_autoscaling_profile
+
+  }
+
+  enable_shielded_nodes = var.enable_shielded_nodes
+
+  release_channel {
+    channel = var.release_channel_channel
+  }
+
+  enable_intranode_visibility = var.enable_intranode_visibility
+
 }
