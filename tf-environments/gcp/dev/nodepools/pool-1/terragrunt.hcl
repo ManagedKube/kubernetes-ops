@@ -17,6 +17,7 @@ terraform {
 inputs = {
 
   cluster_name = trimspace(run_cmd("terragrunt", "output", "cluster_name", "--terragrunt-working-dir", "../../gke-cluster"))
+
   node_pool_name = "pool-1"
 
   initial_node_count = "1"

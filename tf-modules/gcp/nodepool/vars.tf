@@ -10,6 +10,10 @@ variable "credentials_file_path" {
   description = "A local path to a service account json credentials file."
 }
 
+variable "google_container_cluster_location" {
+  description = "Location of the cluster to make it a regional or zonal cluster"
+}
+
 variable "cluster_name" {
   default = "dev"
 }

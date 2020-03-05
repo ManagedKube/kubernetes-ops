@@ -27,6 +27,10 @@ variable "private_subnet_name" {
   description = "The name of the private subnet to use"
 }
 
+variable "google_container_cluster_location" {
+  description = "Location of the cluster to make it a regional or zonal cluster"
+}
+
 #####################################
 #####################################
 variable "cluster_name" {

@@ -20,7 +20,7 @@ provider "google-beta" {
 resource "google_container_cluster" "primary" {
   provider           = google-beta
   name               = var.cluster_name
-  location           = var.region
+  location           = var.google_container_cluster_location
   node_version       = var.gke_version
   min_master_version = var.gke_version
   network            = var.network_name
