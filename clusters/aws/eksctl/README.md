@@ -21,12 +21,6 @@ export AWS_DEFAULT_REGION=us-east-1
 eksctl create cluster -f config.yaml
 ```
 
-# Create a node group
-
-```
-eksctl create nodegroup -f nodegroup.yaml
-```
-
 # sshuttle into the environment
 
 ```
@@ -79,4 +73,19 @@ eksctl update cluster -f ~/Documents/managedkube/kubernetes-ops/clusters/aws/eks
 
 ```
 eksctl utils set-public-access-cidrs -f ~/Documents/managedkube/kubernetes-ops/clusters/aws/eksctl/config.yaml --approve
+```
+
+# Node Groups
+
+
+## Get
+
+```
+eksctl --cluster=<cluster name> get nodegroup
+```
+
+## Create a node group
+
+```
+eksctl create nodegroup -f nodegroup.yaml
 ```
