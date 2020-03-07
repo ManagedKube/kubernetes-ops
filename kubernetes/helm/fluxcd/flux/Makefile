@@ -1,4 +1,5 @@
 HELM_BINARY?=helm
+FLUXCTL_BINARY?=fluxctl
 KUBECONFIG?=~/.kube/config
 KUBE_NAMESPACE?=fluxcd
 
@@ -38,3 +39,6 @@ dependency-build:
 
 add-repository:
 	${HELM_BINARY} repo add fluxcd https://charts.fluxcd.io
+
+get-identity:
+	${FLUXCTL_BINARY} identity --k8s-fwd-ns fluxcd --k8s-fwd-labels "release=flux,app=flux"
