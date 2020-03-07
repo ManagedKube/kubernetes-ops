@@ -22,7 +22,7 @@ inputs = {
 
   enable_private_kube_master_endpoint = false
 
-  gke_version = "1.16.5-gke.2"
+  gke_version = "1.16.6-gke.4"
   initial_node_count = "1"
 
   master_ipv4_cidr_block="10.32.11.0/28"
@@ -34,6 +34,7 @@ inputs = {
     { cidr_block = "38.30.8.138/32", display_name = "home" },
     { cidr_block = "35.222.67.76/32", display_name = "gar-vpn" },
     { cidr_block = "12.190.239.210/32", display_name = "gar-vpn-2" },
+    { cidr_block = "136.24.163.48/32", display_name = "gar-vpn-2" },
   ]
 
   outbound_through_nat_tags=["private-subnet", "gke-private-nodes"]
