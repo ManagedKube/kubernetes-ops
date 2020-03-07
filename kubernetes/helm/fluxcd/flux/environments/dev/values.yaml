@@ -1,0 +1,3 @@
+flux:
+  git:
+    url: git@github.com:fluxcd/helm-operator-get-started
