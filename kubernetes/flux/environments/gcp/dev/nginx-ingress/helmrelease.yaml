@@ -14,6 +14,7 @@ spec:
     ref: fluxcd
   values:
     nginx-ingress:
+      foo: bar
       controller:
         electionID: ingress-controller-leader-internal
         ingressClass: nginx-internal
