@@ -1,3 +1,5 @@
 flux:
   git:
     url: git@github.com:ManagedKube/kubernetes-ops.git
+    branch: fluxcd
+    path: "kubernetes/flux"
