@@ -11,7 +11,7 @@ spec:
     ref: flux2
   valuesFrom:
   - chartFileRef:
-      # path within the helm chart (from git repo) where the file is located
+      # path within the helm chart (from git repo) where the file is located.  E.g path from the spec.chart.path location.  Not from the Git repo root.
       path: values.yaml
       optional: false    
   # - chartFileRef:
