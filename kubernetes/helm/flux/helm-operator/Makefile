@@ -1,6 +1,6 @@
 HELM_BINARY?=helm
 KUBECONFIG?=~/.kube/config
-KUBE_NAMESPACE?=fluxcd
+KUBE_NAMESPACE?=flux
 
 BASE_PATH=.
 
