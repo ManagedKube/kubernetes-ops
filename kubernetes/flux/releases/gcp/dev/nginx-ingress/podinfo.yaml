@@ -5,7 +5,7 @@ metadata:
   name: podinfo
   namespace: ingress
 spec:
-  releaseName: nginx-ingress
+  releaseName: podinfo
   chart:
     repository: https://stefanprodan.github.io/podinfo
     version: 2.1.0

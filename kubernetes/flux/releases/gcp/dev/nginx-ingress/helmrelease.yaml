@@ -3,18 +3,14 @@ kind: HelmRelease
 metadata:
   name: nginx-ingress
   namespace: ingress
-  annotations:
-    fluxcd.io/automated: "true"
-    filter.fluxcd.io/chart-image: glob:dev-*
 spec:
   releaseName: nginx-ingress
   chart:
     git: git@github.com:ManagedKube/kubernetes-ops.git
-    path: kubernetes/flux/helm/nginx-ingress
+    path: kubernetes/helm/nginx-ingress
     ref: fluxcd
   values:
     nginx-ingress:
-      foo: bar
       controller:
         electionID: ingress-controller-leader-internal
         ingressClass: nginx-internal
