@@ -8,7 +8,7 @@ spec:
   chart:
     git: git@github.com:ManagedKube/kubernetes-ops.git
     path: kubernetes/helm/nginx-ingress
-    ref: fluxcd
+    ref: flux2
   values:
     nginx-ingress:
       controller:
