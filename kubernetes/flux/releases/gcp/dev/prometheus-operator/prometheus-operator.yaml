@@ -1,0 +1,20 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus-operator
+  namespace: monitoring
+spec:
+  releaseName: prometheus-operator
+  chart:
+    git: git@github.com:ManagedKube/kubernetes-ops.git
+    path: kubernetes/helm/prometheus-operator
+    ref: flux2
+  valuesFrom:
+  - chartFileRef:
+      # path within the helm chart (from git repo) where the file is located
+      path: kubernetes/helm/prometheus-operator/values.yaml
+      optional: false    
+  - chartFileRef:
+      # path within the helm chart (from git repo) where the file is located
+      path: kubernetes/flux/releases/gcp/dev/prometheus-operator/env-values.yaml
+      optional: false
