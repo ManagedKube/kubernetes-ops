@@ -15,33 +15,20 @@ VALUES_FILE?=values-${ENVIRONMENT}.yaml
 TEMPLATE_OUTPUT_FILE?=./templated-output.yaml
 
 apply:
-	${HELM_BINARY} template \
+	${HELM_BINARY} upgrade -i ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--name ${APPLICATION_NAME} \
-	--values ${BASE_PATH}/${BASE_VALUES_FILE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	./ > ${TEMPLATE_OUTPUT_FILE}
-	kubectl --namespace ${KUBE_NAMESPACE} apply -f ${TEMPLATE_OUTPUT_FILE}
+	--values ${VALUES_FILE}
 
 template:
-	${HELM_BINARY} template \
+	${HELM_BINARY} template ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--name ${APPLICATION_NAME} \
-	--values ${BASE_PATH}/${BASE_VALUES_FILE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	./
+	--values ${VALUES_FILE}
 
 delete:
-	${HELM_BINARY} template \
-	--namespace ${KUBE_NAMESPACE} \
-	--name ${APPLICATION_NAME} \
-	--values ${BASE_PATH}/${BASE_VALUES_FILE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	./ > ${TEMPLATE_OUTPUT_FILE}
-	kubectl --namespace ${KUBE_NAMESPACE} delete -f ${TEMPLATE_OUTPUT_FILE}
+	${HELM_BINARY} delete ${APPLICATION_NAME}
 
 build-dependency:
-	helm dependency build
+	${HELM_BINARY} dependency build
 
 list:
 	${HELM_BINARY} list

@@ -1,5 +1,10 @@
 apiVersion: v1
-version: 1.6.19
-appVersion: 0.24.1
+version: 1.33.4
+appVersion: 0.30.0
 description: An nginx Ingress controller that uses ConfigMap to store the nginx configuration.
 name: nginx-ingress
+
+dependencies:
+- name: nginx-ingress
+  version: 1.33.4
+  repository: https://kubernetes-charts.storage.googleapis.com/
