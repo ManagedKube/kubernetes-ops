@@ -10,6 +10,6 @@ sources:
 - https://github.com/fluxcd/helm-operator
 
 dependencies:
-- name: flux
-  version: 1.2.0
+- name: helm-operator
+  version: 0.7.0
   repository: https://charts.fluxcd.io

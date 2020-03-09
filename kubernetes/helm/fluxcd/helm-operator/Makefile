@@ -21,7 +21,11 @@ delete-crd:
 apply:
 	${HELM_BINARY} upgrade -i ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--values ${BASE_PATH}/environments/${ENVIRONMENT}/values.yaml
+	--set git.ssh.secretName=flux-git-deploy \
+	--set helm.versions=v3
+
+
+#--values ${BASE_PATH}/environments/${ENVIRONMENT}/values.yaml
 
 template:
 	${HELM_BINARY} template ${APPLICATION_NAME} ./ --wait \
