@@ -12,9 +12,9 @@ spec:
   valuesFrom:
   - chartFileRef:
       # path within the helm chart (from git repo) where the file is located
-      path: kubernetes/helm/prometheus-operator/values.yaml
+      path: values.yaml
       optional: false    
-  - chartFileRef:
-      # path within the helm chart (from git repo) where the file is located
-      path: kubernetes/flux/releases/gcp/dev/prometheus-operator/env-values.yaml
-      optional: false
+  # - chartFileRef:
+  #     # path within the helm chart (from git repo) where the file is located
+  #     path: kubernetes/flux/releases/gcp/dev/prometheus-operator/env-values.yaml
+  #     optional: false
