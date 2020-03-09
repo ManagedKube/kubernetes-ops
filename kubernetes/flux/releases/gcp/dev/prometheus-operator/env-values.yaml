@@ -52,7 +52,7 @@ prometheus-operator:
            resources:
              requests:
                storage: 50Gi
-         selector: {}
+        #  selector: {}
 
       ## The remote_write spec configuration for Prometheus.
       ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#remotewritespec
