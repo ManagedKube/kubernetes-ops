@@ -39,7 +39,7 @@ prometheus-operator:
       ##
       resources:
         requests:
-          memory: 1000Mi
+          memory: 256Mi
 
       ## Prometheus StorageSpec for persistent data
       ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
