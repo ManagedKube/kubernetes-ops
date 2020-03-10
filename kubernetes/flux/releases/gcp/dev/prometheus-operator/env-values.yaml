@@ -37,9 +37,9 @@ prometheus-operator:
 
       ## Resource limits & requests
       ##
-      resources:
-        requests:
-          memory: 256Mi
+      # resources:
+      #   requests:
+      #     memory: 256Mi
 
       ## Prometheus StorageSpec for persistent data
       ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
