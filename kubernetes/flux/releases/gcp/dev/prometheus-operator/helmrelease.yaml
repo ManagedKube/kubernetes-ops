@@ -17,5 +17,5 @@ spec:
       optional: false    
   - chartFileRef:
       # path within the helm chart (from git repo) where the file is located.  E.g path from the spec.chart.path location.  Not from the Git repo root.
-      path: ../../flux/releases/gcp/dev/prometheus-operator/env-values.yaml
+      path: ../../flux/releases/gcp/dev/prometheus-operator/values.yaml
       optional: false
