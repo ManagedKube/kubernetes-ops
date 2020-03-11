@@ -9,18 +9,18 @@ prometheus-operator:
       enabled: true
 
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: prometheus.internal.dev.managedkube.com
-        kubernetes.io/ingress.class: nginx-internal
+        external-dns.alpha.kubernetes.io/hostname: prometheus.dev.k8s.managedkube.com
+        kubernetes.io/ingress.class: nginx-external
         certmanager.k8s.io/cluster-issuer: prod
         certmanager.k8s.io/acme-http01-edit-in-place: "true"
 
       hosts:
-        - prometheus.internal.dev.managedkube.com
+        - prometheus.dev.k8s.managedkube.com
 
       tls:
         - secretName: grafana-general-tls
           hosts:
-            - prometheus.internal.dev.managedkube.com
+            - prometheus.dev.k8s.managedkube.com
 
       ## Service type
       ##
@@ -33,7 +33,7 @@ prometheus-operator:
 
       ## External URL at which Prometheus will be reachable.
       ##
-      externalUrl: "https://prometheus.internal.dev.managedkube.com"
+      externalUrl: "https://prometheus.dev.k8s.managedkube.com"
 
       ## Resource limits & requests
       ##
@@ -71,18 +71,18 @@ prometheus-operator:
       enabled: true
 
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: alertmanager.internal.dev.managedkube.com
-        kubernetes.io/ingress.class: nginx-internal
+        external-dns.alpha.kubernetes.io/hostname: alertmanager.dev.k8s.managedkube.com
+        kubernetes.io/ingress.class: nginx-external
         certmanager.k8s.io/cluster-issuer: prod
         certmanager.k8s.io/acme-http01-edit-in-place: "true"
 
       hosts:
-        - alertmanager.internal.dev.managedkube.com
+        - alertmanager.dev.k8s.managedkube.com
 
       tls:
         - secretName: grafana-general-tls
           hosts:
-            - alertmanager.internal.dev.managedkube.com
+            - alertmanager.dev.k8s.managedkube.com
 
     ## Alertmanager configuration directives
     ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
@@ -152,7 +152,7 @@ prometheus-operator:
                 {{ end }}
             {{ end }}
           title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
-          title_link: https://alertmanager.internal.dev.managedkube.com
+          title_link: https://alertmanager.dev.k8s.managedkube.com
           username: slack-test-dev-us
 
       - name: slack-critical
@@ -170,7 +170,7 @@ prometheus-operator:
                 {{ end }}
             {{ end }}
           title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
-          title_link: https://alertmanager.internal.dev.managedkube.com
+          title_link: https://alertmanager.dev.k8s.managedkube.com
           username: slack-critical-dev-us
 
       - name: 'slack-warning'
@@ -188,7 +188,7 @@ prometheus-operator:
                 {{ end }}
             {{ end }}
           title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
-          title_link: https://alertmanager.internal.dev.managedkube.com
+          title_link: https://alertmanager.dev.k8s.managedkube.com
           username: slack-warning-dev-us
 
       - name: 'pagerduty-critical'
@@ -217,18 +217,18 @@ prometheus-operator:
       enabled: true
 
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: grafana.internal.dev.managedkube.com
-        kubernetes.io/ingress.class: nginx-internal
+        external-dns.alpha.kubernetes.io/hostname: grafana.dev.k8s.managedkube.com
+        kubernetes.io/ingress.class: nginx-external
         certmanager.k8s.io/cluster-issuer: prod
         certmanager.k8s.io/acme-http01-edit-in-place: "true"
 
       hosts:
-      - grafana.internal.dev.managedkube.com
+      - grafana.dev.k8s.managedkube.com
 
       tls:
       - secretName: grafana-general-tls
         hosts:
-        - grafana.internal.dev.managedkube.com
+        - grafana.dev.k8s.managedkube.com
 
     ## Configure additional grafana datasources
     ## ref: http://docs.grafana.org/administration/provisioning/#datasources
