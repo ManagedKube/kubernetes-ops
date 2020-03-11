@@ -1,7 +1,7 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: nginx-ingress
+  name: nginx-ingress-external
   namespace: ingress
 spec:
   releaseName: nginx-ingress-external
