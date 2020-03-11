@@ -1,0 +1,6 @@
+dependencies:
+- name: helm-operator
+  repository: https://charts.fluxcd.io
+  version: 0.7.0
+digest: sha256:077f7f42fb0f354389c43538850ff769ef4abc17e7f2a082efc3806ee6e51e95
+generated: "2020-03-09T05:57:46.805206448-07:00"
