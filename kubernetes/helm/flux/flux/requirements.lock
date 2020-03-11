@@ -1,0 +1,6 @@
+dependencies:
+- name: flux
+  repository: https://charts.fluxcd.io
+  version: 1.2.0
+digest: sha256:e714caf6399f11e6cbc14ae04dbdae6b21d7730f17caed768a50a4db2b0a1b52
+generated: "2020-03-07T13:33:19.663636901-08:00"

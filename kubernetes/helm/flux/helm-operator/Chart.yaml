@@ -1,0 +1,15 @@
+
+apiVersion: v1
+appVersion: "1.0.0-rc9"
+version: 0.7.0
+kubeVersion: ">=1.11.0-0"
+name: helm-operator
+description: Flux Helm Operator is a CRD controller for declarative helming
+home: https://fluxcd.io
+sources:
+- https://github.com/fluxcd/helm-operator
+
+dependencies:
+- name: helm-operator
+  version: 0.7.0
+  repository: https://charts.fluxcd.io

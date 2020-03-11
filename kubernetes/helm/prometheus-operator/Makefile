@@ -15,25 +15,22 @@ VALUES_FILE?=environments/${ENVIRONMENT}/values.yaml
 TEMPLATE_OUTPUT_FILE?=/tmp/output.yaml
 
 apply:
-	${HELM_BINARY} upgrade --install ${KUBE_NAMESPACE}-${APPLICATION_NAME} \
-	--tiller-namespace ${KUBE_NAMESPACE} \
+	${HELM_BINARY} upgrade -i ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
 	--values ${BASE_PATH}/${BASE_VALUES_FILE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	./
+	--values ${BASE_PATH}/${VALUES_FILE}
 
 template:
-	${HELM_BINARY} template \
+	${HELM_BINARY} template ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--name ${KUBE_NAMESPACE}-${APPLICATION_NAME} \
 	--values ${BASE_PATH}/${BASE_VALUES_FILE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	./
+	--values ${BASE_PATH}/${VALUES_FILE}
 
 delete:
-	${HELM_BINARY} delete --tiller-namespace ${KUBE_NAMESPACE} --purge ${KUBE_NAMESPACE}-${APPLICATION_NAME}
+	${HELM_BINARY} -n ${KUBE_NAMESPACE} delete ${APPLICATION_NAME}
 
 delete-crd:
+	# CRDs are added on install by default: `prometheusOperator.createCustomResource`
 	# https://github.com/helm/charts/tree/master/stable/prometheus-operator#uninstalling-the-chart
 	${KUBECTL_BINARY} delete crd prometheuses.monitoring.coreos.com
 	${KUBECTL_BINARY} delete crd prometheusrules.monitoring.coreos.com

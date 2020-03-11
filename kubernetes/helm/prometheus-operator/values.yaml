@@ -77,7 +77,7 @@ prometheus-operator:
            resources:
              requests:
                storage: 10Gi
-         selector: {}
+        #  selector: {}
 
 
   ## Using default values from https://github.com/helm/charts/blob/master/stable/grafana/values.yaml
