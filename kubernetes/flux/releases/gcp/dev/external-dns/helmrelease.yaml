@@ -2,7 +2,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: external-dns
-  namespace: monitoring
+  namespace: external-dns
 spec:
   releaseName: external-dns
   chart:
