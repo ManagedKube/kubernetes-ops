@@ -4,7 +4,7 @@ metadata:
   name: nginx-ingress
   namespace: ingress
 spec:
-  releaseName: nginx-ingress
+  releaseName: nginx-ingress-external
   chart:
     git: git@github.com:ManagedKube/kubernetes-ops.git
     path: kubernetes/helm/nginx-ingress
