@@ -25,7 +25,7 @@ From the output of the Terraform run, a VPC ID was outputted in the format of
 
 The following paths all starts from the root of this repository.
 
-## Terraform environment \_env_defaults file
+## Terraform environment _env_defaults file
 This file hold default values about this environment.  We are adding in the
 VPC ID here because there will be subsequent Terraforms that will use this ID
 and place itself into this VPC.  
@@ -33,7 +33,7 @@ and place itself into this VPC.
 An example is if we wanted to use an RDS database.  We will put the database
 in this VPC and it will need the VPC ID to do that.
 
-File: `./tf-environments/dev/_env_defaults/main.tf`
+File: `./tf-environments/<provider>/dev/_env_defaults/gcp.tf`
 
 Update the `vpc_id` variable with the ID.
 
