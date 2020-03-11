@@ -9,6 +9,7 @@ spec:
     git: git@github.com:ManagedKube/kubernetes-ops.git
     path: kubernetes/helm/prometheus-operator
     ref: master
+    version: 8.11.1
   valuesFrom:
   - chartFileRef:
       # path within the helm chart (from git repo) where the file is located.  E.g path from the spec.chart.path location.  Not from the Git repo root.

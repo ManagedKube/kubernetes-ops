@@ -9,6 +9,7 @@ spec:
     git: git@github.com:ManagedKube/kubernetes-ops.git
     path: kubernetes/helm/nginx-ingress
     ref: master
+    version: 1.33.4
   values:
     nginx-ingress:
       controller:
