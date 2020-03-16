@@ -3,8 +3,6 @@ package test
 import (
 	"testing"
 
-	"fmt"
-
 	"github.com/gruntwork-io/terratest/modules/helm"
 	corev1 "k8s.io/api/core/v1"
 )
