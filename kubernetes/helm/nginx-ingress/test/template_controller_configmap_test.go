@@ -32,7 +32,6 @@ func TestControllerConfigmapTemplateRendersProxyBodySize(t *testing.T) {
 
 	// // Finally, we verify the pod spec is set to the expected container image value
 	expectedValue := "8m"
-	fmt.Print(expectedValue)
 	cm := configmap.Data
 	if cm["proxy-body-size"] != expectedValue {
 		t.Fatalf("Rendered container image (%s) is not expected (%s)", cm["proxy-body-size"], expectedValue)
