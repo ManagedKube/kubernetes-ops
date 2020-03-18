@@ -33,3 +33,13 @@ kubectl -n ${NAMESPACE} create secret generic ${SECRET_NAME} \
 
 kubeseal --format=yaml --cert=${PUB_CERT} < ${SECRET_NAME}.json > ${KUBESEAL_SECRET_OUTPUT_FILE}
 ```
+
+# Backup and restore of the private key
+
+https://github.com/bitnami-labs/sealed-secrets#how-can-i-do-a-backup-of-my-sealedsecrets
+
+```
+kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml >master.key
+```
+
+This key file should be kept in a safe place
