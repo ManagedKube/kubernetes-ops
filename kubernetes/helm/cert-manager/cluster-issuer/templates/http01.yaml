@@ -14,6 +14,9 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-private-key-http-01
     # Enable the HTTP-01 challenge provider
-    http01: {}
+    solvers:
+    - http01:
+       ingress:
+         class: nginx-external
 
 {{- end }}
