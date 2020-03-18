@@ -2,7 +2,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: cluster-issuer
-  namespace: cluster-issuer
+  namespace: cert-manager
 spec:
   releaseName: cluster-issuer
   chart:
