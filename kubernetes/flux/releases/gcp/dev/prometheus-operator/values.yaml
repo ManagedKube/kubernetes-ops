@@ -18,7 +18,7 @@ prometheus-operator:
         - prometheus.dev.k8s.managedkube.com
 
       tls:
-        - secretName: grafana-general-tls
+        - secretName: cert-manager-tls-cert
           hosts:
             - prometheus.dev.k8s.managedkube.com
 
@@ -73,14 +73,14 @@ prometheus-operator:
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alertmanager.dev.k8s.managedkube.com
         kubernetes.io/ingress.class: nginx-external
-        certmanager.k8s.io/cluster-issuer: prod
-        certmanager.k8s.io/acme-http01-edit-in-place: "true"
+        # certmanager.k8s.io/cluster-issuer: prod
+        # certmanager.k8s.io/acme-http01-edit-in-place: "true"
 
       hosts:
         - alertmanager.dev.k8s.managedkube.com
 
       tls:
-        - secretName: grafana-general-tls
+        - secretName: cert-manager-tls-cert
           hosts:
             - alertmanager.dev.k8s.managedkube.com
 
@@ -219,14 +219,14 @@ prometheus-operator:
       annotations:
         external-dns.alpha.kubernetes.io/hostname: grafana.dev.k8s.managedkube.com
         kubernetes.io/ingress.class: nginx-external
-        certmanager.k8s.io/cluster-issuer: prod
-        certmanager.k8s.io/acme-http01-edit-in-place: "true"
+        # certmanager.k8s.io/cluster-issuer: prod
+        # certmanager.k8s.io/acme-http01-edit-in-place: "true"
 
       hosts:
       - grafana.dev.k8s.managedkube.com
 
       tls:
-      - secretName: grafana-general-tls
+      - secretName: cert-manager-tls-cert
         hosts:
         - grafana.dev.k8s.managedkube.com
 
