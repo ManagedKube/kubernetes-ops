@@ -15,7 +15,7 @@ spec:
     - dns01:
 
         {{ if eq .Values.provider "aws" }}
-        # AWS Provider
+        # AWS Provider - https://cert-manager.io/docs/configuration/acme/dns01/route53/
         route53:
           region: {{ .Values.aws.region }}
 
@@ -27,7 +27,7 @@ spec:
         {{- end }}
 
         {{ if eq .Values.provider "google" }}
-        # Google Provider - https://docs.cert-manager.io/en/release-0.11/tasks/issuers/setup-acme/dns01/google.html
+        # Google Provider - https://cert-manager.io/docs/configuration/acme/dns01/google/
         clouddns:
           # The ID of the GCP project
           project: {{ .Values.clouddns.project }}
