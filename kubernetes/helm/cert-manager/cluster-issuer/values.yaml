@@ -1,6 +1,8 @@
 ---
 email: devops@managedkube.com
 
+namespace: cert-manager
+
 letsencrypt:
   server: https://acme-v02.api.letsencrypt.org/directory
 
