@@ -1,4 +1,4 @@
-cert-manager-cluster-issuer
+cert-manager cluster-issuer
 ==============================
 
 This is an add on chart to the Helm Stable `cert-manager` chart.
@@ -66,3 +66,30 @@ spec:
   - test2.dev.k8s.managedkube.com
 
 ```
+
+# Create a sealed-secret
+
+```
+# Secret source information
+NAMESPACE=cert-manager
+SECRET_NAME=clouddns-dns01-solver-svc-acct
+FILE_PATH=/media/veracrypt1/managedkube/sa-managedkube-admin.json
+
+# kubeseal info
+PUB_CERT=./kubernetes/helm/sealed-secrets/environments/gcp-dev/pub-cert.pem
+KUBESEAL_SECRET_OUTPUT_FILE=${SECRET_NAME}.yaml
+
+kubectl -n ${NAMESPACE} create secret generic ${SECRET_NAME} \
+--from-file=${FILE_PATH} \
+--dry-run \
+-o json > ${SECRET_NAME}.json
+
+kubeseal --format=yaml --cert=${PUB_CERT} < ${SECRET_NAME}.json > ${KUBESEAL_SECRET_OUTPUT_FILE}
+```
+
+## Remove the secrets from your filesystem
+
+```
+rm ${SECRET_NAME}.*
+```
+
