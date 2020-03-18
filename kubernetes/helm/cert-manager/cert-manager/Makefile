@@ -23,28 +23,17 @@ delete-crd:
 	kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-${VERSION}/deploy/manifests/00-crds.yaml
 
 apply:
-	${HELM_BINARY} template \
-	--name cert-manager \
+	${HELM_BINARY} upgrade -i ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--name ${KUBE_NAMESPACE}-${APPLICATION_NAME} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	${APPLCATION_CHART_NAME} > ${TEMPLATE_OUTPUT_FILE}
-	kubectl apply -f ${TEMPLATE_OUTPUT_FILE}
+	--values ${VALUES_FILE}
 
 template:
-	${HELM_BINARY} template \
+	${HELM_BINARY} template ${APPLICATION_NAME} ./ --wait \
 	--namespace ${KUBE_NAMESPACE} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	${APPLCATION_CHART_NAME}
+	--values ${VALUES_FILE}
 
 delete:
-	${HELM_BINARY} template \
-	--name cert-manager \
-	--namespace ${KUBE_NAMESPACE} \
-	--name ${KUBE_NAMESPACE}-${APPLICATION_NAME} \
-	--values ${BASE_PATH}/${VALUES_FILE} \
-	${APPLCATION_CHART_NAME} > ${TEMPLATE_OUTPUT_FILE}
-	kubectl delete -f ${TEMPLATE_OUTPUT_FILE}
+	${HELM_BINARY} --namespace ${KUBE_NAMESPACE} delete ${APPLICATION_NAME}
 
 list:
 	${HELM_BINARY} list
