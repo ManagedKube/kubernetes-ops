@@ -4,7 +4,7 @@ metadata:
   name: prometheus
   namespace: monitoring
 spec:
-  secretName: example-com-tls
+  secretName: cert-manager-tls-cert
   issuerRef:
     kind: ClusterIssuer
     name: issuer-dns01
