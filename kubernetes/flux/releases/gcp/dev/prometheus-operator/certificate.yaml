@@ -1,11 +1,12 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: example-com
-  namespace: default
+  name: prometheus
+  namespace: monitoring
 spec:
   secretName: example-com-tls
   issuerRef:
+    kind: ClusterIssuer
     name: issuer-dns01
   dnsNames:
   - prometheus.dev.k8s.managedkube.com
