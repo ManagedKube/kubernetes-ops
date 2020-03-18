@@ -7,7 +7,7 @@ spec:
   releaseName: cert-manager
   chart:
     git: git@github.com:ManagedKube/kubernetes-ops.git
-    path: kubernetes/helm/cert-manager
+    path: kubernetes/helm/cert-manager/cert-manager
     ref: master
     version: v0.14.0
   valuesFrom:
