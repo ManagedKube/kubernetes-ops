@@ -25,7 +25,7 @@ template:
 	--values ${VALUES_FILE}
 
 delete:
-	${HELM_BINARY} delete ${APPLICATION_NAME}
+	${HELM_BINARY} --namespace ${KUBE_NAMESPACE} delete ${APPLICATION_NAME}
 
 build-dependency:
 	${HELM_BINARY} dependency build
