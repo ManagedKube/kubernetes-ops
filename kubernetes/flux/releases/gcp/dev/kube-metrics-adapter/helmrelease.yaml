@@ -2,7 +2,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: kube-metrics-adapter
-  namespace: kube-metrics-adapter
+  namespace: kube-system
 spec:
   releaseName: kube-metrics-adapter
   chart:
