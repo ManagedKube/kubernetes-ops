@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
   labels:
     application: kube-metrics-adapter
-    version: v0.1.2
+    version: {{ .Values.image.tag }}
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     metadata:
       labels:
         application: kube-metrics-adapter
-        version: v0.1.2
+        version: {{ .Values.image.tag }}
       annotations:
         iam.amazonaws.com/role: "kube-aws-test-1-app-zmon"
     spec:
