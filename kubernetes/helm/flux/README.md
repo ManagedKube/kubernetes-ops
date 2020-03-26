@@ -1,8 +1,10 @@
 Flux Setup
 ============
+Flux is a GitOps workflow that runs an operator in each cluster you want it to be able to deploy into.  You link it up with your Git repository and it syncs your repository with your cluster.  This means that if you wanted to deploy something or update something in the Kubernetes cluster, all you have to do is make the changes in the source repository, commit, and push it in.  Flux will check with the source repository every so often and sync what is there to the Kubernetes cluster.  The Flux operator will sync and deploy items based on Kubernetes yaml files only.
+
+Here is the official documentation for reference: [https://docs.fluxcd.io/en/latest/introduction.html](https://docs.fluxcd.io/en/latest/introduction.html)
 
 # Deploy the Flux Operator
-Flux is a GitOps workflow that runs an operator in each cluster you want it to be able to deploy into.  You link it up with your Git repository and it syncs your repository with your cluster.  This means that if you wanted to deploy something or update something in the Kubernetes cluster, all you have to do is make the changes in the source repository, commit, and push it in.  Flux will check with the source repository every so often and sync what is there to the Kubernetes cluster.  The Flux operator will sync and deploy items based on Kubernetes yaml files only.
 
 ```
 cd ./flux
@@ -33,8 +35,6 @@ make ENVIRONMENT=dev apply
 
 ## Get the Git public key
 For Flux to be able to watch your repository, you will need to add it's public ssh key to your Git repository.
-
-Docs from the Flux setup: [https://docs.fluxcd.io/en/latest/tutorials/get-started-helm.html#giving-write-access](https://docs.fluxcd.io/en/latest/tutorials/get-started-helm.html#giving-write-access)
 
 Get the public ssh key:
 
