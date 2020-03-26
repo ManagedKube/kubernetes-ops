@@ -1,6 +1,6 @@
 Flux Setup
 ============
-Flux is a GitOps workflow that runs an operator in each cluster you want it to be able to deploy into.  You link it up with your Git repository and it syncs your repository with your cluster.  This means that if you wanted to deploy something or update something in the Kubernetes cluster, all you have to do is make the changes in the source repository, commit, and push it in.  Flux will check with the source repository every so often and sync what is there to the Kubernetes cluster.  The Flux operator will sync and deploy items based on Kubernetes yaml files only.
+Flux is a GitOps workflow tool that runs an operator in each cluster you want it to be able to deploy into.  You link it up with your Git repository and it syncs your repository with your cluster.  This means that if you wanted to deploy something or update something in the Kubernetes cluster, all you have to do is make the changes in the source repository, commit, and push it in.  Flux will check with the source repository every so often and sync what is there to the Kubernetes cluster.  The Flux operator will sync and deploy items based on Kubernetes yaml files only.
 
 Here is the official documentation for reference: [https://docs.fluxcd.io/en/latest/introduction.html](https://docs.fluxcd.io/en/latest/introduction.html)
 
