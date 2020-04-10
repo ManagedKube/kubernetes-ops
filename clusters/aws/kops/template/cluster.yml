@@ -268,11 +268,11 @@ spec:
     zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
-    topology:
-      dns:
-        type: {{ .topology.dns.type }}
-      masters: {{ .topology.masters }}
-      nodes: {{ .topology.nodes }}
+  topology:
+    dns:
+      type: {{ .topology.dns.type }}
+    masters: {{ .topology.masters }}
+    nodes: {{ .topology.nodes }}
     #
     # Kubernetes Masters
     #
