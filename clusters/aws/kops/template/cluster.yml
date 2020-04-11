@@ -268,15 +268,15 @@ spec:
     zone: {{ $awsRegion }}{{ $value.zone }}
     {{- end }}
 
-    topology:
-      dns:
-        type: {{ .topology.dns.type }}
-      masters: {{ .topology.masters }}
-      nodes: {{ .topology.nodes }}
-    #
-    # Kubernetes Masters
-    #
-    {{- range $key, $value := .availabilityZonesKubeMaster }}
+  topology:
+    dns:
+      type: {{ .topology.dns.type }}
+    masters: {{ .topology.masters }}
+    nodes: {{ .topology.nodes }}
+#
+# Kubernetes Masters
+#
+{{- range $key, $value := .availabilityZonesKubeMaster }}
 ---
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
@@ -302,7 +302,7 @@ spec:
   role: Master
   subnets:
     - kube-master-{{ $value.name }}
-  {{- end }}
+{{- end }}
 
   #
   # Bastion workers group
