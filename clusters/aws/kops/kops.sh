@@ -13,9 +13,51 @@ KOPS_VERSION="1.14."
 ##### Functions
 ##########################################
 
-usage()
-{
-    echo "usage: create_kops [[[-n kops_name ] ] | [-h]]"
+usage() {
+  exec 1>&2
+  echo
+  echo "usage: $0 [[[-n kops_name ] ] | [-h]]"
+  echo
+  echo " This script helps you manage the life cycle of your Kubernetes cluster."
+  echo
+  echo " This script will check the version of your kops binary matches with the version that is "
+  echo " set in this script.  Kops clusters has to be applied with the same version as the binary"
+  echo " to keep the upgrades consistent."
+  echo
+  echo " Options:"
+  echo " --dry-run : Do not apply and only perform a dry run.  Defaults to true."
+  echo
+  echo " --create : create a cluster"
+  echo
+  echo " --cloudonly : Add cloudonly option to the kops rolling-update"
+  echo
+  echo " --delete : delete a cluster"
+  echo
+  echo " --get-bastion : Get bastion host"
+  echo
+  echo " --name : The environment name.  This should correspond to a cluster folder name."
+  echo
+  echo " --read : Output info on a cluster"
+  echo 
+  echo " --rolling-update : Perform a rolling update on a cluster"
+  echo
+  echo " --template : Template out the kops cluster manifest"
+  echo 
+  echo " --update : Update a cluster"
+  echo
+  echo " --help : this help menu"
+  echo
+  echo " Examples:"
+  echo "   # Template out a cluster's manifest:"
+  echo "   $0 --name dev --template true"
+  echo
+  echo "   # Create a cluster:"
+  echo "   $0 --name dev --create true -dry-run false"
+  echo
+  echo "   # Delete a cluster:"
+  echo "   $0 --name dev --delete true --dry-run false"
+  echo
+  exit 1
 }
 
 check_kops_version()
