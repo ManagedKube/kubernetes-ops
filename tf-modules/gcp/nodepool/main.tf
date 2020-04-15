@@ -29,6 +29,7 @@ resource "google_container_node_pool" "node_nodes" {
   node_config {
     preemptible  = var.is_preemtible
     machine_type = var.machine_type
+    image_type   = var.image_type
 
     disk_size_gb = var.disk_size_gb
     disk_type    = var.disk_type
