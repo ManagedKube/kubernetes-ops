@@ -35,7 +35,16 @@ variable "tags" {
 
 variable "taints" {
   type    = list(map(string))
+  default = []
   # default = {}
+}
+
+variable "guest_accelerator" {
+  type    = list(map(string))
+  default = [{
+    type = "nvidia-tesla-p4",
+    count = 0
+  }]
 }
 
 variable "node_version" {
