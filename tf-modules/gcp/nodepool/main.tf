@@ -55,6 +55,15 @@ resource "google_container_node_pool" "node_nodes" {
       }
     }
 
+    dynamic "guest_accelerator" {
+      for_each = var.guest_accelerator
+
+      content {
+        type = guest_accelerator.value.type
+        count = guest_accelerator.value.count
+      }
+    }
+
     shielded_instance_config {
       enable_secure_boot = var.shielded_instance_config_enable_secure_boot
 
