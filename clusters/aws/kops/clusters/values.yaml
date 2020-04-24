@@ -14,7 +14,7 @@ api:
 
 # etcd
 etcd:
-  version: 3.3.10
+  version: 3.3.13
 
 docker:
   overrides: false
