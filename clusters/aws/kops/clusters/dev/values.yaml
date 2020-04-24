@@ -1,6 +1,6 @@
 kopsName: dev.us-east-1
 s3BucketName: kubernetes-ops-1234-kops-state-store
-kubernetesVersion: 1.13.10
+kubernetesVersion: 1.16.7
 dnsZone: k8s.local
 awsRegion: us-east-1
 vpc: vpc-id-from-the-terraform-output
@@ -58,8 +58,7 @@ enableThreatstackMasterGroup1: false
 
 instanceGroups:
   kubeMaster:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxSize: 1
     minSize: 1
@@ -72,8 +71,8 @@ instanceGroups:
     nodeLabels:
       # kops.k8s.io/my-label: a-label
   bastionWorkersGroup1:
-    # Amazon Linux AMI
-    image: ami-0de53d8956e8dcf80
+    # Amazon Linux 2 AMI
+    image: amazon.com/amzn2-ami-hvm-2.0.20200406.0-x86_64-gp2
     machineType: t3.medium
     maxSize: 10
     minSize: 1
@@ -86,8 +85,7 @@ instanceGroups:
       # https://github.com/kubernetes/autoscaler/issues/511#issuecomment-354616866
       k8s.io/cluster-autoscaler/node-template/label/prod.us-east-1.k8s.local/role: scale-zero
   threatstackMaster:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2079.5.1-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxSize: 1
     minSize: 1
@@ -108,8 +106,7 @@ instanceGroups:
 # Add an item in here to create a new instance group in all zones
 workerInstanceGroupsAllZones:
   on-demand:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.large
     maxSize: 10
     minSize: 0
@@ -128,8 +125,7 @@ workerInstanceGroupsAllZones:
       kubernetes-ops/hasPublicIP: "false"
     taints: {}
   spotGroup1:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxPrice: "0.01"
     maxSize: 0
@@ -150,8 +146,7 @@ workerInstanceGroupsAllZones:
       kubernetes-ops/hasPublicIP: "false"
     taints: {}
   infrastructureGroup1:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxSize: 10
     minSize: 0
@@ -172,8 +167,7 @@ workerInstanceGroupsAllZones:
     taints:
     - application=infrastructure:NoSchedule
   jenkinsMastersGroup1:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxSize: 10
     minSize: 0
@@ -194,8 +188,7 @@ workerInstanceGroupsAllZones:
     taints:
     - application=jenkins-master:NoSchedule
   jenkinsWorkersGroup1:
-    # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
-    image: 595879546273/CoreOS-stable-2023.5.0-hvm
+    image: 075585003325/Flatcar-stable-2345.3.1-hvm
     machineType: t3.medium
     maxSize: 10
     minSize: 0
