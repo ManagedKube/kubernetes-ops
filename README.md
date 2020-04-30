@@ -117,6 +117,15 @@ Kubernetes tools:
 * Helm
 * Helm Charts from  their repository
 
+## Who is using this:
+
+|                                           |
+|-------------------------------------------|
+| [Parsable.com](https://www.parsable.com/) |
+| [up.audio](https://up.audio/)             |
+|                                           |
+If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
+
 ## Supported built in services
 These are the list of services that are maintained for each cloud
 
