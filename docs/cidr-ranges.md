@@ -17,11 +17,11 @@ Here is a very good online IP CIDR calculator
 | Kubernetes aws - qa               | 10.11.0.0/16  |
 | Kubernetes aws - staging          | 10.12.0.0/16  |
 | Kubernetes aws - prod             | 10.13.0.0/16  |
-| Kubernetes aws - ....             | 10.13.0.0/16  |
 | Kubernetes gcp - dev              | 10.32.0.0/12 - 10.47.0.0/12  |
 | Kubernetes gcp - qa               | 10.48.0.0/12 - 10.63.255.255  |
 | Kubernetes gcp - staging          | 10.64.0.0/12 - 10.79.255.255  |
 | Kubernetes gcp - prod             | 10.80.0.0/12 - 10.95.255.255  |
+
 
 ## Reserved ranged for each environment
 Each environment has a bunch of initial reserved ranges to bring up the entire
