@@ -1,5 +1,4 @@
 # ToC
-- [ToC](#toc)
 - [What is kubernetes-ops](#what-is-kubernetes-ops)
 - [The stack this will create](#the-stack-this-will-create)
 - [Whys](#whys)
@@ -7,8 +6,8 @@
   * [GitOps workflow, how does that play into this project?](#gitops-workflow--how-does-that-play-into-this-project-)
   * [Why an entire repository?](#why-an-entire-repository-)
 - [What tools do we use](#what-tools-do-we-use)
-  * [Who is using this:](#who-is-using-this-)
   * [Supported built in services](#supported-built-in-services)
+- [Who is using this](#who-is-using-this)
 - [Topology](#topology)
   * [The AWS Kops topology](#the-aws-kops-topology)
   * [GCP GKE](#gcp-gke)
@@ -117,17 +116,6 @@ Kubernetes tools:
 * Helm
 * Helm Charts from  their repository
 
-## Who is using this:
-
-|                                           |
-|-------------------------------------------|
-| [Parsable.com](https://www.parsable.com/) |
-| [up.audio](https://up.audio/)             |
-| [karunalabs.com](https://karunalabs.com/) |
-|                                           |
-
-If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
-
 ## Supported built in services
 These are the list of services that are maintained for each cloud
 
@@ -149,6 +137,16 @@ These are the list of services that are maintained for each cloud
 | helm tiller -rbac enabled       | yes               | yes               | -                  |
 | vault-helm                      | yes               | yes               | Hashicorp          |
 
+# Who is using this
+
+|                                           |
+|-------------------------------------------|
+| [Parsable.com](https://www.parsable.com/) |
+| [up.audio](https://up.audio/)             |
+| [karunalabs.com](https://karunalabs.com/) |
+|                                           |
+
+If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
 
 # Topology
 
