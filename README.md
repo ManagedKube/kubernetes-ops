@@ -1,5 +1,5 @@
 # ToC
-
+- [ToC](#toc)
 - [What is kubernetes-ops](#what-is-kubernetes-ops)
 - [The stack this will create](#the-stack-this-will-create)
 - [Whys](#whys)
@@ -7,6 +7,7 @@
   * [GitOps workflow, how does that play into this project?](#gitops-workflow--how-does-that-play-into-this-project-)
   * [Why an entire repository?](#why-an-entire-repository-)
 - [What tools do we use](#what-tools-do-we-use)
+  * [Who is using this:](#who-is-using-this-)
   * [Supported built in services](#supported-built-in-services)
 - [Topology](#topology)
   * [The AWS Kops topology](#the-aws-kops-topology)
@@ -15,11 +16,10 @@
   * [Read the setup](#read-the-setup)
   * [The manual way for a Kops cluster](#the-manual-way-for-a-kops-cluster)
   * [Creating a Kops cluster on AWS the easier way](#creating-a-kops-cluster-on-aws-the-easier-way)
+- [Need a DevOps consultant?](#need-a-devops-consultant-)
 - [License](#license)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 
 # What is kubernetes-ops
 
@@ -123,7 +123,9 @@ Kubernetes tools:
 |-------------------------------------------|
 | [Parsable.com](https://www.parsable.com/) |
 | [up.audio](https://up.audio/)             |
+| [karunalabs.com](https://karunalabs.com/) |
 |                                           |
+
 If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
 
 ## Supported built in services
