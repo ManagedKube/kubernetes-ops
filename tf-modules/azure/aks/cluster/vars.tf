@@ -41,7 +41,7 @@ variable "api_server_authorized_ip_ranges" {
 }
 
 variable "enable_pod_security_policy" {
-    default = true
+    default = false
 }
 
 variable "role_based_access_control_enabled" {
@@ -73,7 +73,7 @@ variable "default_node_pool_min_count" {
 }
 
 variable "default_node_pool_os_disk_size_gb" {
-    default = "20"
+    default = "30"
 }
 
 variable "default_node_pool_node_labels" {

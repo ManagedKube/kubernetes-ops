@@ -14,8 +14,8 @@ inputs = {
   default_node_pool_instance_size = "Standard_B2s"
 
   api_server_authorized_ip_ranges = [    
-    "38.30.8.0/24",
-    "136.24.163.0/24",
+    "38.30.0.0/24",
+    "136.24.0.0/24",
   ]
 
   tags = {
