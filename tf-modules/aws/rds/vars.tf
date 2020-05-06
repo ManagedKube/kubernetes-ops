@@ -114,7 +114,7 @@ variable "engine" {
 
 variable "engine_version" {
   description = "Engine version"
-
+  type        = map(string)
   default = {
     mysql    = "5.6.41"
     postgres = "9.6.8"
