@@ -7,7 +7,7 @@
 ##########################################
 
 TIME_NOW=$(date +"%x %r %Z")
-KOPS_VERSION="1.14."
+KOPS_VERSION="1.16."
 
 ##########################################
 ##### Functions
@@ -420,6 +420,11 @@ update="false"
 delete="false"
 rolling_update="false"
 cloudonly="false"
+
+if [ $# == 0 ]; then
+  usage
+  exit
+fi
 
 while [ "$1" != "" ]; do
     case $1 in

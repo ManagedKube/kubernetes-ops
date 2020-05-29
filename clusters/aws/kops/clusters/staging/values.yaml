@@ -30,12 +30,19 @@ availabilityZonesAll:
 - name: c
   zone: c
 
+# Uncomment and grab set the nat-id from terraform to reuse nat gateway
+availabilityZonesPrivate:
+  - zone: a
+    # egress: first-nat-id-from-terraform-output
+  - zone: b
+    # egress: second-nat-id-from-terraform-output
+  - zone: c
+    # egress: third-nat-id-from-terraform-output
+
 #limit to one zone
 availabilityZonesThreatstackMaster:
 - name: a
   zone: a
-
-enablePublicSubnets: true
 
 sshAccess:
 - 0.0.0.0/0
@@ -52,6 +59,62 @@ iam:
 
 networkCIDR: 10.12.0.0/16
 networkPortion: "10.12"
+
+subnets:
+  - name: utility
+    type: Utility
+    blocks:
+      - cidr: 10.12.10.0/24
+        zone: a
+      - cidr: 10.12.11.0/24
+        zone: b
+      - cidr: 10.12.12.0/24
+        zone: c
+  - name: public
+    type: Public
+    blocks:
+      - cidr: 10.12.20.0/24
+        zone: a
+      - cidr: 10.12.21.0/24
+        zone: b
+      - cidr: 10.12.22.0/24
+        zone: c
+  - name: kube-master
+    type: Private
+    blocks:
+      - cidr: 10.12.30.0/24
+        zone: a
+      - cidr: 10.12.31.0/24
+        zone: b
+      - cidr: 10.12.32.0/24
+        zone: c
+  - name: infrastructure-zone
+    type: Private
+    blocks:
+      - cidr: 10.12.40.0/24
+        zone: a
+      - cidr: 10.12.41.0/24
+        zone: b
+      - cidr: 10.12.42.0/24
+        zone: c
+  - name: worker-zone
+    type: Private
+    blocks:
+      - cidr: 10.12.50.0/24
+        zone: a
+      - cidr: 10.12.51.0/24
+        zone: b
+      - cidr: 10.12.52.0/24
+        zone: c
+  - name: threatstack-master-zone
+    type: Private
+    blocks:
+      - cidr: 10.12.60.0/24
+        zone: a
+      - cidr: 10.12.61.0/24
+        zone: b
+      - cidr: 10.12.62.0/24
+        zone: c
 
 enableBastionGroup1: true
 enableThreatstackMasterGroup1: false
