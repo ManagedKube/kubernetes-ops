@@ -421,6 +421,11 @@ delete="false"
 rolling_update="false"
 cloudonly="false"
 
+if [ $# == 0 ]; then
+  usage
+  exit
+fi
+
 while [ "$1" != "" ]; do
     case $1 in
         -n | --name )           shift

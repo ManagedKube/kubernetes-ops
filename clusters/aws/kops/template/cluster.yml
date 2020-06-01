@@ -7,6 +7,7 @@
   {{- $dnsZone := .dnsZone }}
   {{- $instanceGroups := .instanceGroups }}
   {{- $availabilityZonesAll := .availabilityZonesAll }}
+  {{- $availabilityZonesPrivate := .availabilityZonesPrivate }}
 
 apiVersion: kops/v1alpha2
 kind: Cluster
@@ -219,54 +220,24 @@ spec:
   - "{{ $value }}"
   {{- end }}
   subnets:
-  # utility subnets
-  {{- range $key, $value := .availabilityZonesAll }}
-  - cidr: {{ $networkPortion }}.1{{ $key }}.0/24
-    name: {{ $awsRegion }}{{ $value.name }}-utility
-    type: Utility
-    zone: {{ $awsRegion }}{{ $value.zone }}
+  {{- range $subnet := .subnets }}
+    {{- range $key, $value := $subnet.blocks }}
+  - cidr: {{ $value.cidr }}
+    type: {{ $subnet.type }}
+      {{- if eq $subnet.type "Private" }}
+    name: {{ $subnet.name }}-{{ with (index $availabilityZonesPrivate $key) }}{{ .zone }}{{ end }}
+    zone: {{ $awsRegion }}{{ with (index $availabilityZonesPrivate $key) }}{{ .zone }}{{ end }}
+        {{- with (index $availabilityZonesPrivate $key) }}
+          {{- if (index . "egress")  }}
+    egress: {{ .egress }}
+          {{- end }}
+          {{- end }}
+      {{- else }}
+    name: {{ $subnet.name }}-{{ with (index $availabilityZonesAll $key) }}{{ .zone }}{{ end }}
+    zone: {{ $awsRegion }}{{ with (index $availabilityZonesAll $key) }}{{ .zone }}{{ end }}
+      {{- end }}
+    {{- end }}
   {{- end }}
-
-  {{- if .enablePublicSubnets -}}
-  {{- range $key, $value := .availabilityZonesAll }}
-  - cidr: {{ $networkPortion }}.2{{ $key }}.0/24
-    name: public-{{ $value.name }}
-    type: Public
-    zone: {{ $awsRegion }}{{ $value.zone }}
-    {{- end }}
-    {{- end }}
-
-    # Kube masters subnets
-    {{- range $key, $value := .availabilityZonesKubeMaster }}
-  - cidr: {{ $networkPortion }}.3{{ $key }}.0/24
-    name: kube-master-{{ $value.name }}
-    type: Private
-    zone: {{ $awsRegion }}{{ $value.zone }}
-    {{- end }}
-
-    # infrastructure subnets
-    {{- range $key, $value := .availabilityZonesAll }}
-  - cidr: {{ $networkPortion }}.4{{ $key }}.0/24
-    name: infrastructure-zone-{{ $value.name }}
-    type: Private
-    zone: {{ $awsRegion }}{{ $value.zone }}
-    {{- end }}
-
-    # worker subnets
-    {{- range $key, $value := .availabilityZonesAll }}
-  - cidr: {{ $networkPortion }}.5{{ $key }}.0/24
-    name: worker-zone-{{ $value.name }}
-    type: Private
-    zone: {{ $awsRegion }}{{ $value.zone }}
-    {{- end }}
-
-    # threatstackmaster subnets
-    {{- range $key, $value := .availabilityZonesAll }}
-  - cidr: {{ $networkPortion }}.6{{ $key }}.0/24
-    name: threatstack-master-zone-{{ $value.name }}
-    type: Private
-    zone: {{ $awsRegion }}{{ $value.zone }}
-    {{- end }}
 
   topology:
     dns:
