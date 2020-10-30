@@ -9,10 +9,10 @@ terraform {
   }
 
   backend "remote" {
-    organization = "REPLACE_ME"
+    organization = "managedkube"
 
     workspaces {
-      name = "gh-actions-demo"
+      name = "kubernetes-ops"
     }
   }
 }
