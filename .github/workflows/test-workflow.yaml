@@ -1,49 +1,49 @@
-name: kops update
-# This workflow is triggered on pushes to the repository.
-on: [push]
+# name: kops update
+# # This workflow is triggered on pushes to the repository.
+# on: [push]
 
-# Environment variables available to all jobs and steps in this workflow
-env:
-  KOPS_BINARY: "https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64"
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: us-east-1
-  KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
-  DELETE_PREVIOUS_CLUSTER: "true"
+# # Environment variables available to all jobs and steps in this workflow
+# env:
+#   KOPS_BINARY: "https://github.com/kubernetes/kops/releases/download/1.13.2/kops-linux-amd64"
+#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   AWS_DEFAULT_REGION: us-east-1
+#   KOPS_STATE_STORE: ${{ secrets.KOPS_STATE_STORE }}
+#   DELETE_PREVIOUS_CLUSTER: "true"
 
-jobs:
-  build:
-    # Job name is Update
-    name: Update
-    # This job runs on Linux
-    runs-on: ubuntu-18.04
-    steps:
-      # Checkout the repository
-      - name: Checkout
-        uses: actions/checkout@v1
-      # Set up kops
-      - name: Set up kops
-        run: |
-          curl -o kops --location ${KOPS_BINARY}
-          chmod u+x ./kops
-          export PATH=$(pwd):$PATH
-          kops version
-      - name: Set up ecs-cli
-        run: |
-          curl -o ./ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
-          export PATH=$(pwd):$PATH
-          chmod 755 ecs-cli
-          ecs-cli --version
-      - name: Run cleanup
-        run: |
-          export PATH=$(pwd):$PATH
-          ./containers/kubernetes/clusters/kops/cleanup.sh
-      - name: Run Fargate job
-        run: |
-          export PATH=$(pwd):$PATH
-          ./containers/kubernetes/clusters/kops/run.sh
-      - name: Run cleanup
-        run: |
-          export PATH=$(pwd):$PATH
-          ./containers/kubernetes/clusters/kops/cleanup.sh
+# jobs:
+#   build:
+#     # Job name is Update
+#     name: Update
+#     # This job runs on Linux
+#     runs-on: ubuntu-18.04
+#     steps:
+#       # Checkout the repository
+#       - name: Checkout
+#         uses: actions/checkout@v1
+#       # Set up kops
+#       - name: Set up kops
+#         run: |
+#           curl -o kops --location ${KOPS_BINARY}
+#           chmod u+x ./kops
+#           export PATH=$(pwd):$PATH
+#           kops version
+#       - name: Set up ecs-cli
+#         run: |
+#           curl -o ./ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
+#           export PATH=$(pwd):$PATH
+#           chmod 755 ecs-cli
+#           ecs-cli --version
+#       - name: Run cleanup
+#         run: |
+#           export PATH=$(pwd):$PATH
+#           ./containers/kubernetes/clusters/kops/cleanup.sh
+#       - name: Run Fargate job
+#         run: |
+#           export PATH=$(pwd):$PATH
+#           ./containers/kubernetes/clusters/kops/run.sh
+#       - name: Run cleanup
+#         run: |
+#           export PATH=$(pwd):$PATH
+#           ./containers/kubernetes/clusters/kops/cleanup.sh
 
