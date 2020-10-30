@@ -3,14 +3,14 @@ name: "Terraform"
 on:
   push:
     paths:
-    - 'sub-project/**'
-    - '!sub-project/docs/**'
+    - 'zdir1/**'
+    - '!zdir1/docs/**'
     branches:
       - master
   pull_request:
     paths:
-    - 'sub-project/**'
-    - '!sub-project/docs/**'
+    - 'zdir1/**'
+    - '!zdir1/docs/**'
 
 jobs:
   terraform:
