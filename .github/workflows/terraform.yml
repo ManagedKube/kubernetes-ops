@@ -2,9 +2,15 @@ name: "Terraform"
 
 on:
   push:
+    paths:
+    - 'sub-project/**'
+    - '!sub-project/docs/**'
     branches:
       - master
   pull_request:
+    paths:
+    - 'sub-project/**'
+    - '!sub-project/docs/**'
 
 jobs:
   terraform:
