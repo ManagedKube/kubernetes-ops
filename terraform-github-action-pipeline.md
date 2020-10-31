@@ -22,6 +22,13 @@ Based on this tutorial: https://learn.hashicorp.com/tutorials/terraform/github-a
 
 https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 
+## Terraform Cloud
+
+### Workspaces
+In Terraform cloud, a workspace is like the directory where your Terraform files are located in and where you execute Terraform from and where Terraform puts the state file locally.  This means that every single new Terraform needs a new workspace.
+
+https://www.terraform.io/docs/cloud/workspaces/index.html#workspaces-are-collections-of-infrastructure
+
 ## Usage
 
 Will have to create a pipeline for each Terraform you want to "sync" up.  Not so GitOps-ey...i kinda want to get away from creating distinct pipelines.
