@@ -12,7 +12,7 @@ terraform {
     organization = "managedkube"
 
     workspaces {
-      name = "kubernetes-ops"
+      name = "terraform-environments_aws_dev_vpc"
     }
   }
 }
