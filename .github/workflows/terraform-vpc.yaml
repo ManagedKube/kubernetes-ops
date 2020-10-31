@@ -4,15 +4,15 @@ on:
   push:
     # only run when files in this path changes
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
-    paths:
-    - 'terraform-environments/aws/dev/vpc/**'
+    # paths:
+    # - 'terraform-environments/aws/dev/vpc/**'
     branches:
       - master
   pull_request:
     # only run when files in this path changes
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
-    paths:
-    - 'terraform-environments/aws/dev/vpc/**'
+    # paths:
+    # - 'terraform-environments/aws/dev/vpc/**'
 
 jobs:
   terraform:
