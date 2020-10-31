@@ -11,6 +11,7 @@ terraform {
   backend "remote" {
     organization = "managedkube"
 
+    # The workspace must be unique to this terraform
     workspaces {
       name = "terraform-environments_aws_dev_vpc"
     }
