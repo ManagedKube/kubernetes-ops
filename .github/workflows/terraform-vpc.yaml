@@ -6,7 +6,6 @@ on:
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
     paths:
     - 'terraform-environments/aws/dev/vpc/**'
-    - '!zdir1/docs/**'
     branches:
       - master
   pull_request:
@@ -14,14 +13,13 @@ on:
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
     paths:
     - 'terraform-environments/aws/dev/vpc/**'
-    - '!zdir1/docs/**'
 
 jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
     env:
-      working-directory: ./zdir1
+      working-directory: ./terraform-environments/aws/dev/vpc/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
