@@ -48,6 +48,11 @@ provider "kubernetes" {
   version                = "~> 1.9"
 }
 
+resource aws_kms_key eks {
+  description = "EKS Secret Encryption Key"
+  #   tags        = var.tags
+}
+
 module "my-cluster" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "13.0.0"
@@ -61,6 +66,16 @@ module "my-cluster" {
     data.terraform_remote_state.vpc.outputs.private_subnets[2]
   ]
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access_cidrs = [
+    "0.0.0.0/0"
+  ]
+
+  cluster_encryption_config = [{
+    provider_key_arn = aws_kms_key.eks.arn
+    resources        = ["secrets"]
+  }]
 
   map_roles = [
     {
