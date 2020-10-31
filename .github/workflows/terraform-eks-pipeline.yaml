@@ -1,26 +1,26 @@
 # The name of the pipeline.  Must be unique.
-name: "Terraform - AWS - VPC"
+name: "Terraform - AWS - EKS"
 
 on:
   push:
     # only run when files in this path changes
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
     paths:
-    - 'terraform-environments/aws/dev/vpc/**'
+    - 'terraform-environments/aws/dev/eks/**'
     branches:
       - master
   pull_request:
     # only run when files in this path changes
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
     paths:
-    - 'terraform-environments/aws/dev/vpc/**'
+    - 'terraform-environments/aws/dev/eks/**'
 
 jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
     env:
-      working-directory: ./terraform-environments/aws/dev/vpc/
+      working-directory: ./terraform-environments/aws/dev/eks/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
