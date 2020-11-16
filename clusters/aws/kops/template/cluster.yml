@@ -4,6 +4,9 @@
   {{- $dnsZone := .dnsZone }}
   {{- $instanceGroups := .instanceGroups }}
   {{- $availabilityZonesAll := .availabilityZonesAll }}
+  {{- $env := .env }}
+  {{- $registryMirrors := .docker.registryMirrors }}
+  {{- $registryProxy := .docker.registryProxy }}
   {{- $cloudLabels := .cloudLabels }}
   {{- $availabilityZonesPrivate := .availabilityZonesPrivate }}
 
@@ -459,6 +462,44 @@ metadata:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
   name: master-{{ $awsRegion }}{{ $value.name }}
 spec:
+  additionalUserData:
+    - name: protect-kernel-defaults.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+        cat <<EOF > /etc/sysctl.d/90-kubelet.conf
+        vm.overcommit_memory=1
+        kernel.panic=10
+        kernel.panic_on_oops=1
+        EOF
+        sysctl -p /etc/sysctl.d/90-kubelet.conf
+{{- if $registryProxy }}
+    - name: docker-registry-proxy.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+
+        # Add environment vars pointing Docker to use the proxy
+        # https://docs.docker.com/config/daemon/systemd/#httphttps-proxy
+
+        mkdir -p /etc/systemd/system/docker.service.d
+        cat << EOD > /etc/systemd/system/docker.service.d/http-proxy.conf
+        [Service]
+        Environment="HTTP_PROXY={{ $registryProxy }}"
+        Environment="HTTPS_PROXY={{ $registryProxy }}"
+        EOD
+
+        # Get the CA certificate from the proxy and make it a trusted root.
+        curl {{ $registryProxy }}ca.crt > /usr/share/ca-certificates/docker_registry_proxy.crt
+        echo "docker_registry_proxy.crt" >> /etc/ca-certificates.conf
+        update-ca-certificates --fresh
+
+        # Reload systemd
+        systemctl daemon-reload
+
+        # Restart dockerd
+        systemctl restart docker.service
+{{- end }}
   cloudLabels:
     {{- range $key, $value := $instanceGroups.kubeMaster.cloudLabels }}
       {{ $key }}: "{{ $value }}"
@@ -507,6 +548,33 @@ spec:
         kernel.panic_on_oops=1
         EOF
         sysctl -p /etc/sysctl.d/90-kubelet.conf
+{{- if $registryProxy }}
+    - name: docker-registry-proxy.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+
+        # Add environment vars pointing Docker to use the proxy
+        # https://docs.docker.com/config/daemon/systemd/#httphttps-proxy
+
+        mkdir -p /etc/systemd/system/docker.service.d
+        cat << EOD > /etc/systemd/system/docker.service.d/http-proxy.conf
+        [Service]
+        Environment="HTTP_PROXY={{ $registryProxy }}"
+        Environment="HTTPS_PROXY={{ $registryProxy }}"
+        EOD
+
+        # Get the CA certificate from the proxy and make it a trusted root.
+        curl {{ $registryProxy }}ca.crt > /usr/share/ca-certificates/docker_registry_proxy.crt
+        echo "docker_registry_proxy.crt" >> /etc/ca-certificates.conf
+        update-ca-certificates --fresh
+
+        # Reload systemd
+        systemctl daemon-reload
+
+        # Restart dockerd
+        systemctl restart docker.service
+{{- end }}
   cloudLabels:
     {{- range $key, $value := $instanceGroups.bastionWorkersGroup1.cloudLabels }}
       {{ $key }}: "{{ $value }}"
@@ -547,6 +615,33 @@ spec:
         kernel.panic_on_oops=1
         EOF
         sysctl -p /etc/sysctl.d/90-kubelet.conf
+{{- if $registryProxy }}
+    - name: docker-registry-proxy.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+
+        # Add environment vars pointing Docker to use the proxy
+        # https://docs.docker.com/config/daemon/systemd/#httphttps-proxy
+
+        mkdir -p /etc/systemd/system/docker.service.d
+        cat << EOD > /etc/systemd/system/docker.service.d/http-proxy.conf
+        [Service]
+        Environment="HTTP_PROXY={{ $registryProxy }}"
+        Environment="HTTPS_PROXY={{ $registryProxy }}"
+        EOD
+
+        # Get the CA certificate from the proxy and make it a trusted root.
+        curl {{ $registryProxy }}ca.crt > /usr/share/ca-certificates/docker_registry_proxy.crt
+        echo "docker_registry_proxy.crt" >> /etc/ca-certificates.conf
+        update-ca-certificates --fresh
+
+        # Reload systemd
+        systemctl daemon-reload
+
+        # Restart dockerd
+        systemctl restart docker.service
+{{- end }}
   cloudLabels:
     {{- range $key, $value := $instanceGroups.threatstackMaster.cloudLabels }}
       {{ $key }}: "{{ $value }}"
@@ -601,6 +696,7 @@ spec:
         kernel.panic_on_oops=1
         EOF
         sysctl -p /etc/sysctl.d/90-kubelet.conf
+
   cloudLabels:
     {{- range $keyCloudLabels, $valueCloudLabels := $value.cloudLabels }}
       {{ $keyCloudLabels }}: "{{ $valueCloudLabels }}"
