@@ -1,12 +1,10 @@
-#
-# using kops cli 1.13.0
-  #
   {{- $awsRegion := .awsRegion }}
   {{- $networkPortion := .networkPortion }}
   {{- $kopsName := .kopsName }}
   {{- $dnsZone := .dnsZone }}
   {{- $instanceGroups := .instanceGroups }}
   {{- $availabilityZonesAll := .availabilityZonesAll }}
+  {{- $cloudLabels := .cloudLabels }}
   {{- $availabilityZonesPrivate := .availabilityZonesPrivate }}
 
 apiVersion: kops/v1alpha2
@@ -15,21 +13,213 @@ metadata:
   name: {{ .kopsName }}.{{ .dnsZone }}
 spec:
   hooks:
-  # Adding here since the kubeAPIServer.DisableBasicAuth is not working in this kops version yet
-  - before:
-    - kubelet.service
-    manifest: |
-      Type=oneshot
-      ExecStart=/usr/bin/sed -i 's/\-\-basic-auth-file=\/srv\/kubernetes\/basic_auth.csv//' /etc/kubernetes/manifests/kube-apiserver.manifest
-    name: remove_basic_auth
-  # Adding here since the kubeAPIServer.DisableBasicAuth is not working in this kops version yet
-  - before:
-    - kubelet.service
-    manifest: |
-      Type=oneshot
-      ExecStart=/usr/bin/sed -i 's/\-\-token-auth-file=\/srv\/kubernetes\/known_tokens.csv //' /etc/kubernetes/manifests/kube-apiserver.manifest
-    name: remove_token_auth
+  ### https://github.com/kubernetes/kops/pull/6646
+  ### https://github.com/kubernetes/kops/pull/8903
+{{- if .cloudLabels }}
+  cloudLabels:
+    {{- range $key, $value := $cloudLabels }}
+    {{ $key }}: "{{ $value }}"
+    {{- end }}
+{{- end }}
   fileAssets:
+    - name: apparmor-namespace
+      roles: [nodes]
+      content: |
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: apparmor
+          labels:
+            name: apparmor
+            ## https://github.com/Shopify/kubeaudit/blob/master/docs/auditors/netpols.md
+            audit.kubernetes.io/namespace.allow-non-default-deny-ingress-network-policy: ""
+            audit.kubernetes.io/namespace.allow-non-default-deny-egress-network-policy: ""
+    - name: PodSecurityPolicy
+      roles: [nodes]
+      content: |
+        apiVersion: policy/v1beta1
+        kind: PodSecurityPolicy
+        metadata:
+          annotations:
+            apparmor.security.beta.kubernetes.io/allowedProfileNames: localhost/default
+            apparmor.security.beta.kubernetes.io/defaultProfileName: localhost/default
+            k8s-addon: podsecuritypolicy.addons.k8s.io
+          name: kube-system
+        spec:
+          allowPrivilegeEscalation: true
+          allowedCapabilities:
+            - '*'
+          fsGroup:
+            rule: RunAsAny
+          hostIPC: true
+          hostNetwork: true
+          hostPID: true
+          hostPorts:
+            - max: 65536
+              min: 1
+          privileged: true
+          runAsUser:
+            rule: RunAsAny
+          seLinux:
+            rule: RunAsAny
+          supplementalGroups:
+            rule: RunAsAny
+          volumes:
+            - '*'
+    - name: apparmor-profiles
+      roles: [nodes]
+      content: |
+        apiVersion: v1
+        data:
+          default: |-
+            #include <tunables/global>
+
+            # From https://github.com/jfrazelle/bane/blob/master/docker-nginx-sample
+            profile default flags=(attach_disconnected,mediate_deleted) {
+              #include <abstractions/base>
+
+              network inet tcp,
+              network inet udp,
+              network inet icmp,
+
+              deny network raw,
+
+              deny network packet,
+
+              file,
+              umount,
+
+              deny /bin/** wl,
+              deny /boot/** wl,
+              deny /dev/** wl,
+              deny /etc/** wl,
+              deny /home/** wl,
+              deny /lib/** wl,
+              deny /lib64/** wl,
+              deny /media/** wl,
+              deny /mnt/** wl,
+              deny /opt/** wl,
+              deny /proc/** wl,
+              deny /root/** wl,
+              deny /sbin/** wl,
+              deny /srv/** wl,
+              deny /tmp/** wl,
+              deny /sys/** wl,
+              deny /usr/** wl,
+
+              audit /** w,
+
+              /var/run/nginx.pid w,
+
+              /usr/sbin/nginx ix,
+
+              deny /bin/dash mrwklx,
+              deny /bin/sh mrwklx,
+              deny /usr/bin/top mrwklx,
+
+              capability chown,
+              capability dac_override,
+              capability setuid,
+              capability setgid,
+              capability net_bind_service,
+
+              deny @{PROC}/{*,**^[0-9*],sys/kernel/shm*} wkx,
+              deny @{PROC}/sysrq-trigger rwklx,
+              deny @{PROC}/mem rwklx,
+              deny @{PROC}/kmem rwklx,
+              deny @{PROC}/kcore rwklx,
+              deny mount,
+              deny /sys/[^f]*/** wklx,
+              deny /sys/f[^s]*/** wklx,
+              deny /sys/fs/[^c]*/** wklx,
+              deny /sys/fs/c[^g]*/** wklx,
+              deny /sys/fs/cg[^r]*/** wklx,
+              deny /sys/firmware/efi/efivars/** rwklx,
+              deny /sys/kernel/security/** rwklx,
+            }
+        kind: ConfigMap
+        metadata:
+          name: apparmor-profiles
+          namespace: apparmor
+    - name: apparmor-daemonset
+      roles: [nodes]
+      content: |
+        apiVersion: apps/v1
+        kind: DaemonSet
+        metadata:
+          labels:
+            daemon: apparmor-loader
+          name: apparmor-loader
+          namespace: apparmor
+        spec:
+          selector:
+            matchLabels:
+              daemon: apparmor-loader
+          template:
+            metadata:
+              labels:
+                daemon: apparmor-loader
+              name: apparmor-loader
+              annotations:
+                container.apparmor.security.beta.kubernetes.io/apparmor-loader: runtime/default
+            spec:
+              containers:
+                - args:
+                    - -poll
+                    - 30s
+                    - /profiles
+                  image: google/apparmor-loader:latest
+                  name: apparmor-loader
+                  securityContext:
+                    privileged: false
+                    allowPrivilegeEscalation: false
+                    capabilities:
+                      drop:
+                        - AUDIT_WRITE
+                        - CHOWN
+                        - DAC_OVERRIDE
+                        - FOWNER
+                        - FSETID
+                        - KILL
+                        - MKNOD
+                        - NET_BIND_SERVICE
+                        - NET_RAW
+                        - SETFCAP
+                        - SETGID
+                        - SETPCAP
+                        - SETUID
+                        - SYS_CHROOT
+                    readOnlyRootFilesystem: true
+                    runAsNonRoot: true
+                  volumeMounts:
+                    - mountPath: /sys
+                      name: sys
+                      readOnly: true
+                    - mountPath: /etc/apparmor.d
+                      name: apparmor-includes
+                      readOnly: true
+                    - mountPath: /profiles
+                      name: profiles
+                      readOnly: true
+                  resources: {}
+              volumes:
+                - hostPath:
+                    path: /sys
+                  name: sys
+                - hostPath:
+                    path: /etc/apparmor.d
+                  name: apparmor-includes
+                - configMap:
+                    name: apparmor-profiles
+                  name: profiles
+              automountServiceAccountToken: false
+          updateStrategy: {}
+        status:
+          currentNumberScheduled: 0
+          desiredNumberScheduled: 0
+          numberMisscheduled: 0
+          numberReady: 0
+
     # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#audit-logging
     - name: apiserver-audit-policy
       path: /srv/kubernetes/audit.yaml
@@ -54,14 +244,12 @@ spec:
             resources:
             - group: ""
               resources: ["pods/log", "pods/status"]
-
           # Don't log requests to a configmap called "controller-leader"
           - level: None
             resources:
             - group: ""
               resources: ["configmaps"]
               resourceNames: ["controller-leader"]
-
           # Don't log watch requests by the "system:kube-proxy" on endpoints or services
           - level: None
             users: ["system:kube-proxy"]
@@ -69,14 +257,12 @@ spec:
             resources:
             - group: "" # core API group
               resources: ["endpoints", "services"]
-
           # Don't log authenticated requests to certain non-resource URL paths.
           - level: None
             userGroups: ["system:authenticated"]
             nonResourceURLs:
             - "/api*" # Wildcard matching.
             - "/version"
-
           # Log the request body of configmap changes in kube-system.
           - level: Request
             resources:
@@ -85,25 +271,23 @@ spec:
             # This rule only applies to resources in the "kube-system" namespace.
             # The empty string "" can be used to select non-namespaced resources.
             namespaces: ["kube-system"]
-
           # Log configmap and secret changes in all other namespaces at the Metadata level.
           - level: Metadata
             resources:
             - group: "" # core API group
               resources: ["secrets", "configmaps"]
-
           # Log all other resources in core and extensions at the Request level.
           - level: Request
             resources:
             - group: "" # core API group
             - group: "extensions" # Version of group should NOT be included.
-
           # A catch-all rule to log all other requests at the Metadata level.
           - level: Metadata
             # Long-running requests like watches that fall under this rule will not
             # generate an audit event in RequestReceived.
             omitStages:
               - "RequestReceived"
+
   additionalPolicies:
     node: |
       [
@@ -122,36 +306,45 @@ spec:
       idleTimeoutSeconds: 1800
   authorization:
     rbac: {}
-{{- if .docker.overrides }}
   docker:
+    registryMirrors: {{ .docker.registryMirrors }}
+{{- if .docker.overrides }}
     bridgeIP: {{ .docker.bridgeIP }}
+{{- end }}
     logDriver: json-file
     logOpt:
     - max-size=10m
     - max-file=5
-{{- end }}
   channel: stable
   cloudProvider: aws
   configBase: s3://{{ .s3BucketName }}/{{ .kopsName }}.{{ .dnsZone }}
   etcdClusters:
     # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#etcdclusters-v3--tls
-    - enableEtcdTLS: true
+    - backups:
+        backupStore: s3://{{ .s3BucketName }}/{{ .kopsName }}.{{ .dnsZone }}/backups/etcd/main
+      enableEtcdTLS: true
+      # https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/hardware.md#example-hardware-configurations
       cpuRequest: 200m
       memoryRequest: 128Mi
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
       - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
         name: {{ $value.etcdName }}
+        encryptedVolume: true
       {{- end }}
       name: main
       version: {{ .etcd.version }}
-    - enableEtcdTLS: true
+    - backups:
+        backupStore: s3://{{ .s3BucketName }}/{{ .kopsName }}.{{ .dnsZone }}/backups/etcd/events
+      enableEtcdTLS: true
+      # https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/hardware.md#example-hardware-configurations
       cpuRequest: 200m
       memoryRequest: 128Mi
       etcdMembers:
       {{- range $key, $value := .availabilityZonesEtcd }}
       - instanceGroup: master-{{ $awsRegion }}{{ $value.masterZoneName }}
         name: {{ $value.etcdName }}
+        encryptedVolume: true
       {{- end }}
       name: events
       version: {{ .etcd.version }}
@@ -160,23 +353,27 @@ spec:
     allowContainerRegistry: {{ .iam.allowContainerRegistry }}
     legacy: false
   kubeAPIServer:
+{{- if .oidc.enabled }}
+    oidcIssuerURL: {{ .oidc.oidcIssuerURL }}
+    oidcClientID: {{ .oidc.oidcClientID }}
+    oidcGroupsClaim: groups
+{{- end }}
     # configs: https://github.com/kubernetes/kops/blob/master/pkg/apis/kops/componentconfig.go
     auditLogPath: /var/log/kube-apiserver-audit.log
     auditLogMaxAge: 30
     auditLogMaxBackups: 10
     auditLogMaxSize: 100
     auditPolicyFile: /srv/kubernetes/audit.yaml
-    AnonymousAuth: false
-    DisableBasicAuth: false
+    ## https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#disable-basic-auth
+    ## Support for basic authentication was deprecated in Kubernetes 1.16 and removed in Kubernetes 1.19.
+    disableBasicAuth: {{ .kubeAPIServer.disableBasicAuth }}
+    anonymousAuth: false
     tlsMinVersion: VersionTLS12
-    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
-    # https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#runtimeconfig
-    # runtimeConfig:
-    #   batch/v2alpha1: "true"
-    #   apps/v1alpha1: "true"
-    # Istio perm for kops: https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#automatic-sidecar-injection
-    # https://archive.istio.io/v0.5/docs/setup/kubernetes/sidecar-injection.html#aws-with-kops
+    ## https://github.com/traefik/traefik/issues/2466#issuecomment-347022645
+    tlsCipherSuites: [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_256_CBC_SHA" ]
+    ## https://github.com/kubernetes/kubernetes/blob/master/pkg/kubeapiserver/options/plugins.go#L64-L106
     admissionControl:
+      - AlwaysPullImages
       - NamespaceLifecycle
       - LimitRanger
       - ServiceAccount
@@ -188,32 +385,40 @@ spec:
       - ResourceQuota
       - NodeRestriction
       - Priority
+{{ if .PodSecurityPolicy.enabled }}
+      - PodSecurityPolicy
+{{- end }}
   kubeControllerManager:
+    terminatedPodGCThreshold: 10
     tlsMinVersion: VersionTLS12
-    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
+    ## https://github.com/traefik/traefik/issues/2466#issuecomment-347022645
+    tlsCipherSuites: [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_256_CBC_SHA" ]
   kubelet:
-    # https://github.com/kubernetes/kops/blob/master/docs/security.md#kubelet-api
+    protectKernelDefaults: true
+    ## https://github.com/kubernetes/kops/blob/master/docs/security.md#kubelet-api
     anonymousAuth: false
+    ## https://github.com/kubernetes/kops/blob/master/docs/releases/1.16-NOTES.md#required-actions
+    featureGates:
+      PodPriority: "true"
     tlsMinVersion: VersionTLS12
-    tlsCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256","TLS_RSA_WITH_AES_256_GCM_SHA384"]
-    # kubeReserved:
-    #     cpu: "100m"
-    #     memory: "100Mi"
-    #     storage: "1Gi"
-    # kubeReservedCgroup: "/kube-reserved"
-    # systemReserved:
-    #     cpu: "100m"
-    #     memory: "100Mi"
-    #     storage: "1Gi"
-    # systemReservedCgroup: "/system-reserved"
-    # enforceNodeAllocatable: "pods,system-reserved,kube-reserved"
+    ## https://github.com/traefik/traefik/issues/2466#issuecomment-347022645
+    tlsCipherSuites: [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_256_CBC_SHA" ]
+    # https://github.com/kubernetes-sigs/metrics-server/issues/212
+    authenticationTokenWebhook: true
+    authorizationMode: Webhook
   kubeDNS:
     provider: CoreDNS
+    ## https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#node-local-dns-cache
+    nodeLocalDNS:
+      enabled: true
+      memoryRequest: 5Mi
+      cpuRequest: 25m
   kubernetesVersion: {{ .kubernetesVersion }}
   masterPublicName: api.{{ .kopsName }}.{{ .dnsZone }}
   networkCIDR: {{ .networkCIDR }}
   networking:
-    canal: {}
+    canal:
+      mtu: 8912
   nonMasqueradeCIDR: 100.64.0.0/10
   sshAccess:
   {{- range $key, $value := .sshAccess }}
@@ -244,9 +449,7 @@ spec:
       type: {{ .topology.dns.type }}
     masters: {{ .topology.masters }}
     nodes: {{ .topology.nodes }}
-#
-# Kubernetes Masters
-#
+
 {{- range $key, $value := .availabilityZonesKubeMaster }}
 ---
 apiVersion: kops/v1alpha2
@@ -260,16 +463,19 @@ spec:
     {{- range $key, $value := $instanceGroups.kubeMaster.cloudLabels }}
       {{ $key }}: "{{ $value }}"
       {{- end }}
-  # CoreOS: https://github.com/kubernetes/kops/blob/06b0111251ab87861e57dbf5f8d36f02e84af04d/docs/images.md#coreos
   image: {{ $instanceGroups.kubeMaster.image }}
   machineType: {{ $instanceGroups.kubeMaster.machineType }}
   maxSize: {{ $instanceGroups.kubeMaster.maxSize }}
   minSize: {{ $instanceGroups.kubeMaster.minSize }}
   nodeLabels:
-    kops.k8s.io/instancegroup: master-{{ $awsRegion }}{{ $value.name }}
+    {{- if $instanceGroups.kubeMaster.nodeLabels }}
     {{- range $key, $value := $instanceGroups.kubeMaster.nodeLabels }}
     {{ $key }}: "{{ $value }}"
     {{- end }}
+    {{- end }}
+    kops.k8s.io/instancegroup: master-{{ $awsRegion }}{{ $value.name }}
+    kubernetes-ops/isSpot: "false"
+    kubernetes-ops/instanceType: {{ $instanceGroups.kubeMaster.machineType }}
   role: Master
   subnets:
     - kube-master-{{ $value.name }}
@@ -290,6 +496,17 @@ metadata:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
   name: bastion-workers-zone-{{ $value.name }}
 spec:
+  additionalUserData:
+    - name: protect-kernel-defaults.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+        cat <<EOF > /etc/sysctl.d/90-kubelet.conf
+        vm.overcommit_memory=1
+        kernel.panic=10
+        kernel.panic_on_oops=1
+        EOF
+        sysctl -p /etc/sysctl.d/90-kubelet.conf
   cloudLabels:
     {{- range $key, $value := $instanceGroups.bastionWorkersGroup1.cloudLabels }}
       {{ $key }}: "{{ $value }}"
@@ -319,6 +536,17 @@ metadata:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
   name: threatstack-master-zone-{{ $value.name }}
 spec:
+  additionalUserData:
+    - name: protect-kernel-defaults.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+        cat <<EOF > /etc/sysctl.d/90-kubelet.conf
+        vm.overcommit_memory=1
+        kernel.panic=10
+        kernel.panic_on_oops=1
+        EOF
+        sysctl -p /etc/sysctl.d/90-kubelet.conf
   cloudLabels:
     {{- range $key, $value := $instanceGroups.threatstackMaster.cloudLabels }}
       {{ $key }}: "{{ $value }}"
@@ -362,18 +590,38 @@ metadata:
     kops.k8s.io/cluster: {{ $kopsName }}.{{ $dnsZone }}
   name: {{ $key }}-zone-{{ $azValue.name }}
 spec:
+  additionalUserData:
+    - name: protect-kernel-defaults.sh
+      type: text/x-shellscript
+      content: |
+        #!/bin/sh
+        cat <<EOF > /etc/sysctl.d/90-kubelet.conf
+        vm.overcommit_memory=1
+        kernel.panic=10
+        kernel.panic_on_oops=1
+        EOF
+        sysctl -p /etc/sysctl.d/90-kubelet.conf
   cloudLabels:
     {{- range $keyCloudLabels, $valueCloudLabels := $value.cloudLabels }}
       {{ $keyCloudLabels }}: "{{ $valueCloudLabels }}"
       {{- end }}
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/node-template/label/{{ $kopsName }}.{{ $dnsZone }}/role: "scale-zero"
+      k8s.io/cluster-autoscaler/{{ $kopsName }}.{{ $dnsZone }}: "owned"
   image: {{ $value.image }}
   machineType: {{ $value.machineType }}
   maxSize: {{ $value.maxSize }}
   minSize: {{ $value.minSize }}
   nodeLabels:
+    kops.k8s.io/instancegroup: {{ $key }}-zone-{{ $azValue.name }}-{{ $value.machineType }}
+    {{- if $value.nodeLabels }}
     {{- range $nodeLabelsKey, $nodeLabelsValue := $value.nodeLabels }}
     {{ $nodeLabelsKey }}: "{{ $nodeLabelsValue }}"
     {{- end }}
+    {{- end }}
+    {{ $kopsName }}.{{ $dnsZone }}: "scale-zero"
+    kubernetes-ops/isSpot: "false"
+    kubernetes-ops/instanceType: {{ $value.machineType }}
   {{- if $value.taints }}
   taints:
     {{- range $taintsKey, $taintsValue := $value.taints }}

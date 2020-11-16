@@ -19,3 +19,23 @@ etcd:
 docker:
   overrides: false
   bridgeIP: 172.26.0.1/16
+  registryMirrors: []
+
+cloudLabels:
+  account: development
+  env: development
+  cluster: development
+  expense: development
+  managed: kops
+  region: us-west-2
+  squad: shared
+  service: kubernetes
+  datadog: true
+
+oidc:
+  enabled: false
+  oidcIssuerURL:
+  oidcClientID:
+
+PodSecurityPolicy:
+  enabled: false
