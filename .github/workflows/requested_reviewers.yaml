@@ -1,0 +1,16 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  requested_reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: requested_reviewers
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            -d '{"reviewers":["sekka1"]}'
