@@ -38,11 +38,11 @@ usage() {
   echo " --name : The environment name.  This should correspond to a cluster folder name."
   echo
   echo " --read : Output info on a cluster"
-  echo 
+  echo
   echo " --rolling-update : Perform a rolling update on a cluster"
   echo
   echo " --template : Template out the kops cluster manifest"
-  echo 
+  echo
   echo " --update : Update a cluster"
   echo
   echo " --help : this help menu"
