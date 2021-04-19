@@ -68,6 +68,8 @@ module "eks" {
     data.terraform_remote_state.vpc.outputs.private_subnets[2]
   ]
 
+  # If this is true, you should really not use 0.0.0.0/0 which will allow anyone on the internet
+  # to reach the Kubernetes/EKS API.  You should restrict it down to a set of IP ranges.
   cluster_endpoint_public_access = true
   cluster_endpoint_public_access_cidrs = [
     "0.0.0.0/0"
