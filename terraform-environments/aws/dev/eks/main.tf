@@ -55,9 +55,9 @@ resource aws_kms_key eks {
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
-  version          = "13.0.0"
+  version          = "14.0.0"
   cluster_name     = "my-cluster"
-  cluster_version  = "1.17"
+  cluster_version  = "1.19"
   enable_irsa      = true
   write_kubeconfig = true
 
