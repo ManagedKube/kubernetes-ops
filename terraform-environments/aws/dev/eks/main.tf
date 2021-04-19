@@ -107,6 +107,7 @@ module "eks" {
     },
   ]
 
+  # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md#what-is-the-difference-between-node_groups-and-worker_groups
   node_groups = {
     ng1 = {
       disk_size        = 20
