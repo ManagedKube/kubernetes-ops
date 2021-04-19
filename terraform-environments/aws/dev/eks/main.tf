@@ -1,3 +1,13 @@
+variable "tags" {
+  type    = map
+  default = {
+    ops_managed_by       = "terraform",
+    ops_source_repo      = "kubernetes-ops",
+    ops_source_repo_path = "terraform-environments/aws/dev/eks",
+    ops_owners           = "devops"
+  }
+}
+
 terraform {
   required_providers {
     aws = {
@@ -50,7 +60,7 @@ provider "kubernetes" {
 
 resource aws_kms_key eks {
   description = "EKS Secret Encryption Key"
-  #   tags        = var.tags
+  tags        = var.tags
 }
 
 module "eks" {
@@ -61,6 +71,7 @@ module "eks" {
   cluster_version  = "1.19"
   enable_irsa      = true
   write_kubeconfig = true
+  tags             = var.tags
 
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   subnets = [
@@ -118,7 +129,7 @@ module "eks" {
       max_capacity     = 1
       min_capacity     = 1
       instance_type    = "t2.small"
-      additional_tags  = {}
+      additional_tags  = var.tags
       k8s_labels       = {}
     }
   }
