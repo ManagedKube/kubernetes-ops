@@ -54,6 +54,7 @@ resource aws_kms_key eks {
 }
 
 module "eks" {
+  # source: https://github.com/terraform-aws-modules/terraform-aws-eks
   source           = "terraform-aws-modules/eks/aws"
   version          = "14.0.0"
   cluster_name     = "my-cluster"
