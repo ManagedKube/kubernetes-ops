@@ -1,3 +1,14 @@
+variable "tags" {
+  type    = map
+  default = {
+    ops_env              = "dev"
+    ops_managed_by       = "terraform",
+    ops_source_repo      = "kubernetes-ops",
+    ops_source_repo_path = "terraform-environments/aws/dev/eks",
+    ops_owners           = "devops"
+  }
+}
+
 terraform {
   required_providers {
     aws = {
@@ -35,11 +46,7 @@ module "vpc" {
   enable_nat_gateway = true
   enable_vpn_gateway = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-    Foo         = "bar"
-  }
+  tags = var.tags
 }
 
 output "vpc_id" {

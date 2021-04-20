@@ -1,6 +1,7 @@
 variable "tags" {
   type    = map
   default = {
+    ops_env              = "dev"
     ops_managed_by       = "terraform",
     ops_source_repo      = "kubernetes-ops",
     ops_source_repo_path = "terraform-environments/aws/dev/eks",
@@ -29,7 +30,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
 }
 
 data "terraform_remote_state" "vpc" {
@@ -40,27 +41,6 @@ data "terraform_remote_state" "vpc" {
       name = "terraform-environments_aws_dev_vpc"
     }
   }
-}
-
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
-  version                = "~> 1.9"
-}
-
-resource aws_kms_key eks {
-  description = "EKS Secret Encryption Key"
-  tags        = var.tags
 }
 
 module "eks" {
