@@ -1,36 +1,6 @@
-# terraform {
-#   required_providers {
-#     aws = {
-#       source = "hashicorp/aws"
-#     }
-#     random = {
-#       source = "hashicorp/random"
-#     }
-#   }
-
-#   backend "remote" {
-#     organization = "managedkube"
-
-#     # The workspace must be unique to this terraform
-#     workspaces {
-#       name = "terraform-environments_aws_dev_eks"
-#     }
-#   }
-# }
-
 provider "aws" {
   region = var.aws_region
 }
-
-# data "terraform_remote_state" "vpc" {
-#   backend = "remote"
-#   config = {
-#     organization = "managedkube"
-#     workspaces = {
-#       name = "terraform-environments_aws_dev_vpc"
-#     }
-#   }
-# }
 
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
@@ -65,9 +35,6 @@ module "eks" {
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_id = var.vpc_id
   subnets = [
-    # data.terraform_remote_state.vpc.outputs.private_subnets[0],
-    # data.terraform_remote_state.vpc.outputs.private_subnets[1],
-    # data.terraform_remote_state.vpc.outputs.private_subnets[2]
     var.private_subnets[0],
     var.private_subnets[1],
     var.private_subnets[2],
