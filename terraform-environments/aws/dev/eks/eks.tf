@@ -1,36 +1,36 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-    random = {
-      source = "hashicorp/random"
-    }
-  }
+# terraform {
+#   required_providers {
+#     aws = {
+#       source = "hashicorp/aws"
+#     }
+#     random = {
+#       source = "hashicorp/random"
+#     }
+#   }
 
-  backend "remote" {
-    organization = "managedkube"
+#   backend "remote" {
+#     organization = "managedkube"
 
-    # The workspace must be unique to this terraform
-    workspaces {
-      name = "terraform-environments_aws_dev_eks"
-    }
-  }
-}
+#     # The workspace must be unique to this terraform
+#     workspaces {
+#       name = "terraform-environments_aws_dev_eks"
+#     }
+#   }
+# }
 
 provider "aws" {
-  region = data.terraform_remote_state.vpc.outputs.aws_region
+  region = var.aws_region
 }
 
-data "terraform_remote_state" "vpc" {
-  backend = "remote"
-  config = {
-    organization = "managedkube"
-    workspaces = {
-      name = "terraform-environments_aws_dev_vpc"
-    }
-  }
-}
+# data "terraform_remote_state" "vpc" {
+#   backend = "remote"
+#   config = {
+#     organization = "managedkube"
+#     workspaces = {
+#       name = "terraform-environments_aws_dev_vpc"
+#     }
+#   }
+# }
 
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
@@ -50,22 +50,27 @@ provider "kubernetes" {
 
 resource aws_kms_key eks {
   description = "EKS Secret Encryption Key"
-  #   tags        = var.tags
+  tags        = var.tags
 }
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "14.0.0"
-  cluster_name     = "my-cluster"
+  cluster_name     = var.cluster_name
   cluster_version  = "1.18"
   enable_irsa      = true
   write_kubeconfig = true
+  tags             = var.tags
 
-  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+  # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id = var.vpc_id
   subnets = [
-    data.terraform_remote_state.vpc.outputs.private_subnets[0],
-    data.terraform_remote_state.vpc.outputs.private_subnets[1],
-    data.terraform_remote_state.vpc.outputs.private_subnets[2]
+    # data.terraform_remote_state.vpc.outputs.private_subnets[0],
+    # data.terraform_remote_state.vpc.outputs.private_subnets[1],
+    # data.terraform_remote_state.vpc.outputs.private_subnets[2]
+    var.private_subnets[0],
+    var.private_subnets[1],
+    var.private_subnets[2],
   ]
 
   cluster_endpoint_public_access = true

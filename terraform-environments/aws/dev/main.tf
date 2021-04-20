@@ -31,3 +31,21 @@ module "vpc" {
   environment_name = var.environment_name
   tags = var.tags
 }
+
+module "eks" {
+  source = "./eks"
+  
+  aws_region = var.aws_region
+  environment_name = var.environment_name
+  tags = var.tags
+
+  cluster_name = var.environment_name
+
+  vpc_id = module.vpc.vpc_id
+  private_subnets = module.vpc.private_subnets
+  public_subnets = module.vpc.public_subnets
+
+  # depends_on = [
+  #   module.vpc
+  # ]
+}

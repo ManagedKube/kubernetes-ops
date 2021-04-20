@@ -16,7 +16,7 @@ variable "tags" {
     ops_env              = "dev"
     ops_managed_by       = "terraform",
     ops_source_repo      = "kubernetes-ops",
-    ops_source_repo_path = "terraform-environments/aws/dev/eks",
+    ops_source_repo_path = "terraform-environments/aws/dev",
     ops_owners           = "devops"
   }
 }
