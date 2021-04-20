@@ -1,14 +1,3 @@
-variable "tags" {
-  type    = map
-  default = {
-    ops_env              = "dev"
-    ops_managed_by       = "terraform",
-    ops_source_repo      = "kubernetes-ops",
-    ops_source_repo_path = "terraform-environments/aws/dev/eks",
-    ops_owners           = "devops"
-  }
-}
-
 terraform {
   required_providers {
     aws = {
@@ -30,7 +19,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = data.terraform_remote_state.vpc.outputs.aws_region
 }
 
 data "terraform_remote_state" "vpc" {
@@ -43,15 +32,34 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_id
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  load_config_file       = false
+  version                = "~> 1.9"
+}
+
+resource aws_kms_key eks {
+  description = "EKS Secret Encryption Key"
+  #   tags        = var.tags
+}
+
 module "eks" {
-  # source: https://github.com/terraform-aws-modules/terraform-aws-eks
   source           = "terraform-aws-modules/eks/aws"
   version          = "14.0.0"
   cluster_name     = "my-cluster"
-  cluster_version  = "1.19"
+  cluster_version  = "1.18"
   enable_irsa      = true
   write_kubeconfig = true
-  tags             = var.tags
 
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   subnets = [
@@ -60,8 +68,6 @@ module "eks" {
     data.terraform_remote_state.vpc.outputs.private_subnets[2]
   ]
 
-  # If this is true, you should really not use 0.0.0.0/0 which will allow anyone on the internet
-  # to reach the Kubernetes/EKS API.  You should restrict it down to a set of IP ranges.
   cluster_endpoint_public_access = true
   cluster_endpoint_public_access_cidrs = [
     "0.0.0.0/0"
@@ -101,7 +107,6 @@ module "eks" {
     },
   ]
 
-  # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md#what-is-the-difference-between-node_groups-and-worker_groups
   node_groups = {
     ng1 = {
       disk_size        = 20
@@ -109,7 +114,7 @@ module "eks" {
       max_capacity     = 1
       min_capacity     = 1
       instance_type    = "t2.small"
-      additional_tags  = var.tags
+      additional_tags  = {}
       k8s_labels       = {}
     }
   }
