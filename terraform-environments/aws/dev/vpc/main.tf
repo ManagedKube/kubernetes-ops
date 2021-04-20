@@ -1,43 +1,13 @@
-variable "tags" {
-  type    = map
-  default = {
-    ops_env              = "dev"
-    ops_managed_by       = "terraform",
-    ops_source_repo      = "kubernetes-ops",
-    ops_source_repo_path = "terraform-environments/aws/dev/eks",
-    ops_owners           = "devops"
-  }
-}
-
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-    random = {
-      source = "hashicorp/random"
-    }
-  }
-
-  backend "remote" {
-    organization = "managedkube"
-
-    # The workspace must be unique to this terraform
-    workspaces {
-      name = "terraform-environments_aws_dev_vpc"
-    }
-  }
-}
-
 provider "aws" {
-  region = "us-west-2"
+  region = var.aws_region
 }
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
+  version = "2.78.0"
 
-  name = "my-vpc"
-  cidr = "10.0.0.0/16"
+  name = var.environment_name
+  cidr = var.vpc_cidr
 
   azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]

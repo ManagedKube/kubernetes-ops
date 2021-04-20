@@ -1,0 +1,33 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+  }
+
+  backend "remote" {
+    organization = "managedkube"
+
+    # The workspace must be unique to this terraform
+    workspaces {
+      name = "terraform-environments_aws_dev_vpc"
+    }
+  }
+}
+
+provider "aws" {
+    version = "~> 3.37.0"
+    region = var.aws_region
+}
+
+module "vpc" {
+  source = "./vpc"
+
+  aws_region = var.aws_region
+  vpc_cidr   = var.vpc_cidr
+  environment_name = var.environment_name
+  tags = var.tags
+}
