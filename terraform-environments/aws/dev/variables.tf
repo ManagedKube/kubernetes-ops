@@ -7,7 +7,7 @@ variable "environment_name" {
 }
 
 variable "tags" {
-  type    = map
+  type = map(any)
   default = {
     ops_env              = "dev"
     ops_managed_by       = "terraform",
