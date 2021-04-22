@@ -36,5 +36,7 @@
 		"source=${localEnv:HOME}/.kube/config,target=/home/vscode/.kube/config,type=bind,consistency=cached",
 		// Mounting local saml2aws into the container
 		"source=${localEnv:HOME}/.saml2aws,target=/home/vscode/.saml2aws,type=bind,consistency=cached",
+		// Mounting the local terraform cloud login token into the container
+		"source=${localEnv:HOME}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached",
 	  ]
 }
