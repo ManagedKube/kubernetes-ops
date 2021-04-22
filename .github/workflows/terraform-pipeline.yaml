@@ -78,5 +78,6 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
+        working-directory: ${{matrix.actionPath}}
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve
