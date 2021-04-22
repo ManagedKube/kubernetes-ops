@@ -4,7 +4,7 @@ resource "helm_release" "argocd" {
   create_namespace = "true"
   name             = var.chart_name
   version          = var.helm_version
-  verify           = true
+  verify           = var.verify
   repository       = "https://argoproj.github.io/argo-helm"
 
   values = [

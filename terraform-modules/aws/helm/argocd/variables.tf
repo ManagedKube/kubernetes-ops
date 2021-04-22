@@ -4,6 +4,12 @@ variable helm_version {
   description = "Helm chart version"
 }
 
+variable verify {
+  type        = bool
+  default     = false
+  description = "Verify the helm download"
+}
+
 variable namespace {
   type        = string
   default     = "argocd"
