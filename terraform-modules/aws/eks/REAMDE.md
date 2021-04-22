@@ -1,6 +1,6 @@
 # eks
 
-Builds and EKS cluster
+Builds and EKS cluster using this module: https://github.com/terraform-aws-modules/terraform-aws-eks
 
 ## Post cluster creation
 
