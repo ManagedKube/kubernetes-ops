@@ -24,7 +24,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=eks-v2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.1"
 
   aws_region       = var.aws_region
   azs              = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -36,7 +36,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=eks-v2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.1"
 
   aws_region = var.aws_region
   tags       = var.tags
