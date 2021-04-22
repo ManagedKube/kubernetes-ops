@@ -1,9 +1,18 @@
 variable "aws_region" {
     default = "us-east-1"
 }
-variable "environment_name" {}
 variable "tags" {}
-variable "vpc_id" {}
-variable "private_subnets" {}
-variable "public_subnets" {}
-variable "cluster_name" {}
+variable "vpc_id" {
+    default = ""
+}
+variable "private_subnets" {
+    type = list
+    default = []
+}
+variable "public_subnets" {
+    type = list
+    default = []
+}
+variable "cluster_name" {
+    default = "test-cluster
+}
