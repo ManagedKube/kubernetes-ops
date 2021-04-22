@@ -48,14 +48,15 @@ func TestTerraformDefault(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables
-	// actualVPCId := terraform.Output(t, terraformOptions, "vpc_id")
-	actualPrivateSubnets := terraform.Output(t, terraformOptions, "private_subnets")
+	actualVPCId := terraform.Output(t, terraformOptions, "vpc_id")
+	// actualPrivateSubnets := terraform.Output(t, terraformOptions, "private_subnets")
 
 	// awsAccountID := aws.GetAccountId(t)
 
 	// assert.Equal(t, "unittest_aws_iam_policy_"+stringRand, actualPolicyName)
 	// assert.Equal(t, "arn:aws:iam::"+awsAccountID+":policy/unittest_aws_iam_policy_"+stringRand, actualPolicyArn)
-	assert.Equal(t, 3, len(actualPrivateSubnets))
+	assert.Equal(t, "vpc-", actualVPCId[0:4])
+	// assert.Equal(t, 3, len(actualPrivateSubnets))
 }
 
 func randomString(len int) string {
