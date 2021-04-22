@@ -43,7 +43,7 @@ variable cluster_endpoint_public_access_cidrs {
 }
 
 variable map_roles {
-  type        = list(map)
+  type        = list
   default     = [
     {
       rolearn  = "arn:aws:iam::66666666666:role/role1"
@@ -55,7 +55,7 @@ variable map_roles {
 }
 
 variable map_users {
-  type        = list(map)
+  type        = list
   default     = [
     {
       userarn  = "arn:aws:iam::66666666666:user/user1"
