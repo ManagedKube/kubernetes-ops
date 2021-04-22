@@ -8,7 +8,7 @@ resource "helm_release" "argocd" {
   repository       = "https://argoproj.github.io/argo-helm"
 
   values = [
-    file("path.module/values.yaml")
+    file("${path.module}/values.yaml")
   ]
 
 }
