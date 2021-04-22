@@ -57,39 +57,11 @@ module "eks" {
     "scheduler"
   ]
 
-  map_roles = [
-    {
-      rolearn  = "arn:aws:iam::66666666666:role/role1"
-      username = "role1"
-      groups   = ["system:masters"]
-    },
-  ]
-  map_users = [
-    {
-      userarn  = "arn:aws:iam::66666666666:user/user1"
-      username = "user1"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::66666666666:user/user2"
-      username = "user2"
-      groups   = ["system:masters"]
-    },
-  ]
+  map_roles = var.map_roles
+  map_users = var.map_users
 
-  node_groups = {
-    ng1 = {
-      disk_size        = 20
-      desired_capacity = 1
-      max_capacity     = 1
-      min_capacity     = 1
-      instance_type    = "t2.small"
-      additional_tags  = {
-        Name = "foo",
-      }
-      k8s_labels       = {}
-    }
-  }
+  node_groups = var.node_groups
+  
 }
 
 output "cluster_endpoint" {

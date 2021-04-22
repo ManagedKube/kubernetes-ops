@@ -33,12 +33,6 @@ module "vpc" {
   public_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   environment_name = var.environment_name
   tags = var.tags
-
-  cluster_version = "1.18"
-  cluster_endpoint_public_access = true
-  cluster_endpoint_public_access_cidrs = [
-    "0.0.0.0/0"
-  ]
 }
 
 module "eks" {
@@ -52,6 +46,48 @@ module "eks" {
   vpc_id = module.vpc.vpc_id
   private_subnets = module.vpc.private_subnets
   public_subnets = module.vpc.public_subnets
+
+  cluster_version = "1.18"
+  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access_cidrs = [
+    "0.0.0.0/0"
+  ]
+
+  map_roles = [
+    {
+      rolearn  = "arn:aws:iam::66666666666:role/role1"
+      username = "role1"
+      groups   = ["system:masters"]
+    },
+  ]
+  map_users = [
+    {
+      userarn  = "arn:aws:iam::66666666666:user/user1"
+      username = "user1"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::66666666666:user/user2"
+      username = "user2"
+      groups   = ["system:masters"]
+    },
+  ]
+
+  node_groups = {
+    ng1 = {
+      disk_size        = 20
+      desired_capacity = 1
+      max_capacity     = 1
+      min_capacity     = 1
+      instance_type    = "t2.small"
+      additional_tags  = {
+        Name = "foo",
+      }
+      k8s_labels       = {}
+    }
+  }
+
+
 
   # depends_on = [
   #   module.vpc
