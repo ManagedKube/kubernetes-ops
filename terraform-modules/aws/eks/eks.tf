@@ -86,7 +86,9 @@ module "eks" {
       max_capacity     = 1
       min_capacity     = 1
       instance_type    = "t2.small"
-      additional_tags  = var.tags
+      additional_tags  = {
+        Name = "foo",
+      }
       k8s_labels       = {}
     }
   }
