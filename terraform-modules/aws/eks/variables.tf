@@ -102,7 +102,7 @@ variable cluster_enabled_log_types {
 }
 
 variable cluster_log_retention_in_days {
-  type        = int
+  type        = number
   default     = 90
   description = "Log retention in days"
 }
