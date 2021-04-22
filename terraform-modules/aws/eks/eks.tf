@@ -34,11 +34,7 @@ module "eks" {
 
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_id = var.vpc_id
-  subnets = [
-    var.private_subnets[0],
-    var.private_subnets[1],
-    var.private_subnets[2],
-  ]
+  subnets = var.private_subnets
 
   cluster_endpoint_public_access = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
