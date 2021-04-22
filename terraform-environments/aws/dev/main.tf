@@ -33,7 +33,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source = "./eks"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=eks-v2"
   
   aws_region = var.aws_region
   environment_name = var.environment_name
