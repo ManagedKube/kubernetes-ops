@@ -5,13 +5,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gruntwork-io/terratest/modules/aws"
+	// "github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
-// An example of how to test the simple Terraform module in examples/default using Terratest.
-func TestTerraformDefaultExample(t *testing.T) {
+// Default test
+func TestTerraformDefault(t *testing.T) {
 	t.Parallel()
 
 	// Random string for various dynamic bucket name usage
@@ -26,11 +26,13 @@ func TestTerraformDefaultExample(t *testing.T) {
 			"aws_region": "us-east-1",
 			"environment_name": "unittest_aws_vpc_" + stringRand,
 			"vpc_cidr": "10.0.0.0/16",
+			"enable_nat_gateway": false,
+			"enable_vpn_gateway": false,
 			"tags": `{
-				ops_env              = "dev"
+				ops_env              = "unit-test"
 				ops_managed_by       = "terraform",
 				ops_source_repo      = "kubernetes-ops",
-				ops_source_repo_path = "terraform-environments/aws/dev",
+				ops_source_repo_path = "terraform-module/aws/vpc",
 				ops_owners           = "devops"
 			  }`,
 		},
@@ -46,13 +48,14 @@ func TestTerraformDefaultExample(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables
-	actualPolicyName := terraform.Output(t, terraformOptions, "name")
-	actualPolicyArn := terraform.Output(t, terraformOptions, "arn")
+	// actualVPCId := terraform.Output(t, terraformOptions, "vpc_id")
+	actualPrivateSubnets := terraform.Output(t, terraformOptions, "private_subnets")
 
-	awsAccountID := aws.GetAccountId(t)
+	// awsAccountID := aws.GetAccountId(t)
 
-	assert.Equal(t, "unittest_aws_iam_policy_"+stringRand, actualPolicyName)
-	assert.Equal(t, "arn:aws:iam::"+awsAccountID+":policy/unittest_aws_iam_policy_"+stringRand, actualPolicyArn)
+	// assert.Equal(t, "unittest_aws_iam_policy_"+stringRand, actualPolicyName)
+	// assert.Equal(t, "arn:aws:iam::"+awsAccountID+":policy/unittest_aws_iam_policy_"+stringRand, actualPolicyArn)
+	assert.Equal(t, 3, len(actualPrivateSubnets))
 }
 
 func randomString(len int) string {
