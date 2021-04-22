@@ -23,6 +23,56 @@ provider "aws" {
   region  = var.aws_region
 }
 
+#
+# EKS authentication
+#
+# data "aws_eks_cluster_auth" "eks" {
+#   name = module.eks.cluster_id
+# }
+
+# data "aws_eks_cluster" "eks" {
+#   name = module.eks.cluster_id
+# }
+
+# provider "helm" {
+#   kubernetes {
+#     host                   = module.eks.cluster_endpoint
+#     token                  = data.aws_eks_cluster_auth.eks.token
+#     cluster_ca_certificate = base64decode(module.eks.certificate_authority.0.data)
+#   }
+# }
+
+# provider "kubernetes" {
+#   host                   = module.eks.cluster_endpoint
+#   token                  = data.aws_eks_cluster_auth.eks.token
+#   cluster_ca_certificate = base64decode(module.eks.certificate_authority.0.data)
+# }
+
+data "aws_eks_cluster_auth" "eks" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster" "eks" {
+  name = module.eks.cluster_id
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.eks.endpoint
+    token                  = data.aws_eks_cluster_auth.eks.token
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority.0.data)
+  }
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.eks.endpoint
+  token                  = data.aws_eks_cluster_auth.eks.token
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority.0.data)
+}
+
+#
+# VPC
+#
 module "vpc" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.1"
 
@@ -35,6 +85,9 @@ module "vpc" {
   tags             = var.tags
 }
 
+#
+# EKS
+#
 module "eks" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.1"
 
@@ -92,6 +145,9 @@ module "eks" {
   # ]
 }
 
+#
+# Helm - ArgoCD
+#
 module "argocd" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=tf-argo-module"
 
