@@ -91,3 +91,11 @@ module "eks" {
   #   module.vpc
   # ]
 }
+
+module "argocd" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=tf-argo-module"
+
+  depends_on = [
+    module.eks
+  ]
+}
