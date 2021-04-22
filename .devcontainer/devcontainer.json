@@ -1,0 +1,39 @@
+// Doc config: https://code.visualstudio.com/docs/remote/containers
+// Config reference: https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_attached-container-configuration-reference
+// Host network mode: https://docs.microsoft.com/en-us/visualstudio/codespaces/reference/configuring#host-network-mode
+{
+	"name": "ManagedKube",
+	"dockerFile": "Dockerfile",
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--network=host" ],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [9000],
+
+	// Use 'settings' to set *default* container specific settings.json values on container create. 
+	// You can edit these settings after create using File > Preferences > Settings > Remote.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"go.gopath": "/go",
+		"go.inferGopath": true,
+		"go.useLanguageServer": true
+	},
+
+	// Add the IDs of extensions you want installed when the container is created in the array below.
+	"extensions": [
+		"golang.Go"
+	],
+	
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "go version",
+
+	// Comment out the next line to run as root
+	"remoteUser": "vscode",
+
+	// https://code.visualstudio.com/docs/remote/containers-advanced#_adding-another-local-file-mount
+	"mounts": [
+		// Mounting local kubeconfig into the container
+		"source=${localEnv:HOME}/.kube/config,target=/home/vscode/.kube/config,type=bind,consistency=cached",
+		// Mounting local saml2aws into the container
+		"source=${localEnv:HOME}/.saml2aws,target=/home/vscode/.saml2aws,type=bind,consistency=cached",
+	  ]
+}
