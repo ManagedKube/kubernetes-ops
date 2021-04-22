@@ -88,3 +88,21 @@ variable node_groups {
   }
   description = "node group(s) configurations"
 }
+
+variable cluster_enabled_log_types {
+  type        = list(string)
+  default     = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler"
+  ]
+  description = "The Kubernetes log types to enable"
+}
+
+variable cluster_log_retention_in_days {
+  type        = int
+  default     = 90
+  description = "Log retention in days"
+}

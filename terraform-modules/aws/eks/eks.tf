@@ -44,14 +44,8 @@ module "eks" {
     resources        = ["secrets"]
   }]
 
-  cluster_log_retention_in_days = 90
-  cluster_enabled_log_types = [
-    "api",
-    "audit",
-    "authenticator",
-    "controllerManager",
-    "scheduler"
-  ]
+  cluster_log_retention_in_days = cluster_log_retention_in_days
+  cluster_enabled_log_types = var.cluster_enabled_log_types
 
   map_roles = var.map_roles
   map_users = var.map_users
