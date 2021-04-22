@@ -27,8 +27,8 @@ module "eks" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "14.0.0"
   cluster_name     = var.cluster_name
-  cluster_version  = "1.18"
-  enable_irsa      = true
+  cluster_version  = var.cluster_version
+  enable_irsa      = var.enable_irsa
   write_kubeconfig = false
   tags             = var.tags
 
@@ -40,10 +40,8 @@ module "eks" {
     var.private_subnets[2],
   ]
 
-  cluster_endpoint_public_access = true
-  cluster_endpoint_public_access_cidrs = [
-    "0.0.0.0/0"
-  ]
+  cluster_endpoint_public_access = var.cluster_endpoint_public_access
+  cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn

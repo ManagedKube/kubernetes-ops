@@ -17,3 +17,27 @@ variable "public_subnets" {
 variable "cluster_name" {
     default = "test-cluster"
 }
+
+variable "cluster_version" {
+    default = "1.18"
+}
+
+variable enable_irsa {
+  type        = bool
+  default     = true
+  description = "enable_irsa"
+}
+
+variable cluster_endpoint_public_access {
+  type        = bool
+  default     = true
+  description = "Enable or disable Kube API public access"
+}
+
+variable cluster_endpoint_public_access_cidrs {
+  type        = list
+  default     = [
+    "0.0.0.0/0"
+  ]
+  description = "Kube API public endpoint allow access cidrs"
+}

@@ -33,6 +33,12 @@ module "vpc" {
   public_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   environment_name = var.environment_name
   tags = var.tags
+
+  cluster_version = "1.18"
+  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access_cidrs = [
+    "0.0.0.0/0"
+  ]
 }
 
 module "eks" {
