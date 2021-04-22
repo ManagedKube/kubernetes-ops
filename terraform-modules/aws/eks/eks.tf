@@ -29,7 +29,7 @@ module "eks" {
   cluster_name     = var.cluster_name
   cluster_version  = "1.18"
   enable_irsa      = true
-  write_kubeconfig = true
+  write_kubeconfig = false
   tags             = var.tags
 
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
