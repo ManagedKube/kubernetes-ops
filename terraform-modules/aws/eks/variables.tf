@@ -13,6 +13,7 @@ variable "public_subnets" {
     type = list
     default = []
 }
+
 variable "cluster_name" {
-    default = "test-cluster
+    default = "test-cluster"
 }
