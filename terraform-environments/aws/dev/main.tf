@@ -25,7 +25,10 @@ provider "aws" {
 
 module "vpc" {
   # source = "./vpc"
-  source = "git::ssh://git@github.com:ManagedKube/kubernetes-ops.git//terraform-modules/aws/vpc?ref=eks-v2"
+  # source = "git@github.com:ManagedKube/kubernetes-ops.git//terraform-modules/aws/vpc?ref=eks-v2"
+  # source = "https://github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/vpc?ref=eks-v2"
+  # source = "git::ssh://git@github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/vpc?ref=eks-v2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=eks-v2"
 
   aws_region = var.aws_region
   vpc_cidr   = var.vpc_cidr
