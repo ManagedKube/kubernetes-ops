@@ -44,7 +44,7 @@ module "eks" {
     resources        = ["secrets"]
   }]
 
-  cluster_log_retention_in_days = cluster_log_retention_in_days
+  cluster_log_retention_in_days = var.cluster_log_retention_in_days
   cluster_enabled_log_types = var.cluster_enabled_log_types
 
   map_roles = var.map_roles
