@@ -18,7 +18,7 @@ provider "kubernetes" {
   version                = "~> 1.9"
 }
 
-resource aws_kms_key eks {
+resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key"
   tags        = var.tags
 }
@@ -33,10 +33,10 @@ module "eks" {
   tags             = var.tags
 
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_id = var.vpc_id
+  vpc_id  = var.vpc_id
   subnets = var.private_subnets
 
-  cluster_endpoint_public_access = var.cluster_endpoint_public_access
+  cluster_endpoint_public_access       = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
 
   cluster_encryption_config = [{
@@ -45,11 +45,11 @@ module "eks" {
   }]
 
   cluster_log_retention_in_days = var.cluster_log_retention_in_days
-  cluster_enabled_log_types = var.cluster_enabled_log_types
+  cluster_enabled_log_types     = var.cluster_enabled_log_types
 
   map_roles = var.map_roles
   map_users = var.map_users
 
   node_groups = var.node_groups
-  
+
 }
