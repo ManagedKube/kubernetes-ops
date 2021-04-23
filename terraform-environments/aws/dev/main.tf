@@ -167,7 +167,7 @@ module "nginx-ingress" {
 module "kube-prometheus-stack" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/kube-prometheus-stack?ref=helm"
 
-  helm_values = file("${path.module}/values.yaml")
+  helm_values = file("${path.module}/helm_values/kube-prometheus-stack/values.yaml")
 
   depends_on = [
     module.eks
