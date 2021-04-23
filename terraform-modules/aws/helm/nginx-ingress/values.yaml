@@ -1,0 +1,21 @@
+---
+controller:
+  ingressClass: ingress-external
+  # Turning off the ingress admission webhook for validating the ingress spec.
+  # There is something that is blocking the GKE Kube API from reaching this service
+  # admissionWebhooks:
+  #   enabled: false
+  containerPort:
+    http: 80
+    https: 443
+  service:
+    annotations:
+      # https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+      service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+  # nodeSelector:
+  #   app-type: my-node
+  # tolerations:
+  # - key: "app-type"
+  #   operator: "Equal"
+  #   value: "my-node"
+  #   effect: "NoSchedule"
