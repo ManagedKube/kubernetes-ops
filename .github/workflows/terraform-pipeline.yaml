@@ -8,7 +8,7 @@ on:
     paths:
     - 'terraform-environments/aws/**'
     branches:
-      - master
+      - main
   pull_request:
     # only run when files in this path changes
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
@@ -79,5 +79,5 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ${{matrix.actionPath}}
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
