@@ -114,3 +114,8 @@ RUN cp saml2aws /usr/local/bin/saml2aws
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
+
+# Install helm
+RUN wget https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz
+RUN tar -zxvf helm-v3.5.4-linux-amd64.tar.gz
+RUN cp linux-amd64/helm /usr/local/bin/helm
