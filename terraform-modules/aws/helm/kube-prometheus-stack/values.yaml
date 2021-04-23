@@ -1,0 +1,51 @@
+---
+namespaceOverride: monitoring
+# prometheusOperator:
+#   nodeSelector:
+#     app-type: my-app
+#   tolerations:
+#   - key: "app-type"
+#     operator: "Equal"
+#     value: "my-app"
+#     effect: "NoSchedule"
+# prometheus:
+#   prometheusSpec:
+#     nodeSelector:
+#       app-type: my-app
+#     tolerations:
+#     - key: "app-type"
+#       operator: "Equal"
+#       value: "my-app"
+#       effect: "NoSchedule"
+alertmanager:
+  enabled: true
+  # alertmanagerSpec:
+  #   nodeSelector:
+  #     app-type: my-app
+  #   tolerations:
+  #   - key: "app-type"
+  #     operator: "Equal"
+  #     value: "my-app"
+  #     effect: "NoSchedule"
+nodeExporter:
+  # nodeSelector:
+  #   app-type: my-app
+  # tolerations:
+  # - key: "app-type"
+  #   operator: "Equal"
+  #   value: "my-app"
+  #   effect: "NoSchedule"
+grafana:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: ingress-external
+    hosts:
+    - grafana.kubernetes-ops.com
+  nodeSelector:
+    app-type: my-app
+  tolerations:
+  - key: "app-type"
+    operator: "Equal"
+    value: "my-app"
+    effect: "NoSchedule"
