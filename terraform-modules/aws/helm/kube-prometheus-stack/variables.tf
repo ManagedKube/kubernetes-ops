@@ -22,7 +22,7 @@ variable chart_name {
   description = "Name to set the helm deployment to"
 }
 
-variable values {
+variable helm_values {
   type        = string
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module."
