@@ -42,10 +42,10 @@ grafana:
       kubernetes.io/ingress.class: ingress-external
     hosts:
     - grafana.kubernetes-ops.com
-  nodeSelector:
-    app-type: my-app
-  tolerations:
-  - key: "app-type"
-    operator: "Equal"
-    value: "my-app"
-    effect: "NoSchedule"
+  # nodeSelector:
+  #   app-type: my-app
+  # tolerations:
+  # - key: "app-type"
+  #   operator: "Equal"
+  #   value: "my-app"
+  #   effect: "NoSchedule"
