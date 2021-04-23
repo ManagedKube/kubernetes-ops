@@ -66,7 +66,7 @@ provider "helm" {
 # VPC
 #
 module "vpc" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.3"
 
   aws_region       = var.aws_region
   azs              = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -81,7 +81,7 @@ module "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.3"
 
   aws_region = var.aws_region
   tags       = var.tags
@@ -141,7 +141,18 @@ module "eks" {
 # Helm - ArgoCD
 #
 module "argocd" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=v1.0.2"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=adding-nginx"
+
+  depends_on = [
+    module.eks
+  ]
+}
+
+#
+# Helm - nginx-ingress
+#
+module "nginx-ingress" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/nginx-ingress?ref=adding-nginx"
 
   depends_on = [
     module.eks
