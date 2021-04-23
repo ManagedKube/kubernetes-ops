@@ -4,6 +4,14 @@ Terraform Github Actions Pipeline
 Based on this tutorial: https://learn.hashicorp.com/tutorials/terraform/github-actions
 
 
+## Terraform Cloud Setup
+
+### Creatinging a new workspace
+* Create a new workspace (API-Driven Workflow)
+* Name it after your environment
+* Docs: https://learn.hashicorp.com/tutorials/terraform/github-actions#set-up-terraform-cloud
+
+You will then get back a config block like this:
 ```
  terraform {
   backend "remote" {
@@ -17,6 +25,73 @@ Based on this tutorial: https://learn.hashicorp.com/tutorials/terraform/github-a
   }
 }
 ```
+Save this somewhere.
+
+## Adding AWS permissions
+* Cick on the `Variables` tab
+* In the `Environment Variable` section add:
+
+```
+AWS_ACCESS_KEY_ID=<your key>
+AWS_SECRET_ACCESS_KEY=<your key>
+```
+
+## Get Terraform Cloud token
+This will be an access token used in Github to acces Terraform Cloud
+
+* Go to: https://app.terraform.io/app/settings/tokens
+* Click on `Create an API Token`
+* Name it after the environment name
+* Save the token for later use
+
+## Setup the Github repository
+* Either use an exiting repository or create a new repository
+* In your Github repository go to: `Settings->Secrets`
+* Click on `New repository secret`
+
+If you only have one environment, then create a secret named: `TF_API_TOKEN`
+If you have multiple environments, create a secret named `TF_API_TOKEN_<ENV>` where `<ENV>` is the environment name.  This is the Terraform Cloud token and we will use a different token for each environment.
+
+### Copy Github Actions workflow file over to your repository
+
+Copy the file in this repo: `./.github/workflows/terraform-pipeline.yaml` file to your repo to the same location.
+
+If you changed the `TF_API_TOKEN` variable name, you will have to change it in this file.  Update to what you changed it to.
+
+You might have to change the path for where the pipeline will look for changes in this file as well to reflect your path:
+```
+jobs:
+  terraform:
+    name: "Terraform"
+    strategy:
+      matrix:
+        actionPath:
+        - 'terraform-environments/aws/dev'
+```
+## Adding Terraform files
+You only need the `./terraform-environments` items.  These items uses the modules in this repository to instantiate everything in AWS.  You can copy the `./terraform-modules` into your repository and point your usage to that if you want but you won't get the automatic updates when this repository updates these modules.  You will have to copy over the changes.
+
+Copy the `./terraform-environments` folder over to your repository.
+
+You can rename the environment name to reflect what you want to name your environment to be.
+
+### Update your Terraform Dloud backend information
+For each environment we have a Terraform Cloud workspace.  This will help us to keep everything organized so that all of the Terraform state stores for each environment is in it's own segmented area.
+
+In the original step above when we created the Terraform Cloud workspace, it gave you a config block.  We will now use that information and replace it in our Terraform file.
+
+In the file `./terraform-environments/aws/dev/main.tf`, we will replace this section:
+```
+  backend "remote" {
+    organization = "managedkube"
+
+    # The workspace must be unique to this terraform
+    workspaces {
+      name = "terraform-environments_aws_dev_vpc"
+    }
+  }
+```
+With what your Terraform Cloud Workspace gave you.
 
 ## Github Actions workflow syntax
 
