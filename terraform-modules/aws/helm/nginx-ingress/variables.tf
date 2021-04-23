@@ -1,6 +1,6 @@
 variable helm_version {
   type        = string
-  default     = "3.2.0"
+  default     = "3.23.0"
   description = "Helm chart version"
 }
 
@@ -12,12 +12,12 @@ variable verify {
 
 variable namespace {
   type        = string
-  default     = "argocd"
+  default     = "nginx-ingress"
   description = "Namespace to install in"
 }
 
 variable chart_name {
   type        = string
-  default     = "argocd"
+  default     = "nginx-ingress"
   description = "Name to set the helm deployment to"
 }

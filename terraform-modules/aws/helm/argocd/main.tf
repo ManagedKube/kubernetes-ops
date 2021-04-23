@@ -1,4 +1,4 @@
-resource "helm_release" "argocd" {
+resource "helm_release" "helm_chart" {
   chart            = "argo-cd"
   namespace        = var.namespace
   create_namespace = "true"
