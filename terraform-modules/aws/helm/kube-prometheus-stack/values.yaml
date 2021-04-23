@@ -17,8 +17,8 @@ namespaceOverride: monitoring
 #       operator: "Equal"
 #       value: "my-app"
 #       effect: "NoSchedule"
-alertmanager:
-  enabled: true
+# alertmanager:
+#   enabled: true
   # alertmanagerSpec:
   #   nodeSelector:
   #     app-type: my-app
@@ -27,7 +27,7 @@ alertmanager:
   #     operator: "Equal"
   #     value: "my-app"
   #     effect: "NoSchedule"
-nodeExporter:
+# nodeExporter:
   # nodeSelector:
   #   app-type: my-app
   # tolerations:
