@@ -141,7 +141,7 @@ module "eks" {
 # Helm - ArgoCD
 #
 module "argocd" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=v1.0.3"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=adding-nginx"
 
   depends_on = [
     module.eks
@@ -152,7 +152,7 @@ module "argocd" {
 # Helm - nginx-ingress
 #
 module "nginx-ingress" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/nginx-ingress?ref=v1.0.3"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/nginx-ingress?ref=adding-nginx"
 
   depends_on = [
     module.eks
