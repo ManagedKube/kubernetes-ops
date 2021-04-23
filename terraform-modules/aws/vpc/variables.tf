@@ -32,3 +32,9 @@ variable "enable_vpn_gateway" {
   type    = bool
   default = true
 }
+
+variable "cluster_name" {
+  type        = string
+  default     = "none"
+  description = "The cluster name for the Kubernetes tags on the subnets"
+}
