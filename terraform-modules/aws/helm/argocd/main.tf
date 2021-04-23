@@ -8,7 +8,8 @@ resource "helm_release" "helm_chart" {
   repository       = "https://argoproj.github.io/argo-helm"
 
   values = [
-    file("${path.module}/values.yaml")
+    file("${path.module}/values.yaml"),
+    var.helm_values,
   ]
 
 }
