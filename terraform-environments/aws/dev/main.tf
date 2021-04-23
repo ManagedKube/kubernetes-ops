@@ -41,10 +41,18 @@ provider "aws" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth
 data "aws_eks_cluster" "eks_data" {
   name = var.environment_name
+
+  depends_on = [
+    module.eks
+  ]
 }
 
 data "aws_eks_cluster_auth" "eks_data" {
   name = var.environment_name
+
+  depends_on = [
+    module.eks
+  ]
 }
 
 provider "kubernetes" {
@@ -52,10 +60,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_data.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.eks_data.token
   load_config_file       = false
-
-  depends_on = [
-    module.eks
-  ]
 }
 
 provider "helm" {
@@ -64,10 +68,6 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_data.certificate_authority[0].data)
     token                  = data.aws_eks_cluster_auth.eks_data.token
   }
-
-  depends_on = [
-    module.eks
-  ]
 }
 
 
