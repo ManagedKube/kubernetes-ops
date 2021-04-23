@@ -1,11 +1,7 @@
-# output chart {
-#   value       = helm_release.helm_chart.metadata.chart
-# }
+output chart {
+  value       = helm_release.helm_chart.chart
+}
 
-# output revision {
-#   value       = helm_release.helm_chart.metadata.revision
-# }
-
-# output status {
-#   value       = helm_release.helm_chart.metadata.status
-# }
+output status {
+  value       = helm_release.helm_chart.status
+}
