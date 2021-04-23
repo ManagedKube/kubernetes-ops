@@ -8,7 +8,8 @@ resource "helm_release" "helm_chart" {
   repository       = "https://prometheus-community.github.io/helm-charts"
 
   values = [
-    file("${path.module}/values.yaml")
+    file("${path.module}/values.yaml"),
+    var.helm_values,
   ]
 
 }

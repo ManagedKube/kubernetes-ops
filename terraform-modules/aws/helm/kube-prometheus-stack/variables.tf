@@ -21,3 +21,9 @@ variable chart_name {
   default     = "kube-prometheus-stack"
   description = "Name to set the helm deployment to"
 }
+
+variable helm_values {
+  type        = string
+  default     = ""
+  description = "Additional helm values to pass in.  These values would override the default in this module."
+}
