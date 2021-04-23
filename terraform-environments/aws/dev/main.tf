@@ -83,7 +83,7 @@ module "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.6"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=increase-capacity"
 
   aws_region = var.aws_region
   tags       = var.tags
