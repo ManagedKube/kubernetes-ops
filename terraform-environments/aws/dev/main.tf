@@ -3,7 +3,6 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 3.37.0"
-      region  = var.aws_region
     }
     random = {
       source = "hashicorp/random"
@@ -18,6 +17,10 @@ terraform {
       name = "terraform-environments_aws_dev_vpc"
     }
   }
+}
+
+provider "aws" {
+  region = var.aws_region
 }
 
 
