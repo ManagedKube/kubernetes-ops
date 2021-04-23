@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.1.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -14,8 +23,6 @@ provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
-  version                = "~> 1.9"
 }
 
 resource "aws_kms_key" "eks" {
@@ -25,7 +32,7 @@ resource "aws_kms_key" "eks" {
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
-  version          = "14.0.0"
+  version          = "15.1.0"
   cluster_name     = var.cluster_name
   cluster_version  = var.cluster_version
   enable_irsa      = var.enable_irsa
