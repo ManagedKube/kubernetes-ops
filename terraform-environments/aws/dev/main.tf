@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
+      version = ">= 3.37.0"
     }
     random = {
       source = "hashicorp/random"
@@ -19,9 +20,9 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 3.37.0"
-  region  = var.aws_region
+  region = var.aws_region
 }
+
 
 #
 # EKS authentication
@@ -82,7 +83,7 @@ module "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.6"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=increase-capacity"
 
   aws_region = var.aws_region
   tags       = var.tags
@@ -122,7 +123,7 @@ module "eks" {
   node_groups = {
     ng1 = {
       disk_size        = 20
-      desired_capacity = 1
+      desired_capacity = 2
       max_capacity     = 1
       min_capacity     = 1
       instance_type    = "t2.small"
