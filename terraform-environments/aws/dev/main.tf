@@ -25,61 +25,42 @@ provider "aws" {
 
 #
 # EKS authentication
-#
-provider "helm" {
-  kubernetes {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-    exec {
-      api_version = "client.authentication.k8s.io/v1alpha1"
-      args        = ["eks", "get-token", "--cluster-name", var.environment_name]
-      command     = "aws"
-    }
-  }
-}
-# data "aws_eks_cluster_auth" "eks" {
-#   name = module.eks.cluster_id
-# }
-
-# data "aws_eks_cluster" "eks" {
-#   name = module.eks.cluster_id
-# }
-
+# # https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
 # provider "helm" {
 #   kubernetes {
 #     host                   = module.eks.cluster_endpoint
-#     token                  = data.aws_eks_cluster_auth.eks.token
-#     cluster_ca_certificate = base64decode(module.eks.certificate_authority.0.data)
+#     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1alpha1"
+#       args        = ["eks", "get-token", "--cluster-name", var.environment_name]
+#       command     = "aws"
+#     }
 #   }
 # }
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth
+data "aws_eks_cluster" "example" {
+  name = var.environment_name
+}
 
-# provider "kubernetes" {
-#   host                   = module.eks.cluster_endpoint
-#   token                  = data.aws_eks_cluster_auth.eks.token
-#   cluster_ca_certificate = base64decode(module.eks.certificate_authority.0.data)
-# }
+data "aws_eks_cluster_auth" "example" {
+  name = var.environment_name
+}
 
-# data "aws_eks_cluster_auth" "eks" {
-#   name = module.eks.cluster_id
-# }
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.example.token
+  load_config_file       = false
+}
 
-# data "aws_eks_cluster" "eks" {
-#   name = module.eks.cluster_id
-# }
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.example.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.example.token
+  }
+}
 
-# provider "helm" {
-#   kubernetes {
-#     host                   = data.aws_eks_cluster.eks.endpoint
-#     token                  = data.aws_eks_cluster_auth.eks.token
-#     cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority.0.data)
-#   }
-# }
-
-# provider "kubernetes" {
-#   host                   = data.aws_eks_cluster.eks.endpoint
-#   token                  = data.aws_eks_cluster_auth.eks.token
-#   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority.0.data)
-# }
 
 #
 # VPC
