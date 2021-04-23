@@ -36,6 +36,7 @@ namespaceOverride: monitoring
   #   value: "my-app"
   #   effect: "NoSchedule"
 grafana:
+  adminPassword: prom-operator
   ingress:
     enabled: true
     annotations:
