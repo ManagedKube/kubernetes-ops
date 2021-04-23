@@ -122,7 +122,7 @@ module "eks" {
   node_groups = {
     ng1 = {
       disk_size        = 20
-      desired_capacity = 1
+      desired_capacity = 2
       max_capacity     = 1
       min_capacity     = 1
       instance_type    = "t2.small"
