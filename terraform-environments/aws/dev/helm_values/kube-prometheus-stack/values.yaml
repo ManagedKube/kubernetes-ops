@@ -1,5 +1,16 @@
 ---
 namespaceOverride: monitoring
+prometheus:
+  prometheusSpec:
+    storageSpec:
+     volumeClaimTemplate:
+       spec:
+        #  storageClassName: gluster
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+             storage: 10Gi
+       selector: {}
 grafana:
   ingress:
     enabled: true
