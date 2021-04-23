@@ -66,7 +66,7 @@ provider "helm" {
 # VPC
 #
 module "vpc" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.1"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.2"
 
   aws_region       = var.aws_region
   azs              = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -81,7 +81,7 @@ module "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=tf-argo-module"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.2"
 
   aws_region = var.aws_region
   tags       = var.tags
@@ -141,7 +141,7 @@ module "eks" {
 # Helm - ArgoCD
 #
 module "argocd" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=tf-argo-module"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=v1.0.2"
 
   depends_on = [
     module.eks
