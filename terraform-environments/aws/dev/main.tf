@@ -162,7 +162,7 @@ module "nginx-ingress" {
 #
 # Helm - kube-prometheus-stack
 #
-module "nginx-ingress" {
+module "kube-prometheus-stack" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/kube-prometheus-stack?ref=v1.0.5"
 
   depends_on = [
