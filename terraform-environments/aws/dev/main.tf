@@ -23,6 +23,48 @@ provider "aws" {
   region  = var.aws_region
 }
 
+#
+# EKS authentication
+# # https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
+# provider "helm" {
+#   kubernetes {
+#     host                   = module.eks.cluster_endpoint
+#     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1alpha1"
+#       args        = ["eks", "get-token", "--cluster-name", var.environment_name]
+#       command     = "aws"
+#     }
+#   }
+# }
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth
+data "aws_eks_cluster" "example" {
+  name = var.environment_name
+}
+
+data "aws_eks_cluster_auth" "example" {
+  name = var.environment_name
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.example.token
+  load_config_file       = false
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.example.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.example.token
+  }
+}
+
+
+#
+# VPC
+#
 module "vpc" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/vpc?ref=v1.0.1"
 
@@ -35,8 +77,11 @@ module "vpc" {
   tags             = var.tags
 }
 
+#
+# EKS
+#
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.1"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=tf-argo-module"
 
   aws_region = var.aws_region
   tags       = var.tags
@@ -90,4 +135,15 @@ module "eks" {
   # depends_on = [
   #   module.vpc
   # ]
+}
+
+#
+# Helm - ArgoCD
+#
+module "argocd" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/argocd?ref=tf-argo-module"
+
+  depends_on = [
+    module.eks
+  ]
 }
