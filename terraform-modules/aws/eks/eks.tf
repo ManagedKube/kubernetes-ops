@@ -1,15 +1,15 @@
 terraform {
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 3.37.0"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.1.0"
     }
   }
 }
-
-# provider "aws" {
-#   region = var.aws_region
-# }
 
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
