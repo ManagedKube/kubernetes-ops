@@ -60,11 +60,11 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
 # Helm - cluster-autoscaler
 #
 data "template_file" "helm_values" {
-  template = "${file("${path.module}/helm_values.yaml.tpl")}"
+  template = file("${path.module}/helm_values.yaml.tpl")
   vars = {
-    awsAccountID = ""
-    awsRegion    = ""
-    clusterName  = ""
+    awsAccountID       = ""
+    awsRegion          = ""
+    clusterName        = ""
     serviceAccountName = var.k8s_service_account_name
   }
 }
@@ -72,12 +72,12 @@ data "template_file" "helm_values" {
 module "cluster-autoscaler" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
 
-  repository = "https://kubernetes.github.io/autoscaler"
+  repository          = "https://kubernetes.github.io/autoscaler"
   official_chart_name = "cluster-autoscaler"
-  user_chart_name = "cluster-autoscaler"
-  helm_version = "9.9.2"
-  namespace = "kube-system"
-  helm_values = data.template_file.helm_values.rendered
+  user_chart_name     = "cluster-autoscaler"
+  helm_version        = "9.9.2"
+  namespace           = "kube-system"
+  helm_values         = data.template_file.helm_values.rendered
 
   depends_on = [
     module.iam_assumable_role_admin
