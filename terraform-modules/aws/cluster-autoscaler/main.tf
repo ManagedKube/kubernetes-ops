@@ -56,15 +56,17 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 #
 # Helm - cluster-autoscaler
 #
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.yaml.tpl")
   vars = {
-    awsAccountID       = ""
-    awsRegion          = ""
-    clusterName        = ""
+    awsAccountID       = data.aws_caller_identity.current.account_id
+    awsRegion          = var.aws_region
+    clusterName        = var.cluster_name
     serviceAccountName = var.k8s_service_account_name
   }
 }
