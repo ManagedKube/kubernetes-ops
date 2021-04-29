@@ -7,7 +7,6 @@ rbac:
     name: ${serviceAccountName}
     annotations:
       # This value should match the ARN of the role created by module.iam_assumable_role_admin in irsa.tf
-      # foo foo foo
       eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/cluster-autoscaler"
 
 autoDiscovery:
