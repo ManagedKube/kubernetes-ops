@@ -91,7 +91,7 @@ module "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.10"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.11"
 
   aws_region = var.aws_region
   tags       = var.tags
