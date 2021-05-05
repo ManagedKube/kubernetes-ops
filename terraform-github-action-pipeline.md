@@ -70,32 +70,6 @@ You might have to change the path for where the pipeline will look for changes i
 terraform-environments/aws/dev
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--Setup github actions
-  * copy it over
-
-
-
-
-
 ## Instantiating our cloud on AWS
 The next set of steps will outline how we are going to build our Kubernetes cloud.  We will build our cloud through the following high level steps:
 
@@ -104,21 +78,7 @@ The next set of steps will outline how we are going to build our Kubernetes clou
 1. Setup Kubernetes Cluster Autoscaler
 1. Install kube-prometheus-stack
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Adding Terraform files
+### Adding Terraform files
 You only need the `./terraform-environments` items.  These items uses the modules in this repository to instantiate everything in AWS.  You can copy the `./terraform-modules` into your repository and point your usage to that if you want but you won't get the automatic updates when this repository updates these modules.  You will have to copy over the changes.
 
 Copy the `./terraform-environments` folder over to your repository.
@@ -141,7 +101,19 @@ In the file `./terraform-environments/aws/dev/main.tf`, we will replace this sec
     }
   }
 ```
-With what your Terraform Cloud Workspace gave you.
+With what your Terraform Cloud Workspace gave you.  If you are copying the items over from this repo, you will just have to change the `organization` name.
+
+## Creating the VPC
+
+
+
+
+
+
+
+
+
+
 
 ## Github Actions workflow syntax
 
