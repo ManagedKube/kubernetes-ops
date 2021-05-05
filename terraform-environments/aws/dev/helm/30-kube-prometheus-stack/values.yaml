@@ -16,4 +16,4 @@ grafana:
     annotations:
       kubernetes.io/ingress.class: ingress-external
     hosts:
-    - grafana.staging.k8s.intrigue.com
+    - grafana.staging.k8s.managedkube.com.com
