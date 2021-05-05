@@ -104,7 +104,7 @@ In the file `./terraform-environments/aws/dev/main.tf`, we will replace this sec
 With what your Terraform Cloud Workspace gave you.  If you are copying the items over from this repo, you will just have to change the `organization` name.
 
 ## Creating the VPC
-
+Path: `terraform-environments/aws/dev/10-vpc`
 
 
 
