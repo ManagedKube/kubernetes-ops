@@ -3,16 +3,16 @@ variable "aws_region" {
 }
 
 variable "environment_name" {
-  default = "staging"
+  default = "dev"
 }
 
 variable "tags" {
   type = map(any)
   default = {
-    ops_env              = "staging"
+    ops_env              = "dev"
     ops_managed_by       = "terraform",
     ops_source_repo      = "kubernetes-ops",
-    ops_source_repo_path = "terraform-environments/aws/staging",
+    ops_source_repo_path = "terraform-environments/aws/dev",
     ops_owners           = "devops",
   }
 }

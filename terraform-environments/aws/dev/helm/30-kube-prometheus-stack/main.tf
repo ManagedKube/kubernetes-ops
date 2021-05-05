@@ -10,7 +10,7 @@ terraform {
   }
 
   backend "remote" {
-    organization = "intrigue"
+    organization = "managedkube"
 
     workspaces {
       name = "kubernetes-ops-staging-30-helm-kube-prometheus-stack"
@@ -25,7 +25,7 @@ provider "aws" {
 data "terraform_remote_state" "eks" {
   backend = "remote"
   config = {
-    organization = "intrigue"
+    organization = "managedkube"
     workspaces = {
       name = "kubernetes-ops-staging-20-eks"
     }
