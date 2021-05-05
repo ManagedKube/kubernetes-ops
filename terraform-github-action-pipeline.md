@@ -3,8 +3,31 @@ Terraform Github Actions Pipeline
 
 Based on this tutorial: https://learn.hashicorp.com/tutorials/terraform/github-actions
 
+## Setting up Github access to Terraform Cloud
+Our Github Actions will run the Terraform we have locally but it will execute in Terraform Cloud.  We will have to give Github Actions permission to Terraform Cloud so it can perform this action.
+
+## Get Terraform Cloud token
+This will be an access token used in Github to acces Terraform Cloud
+
+* Go to: https://app.terraform.io/app/settings/tokens
+* Click on `Create an API Token`
+* Name it after the environment name
+* Save the token for later use
+
+## Setup the Github repository
+* Either use an exiting repository or create a new repository
+* In your Github repository go to: `Settings->Secrets`
+* Click on `New repository secret`
+
+If you only have one environment, then create a secret named: `TF_API_TOKEN`
+If you have multiple environments, create a secret named `TF_API_TOKEN_<ENV>` where `<ENV>` is the environment name.  This is the Terraform Cloud token and we will use a different token for each environment.
 
 ## Terraform Cloud Setup
+We will need to create a few workspaces:
+1. kubernetes-ops-staging-10-vpc
+1. kubernetes-ops-staging-20-eks
+1. kubernetes-ops-staging-25-eks-cluster-autoscaler
+1. kubernetes-ops-staging-30-helm-kube-prometheus-stack
 
 ### Creatinging a new workspace
 * Create a new workspace (API-Driven Workflow)
@@ -36,38 +59,65 @@ AWS_ACCESS_KEY_ID=<your key>
 AWS_SECRET_ACCESS_KEY=<your key>
 ```
 
-## Get Terraform Cloud token
-This will be an access token used in Github to acces Terraform Cloud
-
-* Go to: https://app.terraform.io/app/settings/tokens
-* Click on `Create an API Token`
-* Name it after the environment name
-* Save the token for later use
-
-## Setup the Github repository
-* Either use an exiting repository or create a new repository
-* In your Github repository go to: `Settings->Secrets`
-* Click on `New repository secret`
-
-If you only have one environment, then create a secret named: `TF_API_TOKEN`
-If you have multiple environments, create a secret named `TF_API_TOKEN_<ENV>` where `<ENV>` is the environment name.  This is the Terraform Cloud token and we will use a different token for each environment.
-
 ### Copy Github Actions workflow file over to your repository
 
-Copy the file in this repo: `./.github/workflows/terraform-pipeline.yaml` file to your repo to the same location.
+Copy the file in this repo: `./.github/workflows/terraform-pipeline-<environment name>.yaml` file to your repo to the same location.
 
 If you changed the `TF_API_TOKEN` variable name, you will have to change it in this file.  Update to what you changed it to.
 
 You might have to change the path for where the pipeline will look for changes in this file as well to reflect your path:
 ```
-jobs:
-  terraform:
-    name: "Terraform"
-    strategy:
-      matrix:
-        actionPath:
-        - 'terraform-environments/aws/dev'
+terraform-environments/aws/dev
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-Setup github actions
+  * copy it over
+
+
+
+
+
+## Instantiating our cloud on AWS
+The next set of steps will outline how we are going to build our Kubernetes cloud.  We will build our cloud through the following high level steps:
+
+1. Create a VPC to hold our cloud
+1. Create an EKS cluster
+1. Setup Kubernetes Cluster Autoscaler
+1. Install kube-prometheus-stack
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Adding Terraform files
 You only need the `./terraform-environments` items.  These items uses the modules in this repository to instantiate everything in AWS.  You can copy the `./terraform-modules` into your repository and point your usage to that if you want but you won't get the automatic updates when this repository updates these modules.  You will have to copy over the changes.
 
