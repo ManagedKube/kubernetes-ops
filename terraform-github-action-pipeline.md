@@ -106,13 +106,16 @@ With what your Terraform Cloud Workspace gave you.  If you are copying the items
 ## Creating the VPC
 Path: `terraform-environments/aws/dev/10-vpc`
 
+Workflow:
+* Open a PR with these changes
+* You will see the Github Actions running which will run a `terraform plan` and output it to the PR
+* If that goes successfully, the PR checks will green up and you can merge the PR
+* Once you merge the PR, another Github Action will run and this time it will run with the `terraform apply` action.  This will instantiate this Terraform plan.
 
+## Creating the EKS cluster
+Path: `terraform-environments/aws/dev/eks`
 
-
-
-
-
-
+Follow the same workflow as the VPC.
 
 
 ## Github Actions workflow syntax
