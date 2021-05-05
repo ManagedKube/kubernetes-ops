@@ -1,0 +1,19 @@
+---
+namespaceOverride: monitoring
+prometheus:
+  prometheusSpec:
+    storageSpec:
+     volumeClaimTemplate:
+       spec:
+        #  storageClassName: gluster
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+             storage: 25Gi
+grafana:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: ingress-external
+    hosts:
+    - grafana.staging.k8s.intrigue.com
