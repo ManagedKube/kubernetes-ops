@@ -159,6 +159,12 @@ resource "aws_instance" "redis_server" {
 }
 ```
 
+You will also need to give the organization or another workspace access to this state:
+* Go to the workspace in Terraform Cloud's UI that you want to get data from
+* In that workspace, go to Settings -> General
+* Go down to the `Remote state sharing` section and enable it
+* You can either give the entire organization access or specific workspaces access to this workspace's state
+
 ## Delete workflow.
 The delete workflow is not so great.  I would ideally like to be able to delete the item from Git and have a plan and apply on merge to destroy the resources.
 
