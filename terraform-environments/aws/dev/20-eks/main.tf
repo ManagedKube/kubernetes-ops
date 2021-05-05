@@ -25,7 +25,7 @@ provider "aws" {
 data "terraform_remote_state" "vpc" {
   backend = "remote"
   config = {
-    organization = "intrigue"
+    organization = "managedkube"
     workspaces = {
       name = "kubernetes-ops-staging-10-vpc"
     }
