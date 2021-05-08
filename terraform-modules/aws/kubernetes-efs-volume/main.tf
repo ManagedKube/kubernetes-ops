@@ -67,6 +67,13 @@ resource "kubernetes_persistent_volume" "pv" {
       }
     }
     mount_options = ["tls"]
+    csi {
+      driver = "efs.csi.aws.com"
+      volumeHandle = module.efs.id
+      volumeAttributes {
+        encryptInTransit = true
+      }
+    }
   }
 
   depends_on = [
