@@ -12,7 +12,7 @@ module "iam_assumable_role_admin" {
 resource "aws_iam_policy" "cluster_autoscaler" {
   name_prefix = "efs-csi-driver-${var.cluster_name}"
   description = "EKS efs-csi-driver policy for cluster ${var.eks_cluster_id}"
-  policy      = "${file("efs-policy.json")}"
+  policy      = file("${path.module}/efs-policy.json")
 
   
 }
