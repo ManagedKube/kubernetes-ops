@@ -44,6 +44,10 @@ resource "kubernetes_storage_class" "storage_class" {
   }
   # mount_options = ["file_mode=0700", "dir_mode=0777", "mfsymlinks", "uid=1000", "gid=1000", "nobrl", "cache=none"]
   mount_options = ["tls"]
+
+  depends_on = [
+    module.efs
+  ]
 }
 
 resource "kubernetes_persistent_volume" "pv" {
