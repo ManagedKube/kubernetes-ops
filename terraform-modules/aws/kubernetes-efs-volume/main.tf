@@ -71,7 +71,7 @@ resource "kubernetes_persistent_volume" "pv" {
       csi {
         driver = "efs.csi.aws.com"
         volume_handle = module.efs.id
-        volume_attributes {
+        volume_attributes  = {
           encryptInTransit = true
         }
       }
