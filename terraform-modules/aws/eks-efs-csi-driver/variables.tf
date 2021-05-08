@@ -34,3 +34,8 @@ variable "k8s_service_account_name" {
   default     = "cluster-autoscaler-aws-cluster-autoscaler"
   description = "Service account name"
 }
+
+variable "tags" {
+  type    = map(any)
+  default = {}
+}
