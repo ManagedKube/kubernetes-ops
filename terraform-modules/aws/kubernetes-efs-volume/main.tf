@@ -36,7 +36,6 @@ resource "kubernetes_storage_class" "storage_class" {
   # https://github.com/kubernetes-sigs/aws-efs-csi-driver/tree/master/examples/kubernetes/dynamic_provisioning#dynamic-provisioning
   parameters = {
     provisioningMode = "efs-ap"
-    fileSystemId     = module.efs.id
     directoryPerms   = "700"
     gidRangeStart    = "1000"
     gidRangeEnd      = "2000"
@@ -64,7 +63,7 @@ resource "kubernetes_persistent_volume" "pv" {
     persistent_volume_source {
       nfs {
         path   = "/"
-        server = module.efs.id
+        server = module.efs.dns_name
       }
     }
   }
