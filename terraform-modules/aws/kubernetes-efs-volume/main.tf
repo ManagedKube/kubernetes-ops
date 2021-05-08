@@ -69,7 +69,7 @@ resource "kubernetes_persistent_volume" "pv" {
   }
 
   depends_on = [
-    module.efs
+    kubernetes_storage_class.storage_class
   ]
 }
 
@@ -88,4 +88,8 @@ resource "kubernetes_persistent_volume_claim" "pvc" {
     volume_name        = kubernetes_persistent_volume.pv.metadata.0.name
     storage_class_name = "${var.efs_name}-sc"
   }
+
+  depends_on = [
+    kubernetes_persistent_volume.pv
+  ]
 }
