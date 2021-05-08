@@ -39,3 +39,8 @@ variable "security_groups" {
   default     = []
   description = "A list of security groups to allow access to this EFS resource"
 }
+
+variable "tags" {
+  type    = map(any)
+  default = {}
+}
