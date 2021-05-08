@@ -76,7 +76,8 @@ resource "kubernetes_persistent_volume" "pv" {
 
 resource "kubernetes_persistent_volume_claim" "pvc" {
   metadata {
-    name = var.efs_name
+    name      = var.efs_name
+    namespace = var.kubernetes_namespace
   }
   spec {
     access_modes = ["ReadWriteMany"]
@@ -85,6 +86,6 @@ resource "kubernetes_persistent_volume_claim" "pvc" {
         storage = "2Gi"
       }
     }
-    volume_name = "${kubernetes_persistent_volume.pv.metadata.0.name}"
+    volume_name = kubernetes_persistent_volume.pv.metadata.0.name
   }
 }

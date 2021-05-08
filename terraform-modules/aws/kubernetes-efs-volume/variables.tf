@@ -40,6 +40,13 @@ variable "security_groups" {
   description = "A list of security groups to allow access to this EFS resource"
 }
 
+variable "kubernetes_namespace" {
+  type        = string
+  default     = "kubernetes-ops"
+  description = "The namespaces the pvc should be deployed into"
+}
+
+
 variable "tags" {
   type    = map(any)
   default = {}
