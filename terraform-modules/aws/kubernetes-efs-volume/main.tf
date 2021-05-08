@@ -66,6 +66,7 @@ resource "kubernetes_persistent_volume" "pv" {
         server = module.efs.dns_name
       }
     }
+    mount_options = ["tls"]
   }
 
   depends_on = [
