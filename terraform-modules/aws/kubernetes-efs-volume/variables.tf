@@ -99,3 +99,9 @@ variable "storage_capacity" {
   default     = "2Gi"
   description = "Size of the nfs disk"
 }
+
+variable "access_modes" {
+  type        = list
+  default     = ["ReadWriteMany"]
+  description = "access_modes"
+}
