@@ -51,3 +51,51 @@ variable "tags" {
   type    = map(any)
   default = {}
 }
+
+variable "reclaim_policy" {
+  type        = string
+  default     = "Retain"
+  description = "Storage class reclaim policy"
+}
+
+variable "storage_class_parameters_provisioningMode" {
+  type        = string
+  default     = "efs-ap"
+  description = "description"
+}
+
+variable "storage_class_parameters_directoryPerms" {
+  type        = string
+  default     = "700"
+  description = "description"
+}
+
+variable "storage_class_parameters_gidRangeStart" {
+  type        = string
+  default     = "1000"
+  description = "description"
+}
+
+variable "storage_class_parameters_gidRangeEnd" {
+  type        = string
+  default     = "2000"
+  description = "description"
+}
+
+variable "storage_class_parameters_basePath" {
+  type        = string
+  default     = "/"
+  description = "description"
+}
+
+variable "persistent_volume_reclaim_policy" {
+  type        = string
+  default     = "Retain"
+  description = "persistent_volume_reclaim_policy"
+}
+
+variable "storage_capacity" {
+  type        = string
+  default     = "2Gi"
+  description = "Size of the nfs disk"
+}

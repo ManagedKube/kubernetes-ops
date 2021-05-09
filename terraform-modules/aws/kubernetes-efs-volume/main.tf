@@ -32,16 +32,15 @@ resource "kubernetes_storage_class" "storage_class" {
     name = "${var.efs_name}-sc"
   }
   storage_provisioner = "efs.csi.aws.com"
-  reclaim_policy      = "Retain"
+  reclaim_policy      = var.reclaim_policy
   # https://github.com/kubernetes-sigs/aws-efs-csi-driver/tree/master/examples/kubernetes/dynamic_provisioning#dynamic-provisioning
   parameters = {
-    provisioningMode = "efs-ap"
-    directoryPerms   = "700"
-    gidRangeStart    = "1000"
-    gidRangeEnd      = "2000"
-    basePath         = "/"
+    provisioningMode = var.storage_class_parameters_provisioningMode
+    directoryPerms   = var.storage_class_parameters_directoryPerms
+    gidRangeStart    = var.storage_class_parameters_gidRangeStart
+    gidRangeEnd      = var.storage_class_parameters_gidRangeEnd
+    basePath         = var.storage_class_parameters_basePath
   }
-  # mount_options = ["file_mode=0700", "dir_mode=0777", "mfsymlinks", "uid=1000", "gid=1000", "nobrl", "cache=none"]
   mount_options = ["tls"]
 
   depends_on = [
@@ -55,11 +54,11 @@ resource "kubernetes_persistent_volume" "pv" {
   }
   spec {
     storage_class_name               = "${var.efs_name}-sc"
-    persistent_volume_reclaim_policy = "Retain"
+    persistent_volume_reclaim_policy = var.persistent_volume_reclaim_policy
     capacity = {
-      storage = "2Gi"
+      storage = var.storage_capacity
     }
-    access_modes = ["ReadWriteMany"]
+    access_modes = var.access_modes
     mount_options = ["tls"]
     persistent_volume_source {
       csi {
@@ -83,10 +82,10 @@ resource "kubernetes_persistent_volume_claim" "pvc" {
     namespace = var.kubernetes_namespace
   }
   spec {
-    access_modes = ["ReadWriteMany"]
+    access_modes = var.access_modes
     resources {
       requests = {
-        storage = "2Gi"
+        storage = var.storage_capacity
       }
     }
     volume_name        = kubernetes_persistent_volume.pv.metadata.0.name
