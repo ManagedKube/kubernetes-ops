@@ -101,7 +101,7 @@ variable "storage_capacity" {
 }
 
 variable "access_modes" {
-  type        = list
+  type        = list(any)
   default     = ["ReadWriteMany"]
   description = "access_modes"
 }
