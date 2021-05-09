@@ -67,7 +67,7 @@ resource "kubernetes_persistent_volume" "pv" {
       }
     }
     mount_options = ["tls"]
-    persistent_volume_source {
+    persistent_volume_source = {
       csi {
         driver = "efs.csi.aws.com"
         volume_handle = module.efs.id
