@@ -60,12 +60,6 @@ resource "kubernetes_persistent_volume" "pv" {
       storage = "2Gi"
     }
     access_modes = ["ReadWriteMany"]
-    persistent_volume_source {
-      nfs {
-        path   = "/"
-        server = module.efs.dns_name
-      }
-    }
     mount_options = ["tls"]
     persistent_volume_source {
       csi {
