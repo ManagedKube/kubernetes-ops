@@ -39,13 +39,13 @@ variable "cluster_name" {
   description = "The cluster name for the Kubernetes tags on the subnets"
 }
 
-variable " enable_dns_hostnames" {
+variable "enable_dns_hostnames" {
   type        = bool
   default     = true
   description = "Enable dns hostname resolution"
 }
 
-variable " enable_dns_support" {
+variable "enable_dns_support" {
   type        = bool
   default     = true
   description = "Enable dns support"
