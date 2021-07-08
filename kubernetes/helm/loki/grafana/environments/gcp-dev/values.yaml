@@ -1,0 +1,34 @@
+---
+grafana:
+  # Administrator credentials when not using an existing secret (see below)
+  adminUser: admin
+  adminPassword: 1xwM5wyAaxiHhenQhSprmwg4rWpU8F1qGpWewmbX
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx-external
+      certmanager.k8s.io/cluster-issuer: issuer-dns01
+      external-dns.alpha.kubernetes.io/hostname: loki-grafana.dev.k8s.managedkube.com
+    path: /
+    hosts:
+      - loki-grafana.dev.k8s.managedkube.com
+    tls:
+    - secretName: loki-grafana-tls
+      hosts:
+      - loki-grafana.dev.k8s.managedkube.com
+
+  ## Configure grafana datasources
+  ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+  ##
+  datasources:
+   datasources.yaml:
+     apiVersion: 1
+     datasources:
+     - name: Loki
+       type: loki
+       access: proxy
+       url: http://loki:3100/
+       isDefault: true
+       jsonData:
+         maxLines: 1000

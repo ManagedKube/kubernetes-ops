@@ -1,0 +1,5 @@
+---
+dependencies:
+- name: loki-stack
+  version: 0.16.0
+  repository: https://grafana.github.io/loki/charts
