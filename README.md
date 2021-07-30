@@ -9,12 +9,10 @@
   * [Supported built in services](#supported-built-in-services)
 - [Who is using this](#who-is-using-this)
 - [Topology](#topology)
-  * [The AWS Kops topology](#the-aws-kops-topology)
+  * [The AWS EKS topology](#the-aws-eks-topology)
   * [GCP GKE](#gcp-gke)
 - [How do I start using this?](#how-do-i-start-using-this-)
   * [Read the setup](#read-the-setup)
-  * [The manual way for a Kops cluster](#the-manual-way-for-a-kops-cluster)
-  * [Creating a Kops cluster on AWS the easier way](#creating-a-kops-cluster-on-aws-the-easier-way)
 - [Need a DevOps consultant?](#need-a-devops-consultant-)
 - [License](#license)
 
@@ -104,11 +102,8 @@ ending up in this repository and we will explicitly label those.
 
 Infrastructure building:
 * Terraform
-* Terragrunt
-* Kops
 
 Kubernetes clusters:
-* Kops
 * GKE
 * EKS
 
@@ -120,7 +115,7 @@ Kubernetes tools:
 These are the list of services that are maintained for each cloud
 
 | Service Name                    | Supported in AWS  | Supported in GCP  | source             |
-|---                              |---                |---                |---      |
+|---                              |---                |---                |---                 |
 | cert-manager                    | yes               | yes               | helm/stable        |
 | cluster-autoscaler              | yes               | no                | helm/stable        |
 | external-dns                    | yes               | yes               | helm/stable        |
@@ -144,19 +139,18 @@ These are the list of services that are maintained for each cloud
 | [Parsable.com](https://www.parsable.com/) |
 | [up.audio](https://up.audio/)             |
 | [karunalabs.com](https://karunalabs.com/) |
-|                                           |
+| Many more!                                |
 
 If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
 
 # Topology
 
-## The AWS Kops topology
+## The AWS EKS topology
 
 ![aws kops topology](docs/images/aws-kops/Topology-aws-kops.png)
 
 * A very isolated VPC with only a few public IP address exposed to the internet
 * Dedicated subnets for each item types.  This allows you to segregate items better.
-* Redundant Kubernetes masters in 3 availability zones
 * Redundant Kubernetes worker nodes in 3 availability zones
 
 ## GCP GKE
@@ -179,19 +173,7 @@ that you will need to get started.
 
 [main doc](docs/)
 
-## The manual way for a Kops cluster
-This is a more manual walk through on how to create a cluster using this project.
-The intention here is to give you a deep dive into what goes
-into creating a Kops cluster:
-
-[the-manual-way](docs/the-manual-way.md)
-
-## Creating a Kops cluster on AWS the easier way
-
-the "easier way" takes the manual steps in the previous example and hides most
-of the steps in a script where you can just run:
-
-[the-easier-way](docs/the-easier-way.md)
+This doc will walk you through setting up a Kubernetes EKS infrastructure on AWS: `docs/terraform-github-action-pipeline.md`
 
 # Need a DevOps consultant?
 
@@ -208,7 +190,7 @@ Or email us at: support@managedkube.com
 # License
 
 ```
-Copyright 2019 Kong Inc.
+Copyright 2019 ManagedKube
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

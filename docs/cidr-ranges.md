@@ -28,7 +28,7 @@ Each environment has a bunch of initial reserved ranges to bring up the entire
 application.  The following defines these ranges in a generic sense that can
 be applied to any of the above CIDRs.
 
-## Kops
+## EKS
 | Name             | CIDR         | Address Range |
 |------------------|--------------|---------------|
 | xxx              | 10.xx.0.0/16 | xxxxx - xxxxx |
