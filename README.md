@@ -9,12 +9,10 @@
   * [Supported built in services](#supported-built-in-services)
 - [Who is using this](#who-is-using-this)
 - [Topology](#topology)
-  * [The AWS Kops topology](#the-aws-kops-topology)
+  * [The AWS EKS topology](#the-aws-eks-topology)
   * [GCP GKE](#gcp-gke)
 - [How do I start using this?](#how-do-i-start-using-this-)
   * [Read the setup](#read-the-setup)
-  * [The manual way for a Kops cluster](#the-manual-way-for-a-kops-cluster)
-  * [Creating a Kops cluster on AWS the easier way](#creating-a-kops-cluster-on-aws-the-easier-way)
 - [Need a DevOps consultant?](#need-a-devops-consultant-)
 - [License](#license)
 
