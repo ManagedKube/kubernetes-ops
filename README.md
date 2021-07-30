@@ -104,11 +104,8 @@ ending up in this repository and we will explicitly label those.
 
 Infrastructure building:
 * Terraform
-* Terragrunt
-* Kops
 
 Kubernetes clusters:
-* Kops
 * GKE
 * EKS
 
@@ -120,7 +117,7 @@ Kubernetes tools:
 These are the list of services that are maintained for each cloud
 
 | Service Name                    | Supported in AWS  | Supported in GCP  | source             |
-|---                              |---                |---                |---      |
+|---                              |---                |---                |---                 |
 | cert-manager                    | yes               | yes               | helm/stable        |
 | cluster-autoscaler              | yes               | no                | helm/stable        |
 | external-dns                    | yes               | yes               | helm/stable        |
@@ -144,19 +141,18 @@ These are the list of services that are maintained for each cloud
 | [Parsable.com](https://www.parsable.com/) |
 | [up.audio](https://up.audio/)             |
 | [karunalabs.com](https://karunalabs.com/) |
-|                                           |
+| Many more!                                |
 
 If you too are using kubernetes-common-services; please submit a PR to add your organization to the list!
 
 # Topology
 
-## The AWS Kops topology
+## The AWS EKS topology
 
 ![aws kops topology](docs/images/aws-kops/Topology-aws-kops.png)
 
 * A very isolated VPC with only a few public IP address exposed to the internet
 * Dedicated subnets for each item types.  This allows you to segregate items better.
-* Redundant Kubernetes masters in 3 availability zones
 * Redundant Kubernetes worker nodes in 3 availability zones
 
 ## GCP GKE
@@ -208,7 +204,7 @@ Or email us at: support@managedkube.com
 # License
 
 ```
-Copyright 2019 Kong Inc.
+Copyright 2019 ManagedKube
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
