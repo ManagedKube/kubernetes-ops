@@ -1,5 +1,22 @@
 # terraform-modules
 
+## Terraform Docs
+
+The readme's in this folder are generated with [Terraform-Docs](https://github.com/terraform-docs/terraform-docs)
+
+### Install
+
+```
+brew install terraform-docs
+```
+
+### Update
+
+To update the readme just run:
+
+```
+terraform-docs markdown . > README.md
+```
 
 ## Terratest
 Each module has unit testing using Terratest associated with it.
