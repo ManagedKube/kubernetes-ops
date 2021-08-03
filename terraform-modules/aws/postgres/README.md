@@ -40,3 +40,5 @@ No resources.
 ## Outputs
 
 No outputs.
+
+<small><i><a href='https://github.com/terraform-docs/terraform-docs'>Generated with terraform-docs</a></i></small>
