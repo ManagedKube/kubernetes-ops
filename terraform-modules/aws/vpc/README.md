@@ -1,6 +1,4 @@
-# vpc
-
-Builds a vpc using this module: https://github.com/terraform-aws-modules/terraform-aws-vpc
+## <small><i><a href='https://github.com/terraform-docs/terraform-docs'>Generated with terraform-docs</a></i></small>
 
 ## Requirements
 
@@ -45,5 +43,3 @@ No resources.
 | <a name="output_public_subnets"></a> [public\_subnets](#output\_public\_subnets) | A list of public subnets |
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | The CIDR block of the VPC |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC |
-
-<small><i><a href='https://github.com/terraform-docs/terraform-docs'>Generated with terraform-docs</a></i></small>

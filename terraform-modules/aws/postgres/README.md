@@ -1,3 +1,5 @@
+## <small><i><a href='https://github.com/terraform-docs/terraform-docs'>Generated with terraform-docs</a></i></small>
+
 ## Requirements
 
 No requirements.
@@ -42,6 +44,3 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_db_instance_endpoint"></a> [db\_instance\_endpoint](#output\_db\_instance\_endpoint) | The connection endpoint |
-
-
-<small><i><a href='https://github.com/terraform-docs/terraform-docs'>Generated with terraform-docs</a></i></small>
