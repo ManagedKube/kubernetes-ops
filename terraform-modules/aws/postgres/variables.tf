@@ -79,7 +79,7 @@ variable "backup_retention_period" {
 variable "parameters" {
   description = "A list of DB parameters (map) to apply"
   type        = list(map(string))
-  default     = [
+  default = [
     {
       name  = "autovacuum"
       value = 1
@@ -93,9 +93,10 @@ variable "parameters" {
 variable "tags" {
   type = map(any)
   default = {
-    ops_env         = "staging"
-    ops_managed_by  = "terraform",
-    ops_source_repo = "kubernetes-ops",
-    ops_owners      = "devops",
+    ops_env              = "staging"
+    ops_managed_by       = "terraform",
+    ops_source_repo      = "kubernetes-ops",
+    ops_owners           = "devops",
+    ops_source_repo_path = "terraform-module/aws/postgres"
   }
 }
