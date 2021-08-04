@@ -66,6 +66,16 @@ variable "password" {
   type        = string
   default     = null
 }
+variable "maintenance_window" {
+  description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
+  type        = string
+  default     = "Mon:00:00-Mon:03:00"
+}
+variable "backup_retention_period" {
+  description = "The days to retain backups for"
+  type        = number
+  default     = "03:00-06:00"
+}
 variable "tags" {
   type = map(any)
   default = {
