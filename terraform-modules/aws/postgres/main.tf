@@ -63,16 +63,7 @@ module "db" {
   create_monitoring_role                = true
   monitoring_interval                   = 60
 
-  parameters = [
-    {
-      name  = "autovacuum"
-      value = 1
-    },
-    {
-      name  = "client_encoding"
-      value = "utf8"
-    }
-  ]
+  parameters = var.parameters
 
   tags = var.tags
   db_option_group_tags = {

@@ -76,6 +76,20 @@ variable "backup_retention_period" {
   type        = number
   default     = "03:00-06:00"
 }
+variable "parameters" {
+  description = "A list of DB parameters (map) to apply"
+  type        = list(map(string))
+  default     = [
+    {
+      name  = "autovacuum"
+      value = 1
+    },
+    {
+      name  = "client_encoding"
+      value = "utf8"
+    }
+  ]
+}
 variable "tags" {
   type = map(any)
   default = {
