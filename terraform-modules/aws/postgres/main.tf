@@ -60,6 +60,7 @@ module "db" {
 
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
+  monitoring_role_name                  = "${var.identifier}-${var.name}"
   create_monitoring_role                = true
   monitoring_interval                   = 60
 
