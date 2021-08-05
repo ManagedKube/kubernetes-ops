@@ -71,10 +71,15 @@ variable "maintenance_window" {
   type        = string
   default     = "Mon:00:00-Mon:03:00"
 }
+variable "backup_window" {
+  description = "The daily time range (in UTC) during which automated backups are created if they are enabled. Example: '09:46-10:16'. Must not overlap with maintenance_window"
+  type        = string
+  default     = "03:00-06:00"
+}
 variable "backup_retention_period" {
   description = "The days to retain backups for"
   type        = number
-  default     = "03:00-06:00"
+  default     = "0"
 }
 variable "parameters" {
   description = "A list of DB parameters (map) to apply"
