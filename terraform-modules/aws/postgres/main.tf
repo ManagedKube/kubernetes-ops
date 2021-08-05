@@ -51,10 +51,10 @@ module "db" {
   vpc_security_group_ids = [module.security_group.security_group_id]
 
   maintenance_window              = var.maintenance_window
-  backup_window                   = var.backup_retention_period
+  backup_window                   = var.backup_window
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
-  backup_retention_period = 0
+  backup_retention_period = var.backup_retention_period
   skip_final_snapshot     = false
   deletion_protection     = true
 
