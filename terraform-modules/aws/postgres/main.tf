@@ -4,7 +4,7 @@ module "security_group" {
 
   name        = "${var.identifier}-${var.name}"
   description = "PostgreSQL security group"
-  vpc_id      = var.vpc.outputs.vpc_id
+  vpc_id      = var.vpc_id
 
   # ingress
   ingress_with_cidr_blocks = [
@@ -14,7 +14,7 @@ module "security_group" {
       protocol  = "tcp"
 
       description = "PostgreSQL access from within VPC"
-      cidr_blocks = var.vpc.outputs.vpc_cidr_block
+      cidr_blocks = var.vpc_cidr_block
     },
   ]
 
@@ -47,7 +47,7 @@ module "db" {
   port     = 5432
 
   multi_az               = true
-  subnet_ids             = var.vpc.outputs.private_subnets
+  subnet_ids             = var.private_subnets
   vpc_security_group_ids = [module.security_group.security_group_id]
 
   maintenance_window              = var.maintenance_window
