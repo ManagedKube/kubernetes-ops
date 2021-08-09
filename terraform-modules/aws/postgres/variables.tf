@@ -1,6 +1,16 @@
-variable "vpc" {
-  description = "VPC where the rds and security group will be created"
+variable "vpc_id" {
+  description = "The ID of the VPC"
 }
+
+variable "vpc_cidr_block" {
+  description = "The CIDR block of the VPC"
+}
+
+variable "private_subnets" {
+  description = "A list of private subnets"
+  type        = list(any)
+}
+
 variable "identifier" {
   description = "The name of the RDS instance, if omitted, Terraform will assign a random, unique identifier"
   type        = string
