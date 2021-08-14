@@ -24,8 +24,10 @@ func TestTerraformDefault(t *testing.T) {
 		// Dynamic Variables that we should pass in addition to varfile.tfvars
 		Vars: map[string]interface{}{
 			"aws_region": "us-east-1",
-			"environment_name": "unittest_aws_vpc_" + stringRand,
+			"environment_name": "unittest-aws-vpc-" + stringRand,
 			"vpc_cidr": "10.0.0.0/16",
+			"secondary_cidrs": []string{"100.64.0.0/16"},
+			"k8s_worker_subnets": []string{"100.64.0.0/20", "100.64.16.0/20"},
 			"enable_nat_gateway": false,
 			"enable_vpn_gateway": false,
 			"tags": `{
