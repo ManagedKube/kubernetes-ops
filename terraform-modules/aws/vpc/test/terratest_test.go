@@ -26,8 +26,6 @@ func TestTerraformDefault(t *testing.T) {
 			"aws_region": "us-east-1",
 			"environment_name": "unittest-aws-vpc-" + stringRand,
 			"vpc_cidr": "10.0.0.0/16",
-			"secondary_cidrs": []string{"100.64.0.0/16"},
-			"k8s_worker_subnets": []string{"100.64.0.0/20", "100.64.16.0/20"},
 			"enable_nat_gateway": false,
 			"enable_vpn_gateway": false,
 			"tags": `{
@@ -62,7 +60,7 @@ func TestTerraformDefault(t *testing.T) {
 	assert.Equal(t, "vpc-", actualVPCId[0:4])
 	assert.Equal(t, 3, len(actualPublicSubnets))
 	assert.Equal(t, 3, len(actualPrivateSubnets))
-	assert.Equal(t, 2, len(actualK8sSubnets))
+	assert.Equal(t, 3, len(actualK8sSubnets))
 }
 
 func randomString(len int) string {
