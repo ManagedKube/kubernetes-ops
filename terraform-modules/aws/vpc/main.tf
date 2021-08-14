@@ -34,6 +34,7 @@ module "vpc" {
   elasticache_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"           = "1"
+    "ops_purpose"                               = "Overloaded for k8s worker usage"
   }
 
   tags = var.tags
