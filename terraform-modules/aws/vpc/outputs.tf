@@ -20,5 +20,5 @@ output "public_subnets" {
 
 output "k8s_subnets" {
   description = "A list of private k8s subnets"
-  value = module.vpc.elasticache_subnets
+  value       = module.vpc.elasticache_subnets
 }
