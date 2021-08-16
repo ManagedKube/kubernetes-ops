@@ -14,6 +14,12 @@ variable "public_subnets" {
   default = []
 }
 
+variable "k8s_subnets" {
+  type = list(any)
+  default = []
+  description = "Subnet IDs to place the EKS nodes into"
+}
+
 variable "cluster_name" {
   default = "test-cluster"
 }
