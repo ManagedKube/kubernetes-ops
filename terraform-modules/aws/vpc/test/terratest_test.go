@@ -24,7 +24,7 @@ func TestTerraformDefault(t *testing.T) {
 		// Dynamic Variables that we should pass in addition to varfile.tfvars
 		Vars: map[string]interface{}{
 			"aws_region": "us-east-1",
-			"environment_name": "unittest_aws_vpc_" + stringRand,
+			"environment_name": "unittest-aws-vpc-" + stringRand,
 			"vpc_cidr": "10.0.0.0/16",
 			"enable_nat_gateway": false,
 			"enable_vpn_gateway": false,
@@ -49,14 +49,18 @@ func TestTerraformDefault(t *testing.T) {
 
 	// Run `terraform output` to get the values of output variables
 	actualVPCId := terraform.Output(t, terraformOptions, "vpc_id")
-	// actualPrivateSubnets := terraform.Output(t, terraformOptions, "private_subnets")
+	actualPublicSubnets := terraform.OutputList(t, terraformOptions, "public_subnets")
+	actualPrivateSubnets := terraform.OutputList(t, terraformOptions, "private_subnets")
+	actualK8sSubnets := terraform.OutputList(t, terraformOptions, "k8s_subnets")
 
 	// awsAccountID := aws.GetAccountId(t)
 
 	// assert.Equal(t, "unittest_aws_iam_policy_"+stringRand, actualPolicyName)
 	// assert.Equal(t, "arn:aws:iam::"+awsAccountID+":policy/unittest_aws_iam_policy_"+stringRand, actualPolicyArn)
 	assert.Equal(t, "vpc-", actualVPCId[0:4])
-	// assert.Equal(t, 3, len(actualPrivateSubnets))
+	assert.Equal(t, 3, len(actualPublicSubnets))
+	assert.Equal(t, 3, len(actualPrivateSubnets))
+	assert.Equal(t, 3, len(actualK8sSubnets))
 }
 
 func randomString(len int) string {

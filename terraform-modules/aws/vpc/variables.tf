@@ -50,3 +50,15 @@ variable "enable_dns_support" {
   default     = true
   description = "Enable dns support"
 }
+
+variable "secondary_cidrs" {
+  type        = list(string)
+  default     = ["100.64.0.0/16"]
+  description = "optional list of secondary cidr blocks"
+}
+
+variable "k8s_worker_subnets" {
+  type        = list(string)
+  default     = ["100.64.0.0/20", "100.64.16.0/20", "100.64.32.0/20"]
+  description = "list of alternate secondary cidrs for kubernetes workers"
+}
