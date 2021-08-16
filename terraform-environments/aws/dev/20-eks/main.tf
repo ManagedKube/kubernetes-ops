@@ -43,9 +43,9 @@ module "eks" {
 
   cluster_name = var.environment_name
 
-  vpc_id          = data.terraform_remote_state.vpc.outputs.vpc_id
-  k8s_subnets     = data.terraform_remote_state.vpc.outputs.k8s_subnets
-  public_subnets  = data.terraform_remote_state.vpc.outputs.public_subnets
+  vpc_id         = data.terraform_remote_state.vpc.outputs.vpc_id
+  k8s_subnets    = data.terraform_remote_state.vpc.outputs.k8s_subnets
+  public_subnets = data.terraform_remote_state.vpc.outputs.public_subnets
 
   cluster_version                = "1.18"
   cluster_endpoint_public_access = true
