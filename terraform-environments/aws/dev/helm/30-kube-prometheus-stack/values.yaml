@@ -11,6 +11,7 @@ prometheus:
            requests:
              storage: 25Gi
 grafana:
+  adminPassword: prom-operator
   ingress:
     enabled: true
     annotations:
