@@ -36,16 +36,16 @@ data "terraform_remote_state" "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.12"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.18"
 
   aws_region = var.aws_region
   tags       = var.tags
 
   cluster_name = var.environment_name
 
-  vpc_id          = data.terraform_remote_state.vpc.outputs.vpc_id
-  private_subnets = data.terraform_remote_state.vpc.outputs.private_subnets
-  public_subnets  = data.terraform_remote_state.vpc.outputs.public_subnets
+  vpc_id         = data.terraform_remote_state.vpc.outputs.vpc_id
+  k8s_subnets    = data.terraform_remote_state.vpc.outputs.k8s_subnets
+  public_subnets = data.terraform_remote_state.vpc.outputs.public_subnets
 
   cluster_version                = "1.18"
   cluster_endpoint_public_access = true
