@@ -17,3 +17,16 @@ grafana:
       kubernetes.io/ingress.class: ingress-external
     hosts:
     - grafana.staging.k8s.managedkube.com.com
+  additionalDataSources:
+  - name: loki
+    access: proxy
+    basicAuth: false
+    basicAuthPassword: pass
+    basicAuthUser: daco
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: loki
+    url: http://loki-stack:3100
+    version: 1
