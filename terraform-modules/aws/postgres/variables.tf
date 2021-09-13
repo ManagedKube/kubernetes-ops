@@ -91,6 +91,16 @@ variable "backup_retention_period" {
   type        = number
   default     = "0"
 }
+variable "deletion_protection" {
+  description = "The database can't be deleted when this value is set to true."
+  type        = bool
+  default     = true
+}
+variable "skip_final_snapshot" {
+  description = "Determines whether a final DB snapshot is created before the DB instance is deleted. If true is specified, no DBSnapshot is created. If false is specified, a DB snapshot is created before the DB instance is deleted, using the value from final_snapshot_identifier"
+  type        = bool
+  default     = false
+}
 variable "parameters" {
   description = "A list of DB parameters (map) to apply"
   type        = list(map(string))
