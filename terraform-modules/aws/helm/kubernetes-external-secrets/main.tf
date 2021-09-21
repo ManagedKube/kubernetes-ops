@@ -41,7 +41,7 @@ data "template_file" "helm_values" {
     awsAccountID       = data.aws_caller_identity.current.account_id
     awsRegion          = data.aws_region.current.name
     serviceAccountName = local.k8s_service_account_name
-    iamRoleName        = "${local.base_name}-${var.environment_name}"
+    resource_name      = "${local.base_name}-${var.environment_name}-${var.environment_name}"
   }
 }
 
