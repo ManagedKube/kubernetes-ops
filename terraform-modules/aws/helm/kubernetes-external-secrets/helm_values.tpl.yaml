@@ -7,3 +7,7 @@ serviceAccount:
   name: kubernetes-external-secrets
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/${iamRoleName}"
+
+securityContext:
+  # Required for use of IRSA, see https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts-technical-overview.html
+  fsGroup: 65534
