@@ -1,0 +1,21 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecretVersionIds"
+        ],
+        "Resource": [
+          "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes128-1a2b3c",
+          "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes192-4D5e6F",
+          "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes256-7g8H9i",
+          " arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:hello-service2/password-9j6eYq"
+        ]
+      }
+    ]
+  }
+  

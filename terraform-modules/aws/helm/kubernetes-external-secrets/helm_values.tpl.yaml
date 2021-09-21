@@ -1,0 +1,8 @@
+---
+env:
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+
+serviceAccount:
+  # name: kubernetes-external-secrets
+  annotations: ${iamRoleARN}
