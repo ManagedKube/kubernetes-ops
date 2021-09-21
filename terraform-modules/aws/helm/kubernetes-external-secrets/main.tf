@@ -1,6 +1,7 @@
 locals {
   base_name = "kubernetes-external-secrets"
   iam_policy_file = "iam-policy.json"
+  k8s_service_account_name = "kubernetes-external-secrets"
 }
 
 data "aws_caller_identity" "current" {}
@@ -13,7 +14,7 @@ module "iam_assumable_role_admin" {
   role_name                     = "${local.base_name}-${var.environment_name}"
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.k8s_service_account_namespace}:${var.k8s_service_account_name}"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${var.k8s_service_account_name}"]
 }
 
 data "template_file" "iam_policy" {
@@ -39,7 +40,7 @@ data "template_file" "helm_values" {
   vars = {
     awsAccountID       = data.aws_caller_identity.current.account_id
     awsRegion          = data.aws_region.current.name
-    # serviceAccountName = local.k8s_service_account_name
+    serviceAccountName = local.k8s_service_account_name
     iamRoleARN        = module.iam_assumable_role_admin.iam_role_arn
   }
 }
