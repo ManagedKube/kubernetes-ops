@@ -12,7 +12,7 @@ module "iam_assumable_role_admin" {
   version                       = "3.6.0"
   create_role                   = true
   role_name                     = "${local.base_name}-${var.environment_name}"
-  role_path                     = "token-file-web-identity"
+  role_path                     = "/token-file-web-identity"
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${local.k8s_service_account_name}"]
