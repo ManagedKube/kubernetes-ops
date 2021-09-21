@@ -1,5 +1,7 @@
 #  kubernetes-external-secrets
 
-https://github.com/external-secrets/kubernetes-external-secrets#system-architecture
+Source project: https://github.com/external-secrets/kubernetes-external-secrets
+Source chart: https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets
+
 
 

@@ -33,3 +33,9 @@ variable helm_values {
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module."
 }
+
+variable "environment_name" {
+  type = string
+  default = "env"
+  description = "An environment name to attach to some resources.  Optional only needed if you are going to create more than one of these items in an AWS account"
+}
