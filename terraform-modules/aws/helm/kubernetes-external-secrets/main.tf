@@ -1,6 +1,6 @@
 locals {
-  base_name = "kubernetes-external-secrets"
-  iam_policy_file = "iam-policy.tpl.json"
+  base_name                = "kubernetes-external-secrets"
+  iam_policy_file          = "iam-policy.tpl.json"
   k8s_service_account_name = "kubernetes-external-secrets"
 }
 
@@ -20,8 +20,8 @@ module "iam_assumable_role_admin" {
 data "template_file" "iam_policy" {
   template = file("${path.module}/iam-policy.tpl.json")
   vars = {
-    awsAccountID       = data.aws_caller_identity.current.account_id
-    awsRegion          = data.aws_region.current.name
+    awsAccountID = data.aws_caller_identity.current.account_id
+    awsRegion    = data.aws_region.current.name
   }
 }
 
