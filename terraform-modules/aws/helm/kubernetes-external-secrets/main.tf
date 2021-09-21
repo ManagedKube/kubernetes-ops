@@ -29,7 +29,7 @@ data "template_file" "iam_policy" {
 resource "aws_iam_policy" "cluster_autoscaler" {
   name_prefix = "${local.base_name}-${var.environment_name}"
   description = "${local.base_name} for ${var.environment_name}"
-  policy      = file("${path.module}/${local.iam_policy_file}")
+  policy      = data.template_file.iam_policy.rendered
 }
 
 #
