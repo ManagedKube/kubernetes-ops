@@ -4,5 +4,6 @@ env:
   AWS_DEFAULT_REGION: us-east-1
 
 serviceAccount:
-  # name: kubernetes-external-secrets
-  annotations: ${iamRoleARN}
+  name: kubernetes-external-secrets
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/${iamRoleName}"
