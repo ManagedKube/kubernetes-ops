@@ -39,3 +39,9 @@ variable "environment_name" {
   default = "env"
   description = "An environment name to attach to some resources.  Optional only needed if you are going to create more than one of these items in an AWS account"
 }
+
+variable "eks_cluster_oidc_issuer_url" {
+  type        = string
+  default     = ""
+  description = "EKS cluster oidc issuer url"
+}
