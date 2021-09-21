@@ -1,6 +1,6 @@
 locals {
   base_name = "kubernetes-external-secrets"
-  iam_policy_file = "iam-policy.json"
+  iam_policy_file = "iam-policy.tpl.json"
   k8s_service_account_name = "kubernetes-external-secrets"
 }
 
