@@ -24,6 +24,7 @@ data "template_file" "iam_policy" {
     awsAccountID  = data.aws_caller_identity.current.account_id
     awsRegion     = data.aws_region.current.name
     secretsPrefix = var.secrets_prefix
+    envName       = var.environment_name
   }
 }
 

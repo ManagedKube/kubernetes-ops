@@ -11,7 +11,7 @@
         "sts:AssumeRole"
       ],
       "Resource": [
-        "arn:aws:iam::016733450475:role/kubernetes-external-secrets-env",
+        "arn:aws:iam::016733450475:role/kubernetes-external-secrets-${envName}",
         "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:${secretsPrefix}*"
       ]
     }
