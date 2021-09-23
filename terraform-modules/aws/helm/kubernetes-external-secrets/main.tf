@@ -8,10 +8,10 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 module "iam_assumable_role_admin" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "3.6.0"
-  create_role                   = true
-  role_name                     = "${local.base_name}-${var.environment_name}"
+  source      = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version     = "3.6.0"
+  create_role = true
+  role_name   = "${local.base_name}-${var.environment_name}"
   # role_path                     = "/token-file-web-identity/"
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
@@ -21,8 +21,8 @@ module "iam_assumable_role_admin" {
 data "template_file" "iam_policy" {
   template = file("${path.module}/iam-policy.tpl.json")
   vars = {
-    awsAccountID = data.aws_caller_identity.current.account_id
-    awsRegion    = data.aws_region.current.name
+    awsAccountID  = data.aws_caller_identity.current.account_id
+    awsRegion     = data.aws_region.current.name
     secretsPrefix = var.secrets_prefix
   }
 }

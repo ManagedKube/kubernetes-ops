@@ -47,7 +47,7 @@ variable "eks_cluster_oidc_issuer_url" {
 }
 
 variable "secrets_prefix" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "The prefix to your AWS Secrets.  This allows this module to craft a more tightly controlled set of IAM policies to only allow it to get certain secrets"
 }
