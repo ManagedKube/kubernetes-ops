@@ -7,13 +7,12 @@
         "secretsmanager:GetResourcePolicy",
         "secretsmanager:GetSecretValue",
         "secretsmanager:DescribeSecret",
-        "secretsmanager:ListSecretVersionIds"
+        "secretsmanager:ListSecretVersionIds",
+        "sts:AssumeRole"
       ],
       "Resource": [
-        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes128-1a2b3c",
-        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes192-4D5e6F",
-        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:aes256-7g8H9i",
-        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:hello-service2/password-9j6eYq"
+        "arn:aws:iam::016733450475:role/kubernetes-external-secrets-env",
+        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:${secretsPrefix}*"
       ]
     }
   ]
