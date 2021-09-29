@@ -3,10 +3,6 @@
 ## Logs
 Loki is a centralized log server that uses Grafana as the frontend UI.
 
-### Servers
-
-* Dev - http://grafana.dev.exactpay.managedkube.com
-
 ### How to:
 
 #### Get to the logging area
