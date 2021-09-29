@@ -1,5 +1,7 @@
 controller:
   ingressClass: nginx-external
+  
+  replicaCount: 1
 
   service:
     enabled: true

@@ -1,0 +1,9 @@
+---
+env:
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+
+serviceAccount:
+  name: ${resource_name}
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/${resource_name}"

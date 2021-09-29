@@ -1,0 +1,20 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecretVersionIds",
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::016733450475:role/kubernetes-external-secrets-${envName}",
+        "arn:aws:secretsmanager:${awsRegion}:${awsAccountID}:secret:${secretsPrefix}*"
+      ]
+    }
+  ]
+}
+  

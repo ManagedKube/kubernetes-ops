@@ -15,8 +15,10 @@ module "vpc" {
   # this module doesnt have an EKS subnet, we will use the elasticache instead.
   elasticache_subnets = var.k8s_worker_subnets
 
-  enable_nat_gateway = var.enable_nat_gateway
-  enable_vpn_gateway = var.enable_vpn_gateway
+  enable_nat_gateway  = var.enable_nat_gateway
+  reuse_nat_ips       = var.reuse_nat_ips
+  external_nat_ip_ids = var.external_nat_ip_ids
+  enable_vpn_gateway  = var.enable_vpn_gateway
 
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support

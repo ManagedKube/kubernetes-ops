@@ -62,3 +62,15 @@ variable "k8s_worker_subnets" {
   default     = ["100.64.0.0/20", "100.64.16.0/20", "100.64.32.0/20"]
   description = "list of alternate secondary cidrs for kubernetes workers"
 }
+
+variable "reuse_nat_ips" {
+  description = "Should be true if you don't want EIPs to be created for your NAT Gateways and will instead pass them in via the 'external_nat_ip_ids' variable"
+  type        = bool
+  default     = false
+}
+
+variable "external_nat_ip_ids" {
+  description = "List of EIP IDs to be assigned to the NAT Gateways (used in combination with reuse_nat_ips)"
+  type        = list(string)
+  default     = []
+}
