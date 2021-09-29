@@ -15,6 +15,8 @@ accessed and presented to the pod.
 | Can add secret to Kubernetes secret             |             yes             |                 yes                 |
 | Can get secrets from Vault                      |             yes             |                  no                 |
 
+*secret store csi can leverage vault https://github.com/hashicorp/vault-csi-provider as long as orgs have kube 1.16+
+
 
 ### kubernetes-secrets-store-csi-driver
 ![alt text](./diagrams/images/AWS-Secrets-Configuration-Provider-2021-1.png "Title")
