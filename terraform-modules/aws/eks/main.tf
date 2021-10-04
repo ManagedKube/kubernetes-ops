@@ -49,6 +49,9 @@ module "eks" {
 
   cluster_endpoint_public_access       = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
+  
+  cluster_endpoint_private_access       = var.cluster_endpoint_private_access
+  cluster_endpoint_private_access_cidrs = var. cluster_endpoint_private_access_cidrs
 
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn
