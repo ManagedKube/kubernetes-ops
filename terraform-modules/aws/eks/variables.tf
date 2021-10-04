@@ -112,3 +112,15 @@ variable "cluster_log_retention_in_days" {
   default     = 90
   description = "Log retention in days"
 }
+
+variable "cluster_endpoint_private_access" {
+  type        = bool
+  default     = false
+  description = "Enable or disable Kube API private access"   
+}
+
+variable "cluster_endpoint_private_access_cidrs" {
+  type = list(string)
+  default = null
+  description = "Kube API public endpoint allow access cidrs"
+}
