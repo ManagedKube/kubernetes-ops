@@ -127,11 +127,15 @@ jobs:
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
             <details><summary>Show Plan</summary>
+            
             \`\`\`\n
             ${process.env.PLAN}
             \`\`\`\n
+            
             </details>
+            
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
               
             github.issues.createComment({
