@@ -64,7 +64,8 @@ module "eks" {
   # public cluster - kubernetes API is publicly accessible
   cluster_endpoint_public_access = true
   cluster_endpoint_public_access_cidrs = [
-    "0.0.0.0/0"
+    "0.0.0.0/0",
+    "1.1.1.1/32",
   ]
 
   # private cluster - kubernetes API is internal the the VPC
