@@ -42,6 +42,12 @@ variable helm_values {
   description = "Additional helm values to pass in.  These values would override the default in this module."
 }
 
+variable "helm_values_2" {
+  type        = string
+  default     = ""
+  description = "Additional helm values to pass in.  These values would override the default in this module and would overwrite the helm_values input"
+}
+
 variable repository {
   type        = string
   default     = "https://example.com"
