@@ -5,8 +5,8 @@ variable "tags" {
 }
 
 variable "create_namespace" {
-  type        = bool
-  default     = true
+  type        = number
+  default     = 1
   description = "To create a namespace or not"
 }
 
