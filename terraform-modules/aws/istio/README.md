@@ -59,3 +59,6 @@ If you installed Istio with values.global.proxy.privileged=true, you can use tcp
 ```
 $ kubectl exec -n foo "$(kubectl get pod -n foo -lapp=httpbin -ojsonpath={.items..metadata.name})" -c istio-proxy -- sudo tcpdump dst port 80  -A
 ```
+
+## Istio networking
+![alt text](/docs/images/istio-networking.png "Title")
