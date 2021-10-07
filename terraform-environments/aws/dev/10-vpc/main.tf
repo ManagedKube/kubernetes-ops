@@ -22,7 +22,7 @@ terraform {
     organization = "managedkube"
 
     workspaces {
-      name = "kubernetes-ops-${local.environment_name}-10-vpc"
+      name = "kubernetes-ops-dev-10-vpc"
     }
   }
 }
