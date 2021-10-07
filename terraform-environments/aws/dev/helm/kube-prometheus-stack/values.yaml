@@ -15,7 +15,7 @@ grafana:
   ingress:
     enabled: true
     annotations:
-      kubernetes.io/ingress.class: ingress-external
+      kubernetes.io/ingress.class: nginx-external
     hosts:
     - grafana.dev.k8s.managedkube.com
   additionalDataSources:
