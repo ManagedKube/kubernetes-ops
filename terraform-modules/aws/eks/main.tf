@@ -40,7 +40,7 @@ module "eks" {
   tags             = var.tags
 
   # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_id  = var.vpc_id
+  vpc_id = var.vpc_id
 
   # Using a conditional for backwards compatibility for those who started out only
   # using the private_subnets for the input variable.  The new k8s_subnets is new
@@ -49,9 +49,10 @@ module "eks" {
 
   cluster_endpoint_public_access       = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
-  
-  cluster_endpoint_private_access       = var.cluster_endpoint_private_access
-  cluster_endpoint_private_access_cidrs = var. cluster_endpoint_private_access_cidrs
+
+  cluster_endpoint_private_access                = var.cluster_endpoint_private_access
+  cluster_create_endpoint_private_access_sg_rule = var.cluster_create_endpoint_private_access_sg_rule
+  cluster_endpoint_private_access_cidrs          = var.cluster_endpoint_private_access_cidrs
 
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn
