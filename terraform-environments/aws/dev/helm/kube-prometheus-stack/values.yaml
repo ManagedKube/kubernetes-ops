@@ -1,0 +1,33 @@
+---
+namespaceOverride: monitoring
+prometheus:
+  prometheusSpec:
+    storageSpec:
+     volumeClaimTemplate:
+       spec:
+        #  storageClassName: gluster
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+             storage: 25Gi
+grafana:
+  adminPassword: prom-operator
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: ingress-external
+    hosts:
+    - grafana.dev.k8s.managedkube.com
+  additionalDataSources:
+  - name: loki
+    access: proxy
+    basicAuth: false
+    basicAuthPassword: pass
+    basicAuthUser: daco
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: loki
+    url: http://loki-stack:3100
+    version: 1
