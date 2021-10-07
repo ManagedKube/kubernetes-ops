@@ -1,5 +1,5 @@
 locals {
-  aws_region = "us-east-1"
+  aws_region       = "us-east-1"
   environment_name = "dev"
   tags = {
     ops_env              = "${local.environment_name}"
