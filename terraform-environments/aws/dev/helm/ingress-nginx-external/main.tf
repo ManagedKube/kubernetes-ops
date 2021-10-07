@@ -5,7 +5,7 @@ locals {
     ops_env              = "${local.environment_name}"
     ops_managed_by       = "terraform",
     ops_source_repo      = "kubernetes-ops",
-    ops_source_repo_path = "terraform-environments/aws/${local.environment_name}/helm/kube-prometheus-stack",
+    ops_source_repo_path = "terraform-environments/aws/${local.environment_name}/helm/ingress-nginx-external",
     ops_owners           = "devops",
   }
 }
@@ -25,7 +25,7 @@ terraform {
     organization = "managedkube"
 
     workspaces {
-      name = "kubernetes-ops-dev-40-ingress-nginx"
+      name = "kubernetes-ops-dev-helm-ingress-nginx"
     }
   }
 }
