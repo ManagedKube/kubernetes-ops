@@ -37,10 +37,10 @@ provider "aws" {
 module "ssm_role" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/ssm/ec2-role?ref=v1.0.22"
 
-  region           = var.aws_region
+  region           = local.aws_region
   name             = local.environment_name
   s3_bucket_name   = "foo"
   s3_bucket_prefix = "bar"
-  tags             = var.tags
+  tags             = local.tags
 
 }
