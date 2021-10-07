@@ -48,7 +48,7 @@ data "terraform_remote_state" "vpc" {
 # EKS
 #
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.22"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=main"
 
   aws_region = local.aws_region
   tags       = local.tags
