@@ -7,3 +7,7 @@ output "name_servers" {
   description = "The hosted zone name servers"
   value       = module.route53-hostedzone.name_servers
 }
+
+output "domain_name" {
+  value = var.domain_name
+}
