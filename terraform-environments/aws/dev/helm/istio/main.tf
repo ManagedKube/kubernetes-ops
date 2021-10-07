@@ -76,8 +76,8 @@ provider "helm" {
 # Helm - istio
 #
 module "istio" {
-  # source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/istio?ref=main"
-  source = "../../../../../terraform-modules/aws/istio"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/istio?ref=main"
+  # source = "../../../../../terraform-modules/aws/istio"
 
   helm_values_istio_base = file("${path.module}/istio_base_values.yaml")
   helm_values_istiod     = file("${path.module}/istiod_values.yaml")
