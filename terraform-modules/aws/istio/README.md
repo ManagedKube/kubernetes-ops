@@ -34,7 +34,7 @@ Some of these items we are adding in:
 
 Install Istio discovery:
 ```
-helm install -n istio-system istio manifests/charts/istio-control/istio-discovery
+helm install -n istio-system istiod manifests/charts/istio-control/istio-discovery
 ```
 
 Install ingress gateway
@@ -50,7 +50,7 @@ helm install -n istio-system istio-egress manifests/charts/gateways/istio-egress
 ## Enable auto Istio/Envoy injection
 
 ```
-kubectl label namespace x2-dev istio-injection=enabled
+kubectl label namespace my-app istio-injection=enabled
 ```
 
 ## Verify mTLS

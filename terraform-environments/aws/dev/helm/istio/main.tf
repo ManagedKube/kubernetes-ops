@@ -46,7 +46,20 @@ data "terraform_remote_state" "eks" {
 
 #
 # EKS authentication
-# # https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
+# https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs#exec-plugins
+provider "kubernetes" {
+  host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.cluster_certificate_authority_data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1alpha1"
+    args        = ["eks", "get-token", "--cluster-name", "${local.environment_name}"]
+    command     = "aws"
+  }
+}
+
+#
+# EKS authentication
+# https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
 provider "helm" {
   kubernetes {
     host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
@@ -63,9 +76,11 @@ provider "helm" {
 # Helm - istio
 #
 module "istio" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/istio?ref=main"
+  # source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/istio?ref=main"
+  source = "../../../../../terraform-modules/aws/istio"
 
   helm_values_istio_base = file("${path.module}/istio_base_values.yaml")
+  helm_values_istiod     = file("${path.module}/istiod_values.yaml")
 
   depends_on = [
     data.terraform_remote_state.eks
