@@ -48,6 +48,7 @@ data "terraform_remote_state" "eks" {
 # EKS authentication
 # # https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
 provider "helm" {
+  debug = true
   kubernetes {
     host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
     cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.cluster_certificate_authority_data)
