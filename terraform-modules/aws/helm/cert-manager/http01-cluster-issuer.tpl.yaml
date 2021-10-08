@@ -1,3 +1,4 @@
+# doc: https://cert-manager.io/docs/configuration/acme/http01/
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
