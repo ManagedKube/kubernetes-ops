@@ -40,11 +40,12 @@ provider "aws" {
 }
 
 data "terraform_remote_state" "eks" {
-  backend = "s3"
+  backend = "remote"
   config = {
-    bucket = "terraform-states-016733450475"
-    key    = "terraform-environments/aws/dev/20-eks"
-    region = "us-east-1"
+    organization = "managedkube"
+    workspaces = {
+      name = "kubernetes-ops-${local.environment_name}-20-eks"
+    }
   }
 }
 
