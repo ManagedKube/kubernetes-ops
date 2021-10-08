@@ -19,6 +19,10 @@ terraform {
     random = {
       source = "hashicorp/random"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
   }
 
   backend "remote" {
@@ -59,6 +63,17 @@ provider "helm" {
   }
 }
 
+data "aws_eks_cluster_auth" "main" {
+  name = local.environment_name
+}
+
+provider "kubectl" {
+  host                   = data.terraform_remote_state.eks.outputs.cluster_endpoint
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.main.token
+  load_config_file       = false
+}
+
 #
 # Helm - kube-prometheus-stack
 #
@@ -70,4 +85,17 @@ module "kube-prometheus-stack" {
   depends_on = [
     data.terraform_remote_state.eks
   ]
+}
+
+# file templating
+data "template_file" "certificate" {
+  template = file("${path.module}/certificate.tpl.yaml")
+
+  # vars = {
+  #   fullnameOverride  = local.fullnameOverride
+  # }
+}
+
+resource "kubectl_manifest" "certificate" {
+  yaml_body = data.template_file.certificate.rendered
 }
