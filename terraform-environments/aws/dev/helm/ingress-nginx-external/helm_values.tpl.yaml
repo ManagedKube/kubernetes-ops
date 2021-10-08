@@ -8,5 +8,9 @@ controller:
 
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
-      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "https"
+
+# Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
+# https://github.com/prometheus-community/helm-charts/issues/479#issuecomment-752709725
+  admissionWebhooks:
+    annotations:
+      sidecar.istio.io/inject: "false"
