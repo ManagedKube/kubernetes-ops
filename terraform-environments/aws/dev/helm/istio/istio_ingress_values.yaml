@@ -1,0 +1,6 @@
+# gateways:
+#   istio-ingressgateway:
+#     serviceAnnotations:
+#       # Setting to an internal load balancer
+#       # https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+#       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
