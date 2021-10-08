@@ -1,5 +1,7 @@
 ---
 sources:
+  - service
+  - ingress
   # Enabling externa-dns to watch for hostname sin these resources to add DNS entries
   - istio-gateway
   - istio-virtualservice
