@@ -1,4 +1,5 @@
 # This certificate created in this namespace and the nginx-ingress uses it
+# This requires a functioning cert-manager
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
