@@ -18,6 +18,10 @@ grafana:
       kubernetes.io/ingress.class: nginx-external
     hosts:
     - grafana.dev.k8s.managedkube.com
+    tls:
+    - hosts:
+      - grafana.dev.k8s.managedkube.com # This should match a DNS name in the Certificate
+      secretName: domain-wildcard # This should match the Certificate secretName
   additionalDataSources:
   - name: loki
     access: proxy
