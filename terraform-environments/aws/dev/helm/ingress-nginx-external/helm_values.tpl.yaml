@@ -9,5 +9,4 @@ controller:
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-      # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:067550988196:certificate/a73cce4c-3e46-4473-8877-b822a9ff345e
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "https"
