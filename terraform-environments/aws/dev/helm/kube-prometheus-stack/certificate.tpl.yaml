@@ -1,0 +1,19 @@
+# This certificate created in this namespace and the nginx-ingress uses it
+# This requires a functioning cert-manager
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: domain-wildcard
+  namespace: monitoring
+spec:
+  secretName: domain-wildcard # use this secret name in the nginx-ingress definition
+  commonName: "*.dev.k8s.managedkube.com"
+  dnsNames:
+  - "*.dev.k8s.managedkube.com"
+  issuerRef:
+    name: letsencrypt-prod-dns01
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: ClusterIssuer
+    group: cert-manager.io
