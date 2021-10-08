@@ -35,3 +35,10 @@ grafana:
     type: loki
     url: http://loki-stack:3100
     version: 1
+
+# Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
+prometheusOperator:
+  admissionWebhooks:
+    patch:
+      podAnnotations:
+        sidecar.istio.io/inject: "false"
