@@ -37,6 +37,7 @@ grafana:
     version: 1
 
 # Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
+# https://github.com/prometheus-community/helm-charts/issues/479#issuecomment-752709725
 prometheusOperator:
   admissionWebhooks:
     patch:
