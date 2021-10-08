@@ -50,7 +50,7 @@ data "terraform_remote_state" "eks" {
 }
 
 data "aws_eks_cluster_auth" "main" {
-  name = data.terraform_remote_state.eks.outputs.environment_name
+  name = local.environment_name
 }
 
 provider "kubectl" {
