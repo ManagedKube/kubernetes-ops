@@ -1,5 +1,5 @@
 locals {
-  helm_repository = "https://charts.jetstack.io"
+  helm_repository     = "https://charts.jetstack.io"
   official_chart_name = "cert-manager"
 }
 
@@ -44,8 +44,8 @@ data "aws_iam_policy_document" "iam_policy_document" {
     effect = "Allow"
 
     actions = [
-        "route53:ChangeResourceRecordSets",
-        "route53:ListResourceRecordSets",
+      "route53:ChangeResourceRecordSets",
+      "route53:ListResourceRecordSets",
     ]
 
     resources = ["arn:aws:route53:::hostedzone/${var.route53_hosted_zones}"]
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "iam_policy_document" {
     effect = "Allow"
 
     actions = [
-        "route53:ListHostedZonesByName",
+      "route53:ListHostedZonesByName",
     ]
 
     resources = ["*"]
@@ -102,19 +102,19 @@ data "template_file" "dns01_cluster_issuer_yaml" {
   template = file("${path.module}/dns01-cluster-issuer.tpl.yaml")
 
   vars = {
-    awsRegion = var.aws_region
-    letsEncryptServer = var.lets_encrypt_server
-    emailAddress = var.lets_encrypt_email
-    dnsZhostedZoneIDone   = var.route53_hosted_zones
-    domainName = var.domain_name
-    awsAccountID       = data.aws_caller_identity.current.account_id
-    clusterName        = var.cluster_name
-    chartName          = local.official_chart_name
+    awsRegion           = var.aws_region
+    letsEncryptServer   = var.lets_encrypt_server
+    emailAddress        = var.lets_encrypt_email
+    dnsZhostedZoneIDone = var.route53_hosted_zones
+    domainName          = var.domain_name
+    awsAccountID        = data.aws_caller_identity.current.account_id
+    clusterName         = var.cluster_name
+    chartName           = local.official_chart_name
   }
 }
 
 resource "kubectl_manifest" "dns01_cluster_issuer" {
-  count = var.enable_dns01_cluster_issuer
+  count     = var.enable_dns01_cluster_issuer
   yaml_body = data.template_file.dns01_cluster_issuer_yaml.rendered
 
   depends_on = [
@@ -131,14 +131,14 @@ data "template_file" "http01_cluster_issuer_yaml" {
   template = file("${path.module}/http01-cluster-issuer.tpl.yaml")
 
   vars = {
-    emailAddress = var.lets_encrypt_email
+    emailAddress      = var.lets_encrypt_email
     letsEncryptServer = var.lets_encrypt_server
-    ingressClass = var.ingress_class
+    ingressClass      = var.ingress_class
   }
 }
 
 resource "kubectl_manifest" "http01_cluster_issuer" {
-  count = var.enable_http01_cluster_issuer
+  count     = var.enable_http01_cluster_issuer
   yaml_body = data.template_file.http01_cluster_issuer_yaml.rendered
 
   depends_on = [
