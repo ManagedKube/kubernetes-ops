@@ -1,5 +1,5 @@
 # **Helm Troubleshooting**
-Instantiating Ingress Nginx in Helm through Terraform Cloud does not provide an external IP for AWS ELB. Below are commands I've used to recreate the problem.
+Instantiating Ingress Nginx in Helm through Terraform Cloud does not provide an `EXTERNAL-IP` for AWS ELB. The `kubectl get services` command shows `<none>` below `EXTERNAL-IP` (output shown near the end of this document). Steps and commands shown below are used to recreate the problem.
 
 ## **Setup**
 Make sure to have these tools installed on your machine:
@@ -9,11 +9,11 @@ Make sure to have these tools installed on your machine:
 
 Use this guide for initial setup in Terraform Cloud: https://github.com/ManagedKube/kubernetes-ops/blob/main/docs/terraform-github-action-pipeline.md
 
-Use this guide to get access to your kubernetes cluster: https://github.com/ManagedKube/kubernetes-ops/tree/main/terraform-environments/aws/dev/20-eks#aws-cli-authentication
+Use this guide to get access to your Kubernetes Cluster: https://github.com/ManagedKube/kubernetes-ops/tree/main/terraform-environments/aws/dev/20-eks#aws-cli-authentication
 
 
 ## **Steps**
-Assuming initial setup above has taken place, here are the commands used in CLI to recreate the problem.
+Assuming the setup above has taken place, here are the steps and commands used in CLI to recreate the problem.
 
 ### **Create the VPC**
 
@@ -123,6 +123,6 @@ NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d
 ```
 
-As you may notice from the last two commands, it seems as though `nginx` is running, but somehow there is no `EXTERNAL-IP` to verify if it is. At the very least there should be an `EXTERNAL-IP` to paste into the browser for an `nginx 404 Not Found` webpage.
+As you may notice from the last two commands, it seems as though `ingress-nginx` is running, but somehow there is no `EXTERNAL-IP` to verify if it is. At the very least there should be an `EXTERNAL-IP` to copy and paste into the browser for an `nginx 404 Not Found` webpage.
 
-Any ideas on how to address this?
+Any ideas on how to fix this?
