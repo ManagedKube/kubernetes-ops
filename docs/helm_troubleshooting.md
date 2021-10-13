@@ -128,9 +128,15 @@ As you may notice from the last two commands, it seems as though `ingress-nginx`
 Any ideas on how to fix this?
 <br>
 <br>
-### **Attempted Solution**
+### **Possible Solution**
 
-It has been suggested that I'm using a minikube cluster which is not a cloud solution since it's for local use only. This is true, I am using minikube, however I've found a workaround to have an `EXTERNAL-IP` from the created `LoadBalancer` service. The commands below are given to show a more detailed output of what's going on.
+After some research and discussion with those that helped. I've put together a possible solution that seems to work for those working in a minikube environment.
+
+**Note:** *A kubernetes Service of LoadBalancer is a cloud construct where it creates you an ELB in AWS and hook it up to your kube service. Since minikube is not a cloud and has no notion of a load balancer it couldn't create one. For local development you usually use a NodePort which is the same as the type LoadBalancer but without the cloud load balancer.*
+
+An article that discusses `LoadBalancer` support with Minikube: https://blog.codonomics.com/2019/02/loadbalancer-support-with-minikube-for-k8s.html
+
+I am using minikube in this troubleshooting guide which I've found is not a cloud-based tool. It is specifically for local development which is why I didn't receive an `EXTERNAL-IP`. However I've found a workaround to output a url that acts as an `EXTERNAL-IP` from the created `LoadBalancer` service through `NodePort`. The commands below are given to show a more detailed output of what's going on.
 
 Workflow:
 ```
@@ -233,16 +239,14 @@ Session Affinity:  None
 Events:            <none>
 ```
 
-All shown IPs above were tested in the browser and each continuously loaded until there is a timeout error.
+All shown IPs above were tested in the browser and each continuously loaded until there was a timeout error.
 
-Yet this [article](https://blog.codonomics.com/2019/02/loadbalancer-support-with-minikube-for-k8s.html) shows a few different workarounds to get a `LoadBalancer` running locally with minikube. The easiest command I've found to work best is: `minikube service list`
+In order to get the url from minikube, we need to output the service list.
 
 Workflow:
 ```
 minikube service list
 ```
-
-An alternative command would be: `minikube service <name> -n <namespace> --url`
 
 Output:
 ```
@@ -256,6 +260,10 @@ Output:
 | kube-system   | kube-dns                           | No node port |                           |
 |---------------|------------------------------------|--------------|---------------------------|
 ```
+
+If there's a need for a more specified output of the urls, take the name and namespace of the row with the urls and put them in their respective places in the aternative command below:
+
+An alternative command would be: `minikube service <name> -n <namespace> --url`
 
 Workflow:
 ```
