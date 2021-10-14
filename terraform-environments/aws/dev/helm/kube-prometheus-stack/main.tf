@@ -48,6 +48,16 @@ data "terraform_remote_state" "eks" {
   }
 }
 
+data "terraform_remote_state" "route53_hosted_zone" {
+  backend = "remote"
+  config = {
+    organization = "managedkube"
+    workspaces = {
+      name = "kubernetes-ops-dev-5-route53-hostedzone"
+    }
+  }
+}
+
 #
 # EKS authentication
 # # https://registry.terraform.io/providers/hashicorp/helm/latest/docs#exec-plugins
@@ -91,9 +101,10 @@ module "kube-prometheus-stack" {
 data "template_file" "certificate" {
   template = file("${path.module}/certificate.tpl.yaml")
 
-  # vars = {
-  #   fullnameOverride  = local.fullnameOverride
-  # }
+  vars = {
+    baseDomainName = data.terraform_remote_state.route53_hosted_zone.outputs.domain_name
+    namespace      = "monitoring"
+  }
 }
 
 resource "kubectl_manifest" "certificate" {
