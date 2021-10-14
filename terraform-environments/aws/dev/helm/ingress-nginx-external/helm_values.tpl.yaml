@@ -3,6 +3,11 @@ controller:
   
   replicaCount: 1
 
+  extraArgs:
+    # Setting a default cert from cert-manager
+    # https://kubernetes.github.io/ingress-nginx/user-guide/tls/#default-ssl-certificate
+    default-ssl-certificate: "ingress-nginx/domain-wildcard"
+
   service:
     enabled: true
 
