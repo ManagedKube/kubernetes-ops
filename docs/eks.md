@@ -31,3 +31,29 @@ Get the `kubeconfig` of a cluster:
 ```
 aws eks --region us-east-1 update-kubeconfig --name <cluster name>
 ```
+
+### Mapping SSO roles
+You can map an assumed SSO role in the AWS account where the EKS cluster was launched in.  This will give
+`cluster-admin` permission to this role:
+
+```
+  map_roles = [
+    {
+      rolearn  = "arn:aws:iam::1234xxxx:role/AWSReservedSSO_AdministratorAccess_4a1e6f8139bcedae"
+      username = "kubernetes-ops:aws:admin"
+      groups   = ["system:masters"]
+    },
+  ]
+```
+
+## EKS Logs
+
+### Control plane logs
+
+Ensure that you have the control plane logs enabled:
+
+![alt text](./images/eks-logs-setting.png "Title")
+
+Viewing logs in AWS CloudWatch
+
+![alt text](./images/eks-logs-cloudwatch-log-groups.png "Title")
