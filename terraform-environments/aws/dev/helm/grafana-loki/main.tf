@@ -69,7 +69,7 @@ module "loki" {
   repository          = "https://grafana.github.io/helm-charts"
   official_chart_name = "loki-stack"
   user_chart_name     = "loki-stack"
-  helm_version        = "2.3.1"
+  helm_version        = "2.5.0"
   namespace           = "monitoring"
   helm_values         = file("${path.module}/values.yaml")
 
