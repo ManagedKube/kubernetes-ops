@@ -20,6 +20,10 @@ terraform {
     random = {
       source = "hashicorp/random"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.3.0"
+    }
   }
 
   backend "remote" {
