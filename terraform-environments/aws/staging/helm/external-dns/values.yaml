@@ -1,0 +1,14 @@
+---
+sources:
+  - service
+  - ingress
+  # # Enabling external-dns to watch for hostnames in these resources to add DNS entries
+  # # This PR has to be merged before the external-dns will have permissions to watch the istio resources
+  # # https://github.com/kubernetes-sigs/external-dns/pull/2248
+  # # To enable this, you need to add the following to the clusterrole: external-dns
+  # # - apiGroups: ["networking.istio.io"]
+  # #   resources: ["gateways", "virtualservices"]
+  # #   verbs: ["get","watch","list"]
+  # # Then you can enable the following or external-dns will crash
+  # - istio-gateway
+  # - istio-virtualservice
