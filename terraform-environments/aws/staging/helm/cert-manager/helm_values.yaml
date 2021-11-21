@@ -1,0 +1,5 @@
+installCRDs: true
+extraArgs:
+  # https://github.com/jetstack/cert-manager/issues/1933
+  - --dns01-recursive-nameservers=8.8.8.8:53
+  - --dns01-recursive-nameservers-only

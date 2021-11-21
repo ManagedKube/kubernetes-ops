@@ -1,0 +1,56 @@
+labels: 
+  app: sample-app
+
+deployment:
+  containers:
+  - name: ${fullnameOverride}
+    image:
+      repository: ${repository}
+      tag: ${tag}
+    resources:
+      requests:
+        cpu: 500m
+        memory: 64Mi
+      limits:
+        cpu: 1500m
+        memory: 128Mi
+    ports:
+    - name: https
+      protocol: TCP
+      containerPort: 80
+      servicePort: 443
+    env:
+      base: []
+      perEnv:
+        - name: LOG_LEVEL
+          value: WARNING
+        - name: SESSION_EXPIRATION_DURATION
+          value: "7200"
+ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt"
+      external-dns.alpha.kubernetes.io/hostname: "api.staging.k8s.managedkube.com"
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - api.staging.k8s.managedkube.com
+    paths: 
+    - path: /
+      servicePort: https  
+    tls:
+      - hosts:
+          - api.staging.k8s.managedkube.com
+        secretName: tls-sample-app
+
+# hpa:
+#   enabled: true
+#   spec:
+#     scaleTargetRef:
+#       apiVersion: apps/v1
+#       kind: Deployment
+#       # Update to match the name of your deployment
+#       name: "sample-app-standard-application"
+#     minReplicas: 1
+#     maxReplicas: 4
+#     targetCPUUtilizationPercentage: 50
+ 
