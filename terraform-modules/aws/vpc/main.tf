@@ -16,6 +16,7 @@ module "vpc" {
   elasticache_subnets = var.k8s_worker_subnets
 
   enable_nat_gateway  = var.enable_nat_gateway
+  single_nat_gateway  = var.single_nat_gateway
   reuse_nat_ips       = var.reuse_nat_ips
   external_nat_ip_ids = var.external_nat_ip_ids
   enable_vpn_gateway  = var.enable_vpn_gateway
