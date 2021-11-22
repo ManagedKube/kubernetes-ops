@@ -90,7 +90,7 @@ For each environment we have a Terraform Cloud workspace.  This will help us to 
 
 In the original step above when we created the Terraform Cloud workspace, it gave you a config block.  We will now use that information and replace it in our Terraform file.
 
-In the file `./terraform-environments/aws/dev/main.tf`, we will replace this section:
+In the file `./terraform-environments/aws/dev/10-vpc/main.tf`, we will replace this section:
 ```
   backend "remote" {
     organization = "managedkube"
@@ -117,6 +117,19 @@ Path: `terraform-environments/aws/dev/eks`
 
 Follow the same workflow as the VPC.
 
+Note: You may encounter the following error when running Terraform locally or in the cloud.
+
+*This Terraform run is not authorized to read the state of the workspace `example-environment_vpc`.*
+
+*Most commonly, this is required when using the terraform_remote_state data source.*
+
+*To allow this access, `example-environment_vpc` must configure this workspace (`example-environments_eks`) as an authorized remote state consumer.*
+
+Here's the fix, you will need to give the organization or another workspace access to this state:
+* Go to the workspace in Terraform Cloud's UI that you want to get data from
+* In that workspace, go to Settings -> General
+* Go down to the `Remote state sharing` section and enable it
+* You can either give the entire organization access or specific workspaces access to this workspace's state
 
 ## Github Actions workflow syntax
 

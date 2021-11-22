@@ -112,3 +112,21 @@ variable "cluster_log_retention_in_days" {
   default     = 90
   description = "Log retention in days"
 }
+
+variable "cluster_endpoint_private_access" {
+  type        = bool
+  default     = false
+  description = "Enable or disable Kube API private access"   
+}
+
+variable "cluster_endpoint_private_access_cidrs" {
+  type = list(string)
+  default = null
+  description = "Kube API public endpoint allow access cidrs"
+}
+
+variable "cluster_create_endpoint_private_access_sg_rule" {
+  type        = bool
+  default     = false
+  description = "Whether to create security group rules for the access to the Amazon EKS private API server endpoint.  cluster_endpoint_private_access_cidrs must be set if this is true."
+}

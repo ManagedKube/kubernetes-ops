@@ -20,6 +20,10 @@
 
 # What is kubernetes-ops
 
+TL;DR kubernetes-ops is a way to run Kubernetes and applications on it in a GitOps way using Terraform and Github Actions.  We have tried to minimuze the number of tools sets used to keep what is already complex from being even more complex.
+
+The long version
+
 Kubernetes Ops has been a culmination of how we have been helping clients use
 Kubernetes over the years.  There has been a lot of trial an error as we have
 grown up with Kubernetes.  This represents how we are currently helping our clients
