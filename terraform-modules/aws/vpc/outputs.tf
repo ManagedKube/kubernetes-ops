@@ -25,5 +25,5 @@ output "k8s_subnets" {
 
 output "private_route_table_ids" {
   description = "List of IDs of private route tables"
-  value       = aws_route_table.private.*.id
+  value       = module.vpc.route_table_id
 }
