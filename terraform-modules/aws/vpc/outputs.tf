@@ -22,3 +22,8 @@ output "k8s_subnets" {
   description = "A list of private k8s subnets"
   value       = module.vpc.elasticache_subnets
 }
+
+output "private_route_table_ids" {
+  description = "List of IDs of private route tables"
+  value       = aws_route_table.private.*.id
+}
