@@ -1,7 +1,9 @@
 variable "aws_region" {
   default = "us-east-1"
 }
-variable "tags" {}
+variable "tags" {
+  type = map(any)
+}
 variable "vpc_id" {
   default = ""
 }
@@ -15,8 +17,8 @@ variable "public_subnets" {
 }
 
 variable "k8s_subnets" {
-  type = list(any)
-  default = []
+  type        = list(any)
+  default     = []
   description = "Subnet IDs to place the EKS nodes into"
 }
 
@@ -116,12 +118,12 @@ variable "cluster_log_retention_in_days" {
 variable "cluster_endpoint_private_access" {
   type        = bool
   default     = false
-  description = "Enable or disable Kube API private access"   
+  description = "Enable or disable Kube API private access"
 }
 
 variable "cluster_endpoint_private_access_cidrs" {
-  type = list(string)
-  default = null
+  type        = list(string)
+  default     = null
   description = "Kube API public endpoint allow access cidrs"
 }
 
