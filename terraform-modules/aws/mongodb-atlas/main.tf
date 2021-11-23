@@ -45,13 +45,44 @@ resource "mongodbatlas_privatelink_endpoint" "mongodbatlas" {
   region        = var.aws_region
 }
 
+resource "aws_security_group" "this" {
+  name        = "MongoDB - ${var.cluster_name}"
+  description = "Allow inbound traffic"
+  vpc_id      = var.vpc_id
+
+  dynamic "ingress" {
+    for_each  =  var.ingress_rule
+    content {
+      description      = ingress.value["description"]
+      from_port        = ingress.value["from_port"]
+      to_port          = ingress.value["to_port"]
+      protocol         = ingress.value["protocol"]
+      cidr_blocks      = ingress.value["cidr_blocks"]
+      ipv6_cidr_blocks = ingress.value["ipv6_cidr_blocks"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each  =  var.egress_rule
+    content {
+      description      = ingress.value["description"]
+      from_port        = ingress.value["from_port"]
+      to_port          = ingress.value["to_port"]
+      protocol         = ingress.value["protocol"]
+      cidr_blocks      = ingress.value["cidr_blocks"]
+      ipv6_cidr_blocks = ingress.value["ipv6_cidr_blocks"]
+    }
+  }
+
+  tags = var.tags
+}
 
 resource "aws_vpc_endpoint" "mongodbatlas" {
   vpc_id             = var.vpc_id
   service_name       = mongodbatlas_privatelink_endpoint.mongodbatlas.endpoint_service_name
   vpc_endpoint_type  = "Interface"
   subnet_ids         = var.subnet_ids
-  security_group_ids = var.security_group_ids
+  security_group_ids = aws_security_group.this.id
   tags               = var.tags
 }
 
