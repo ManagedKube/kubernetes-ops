@@ -133,21 +133,6 @@ variable "user_password" {
   description = "The default password for all Aric MongoDB users."
 }
 
-variable "x509_admin_username" {
-  type = string
-  description = "The admin username that requires a x509 MongoDB managed cert"
-}
-
-variable "x509_months_until_expiration" {
-  type = number
-  description = "The number of months the x509 user certificate will remain active"
-}
-
-variable "x509_type" {
-  type = string
-  description = "The type of x509 certificate and who will be managing it"
-}
-
 variable "iam_role_name" {
   type = string
   description = "The IAM Role name to assign an auth user to the DB"
