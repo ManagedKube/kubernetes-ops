@@ -13,3 +13,7 @@ output "status" {
 output "name" {
   value = mongodbatlas_cluster.cluster.name
 }
+
+output "service_endpoint_dns" {
+  value = aws_vpc_endpoint.mongodbatlas.dns_entry[0]["dns_name"]
+}

@@ -40,26 +40,31 @@ variable "auto_scaling_disk_gb_enabled" {
 
 variable "auto_scaling_compute_enabled" {
   type        = bool
+  default     = false
   description = "Specifies whether compute auto-scaling is enabled. The default is true."
 }
 
 variable "auto_scaling_compute_scale_down_enabled" {
   type        = bool
+  default     = false
   description = "Set to true to enable the cluster tier to scale down. This option is only available if autoScaling.compute.enabled is true."
 }
 
 variable "provider_auto_scaling_compute_max_instance_size" {
   type        = string
+  default     = null
   description = "The maximum instance size when scaling up"
 }
 
 variable "provider_auto_scaling_compute_min_instance_size" {
   type        = string
+  default     = null
   description = "The minimum instance size when scaling down"
 }
 
 variable "mongo_db_major_version" {
   type        = string
+  default     = "5.0"
   description = "Version of the cluster to deploy. Atlas supports the following MongoDB versions for M10+ clusters: 3.6, 4.0, or 4.2. You must set this value to 4.2 if provider_instance_size_name is either M2 or M5."
 }
 
@@ -141,4 +146,9 @@ variable "x509_months_until_expiration" {
 variable "x509_type" {
   type = string
   description = "The type of x509 certificate and who will be managing it"
+}
+
+variable "iam_role_name" {
+  type = string
+  description = "The IAM Role name to assign an auth user to the DB"
 }

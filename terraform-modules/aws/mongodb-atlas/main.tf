@@ -2,7 +2,7 @@ terraform {
   required_providers {
     mongodbatlas = {
       source  = "mongodb/mongodbatlas"
-      version = "1.1.1"
+      version = "1.0.1"
     }
   }
 }
@@ -62,18 +62,6 @@ resource "mongodbatlas_privatelink_endpoint_service" "atlasplink" {
   provider_name       = var.provider_name
 }
 
-resource "mongodbatlas_database_user" "featurespace_app" {
-  username           = var.x509_admin_username
-  x509_type          = var.x509_type
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "$external"
-
-  roles {
-    role_name     = "readWriteAnyDatabase"
-    database_name = "admin"
-  }
-}
-
 resource "mongodbatlas_database_user" "admin" {
   username           = "admin"
   password           = var.user_password
@@ -86,248 +74,24 @@ resource "mongodbatlas_database_user" "admin" {
   }
 }
 
-resource "mongodbatlas_database_user" "aric_admin" {
-  username           = "aric_admin"
-  password           = var.user_password
+resource "mongodbatlas_database_user" "test" {
+  username           = var.iam_role_name
   project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
+  auth_database_name = "$external"
+  aws_iam_type       = "ROLE"
 
   roles {
-    role_name     = "atlasAdmin"
+    role_name     = "readAnyDatabase"
     database_name = "admin"
   }
-}
 
-resource "mongodbatlas_database_user" "aric_configuration" {
-  username           = "aric_configuration"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "configuration"
+  labels {
+    key   = "%s"
+    value = "%s"
   }
 
-}
-
-resource "mongodbatlas_database_user" "aric_eventapi" {
-  username           = "aric_eventapi"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "lookupdecorator"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "anomalies"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "dedup"
-  }
-
-}
-
-resource "mongodbatlas_database_user" "aric_linker" {
-  username           = "aric_linker"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "links"
-  }
-
-}
-
-
-resource "mongodbatlas_database_user" "aric_monitoring" {
-  username           = "aric_monitoring"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "test"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "monitor-test"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "dashboard-stats"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "datastorestats"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "aric-schemas"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "storm-stats"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "monitoring-results"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "modelmetrics"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "metrics"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "metrics"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "state"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "local"
-  }
-
-  roles {
-    role_name     = "clusterMonitor"
-    database_name = "admin"
-  }
-}
-
-
-resource "mongodbatlas_database_user" "aric_reports" {
-  username           = "aric_reports"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "aric-ui"
-  }
-}
-
-resource "mongodbatlas_database_user" "aric_topology" {
-  username           = "aric_topology"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "watches"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "mappings"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "storm"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "migrations"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "state"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "metrics"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "analytics"
-  }
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "batch"
-  }
-}
-
-
-resource "mongodbatlas_database_user" "aric_uiServer" {
-  username           = "aric_uiServer"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "aric-ui"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "dashboard-stats"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "links"
-  }
-
-  roles {
-    role_name     = "read"
-    database_name = "state"
-  }
-}
-
-resource "mongodbatlas_database_user" "aric_uiWriter" {
-  username           = "aric_uiWriter"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "aric-ui"
-  }
-}
-
-resource "mongodbatlas_database_user" "aric_upgrade" {
-  username           = "aric_upgrade"
-  password           = var.user_password
-  project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
-
-  roles {
-    role_name     = "readWrite"
-    database_name = "migrations"
+  scopes {
+    name   = var.cluster_name
+    type = "CLUSTER"
   }
 }
