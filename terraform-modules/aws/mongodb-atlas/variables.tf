@@ -103,11 +103,6 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "security_group_ids" {
-  description = "Set of Security Group identifiers."
-  type        = list(string)
-}
-
 variable "tags" {
   description = "A list of Tags"
   type        = map(any)
@@ -133,22 +128,37 @@ variable "user_password" {
   description = "The default password for all Aric MongoDB users."
 }
 
-variable "x509_admin_username" {
-  type = string
-  description = "The admin username that requires a x509 MongoDB managed cert"
-}
-
-variable "x509_months_until_expiration" {
-  type = number
-  description = "The number of months the x509 user certificate will remain active"
-}
-
-variable "x509_type" {
-  type = string
-  description = "The type of x509 certificate and who will be managing it"
-}
-
 variable "iam_role_name" {
   type = string
   description = "The IAM Role name to assign an auth user to the DB"
+}
+
+variable "ingress_rule" {
+  type = list
+  description = "A list of ingress rules"
+  default = [
+    {
+      description      = "All ports from internal addresses"
+      from_port        = 0
+      to_port          = 0
+      protocol         = "tcp"
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ipv6_cidr_blocks = []
+    },
+  ]
+}
+
+variable "egress_rule" {
+  type = list
+  description = "A list of ingress rules"
+  default = [
+    {
+      description      = "All"
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    },
+  ]
 }
