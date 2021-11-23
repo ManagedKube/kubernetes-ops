@@ -82,7 +82,7 @@ resource "aws_vpc_endpoint" "mongodbatlas" {
   service_name       = mongodbatlas_privatelink_endpoint.mongodbatlas.endpoint_service_name
   vpc_endpoint_type  = "Interface"
   subnet_ids         = var.subnet_ids
-  security_group_ids = aws_security_group.this.id
+  security_group_ids = [aws_security_group.this.id]
   tags               = var.tags
 }
 
