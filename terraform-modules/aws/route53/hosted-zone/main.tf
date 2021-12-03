@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_kms_key" "this" {
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7

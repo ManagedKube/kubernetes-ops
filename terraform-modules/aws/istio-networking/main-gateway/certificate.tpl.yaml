@@ -1,0 +1,19 @@
+# This certificate created in this namespace and the nginx-ingress uses it
+# This requires a functioning cert-manager
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: domain-wildcard
+  namespace: ${namespace}
+spec:
+  secretName: domain-wildcard # use this secret name in the nginx-ingress definition
+  commonName: "${cert_common_name}"
+  dnsNames:
+  - "${cert_dns_name}"
+  issuerRef:
+    name: ${issue_ref_name}
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: ${issue_ref_kind}
+    group: ${issue_ref_group}
