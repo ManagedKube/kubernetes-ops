@@ -51,7 +51,7 @@ resource "aws_security_group" "this" {
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
-    for_each  =  var.ingress_rule
+    for_each = var.ingress_rule
     content {
       description      = ingress.value["description"]
       from_port        = ingress.value["from_port"]
@@ -63,7 +63,7 @@ resource "aws_security_group" "this" {
   }
 
   dynamic "egress" {
-    for_each  =  var.egress_rule
+    for_each = var.egress_rule
     content {
       description      = egress.value["description"]
       from_port        = egress.value["from_port"]
@@ -122,7 +122,7 @@ resource "mongodbatlas_database_user" "test" {
   }
 
   scopes {
-    name   = var.cluster_name
+    name = var.cluster_name
     type = "CLUSTER"
   }
 }
@@ -137,11 +137,11 @@ resource "mongodbatlas_database_user" "test" {
 ################################################
 resource "aws_secretsmanager_secret" "this" {
   count = var.create_aws_secret ? 1 : 0
-  name = var.aws_secret_name
+  name  = var.aws_secret_name
 }
 
 resource "random_password" "password" {
-  count = var.create_aws_secret ? 1 : 0
+  count            = var.create_aws_secret ? 1 : 0
   length           = 16
   min_lower        = 2
   min_numeric      = 2
@@ -153,7 +153,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  count = var.create_aws_secret ? 1 : 0
+  count         = var.create_aws_secret ? 1 : 0
   secret_id     = aws_secretsmanager_secret.this[0].id
   secret_string = random_password.password[0].result
 }

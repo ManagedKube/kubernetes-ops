@@ -124,17 +124,17 @@ variable "read_only_nodes" {
 }
 
 variable "user_password" {
-  type = string
+  type        = string
   description = "The default password for all Aric MongoDB users."
 }
 
 variable "iam_role_name" {
-  type = string
+  type        = string
   description = "The IAM Role name to assign an auth user to the DB"
 }
 
 variable "ingress_rule" {
-  type = list
+  type        = list
   description = "A list of ingress rules"
   default = [
     {
@@ -149,7 +149,7 @@ variable "ingress_rule" {
 }
 
 variable "egress_rule" {
-  type = list
+  type        = list
   description = "A list of ingress rules"
   default = [
     {
@@ -164,12 +164,12 @@ variable "egress_rule" {
 }
 
 variable "create_aws_secret" {
-  type = bool
+  type        = bool
   description = "To create an AWS secret or not"
-  default = false
+  default     = false
 }
 
 variable "aws_secret_name" {
-  type = string
+  type        = string
   description = "The name for the AWS secret"
 }
