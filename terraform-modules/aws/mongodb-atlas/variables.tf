@@ -126,6 +126,7 @@ variable "read_only_nodes" {
 variable "user_password" {
   type        = string
   description = "The default password for all Aric MongoDB users."
+  default     = null
 }
 
 variable "iam_role_name" {
