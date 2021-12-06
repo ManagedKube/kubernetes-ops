@@ -126,3 +126,34 @@ resource "mongodbatlas_database_user" "test" {
     type = "CLUSTER"
   }
 }
+
+
+
+
+################################################
+# AWS Secret
+#
+# Option to add the password into AWS secret
+################################################
+resource "aws_secretsmanager_secret" "this" {
+  count = var.create_aws_secret ? 1 : 0
+  name = var.aws_secret_name
+}
+
+resource "random_password" "password" {
+  count = var.create_aws_secret ? 1 : 0
+  length           = 16
+  min_lower        = 2
+  min_numeric      = 2
+  min_special      = 2
+  min_upper        = 2
+  number           = true
+  special          = true
+  override_special = "!@#$%&*()-_=+[]{}<>:?"
+}
+
+resource "aws_secretsmanager_secret_version" "this" {
+  count = var.create_aws_secret ? 1 : 0
+  secret_id     = aws_secretsmanager_secret.this[0].id
+  secret_string = random_password.password[0].result
+}

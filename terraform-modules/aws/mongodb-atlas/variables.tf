@@ -162,3 +162,14 @@ variable "egress_rule" {
     },
   ]
 }
+
+variable "create_aws_secret" {
+  type = bool
+  description = "To create an AWS secret or not"
+  default = false
+}
+
+variable "aws_secret_name" {
+  type = string
+  description = "The name for the AWS secret"
+}
