@@ -95,7 +95,7 @@ resource "mongodbatlas_privatelink_endpoint_service" "atlasplink" {
 
 resource "mongodbatlas_database_user" "admin" {
   username           = "admin"
-  password           = var.user_password
+  password           = var.create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
   project_id         = var.mongodbatlas_projectid
   auth_database_name = "admin"
 
@@ -126,9 +126,6 @@ resource "mongodbatlas_database_user" "test" {
     type = "CLUSTER"
   }
 }
-
-
-
 
 ################################################
 # AWS Secret
