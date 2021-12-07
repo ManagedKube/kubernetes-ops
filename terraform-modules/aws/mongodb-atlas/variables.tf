@@ -178,7 +178,7 @@ variable "aws_secret_name" {
 variable "aws_secret_description" {
   type        = string
   description = "The aws secret description"
-  defautl     = ""
+  default     = ""
 }
 
 variable "recovery_window_in_days" {
