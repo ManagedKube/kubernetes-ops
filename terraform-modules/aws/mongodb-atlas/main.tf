@@ -133,8 +133,11 @@ resource "mongodbatlas_database_user" "test" {
 # Option to add the password into AWS secret
 ################################################
 resource "aws_secretsmanager_secret" "this" {
-  count = var.create_aws_secret ? 1 : 0
-  name  = var.aws_secret_name
+  count                   = var.create_aws_secret ? 1 : 0
+  name                    = var.aws_secret_name
+  description             = var.aws_secret_description
+  recovery_window_in_days = var.recovery_window_in_days
+  tags                    = var.tags
 }
 
 resource "random_password" "password" {
