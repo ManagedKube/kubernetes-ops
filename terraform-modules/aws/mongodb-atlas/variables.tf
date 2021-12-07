@@ -124,17 +124,18 @@ variable "read_only_nodes" {
 }
 
 variable "user_password" {
-  type = string
+  type        = string
   description = "The default password for all Aric MongoDB users."
+  default     = null
 }
 
 variable "iam_role_name" {
-  type = string
+  type        = string
   description = "The IAM Role name to assign an auth user to the DB"
 }
 
 variable "ingress_rule" {
-  type = list
+  type        = list
   description = "A list of ingress rules"
   default = [
     {
@@ -149,7 +150,7 @@ variable "ingress_rule" {
 }
 
 variable "egress_rule" {
-  type = list
+  type        = list
   description = "A list of ingress rules"
   default = [
     {
@@ -161,4 +162,27 @@ variable "egress_rule" {
       ipv6_cidr_blocks = ["::/0"]
     },
   ]
+}
+
+variable "create_aws_secret" {
+  type        = bool
+  description = "To create an AWS secret or not"
+  default     = false
+}
+
+variable "aws_secret_name" {
+  type        = string
+  description = "The name for the AWS secret"
+}
+
+variable "aws_secret_description" {
+  type        = string
+  description = "The aws secret description"
+  default     = ""
+}
+
+variable "recovery_window_in_days" {
+  type        = number
+  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days. The default value is 30."
+  default     = 0
 }
