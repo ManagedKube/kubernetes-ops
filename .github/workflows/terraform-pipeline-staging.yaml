@@ -1,0 +1,154 @@
+# The name of the pipeline.  Must be unique.
+name: "Terraform - AWS"
+
+on:
+  push:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-environments/aws/staging/**'
+    branches:
+      - main
+  pull_request:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-environments/aws/staging/**'
+
+jobs:
+  ## This generates a matrix of changed directory to run Terraform on
+  generate_matrix:
+    runs-on: ubuntu-latest
+    env:
+      # The path that you want to construct the matrix on.  Only files in this
+      # path that has changed will be included in.
+      TERRAFORM_CHECK_PATH: terraform-environments/aws/staging
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: get parent directory and set matrix
+        id: set-matrix
+        run: |
+          # A list of files that changed
+          git diff --name-only HEAD^ HEAD $TERRAFORM_CHECK_PATH > files1.txt
+
+          # Output a list of parent folder stripping out the file name
+          # leaving only the parent dir name
+          while IFS= read -r file
+          do
+            parent_dir=$(dirname -- "$file")
+            echo $parent_dir >> file2.txt
+          done < files1.txt
+
+          echo "## All changed directories"
+          cat file2.txt
+
+          # There can be duplicates in the parent dir name if multiple
+          # files changed in that parent dir.  This is to output a list
+          # that is unqiue so that we don't run the plan on the same 
+          # folder multiple times.
+          cat file2.txt | uniq > file3.txt
+
+          echo "## Unique list of changed dirs only"
+          cat file3.txt
+          echo "##"
+
+          # Set the parent dir into the Github Actions json matrix
+          # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#fromjson
+          tf_config=''
+          while IFS= read -r file
+          do
+            echo "file = $file"
+            # parent_dir=$(dirname -- "$file")
+            # echo "parent_dir = $parent_dir"
+            
+            if [[ -z $tf_config ]]; then
+              tf_config="{\"tf_config\":\"$file\"}"
+            else
+              tf_config="$tf_config, {\"tf_config\":\"$file\"}"
+            fi
+          done < file3.txt
+
+          tf_config="{\"include\":[$tf_config]}"
+          echo "::set-output name=matrix::$tf_config"
+
+  terraform:
+    name: "Terraform"
+    needs: [generate_matrix]
+    strategy:
+      matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          # terraform_version: 0.13.0:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN_STAGING }}
+
+      # - name: debug1
+      #   id: debug1
+      #   working-directory: ${{matrix.tf_config}}
+      #   run: |
+      #     pwd
+      #     ls -l
+
+      - name: Terraform Format
+        id: fmt
+        working-directory: ${{matrix.tf_config}}
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        id: init
+        working-directory: ${{matrix.tf_config}}
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: ${{matrix.tf_config}}
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color
+        continue-on-error: true
+
+      - uses: actions/github-script@0.9.0
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`\n
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        working-directory: ${{matrix.tf_config}}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
