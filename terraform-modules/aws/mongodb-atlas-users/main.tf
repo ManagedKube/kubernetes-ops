@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "mongodbatlas_database_user" "admin" {
-  username           = "admin"
+  username           = database_username
   password           = var.create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
   project_id         = var.mongodbatlas_projectid
   auth_database_name = "admin"
