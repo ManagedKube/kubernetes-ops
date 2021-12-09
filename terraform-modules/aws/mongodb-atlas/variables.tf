@@ -135,13 +135,13 @@ variable "iam_role_name" {
 }
 
 variable "ingress_rule" {
-  type        = list
+  type        = list(any)
   description = "A list of ingress rules"
   default = [
     {
       description      = "All ports from internal addresses"
       from_port        = 0
-      to_port          = 0
+      to_port          = 65535
       protocol         = "tcp"
       cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/16"]
       ipv6_cidr_blocks = []
@@ -150,7 +150,7 @@ variable "ingress_rule" {
 }
 
 variable "egress_rule" {
-  type        = list
+  type        = list(any)
   description = "A list of ingress rules"
   default = [
     {
@@ -162,27 +162,4 @@ variable "egress_rule" {
       ipv6_cidr_blocks = ["::/0"]
     },
   ]
-}
-
-variable "create_aws_secret" {
-  type        = bool
-  description = "To create an AWS secret or not"
-  default     = false
-}
-
-variable "aws_secret_name" {
-  type        = string
-  description = "The name for the AWS secret"
-}
-
-variable "aws_secret_description" {
-  type        = string
-  description = "The aws secret description"
-  default     = ""
-}
-
-variable "recovery_window_in_days" {
-  type        = number
-  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days. The default value is 30."
-  default     = 0
 }
