@@ -30,3 +30,8 @@ variable "iam_role_name" {
   type        = string
   description = "The IAM Role name to assign an auth user to the DB"
 }
+
+variable "tags" {
+  description = "A list of Tags"
+  type        = map(any)
+}
