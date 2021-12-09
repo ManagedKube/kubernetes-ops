@@ -141,7 +141,7 @@ variable "ingress_rule" {
     {
       description      = "All ports from internal addresses"
       from_port        = 0
-      to_port          = 0
+      to_port          = 65535
       protocol         = "tcp"
       cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/16"]
       ipv6_cidr_blocks = []
