@@ -143,7 +143,7 @@ variable "ingress_rule" {
       from_port        = 0
       to_port          = 0
       protocol         = "tcp"
-      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/16"]
       ipv6_cidr_blocks = []
     },
   ]
