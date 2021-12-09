@@ -1,4 +1,13 @@
 
+terraform {
+  required_providers {
+    mongodbatlas = {
+      source  = "mongodb/mongodbatlas"
+      version = "1.0.1"
+    }
+  }
+}
+
 resource "mongodbatlas_database_user" "admin" {
   username           = "admin"
   password           = var.create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
