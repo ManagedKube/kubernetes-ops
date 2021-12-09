@@ -135,7 +135,7 @@ variable "iam_role_name" {
 }
 
 variable "ingress_rule" {
-  type        = list
+  type        = list(any)
   description = "A list of ingress rules"
   default = [
     {
@@ -150,7 +150,7 @@ variable "ingress_rule" {
 }
 
 variable "egress_rule" {
-  type        = list
+  type        = list(any)
   description = "A list of ingress rules"
   default = [
     {
