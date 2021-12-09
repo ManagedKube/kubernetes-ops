@@ -123,17 +123,6 @@ variable "read_only_nodes" {
   description = "Number of read-only nodes for Atlas to deploy to the region. Read-only nodes can never become the primary, but can facilitate local-reads. Specify 0 if you do not want any read-only nodes in the region."
 }
 
-variable "user_password" {
-  type        = string
-  description = "The default password for all Aric MongoDB users."
-  default     = null
-}
-
-variable "iam_role_name" {
-  type        = string
-  description = "The IAM Role name to assign an auth user to the DB"
-}
-
 variable "ingress_rule" {
   type        = list(any)
   description = "A list of ingress rules"
