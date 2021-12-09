@@ -3,6 +3,11 @@ variable "mongodbatlas_projectid" {
   description = "The unique ID for the project to create the database user."
 }
 
+variable "cluster_name" {
+  type        = string
+  description = "Name of the cluster as it appears in Atlas."
+}
+
 variable "create_aws_secret" {
   type        = bool
   description = "To create an AWS secret or not"
