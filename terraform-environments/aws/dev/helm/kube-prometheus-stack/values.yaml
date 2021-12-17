@@ -10,6 +10,30 @@ prometheus:
          resources:
            requests:
              storage: 25Gi
+    # additionalScrapeConfigs:
+    # # Istio scrap endpoints
+    # # Will need this for Kiali
+    # # Doc: https://istio.io/latest/docs/ops/integrations/prometheus/#option-2-customized-scraping-configurations
+    # - job_name: 'istiod'
+    #   kubernetes_sd_configs:
+    #   - role: endpoints
+    #     namespaces:
+    #       names:
+    #       - istio-system
+    #   relabel_configs:
+    #   - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    #     action: keep
+    #     regex: istiod;http-monitoring
+    # - job_name: 'envoy-stats'
+    #   metrics_path: /stats/prometheus
+    #   kubernetes_sd_configs:
+    #   - role: pod
+
+    #   relabel_configs:
+    #   - source_labels: [__meta_kubernetes_pod_container_port_name]
+    #     action: keep
+    #     regex: '.*-envoy-prom'
+    # # End of istio scrape endpoints
 grafana:
   adminPassword: prom-operator
   ingress:
