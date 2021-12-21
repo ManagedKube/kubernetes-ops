@@ -6,6 +6,8 @@ resource "helm_release" "helm_chart" {
   version          = var.helm_version
   verify           = var.verify
   repository       = var.repository
+  repository_username = var.repository_username
+  repository_password = var.repository_password
 
   values = [
     var.helm_values,

@@ -53,3 +53,15 @@ variable repository {
   default     = "https://example.com"
   description = "The URL to the helm chart"
 }
+
+variable repository_username {
+  type        = string
+  default     = "username"
+  description = "Username for private repo"
+}
+
+variable repository_password {
+  type        = string
+  default     = "password"
+  description = "API Key for private repo"
+}
