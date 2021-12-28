@@ -48,20 +48,24 @@ variable "helm_values_2" {
   description = "Additional helm values to pass in.  These values would override the default in this module and would overwrite the helm_values input"
 }
 
+# Set repository, user_name, and password variable  to sensitive to not reveal secrets in Terraform plan/apply
 variable repository {
   type        = string
   default     = "https://example.com"
   description = "The URL to the helm chart"
+  sensitive   =  true
 }
 
 variable repository_username {
   type        = string
   default     = "username"
   description = "Username for private repo"
+  sensitive   =  true
 }
 
 variable repository_password {
   type        = string
   default     = "password"
   description = "API Key for private repo"
+  sensitive   =  true 
 }
