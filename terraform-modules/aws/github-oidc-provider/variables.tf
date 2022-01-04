@@ -37,7 +37,7 @@ EOT
 
 variable "validate_conditions" {
   description = "Conditions to validate"
-  default     = ["repo:octo-org/octo-repo:ref:refs/heads/octo-branch"]
+  default     = "repo:octo-org/octo-repo:ref:refs/heads/octo-branch"
 }
 
 variable "tags" {
