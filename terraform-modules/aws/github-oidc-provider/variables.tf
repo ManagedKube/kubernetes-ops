@@ -13,6 +13,8 @@ variable "client_id_list" {
   ]
 }
 
+# This is the thumbprint returned if you were to create an "identity provider" in AWS and gave
+# it this url: https://token.actions.githubusercontent.com
 variable "thumbprint_list" {
   default = [
     "a031c46782e6e6c662c2c87c76da9aa62ccabd8e"
