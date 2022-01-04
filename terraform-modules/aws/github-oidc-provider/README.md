@@ -13,3 +13,6 @@ Doc: https://docs.github.com/en/actions/deployment/security-hardening-your-deplo
 This controls can help you do things like:
 * Only allow a certain branch
 * Only allow a certain repo/org
+
+## ARN to use in the Github Actions
+This module outputs an `arn` value.  This is the `arn` you should use in the Github Actions.

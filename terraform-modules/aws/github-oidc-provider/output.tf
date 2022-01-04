@@ -1,3 +1,3 @@
 output "arn" {
-  value = aws_iam_openid_connect_provider.this.arn
+  value = module.iam_assumable_role_admin.this_iam_role_arn
 }
