@@ -23,4 +23,5 @@ resource "aws_iam_policy" "iam_policy" {
   name_prefix = var.name
   description = "IAM Policy for the Github OIDC Federation permissions"
   policy      = var.aws_policy_json
+  tags        = var.tags
 }
