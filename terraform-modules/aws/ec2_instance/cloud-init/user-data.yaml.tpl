@@ -27,7 +27,7 @@ users:
     shell: /bin/bash
     primary_group: fspace
     ssh_authorized_keys:
-      - ${aric_user_ssh_public_key}
+      - ${user_ssh_public_key}
   
 
 # Installs packages
