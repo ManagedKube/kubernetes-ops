@@ -38,10 +38,10 @@ func TestTerraformDefault(t *testing.T) {
 		// },
 
 		Vars: map[string]interface{}{
-			"aws_region":               "us-east-1",
-			"environment_name":         "node_list_unit_test_" + stringRand,
-			"key_pair_name":            "node_list_unit_test_" + stringRand,
-			"aric_user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC641Tabto5333cceSZftvqibRr9OhbP0IPv+gqRo9OdED7shWhA2XuWqQnIok8yv0Wimi+CZ00tVbkZHA27NObDQnX/KZ2ntIuM9VY6Io+K40RbN2UFHwgC8v3PyMPTCiQuriFT9whtAEOY4biqiN6X38G80g6Y3qXXlD/IkZXrOao+0m9aMNrxWhWP1Q5whZoxeeOY0DBGiLgAfIqtV9gAttehWWND41kv8QMi5p1rDjuowM7cG1YbbuwEXDV1tOb99Pz/LFebWE6arPYkM3C2P/kDuQX1EmT6GnN2uIu0FgoNkj7zykqr5YbDKnjwDKk9GpsfWCx8buIu+bYJh9D",
+			"aws_region":          "us-east-1",
+			"environment_name":    "node_list_unit_test_" + stringRand,
+			"key_pair_name":       "node_list_unit_test_" + stringRand,
+			"user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC641Tabto5333cceSZftvqibRr9OhbP0IPv+gqRo9OdED7shWhA2XuWqQnIok8yv0Wimi+CZ00tVbkZHA27NObDQnX/KZ2ntIuM9VY6Io+K40RbN2UFHwgC8v3PyMPTCiQuriFT9whtAEOY4biqiN6X38G80g6Y3qXXlD/IkZXrOao+0m9aMNrxWhWP1Q5whZoxeeOY0DBGiLgAfIqtV9gAttehWWND41kv8QMi5p1rDjuowM7cG1YbbuwEXDV1tOb99Pz/LFebWE6arPYkM3C2P/kDuQX1EmT6GnN2uIu0FgoNkj7zykqr5YbDKnjwDKk9GpsfWCx8buIu+bYJh9D",
 			"distinct_group_list": []string{
 				group0Name,
 				group1Name,

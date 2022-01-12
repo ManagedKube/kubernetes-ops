@@ -14,7 +14,7 @@ variable "key_pair_name" {
   description = "The ec2 key/pair name"
 }
 
-variable "aric_user_ssh_public_key" {
+variable "user_ssh_public_key" {
   type = string
   description = "The public key for the key pair"
 }
@@ -42,11 +42,6 @@ variable "subnet_id" {
 variable "tags" {
   type = map(any)
   description = "The set of tags to place on this node and other resources"
-}
-
-variable "fsinstaller_ssh_private_key" {
-  type = string
-  description = "The FS Installer's private SSH key"
 }
 
 variable "fsinstaller_ssh_public_key" {

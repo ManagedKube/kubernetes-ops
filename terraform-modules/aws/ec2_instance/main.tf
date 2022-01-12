@@ -1,7 +1,5 @@
 locals {
   sudoers                     = base64gzip(file("${path.module}/files/99-custom-sudoers"))
-  fsinstaller_ssh_private_key = var.fsinstaller_ssh_private_key
-  fsinstaller_ssh_public_key  = var.fsinstaller_ssh_public_key
 
   # combine user's IAM policy arn list with what is created in this module
   complete_aws_iam_role_policy_attachment_list = concat(var.aws_iam_role_policy_attachment_list, 
@@ -47,13 +45,11 @@ module "ec2_instance" {
 
   user_data = templatefile("${path.module}/cloud-init/user-data.yaml.tpl", {
           sudoers                         = local.sudoers
-          aric_user_ssh_public_key             = var.aric_user_ssh_public_key
+          user_ssh_public_key             = var.user_ssh_public_key
           ebs_block_device_1_is_set       = var.instance_config.user_data_inputs.ebs_block_device_1_is_set
           ebs_block_device_1_mount_path   = var.instance_config.user_data_inputs.ebs_block_device_1_mount_path
           ebs_block_device_2_is_set       = var.instance_config.user_data_inputs.ebs_block_device_2_is_set
           ebs_block_device_2_mount_path   = var.instance_config.user_data_inputs.ebs_block_device_2_mount_path
-          fsinstaller_ssh_private_key     = var.fsinstaller_ssh_private_key
-          fsinstaller_ssh_public_key      = var.fsinstaller_ssh_public_key
         })
 
   depends_on = [
@@ -64,7 +60,7 @@ module "ec2_instance" {
 resource "aws_key_pair" "this" {
   count = var.key_pair_name == null ? 1: 0
   key_name   = var.instance_name
-  public_key = var.aric_user_ssh_public_key
+  public_key = var.user_ssh_public_key
 }
 
 # Instance profile
