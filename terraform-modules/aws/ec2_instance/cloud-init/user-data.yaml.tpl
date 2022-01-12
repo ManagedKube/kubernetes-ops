@@ -44,15 +44,8 @@ runcmd:
   - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "/tmp/awscliv2.zip"
   - unzip /tmp/awscliv2.zip -d /tmp/
   - /tmp/aws/install
-%{ if fsinstaller_ssh_private_key != null }  - |
-    cat >> /etc/ssh/fs_installer.private << EOF
-    ${indent(4, fsinstaller_ssh_private_key)}
-    EOF
-  - mv /etc/ssh/fs_installer.private /home/fsinstaller/.ssh/id_rsa
-  - chmod 0400 /home/fsinstaller/.ssh/id_rsa
-  - chown -R fsinstaller:fspace /home/fsinstaller/.ssh/id_rsa
-%{ endif }
-
+  - if [[ "${ebs_block_device_1_is_set}" == "true" ]]; then export EBS_DEVICE=$(lsblk | grep -e "nvme1.*" | awk '{print $1}'); mkfs -t ext4 /dev/"$${EBS_DEVICE}"; mkdir -p "${ebs_block_device_1_mount_path}"; mount /dev/"$${EBS_DEVICE[$i]}" ${ebs_block_device_1_mount_path}; echo -e "UUID=$(lsblk -o +uuid /dev/"$${EBS_DEVICE[$i]}" | grep "$${EBS_DEVICE[$i]}" | awk '{print $8}') \t ${ebs_block_device_1_mount_path} \t ext4 \t defaults \t 0 \t 0" >> /etc/fstab; fi
+  - if [[ "${ebs_block_device_2_is_set}" == "true" ]]; then export EBS_DEVICE=$(lsblk | grep -e "nvme2.*" | awk '{print $1}'); mkfs -t ext4 /dev/"$${EBS_DEVICE}"; mkdir -p "${ebs_block_device_2_mount_path}"; mount /dev/"$${EBS_DEVICE[$i]}" ${ebs_block_device_2_mount_path}; echo -e "UUID=$(lsblk -o +uuid /dev/"$${EBS_DEVICE[$i]}" | grep "$${EBS_DEVICE[$i]}" | awk '{print $8}') \t ${ebs_block_device_2_mount_path} \t ext4 \t defaults \t 0 \t 0" >> /etc/fstab; fi
 write_files:
   - encoding: gzip
     content: !!binary |

@@ -331,3 +331,4 @@ aric ALL=(ALL:ALL) NOPASSWD:/aric/monit
 aric ALL=(ALL:ALL) NOPASSWD:/usr/local/bin/aric
 aric ALL=(ALL:ALL) NOPASSWD:/aric/diagnostics/aric.sh
 # Sudoers does not support regex
+#aric ALL=(ALL) NOPASSWD:/bin/rm -r /opt/featurespace/aric-install/[^s]*[^s][^h]
