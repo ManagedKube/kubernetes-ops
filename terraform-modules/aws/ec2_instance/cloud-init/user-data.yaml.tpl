@@ -21,7 +21,7 @@ users:
       - ALL=(ALL:ALL) NOPASSWD:/opt/chefdk/embedded/bin/gem
     lock_passwd: false
     ssh_authorized_keys:
-      - ${fsinstaller_ssh_public_key}
+      - ${user_ssh_public_key}
   - name: aric
     gecos: aric
     shell: /bin/bash

@@ -44,11 +44,6 @@ variable "tags" {
   description = "The set of tags to place on this node and other resources"
 }
 
-variable "fsinstaller_ssh_public_key" {
-  type = string
-  description = "The FS Installer's public SSH key"
-}
-
 variable "node_profile_type" {
   type        = string
   default     = null
