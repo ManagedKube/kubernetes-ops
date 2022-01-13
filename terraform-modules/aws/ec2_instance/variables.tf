@@ -54,7 +54,7 @@ variable "node_profile_type" {
 variable "instance_config" {
   default = {
     root_installer_device = {
-      instance_type         = "m5.4xlarge"
+      instance_type         = "m5.large"
       delete_on_termination = true,
       encrypted             = true,
       iops                  = "",
