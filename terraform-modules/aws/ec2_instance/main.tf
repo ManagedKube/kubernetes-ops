@@ -5,7 +5,6 @@ locals {
   complete_aws_iam_role_policy_attachment_list = concat(var.aws_iam_role_policy_attachment_list, 
     [
       "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM", 
-      aws_iam_policy.datadog.arn,
       aws_iam_policy.node_configs.arn,
     ])
 }
@@ -94,25 +93,6 @@ resource "aws_iam_role_policy_attachment" "attach_policies" {
   count      = length(concat(local.complete_aws_iam_role_policy_attachment_list))
   role       = aws_iam_role.instance_role.name
   policy_arn = local.complete_aws_iam_role_policy_attachment_list[count.index]
-}
-
-# # Policy for datadog - allows the node to get AWS metrics
-# # Datadog doc: https://docs.datadoghq.com/integrations/amazon_ec2/#configuration
-resource "aws_iam_policy" "datadog" {
-  name   = "${var.instance_name}-datadog"
-  
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["ec2:DescribeInstanceStatus", "ec2:DescribeSecurityGroups", "ec2:DescribeInstances"]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
-
-  tags = var.tags
 }
 
 # Policy for S3 Bucket - allows the node to get read-only access to s3 buckets for the node_config items
