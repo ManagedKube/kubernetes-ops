@@ -17,6 +17,7 @@ variable "key_pair_name" {
 variable "user_ssh_public_key" {
   type = string
   description = "The public key for the key pair"
+  default     = ""
 }
 
 variable "environment_name" {
