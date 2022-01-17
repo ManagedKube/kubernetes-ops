@@ -52,6 +52,11 @@ variable "node_profile_type" {
 }
 
 variable "instance_config" {
+  type = object({
+   root_installer_device = map(any)
+   ebs_block_device = list(any)
+   user_data_inputs = map(any)
+  })
   default = {
     root_installer_device = {
       instance_type         = "m5.large"
