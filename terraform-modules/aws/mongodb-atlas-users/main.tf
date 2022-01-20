@@ -21,7 +21,7 @@ resource "mongodbatlas_database_user" "admin" {
 }
 
 resource "mongodbatlas_database_user" "test" {
-  username           = var.iam_role_name
+  username           = aws_iam_role.this.arn
   project_id         = var.mongodbatlas_projectid
   auth_database_name = "$external"
   aws_iam_type       = "ROLE"
@@ -71,4 +71,31 @@ resource "aws_secretsmanager_secret_version" "this" {
   count         = var.create_aws_secret ? 1 : 0
   secret_id     = aws_secretsmanager_secret.this[0].id
   secret_string = random_password.password[0].result
+}
+
+################################################
+# AWS role
+#
+# Using Mongo Atlas IAM authentication.  This would be the role that is given access to the databases.
+################################################
+data "aws_caller_identity" "current" {}
+
+resource "aws_iam_role" "this" {
+  name = "mongo-atlas-${var.cluster_name}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": data.aws_caller_identity.current.account_id
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {}
+      }
+    ]
+  })
+
+  tags = var.tags
 }

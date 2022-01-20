@@ -32,12 +32,6 @@ variable "recovery_window_in_days" {
   default     = 0
 }
 
-variable "iam_role_name" {
-  type        = string
-  description = "The IAM Role name to assign an auth user to the DB"
-  default     = null
-}
-
 variable "user_password" {
   type        = string
   description = "The password for the user"
