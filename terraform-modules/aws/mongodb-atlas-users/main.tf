@@ -21,7 +21,7 @@ resource "mongodbatlas_database_user" "admin" {
 }
 
 resource "mongodbatlas_database_user" "test" {
-  username           = var.iam_role_name
+  username           = aws_iam_role.this.arn
   project_id         = var.mongodbatlas_projectid
   auth_database_name = "$external"
   aws_iam_type       = "ROLE"
