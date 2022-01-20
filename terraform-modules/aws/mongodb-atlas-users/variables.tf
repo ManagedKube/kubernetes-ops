@@ -17,6 +17,7 @@ variable "create_aws_secret" {
 variable "aws_secret_name" {
   type        = string
   description = "The name for the AWS secret"
+  default     = null
 }
 
 variable "aws_secret_description" {
@@ -34,6 +35,7 @@ variable "recovery_window_in_days" {
 variable "iam_role_name" {
   type        = string
   description = "The IAM Role name to assign an auth user to the DB"
+  default     = null
 }
 
 variable "user_password" {
