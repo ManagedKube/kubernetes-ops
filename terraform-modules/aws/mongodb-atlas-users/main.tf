@@ -72,3 +72,28 @@ resource "aws_secretsmanager_secret_version" "this" {
   secret_id     = aws_secretsmanager_secret.this[0].id
   secret_string = random_password.password[0].result
 }
+
+################################################
+# AWS role
+#
+# Using Mongo Atlas IAM authentication.  This would be the role that is given access to the databases.
+################################################
+resource "aws_iam_role" "this" {
+  name = "mongo-atlas-${var.cluster_name}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      # {
+      #   Action = "sts:AssumeRole"
+      #   Effect = "Allow"
+      #   Sid    = ""
+      #   Principal = {
+      #     Service = "ec2.amazonaws.com"
+      #   }
+      # },
+    ]
+  })
+
+  tags = var.tags
+}
