@@ -20,9 +20,9 @@ output "service_endpoint_dns" {
 
 # https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/cluster#example---return-a-connection-string
 output "connect_string_aws_private_endpoint" {
-    value = lookup(mongodbatlas_cluster.cluster-test.connection_strings[0].private_endpoint[0].srv_connection_string, aws_vpc_endpoint.ptfe_service.id)
+    value = lookup(mongodbatlas_cluster.cluster.connection_strings[0].private_endpoint[0].srv_connection_string, aws_vpc_endpoint.ptfe_service.id)
 }
 
 output "connect_string_standard" {
-    value = mongodbatlas_cluster.cluster-test.connection_strings[0].standard
+    value = mongodbatlas_cluster.cluster.connection_strings[0].standard
 }
