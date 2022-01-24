@@ -4,6 +4,6 @@ resource "kubernetes_namespace" "this" {
 
     labels = var.labels
 
-    name = var.nam
+    name = var.name
   }
 }
