@@ -27,9 +27,6 @@ module "helm_generic" {
   helm_values         = data.template_file.helm_values.rendered
   helm_values_2       = var.helm_values_2
 
-  depends_on = [
-    module.iam_assumable_role_admin
-  ]
 }
 
 #
