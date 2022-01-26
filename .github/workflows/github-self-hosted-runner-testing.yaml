@@ -17,7 +17,7 @@ on:
 
 jobs:
   ## This generates a matrix of changed directory to run Terraform on
-  generate_matrix:
+  self_hosted_runner:
     #runs-on: ubuntu-latest
     runs-on: custom-runner
     env:
@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: get parent directory and set matrix
-        id: set-matrix
+      - name: Runing on self hosted runner
         run: |
           echo hi
+          ifconfig
