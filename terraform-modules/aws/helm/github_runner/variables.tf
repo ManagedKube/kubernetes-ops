@@ -41,3 +41,9 @@ variable "k8s_secret_key_name" {
   description = "The key name in the k8s secret.  enable_kubernetes_external_secret must be set to true"
   default     = "github_token"
 }
+
+variable "runner_repository_name" {
+  type = string
+  description = "Runner config.  The repository name to associate this runner to"
+  default = null
+}

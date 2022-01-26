@@ -98,12 +98,14 @@ module "cert" {
   dns_names = [
     "webhook-service.${var.k8s_namespace}.svc",
     "webhook-service.${var.k8s_namespace}.svc.cluster.local",
+    "${var.k8s_namespace}-webhook.${var.k8s_namespace}.svc",
+    "${var.k8s_namespace}-webhook.${var.k8s_namespace}.svc",
   ]
 }
 
 resource "kubernetes_secret_v1" "this" {
   metadata {
-    name = "actions-runner-controller-serving-cert"
+    name = "${var.k8s_namespace}-serving-cert"
     # name = "webhook-server-cert"
     namespace = var.k8s_namespace
   }
@@ -119,4 +121,38 @@ resource "kubernetes_secret_v1" "this" {
     module.cert,
     module.namespace,
   ]
+}
+
+#
+# Github Action Runner deployments
+#
+# The above deploys the control nodes.  This deploys the actual Github Action runners
+# where the jobs will run in.  This creates the "RunnerDeployment" CRD which will 
+# Create the runner deployments.
+#
+# Docs: https://github.com/actions-runner-controller/actions-runner-controller#runnerdeployments
+#
+# To view the runner: github.com -> settings -> Actions -> Runners
+#
+resource "kubernetes_manifest" "runnerDeployment" {
+  manifest = {
+    apiVersion = "actions.summerwind.dev/v1alpha1"
+    kind       = "RunnerDeployment"
+
+    metadata = {
+      name = "runnerdeploy"
+      namespace = var.k8s_namespace
+    }
+
+    spec = {
+      replicas = 2
+
+      template ={
+        spec = {
+          repository = "ManagedKube/kubernetes-ops"
+          env = []
+        }
+      }
+    }
+  }
 }
