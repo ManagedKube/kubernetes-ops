@@ -74,3 +74,9 @@ variable "external_nat_ip_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "single_nat_gateway" {
+  description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"
+  type        = bool
+  default     = false
+}
