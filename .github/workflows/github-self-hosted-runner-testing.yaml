@@ -1,0 +1,36 @@
+# The name of the pipeline.  Must be unique.
+name: "Terraform - AWS"
+
+on:
+  push:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-modules/aws/helm/github_runner/**'
+    branches:
+      - main
+  pull_request:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-modules/aws/helm/github_runner/**'
+
+jobs:
+  ## This generates a matrix of changed directory to run Terraform on
+  generate_matrix:
+    #runs-on: ubuntu-latest
+    runs-on: custom-runner
+    env:
+      # The path that you want to construct the matrix on.  Only files in this
+      # path that has changed will be included in.
+      TERRAFORM_CHECK_PATH: terraform-environments/aws/dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: get parent directory and set matrix
+        id: set-matrix
+        run: |
+          echo hi

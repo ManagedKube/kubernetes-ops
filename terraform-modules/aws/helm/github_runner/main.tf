@@ -151,6 +151,12 @@ resource "kubernetes_manifest" "runnerDeployment" {
         spec = {
           repository = "ManagedKube/kubernetes-ops"
           env = []
+          
+          # The labels on how to target this runner from the GHA's workflow files
+          # Doc: https://github.com/actions-runner-controller/actions-runner-controller#runner-labels
+          labels = [
+            "custom-runner"
+          ]
         }
       }
     }
