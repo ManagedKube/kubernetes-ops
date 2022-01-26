@@ -1,1 +1,6 @@
 ---
+# Using our own self signed cert
+# https://github.com/actions-runner-controller/actions-runner-controller#using-without-cert-manager
+certManagerEnabled: false
+admissionWebHooks:
+  caBundle: ${ca_public_key}

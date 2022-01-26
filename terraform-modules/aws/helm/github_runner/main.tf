@@ -18,6 +18,7 @@ module "namespace" {
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
+    ca_public_key = module.cert.ca_public_key
     # awsAccountID       = data.aws_caller_identity.current.account_id
     # clusterName        = var.cluster_name
     # serviceAccountName = local.official_chart_name
@@ -37,7 +38,9 @@ module "helm_generic" {
   helm_values_2       = var.helm_values_2
 
   depends_on = [
-    module.namespace
+    module.cert,
+    kubernetes_secret_v1.this,
+    module.namespace,
   ]
 }
 
@@ -96,5 +99,24 @@ module "cert" {
   dns_names = [
     "webhook-service.${var.k8s_namespace}.svc",
     "webhook-service.${var.k8s_namespace}.svc.cluster.local",
+  ]
+}
+
+resource "kubernetes_secret_v1" "this" {
+  metadata {
+    name = "webhook-server-cert"
+    namespace = var.k8s_namespace
+  }
+
+  data = {
+    "tls.crt" = module.cert.client_cert
+    "tls.key" = module.cert.client_private_key
+  }
+
+  type = "kubernetes.io/tls"
+
+  depends_on = [
+    module.cert,
+    module.namespace,
   ]
 }
