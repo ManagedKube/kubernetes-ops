@@ -83,5 +83,8 @@ resource "kubernetes_manifest" "kube_secret_crd" {
 module "cert" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/generate-cert?ref=github-runner"
   
-  name = var.k8s_namespace
+  dns_names = [
+    "webhook-service.actions-runner-system.svc",
+    "webhook-service.actions-runner-system.svc.cluster.local",
+  ]
 }
