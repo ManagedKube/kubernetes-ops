@@ -47,3 +47,15 @@ variable "runner_repository_name" {
   description = "Runner config.  The repository name to associate this runner to"
   default = null
 }
+
+variable "runner_label" {
+  type = string
+  description = "Runner config.  The label to place onto the runner and the label to use on the runs-on field in the GHA workflow file."
+  default = "self-hosted"
+}
+
+variable "runner_deployment_name" {
+  type = string
+  description = "Runner config.  The runner CRD deployment name."
+  default = "runnerdeploy"
+}

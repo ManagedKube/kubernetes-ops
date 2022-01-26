@@ -140,7 +140,7 @@ resource "kubernetes_manifest" "runnerDeployment" {
     kind       = "RunnerDeployment"
 
     metadata = {
-      name = "runnerdeploy"
+      name = var.runner_deployment_name
       namespace = var.k8s_namespace
     }
 
@@ -149,13 +149,13 @@ resource "kubernetes_manifest" "runnerDeployment" {
 
       template ={
         spec = {
-          repository = "ManagedKube/kubernetes-ops"
+          repository = var.runner_repository_name
           env = []
           
           # The labels on how to target this runner from the GHA's workflow files
           # Doc: https://github.com/actions-runner-controller/actions-runner-controller#runner-labels
           labels = [
-            "custom-runner"
+            var.runner_label
           ]
         }
       }
