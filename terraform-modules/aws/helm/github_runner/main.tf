@@ -83,8 +83,18 @@ resource "kubernetes_manifest" "kube_secret_crd" {
 module "cert" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/generate-cert?ref=github-runner"
   
+  ca_public_key_file_path = "/tmp/ca_public_key_file"
+  public_key_file_path    = "/tmp/public_key_file"
+  private_key_file_path   = "/tmp/private_key_file"
+  owner                   = "k8s"
+  ca_common_name          = "k8s"
+  common_name             = "k8s"
+  ip_addresses            = []
+  validity_period_hours   = 43830
+  organization_name       = "k8s"
+
   dns_names = [
-    "webhook-service.actions-runner-system.svc",
-    "webhook-service.actions-runner-system.svc.cluster.local",
+    "webhook-service.${var.k8s_namespace}.svc",
+    "webhook-service.${var.k8s_namespace}.svc.cluster.local",
   ]
 }
