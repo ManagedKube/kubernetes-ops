@@ -59,3 +59,9 @@ variable "runner_deployment_name" {
   description = "Runner config.  The runner CRD deployment name."
   default = "runnerdeploy"
 }
+
+variable "runner_number_of_replicas" {
+  type = number
+  description = "Runner config.  The number of runner replicas to create"
+  default = 1
+}
