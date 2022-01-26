@@ -35,3 +35,4 @@ jobs:
         run: |
           echo hi
           ps aux
+          curl -v https://651D35E97B291CC344F098C47028D880.gr7.us-west-2.eks.amazonaws.com -k
