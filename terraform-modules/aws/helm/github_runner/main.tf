@@ -4,6 +4,15 @@ locals {
 }
 
 #
+# create namespace
+#
+module "namespace" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/kubernetes/namespace?ref=v1.0.50"
+  
+  name = var.k8s_namespace
+}
+
+#
 # Helm values
 #
 data "template_file" "helm_values" {
@@ -27,6 +36,9 @@ module "helm_generic" {
   helm_values         = data.template_file.helm_values.rendered
   helm_values_2       = var.helm_values_2
 
+  depends_on = [
+    module.namespace
+  ]
 }
 
 #
@@ -57,4 +69,19 @@ resource "kubernetes_manifest" "kube_secret_crd" {
       ]
     }
   }
+
+  depends_on = [
+    module.namespace
+  ]
+}
+
+#
+# Generate self signed certs for use with the runner:
+# doc: https://github.com/actions-runner-controller/actions-runner-controller#using-without-cert-manager
+# Even the cert-manager is configured to generate a self signed cert
+#
+module "cert" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/generate-cert?ref=github-runner"
+  
+  name = var.k8s_namespace
 }
