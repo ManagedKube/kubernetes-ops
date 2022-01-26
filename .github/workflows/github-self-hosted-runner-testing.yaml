@@ -19,6 +19,7 @@ jobs:
   ## This generates a matrix of changed directory to run Terraform on
   self_hosted_runner:
     #runs-on: ubuntu-latest
+    # Label from the CRD deployment:  https://github.com/actions-runner-controller/actions-runner-controller#runner-labels
     runs-on: custom-runner
     env:
       # The path that you want to construct the matrix on.  Only files in this
@@ -33,4 +34,4 @@ jobs:
       - name: Runing on self hosted runner
         run: |
           echo hi
-          ifconfig
+          ps aux

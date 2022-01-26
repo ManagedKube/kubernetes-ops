@@ -145,7 +145,7 @@ resource "kubernetes_manifest" "runnerDeployment" {
     }
 
     spec = {
-      replicas = 2
+      replicas = 1
 
       template ={
         spec = {
