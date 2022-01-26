@@ -150,7 +150,7 @@ resource "kubernetes_manifest" "runnerDeployment" {
       template ={
         spec = {
           repository = var.runner_repository_name
-          env = []
+          # env = []
           
           # The labels on how to target this runner from the GHA's workflow files
           # Doc: https://github.com/actions-runner-controller/actions-runner-controller#runner-labels
