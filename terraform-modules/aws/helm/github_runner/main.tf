@@ -18,11 +18,7 @@ module "namespace" {
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
-    ca_public_key = module.cert.ca_public_key
-    # awsAccountID       = data.aws_caller_identity.current.account_id
-    # clusterName        = var.cluster_name
-    # serviceAccountName = local.official_chart_name
-    # chartName          = local.official_chart_name
+    ca_public_key = base64encode(module.cert.ca_public_key)
   }
 }
 
@@ -47,6 +43,9 @@ module "helm_generic" {
 #
 # kubernetes-external-secret
 #
+# Using the Github PAT method
+# doc: https://github.com/actions-runner-controller/actions-runner-controller#deploying-using-pat-authentication
+# This is the secret referencing the PAT token in AWS Secret
 resource "kubernetes_manifest" "kube_secret_crd" {
   count = var.enable_kubernetes_external_secret ? 1 : 0
 
@@ -104,7 +103,8 @@ module "cert" {
 
 resource "kubernetes_secret_v1" "this" {
   metadata {
-    name = "webhook-server-cert"
+    name = "actions-runner-controller-serving-cert"
+    # name = "webhook-server-cert"
     namespace = var.k8s_namespace
   }
 
