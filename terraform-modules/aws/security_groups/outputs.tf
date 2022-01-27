@@ -9,3 +9,10 @@ output "security_group_arn_list" {
 output "security_group_name_list" {
   value = aws_security_group.sg.*.name
 }
+
+output "sg_list" {
+  value = {
+    name = aws_security_group.sg[*].name
+    id   = aws_security_group.sg[*].id
+  }
+}
