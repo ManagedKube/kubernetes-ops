@@ -3,7 +3,7 @@ resource "aws_security_group" "sg" {
   count  = length(var.security_groups)
   name   = var.security_groups[count.index].name
   vpc_id = var.vpc_id
-  tags   = var.security_groups[count.index].tags
+  tags   = merge(var.security_groups[count.index].tags, {Name=var.security_groups[count.index].name})
 }
 
 // loop through the security groups to create the security group rules
