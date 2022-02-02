@@ -3,8 +3,12 @@ output "cluster_endpoint" {
   value       = module.eks.cluster_endpoint
 }
 
-output "cluster_version" {
-  value = module.eks.cluster_version
+# output "cluster_version" {
+#   value = module.eks.cluster_version
+# }
+output "cluster_platform_version" {
+  description = "Platform version for the cluster"
+  value       = module.eks.cluster_platform_version
 }
 
 output "cluster_certificate_authority_data" {
@@ -27,9 +31,9 @@ output "cluster_security_group_id" {
   value = module.eks.cluster_security_group_id
 }
 
-output "worker_security_group_id" {
-  value = module.eks.worker_security_group_id
-}
+# output "worker_security_group_id" {
+#   value = module.eks.worker_security_group_id
+# }
 
 output "cluster_arn" {
   value = module.eks.cluster_arn

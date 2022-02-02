@@ -79,23 +79,24 @@ variable "map_users" {
   description = "A list of users to give permission to access this cluster"
 }
 
-variable "node_groups" {
-  type = any
+variable "eks_managed_node_groups" {
+  description = "Map of EKS managed node group definitions to create"
+  type        = any
   default = {
     ng1 = {
-      disk_size        = 20
-      desired_capacity = 1
-      max_capacity     = 1
-      min_capacity     = 1
-      instance_type    = "t2.small"
+      disk_size      = 20
+      desired_size   = 1
+      max_sise       = 1
+      min_size       = 1
+      instance_types = ["t2.small"]
       additional_tags = {
         Name = "foo",
       }
       k8s_labels = {}
     }
   }
-  description = "node group(s) configurations"
 }
+
 
 variable "cluster_enabled_log_types" {
   type = list(string)
@@ -109,26 +110,14 @@ variable "cluster_enabled_log_types" {
   description = "The Kubernetes log types to enable"
 }
 
-variable "cluster_log_retention_in_days" {
-  type        = number
-  default     = 90
-  description = "Log retention in days"
-}
-
 variable "cluster_endpoint_private_access" {
   type        = bool
   default     = false
   description = "Enable or disable Kube API private access"
 }
 
-variable "cluster_endpoint_private_access_cidrs" {
-  type        = list(string)
-  default     = null
-  description = "Kube API public endpoint allow access cidrs"
-}
-
-variable "cluster_create_endpoint_private_access_sg_rule" {
-  type        = bool
-  default     = false
-  description = "Whether to create security group rules for the access to the Amazon EKS private API server endpoint.  cluster_endpoint_private_access_cidrs must be set if this is true."
+variable "cluster_security_group_additional_rules" {
+  description = "List of additional security group rules to add to the cluster security group created"
+  type        = any
+  default     = {}
 }
