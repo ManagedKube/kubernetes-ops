@@ -3,6 +3,11 @@ output "vpc_id" {
   value       = module.vpc.vpc_id
 }
 
+output "vpc_name" {
+  description = "name of vpc"
+  value       = module.vpc.name
+}
+
 output "vpc_cidr_block" {
   description = "The CIDR block of the VPC"
   value       = var.vpc_cidr
@@ -32,3 +37,4 @@ output "public_route_table_ids" {
   description = "A list of route table ids for public subnets"
   value       = module.vpc.public_route_table_ids
 }
+
