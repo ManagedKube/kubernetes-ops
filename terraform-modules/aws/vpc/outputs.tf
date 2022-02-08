@@ -22,3 +22,13 @@ output "k8s_subnets" {
   description = "A list of private k8s subnets"
   value       = module.vpc.elasticache_subnets
 }
+
+output "private_route_table_ids" {
+  description = "A list of private k8s subnets"
+  value       = module.vpc.private_route_table_ids
+}
+
+output "public_route_table_ids" {
+  description = "A list of private k8s subnets"
+  value       = module.vpc.public_route_table_ids
+}
