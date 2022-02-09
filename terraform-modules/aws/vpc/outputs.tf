@@ -38,3 +38,7 @@ output "public_route_table_ids" {
   value       = module.vpc.public_route_table_ids
 }
 
+output "vpc_secondary_cidr_blocks" {
+  description = "List of secondary CIDR blocks of the VPC"
+  value       = module.vpc.vpc_secondary_cidr_blocks
+}
