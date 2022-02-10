@@ -48,3 +48,48 @@ variable "database_username" {
   type        = string
   default     = "admin"
 }
+
+variable "create_custom_user" {
+  type        = bool
+  description = "To create a custom user or not"
+  default     = false
+}
+
+variable "custom_user_iam_role" {
+  type        = string
+  description = "The AWS IAM Role of the custom user"
+  default     = null
+}
+
+variable "custom_user_roles" {
+  type        = list(any)
+  description = "A list mapping roles to databases for the custom user"
+  default = [
+    {
+      role_name     = "readWriteAnyDatabase"
+      database_name = "admin"
+    }
+  ]
+}
+
+variable "custom_user_labels" {
+  type        = list(any)
+  description = "A list of key-value pairs for tagging the custom user"
+  default = [
+    {
+      key   = "%s"
+      value = "%s"
+    }
+  ]
+}
+
+variable "custom_user_scopes" {
+  type        = list(any)
+  description = "A list of clusters and data lakes the custom user"
+  default = [
+    {
+      name = "my_cluster"
+      type = "CLUSTER"
+    }
+  ]
+}
