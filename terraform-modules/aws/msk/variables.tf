@@ -122,5 +122,24 @@ variable "client_tls_auth_enabled" {
 variable "common_name" {
  type        = string
  description = "The common name for the CA"
- default     = "example.com
+ default     = "example.com"
 }
+
+variable "expiration_in_days" {
+ type        = number
+ description = "The CA expiration in days"
+ default     = 7
+}
+  
+variable "key_algorithm" {
+ type        = string
+ description = "The CA key algorithm"
+ default     = "RSA_4096"
+}
+
+variable "signing_algorithm" {
+ type        = string
+ description = "The CA signing algorithm"
+ default     = "SHA512WITHRSA"
+}
+
