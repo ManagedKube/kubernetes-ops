@@ -18,7 +18,7 @@ module "msk_log_bucket" {
 }
 
 module "msk" {
-  source                         = "git::https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster.git?ref=0.6.0"
+  source                         = "git::https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster.git?ref=msk-updates"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
