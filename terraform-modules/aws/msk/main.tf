@@ -13,8 +13,12 @@ resource "aws_kms_key" "this" {
 
 resource "aws_s3_bucket" "this" {
   bucket = var.s3_logs_bucket
-  acl    = "private"
   tags   = var.tags
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.this.id
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
