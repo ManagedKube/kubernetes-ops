@@ -118,3 +118,9 @@ variable "client_tls_auth_enabled" {
   type        = bool
   description = "Set true to enable the Client TLS Authentication"
 }
+
+variable "common_name" {
+ type        = string
+ description = "The common name for the CA"
+ default     = "example.com
+}
