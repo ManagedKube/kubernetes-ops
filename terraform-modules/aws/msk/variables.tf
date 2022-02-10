@@ -109,11 +109,6 @@ variable "security_groups" {
   description = "The security_group_id_list output from the security_groups module"
 }
 
-variable "certificate_authority_arns" {
-  type        = list(string)
-  description = "List of ACM Certificate Authority Amazon Resource Names (ARNs) to be used for TLS client authentication"
-}
-
 variable "client_tls_auth_enabled" {
   type        = bool
   description = "Set true to enable the Client TLS Authentication"
