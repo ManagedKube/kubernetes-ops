@@ -42,7 +42,7 @@ module "msk" {
 
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
-    module.msk_log_bucket
+#     module.msk_log_bucket
   ]
 }
 
