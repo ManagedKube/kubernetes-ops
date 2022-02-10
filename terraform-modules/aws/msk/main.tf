@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-}
-
 resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
   name = var.cloudwatch_logs_log_group
   tags = var.tags
