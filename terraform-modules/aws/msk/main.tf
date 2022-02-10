@@ -103,7 +103,7 @@ module "msk" {
   broker_instance_type           = var.broker_instance_type
   broker_volume_size             = var.broker_volume_size
   tags                           = var.tags
-  certificate_authority_arns     = aws_acmpca_certificate_authority.this.arn
+  certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
   encryption_in_cluster          = var.encryption_in_cluster
   encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn
