@@ -3,15 +3,15 @@ resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
   tags = var.tags
 }
 
-module "msk_log_bucket" {
-  source                  = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/s3_bucket?ref=v1.0.55"
-  bucket                  = var.s3_logs_bucket
-  acl                     = "private"
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
+# module "msk_log_bucket" {
+#   source                  = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/s3_bucket?ref=v1.0.55"
+#   bucket                  = var.s3_logs_bucket
+#   acl                     = "private"
+#   block_public_acls       = true
+#   block_public_policy     = true
+#   ignore_public_acls      = true
+#   restrict_public_buckets = true
+# }
 
 module "msk" {
   source                         = "cloudposse/msk-apache-kafka-cluster/aws"
