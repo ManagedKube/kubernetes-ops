@@ -8,7 +8,7 @@ resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
 }
 
 module "msk_log_bucket" {
-  source                  = "git::git@github.com:managedkube/kubernetes-ops.git//terraform-modules/aws/s3_bucket?ref=v0.0.8"
+  source                  = "git::git@github.com:managedkube/kubernetes-ops.git//terraform-modules/aws/s3_bucket?ref=v1.0.55"
   bucket                  = var.s3_logs_bucket
   acl                     = "private"
   block_public_acls       = true
