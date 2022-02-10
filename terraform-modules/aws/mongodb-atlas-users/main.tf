@@ -20,7 +20,12 @@ resource "mongodbatlas_database_user" "admin" {
   }
 }
 
-resource "mongodbatlas_database_user" "test" {
+# This user is created from an AWS IAM Role, which is also provisioned by this module
+# (see the "AWS Role" section at the end of this file)
+# Due to limitations of current MongoDB drivers (see https://jira.mongodb.org/browse/DRIVERS-2011)
+# this setup doesn't work as intended as of 2022-02-09, but it is expected to work once
+# the MongoDB drivers are updated.
+resource "mongodbatlas_database_user" "app_user" {
   username           = aws_iam_role.this.arn
   project_id         = var.mongodbatlas_projectid
   auth_database_name = "$external"
@@ -39,6 +44,40 @@ resource "mongodbatlas_database_user" "test" {
   scopes {
     name = var.cluster_name
     type = "CLUSTER"
+  }
+}
+
+# This additional user can be customized with any given AWS IAM Role
+# This can be useful when there is the need to use a Role that was created elsewhere
+resource "mongodbatlas_database_user" "custom_user" {
+  count              = var.create_custom_user ? 1 : 0
+  username           = var.custom_user_iam_role
+  project_id         = var.mongodbatlas_projectid
+  auth_database_name = "$external"
+  aws_iam_type       = "ROLE"
+
+  dynamic "roles" {
+    for_each = var.custom_user_roles
+    content {
+      role_name     = roles.value["role_name"]
+      database_name = roles.value["database_name"]
+    }
+  }
+
+  dynamic "labels" {
+    for_each = var.custom_user_labels
+    content {
+      key   = labels.value["key"]
+      value = labels.value["value"]
+    }
+  }
+
+  dynamic "scopes" {
+    for_each = var.custom_user_scopes
+    content {
+      name = scopes.value["name"]
+      type = scopes.value["type"]
+    }
   }
 }
 
