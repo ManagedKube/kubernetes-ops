@@ -70,6 +70,8 @@ resource "aws_acmpca_certificate_authority" "this" {
       common_name = var.common_name
     }
   }
+  
+  type = "ROOT"
 
   revocation_configuration {
     crl_configuration {
