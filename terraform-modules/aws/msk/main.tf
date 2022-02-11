@@ -1,5 +1,5 @@
-provider "aws" {
-  region = var.aws_region
+locals{
+  years_valid = 10 
 }
 
 resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
@@ -7,18 +7,121 @@ resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
   tags = var.tags
 }
 
-module "msk_log_bucket" {
-  source                  = "git::git@github.com:managedkube/kubernetes-ops.git//terraform-modules/aws/s3_bucket?ref=v0.0.8"
-  bucket                  = var.s3_logs_bucket
-  acl                     = "private"
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+#######################################
+# S3 bucket
+#######################################
+resource "aws_kms_key" "this" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 10
 }
 
+resource "aws_s3_bucket" "this" {
+  bucket = var.s3_logs_bucket
+  tags   = var.tags
+}
+
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.this.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.this.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.this.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+data "aws_iam_policy_document" "acmpca_bucket_access" {
+  statement {
+    actions = [
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+    ]
+
+    resources = [
+      aws_s3_bucket.this.arn,
+      "${aws_s3_bucket.this.arn}/*",
+    ]
+
+    principals {
+      identifiers = ["acm-pca.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "this" {
+  bucket = aws_s3_bucket.this.id
+  policy = data.aws_iam_policy_document.acmpca_bucket_access.json
+}
+
+#######################################
+# Private CA
+#######################################
+data "aws_partition" "current" {
+}
+
+resource "aws_acmpca_certificate_authority_certificate" "cacert" {
+  certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
+
+  certificate       = aws_acmpca_certificate.cert.certificate
+  certificate_chain = aws_acmpca_certificate.cert.certificate_chain
+}
+
+resource "aws_acmpca_certificate" "cert" {
+  certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
+  certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
+  signing_algorithm           = "SHA512WITHRSA"
+
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
+
+  validity {
+    type  = "YEARS"
+    value = local.years_valid
+  }
+}
+
+resource "aws_acmpca_certificate_authority" "this" {
+  certificate_authority_configuration {
+    key_algorithm     = var.key_algorithm
+    signing_algorithm = var.signing_algorithm
+
+    subject {
+      common_name = var.common_name
+    }
+  }
+  
+  type = "ROOT"
+
+  revocation_configuration {
+    crl_configuration {
+      custom_cname       = "crl.${var.common_name}"
+      # Disabling the CRL b/c the S3 bucket requirements are weird.  When creating the CA resource
+      # it keeps on complaining about the S3 bucket permissions is not set correctly.
+      enabled            = false
+      expiration_in_days = var.expiration_in_days
+      s3_bucket_name     = aws_s3_bucket.this.id
+    }
+  }
+  
+  tags   = var.tags
+
+  depends_on = [aws_s3_bucket_policy.this]
+}
+
+#######################################
+# MSK Cluster
+#######################################
 module "msk" {
-  source                         = "git::https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster.git?ref=0.6.0"
+  source                         = "cloudposse/msk-apache-kafka-cluster/aws"
+  version                        = "v0.8.3"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
@@ -31,7 +134,7 @@ module "msk" {
   broker_instance_type           = var.broker_instance_type
   broker_volume_size             = var.broker_volume_size
   tags                           = var.tags
-  certificate_authority_arns     = var.certificate_authority_arns
+  certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
   encryption_in_cluster          = var.encryption_in_cluster
   encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn
@@ -39,13 +142,14 @@ module "msk" {
   cloudwatch_logs_log_group      = var.cloudwatch_logs_enabled == true ? var.cloudwatch_logs_log_group : ""
   enhanced_monitoring            = var.enhanced_monitoring
   node_exporter_enabled          = var.node_exporter_enabled
-  s3_logs_bucket                 = var.s3_logs_enabled == true ? var.s3_logs_bucket : ""
+  s3_logs_bucket                 = var.s3_logs_enabled == true ? aws_s3_bucket.this.id : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
 
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
-    module.msk_log_bucket
+    aws_s3_bucket.this,
+    aws_acmpca_certificate.cert
   ]
 }
 
