@@ -78,7 +78,7 @@ resource "aws_acmpca_certificate_authority_certificate" "cacert" {
 resource "aws_acmpca_certificate" "cert" {
   certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
   certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
-  signing_algorithm           = local.signing_algorithm
+  signing_algorithm           = "SHA512WITHRSA"
 
   template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
 
