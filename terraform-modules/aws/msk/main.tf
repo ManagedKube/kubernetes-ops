@@ -105,7 +105,7 @@ resource "aws_acmpca_certificate_authority" "this" {
       custom_cname       = "crl.${var.common_name}"
       # Disabling the CRL b/c the S3 bucket requirements are weird.  When creating the CA resource
       # it keeps on complaining about the S3 bucket permissions is not set correctly.
-      enabled            = false
+      enabled            = true
       expiration_in_days = var.expiration_in_days
       s3_bucket_name     = aws_s3_bucket.this.id
     }
