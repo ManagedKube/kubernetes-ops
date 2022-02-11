@@ -95,5 +95,5 @@ module "acm_request_certificate" {
   domain_name                       = var.acm_domain_name
   process_domain_validation_options = true
   ttl                               = var.acm_ttl
-  subject_alternative_names         = var.subject_alternative_names
+  subject_alternative_names         = var.acm_subject_alternative_names
 }
