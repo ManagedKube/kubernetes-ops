@@ -61,6 +61,16 @@ resource "aws_s3_bucket_policy" "this" {
 #######################################
 # Private CA
 #######################################
+resource "aws_acmpca_certificate" "this" {
+  certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
+  certificate_signing_request = tls_cert_request.csr.cert_request_pem
+  signing_algorithm           = "SHA256WITHRSA"
+  validity {
+    type  = "YEARS"
+    value = 1
+  }
+}
+
 resource "aws_acmpca_certificate_authority" "this" {
   certificate_authority_configuration {
     key_algorithm     = var.key_algorithm
@@ -87,6 +97,19 @@ resource "aws_acmpca_certificate_authority" "this" {
   tags   = var.tags
 
   depends_on = [aws_s3_bucket_policy.this]
+}
+
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
+}
+
+resource "tls_cert_request" "csr" {
+  key_algorithm   = "RSA"
+  private_key_pem = tls_private_key.key.private_key_pem
+
+  subject {
+    common_name = "msk"
+  }
 }
 
 #######################################
