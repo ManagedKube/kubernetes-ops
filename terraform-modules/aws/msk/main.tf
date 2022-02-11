@@ -1,3 +1,7 @@
+locals{
+  years_valid = 10 
+}
+
 resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
   name = var.cloudwatch_logs_log_group
   tags = var.tags
@@ -61,25 +65,24 @@ resource "aws_s3_bucket_policy" "this" {
 #######################################
 # Private CA
 #######################################
-resource "aws_acmpca_certificate_authority_certificate" "this" {
+rresource "aws_acmpca_certificate_authority_certificate" "cacert" {
   certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
 
-  certificate       = aws_acmpca_certificate.this.certificate
-  certificate_chain = aws_acmpca_certificate.this.certificate_chain
+  certificate       = aws_acmpca_certificate.cert.certificate
+  certificate_chain = aws_acmpca_certificate.cert.certificate_chain
 }
 
-resource "aws_acmpca_certificate" "this" {
+resource "aws_acmpca_certificate" "cert" {
   certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
-  certificate_signing_request = tls_cert_request.csr.cert_request_pem
-  signing_algorithm           = "SHA256WITHRSA"
+  certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
+  signing_algorithm           = local.signing_algorithm
+
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
+
   validity {
     type  = "YEARS"
-    value = 10
+    value = local.years_valid
   }
-  
-  depends_on = [
-    aws_acmpca_certificate_authority.this
-  ]
 }
 
 resource "aws_acmpca_certificate_authority" "this" {
@@ -108,19 +111,6 @@ resource "aws_acmpca_certificate_authority" "this" {
   tags   = var.tags
 
   depends_on = [aws_s3_bucket_policy.this]
-}
-
-resource "tls_private_key" "key" {
-  algorithm = "RSA"
-}
-
-resource "tls_cert_request" "csr" {
-  key_algorithm   = "RSA"
-  private_key_pem = tls_private_key.key.private_key_pem
-
-  subject {
-    common_name = "msk"
-  }
 }
 
 #######################################
