@@ -149,7 +149,7 @@ module "msk" {
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
     aws_s3_bucket.this,
-    aws_acmpca_certificate.this
+    aws_acmpca_certificate.cert
   ]
 }
 
