@@ -16,10 +16,10 @@ resource "aws_s3_bucket" "this" {
   tags   = var.tags
 }
 
-# resource "aws_s3_bucket_acl" "example" {
-#   bucket = aws_s3_bucket.this.id
-#   acl    = "private"
-# }
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.this.id
+  acl    = "private"
+}
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.bucket
@@ -76,7 +76,7 @@ resource "aws_acmpca_certificate_authority" "this" {
       custom_cname       = "crl.${var.common_name}"
       enabled            = true
       expiration_in_days = var.expiration_in_days
-      s3_bucket_name     = aws_s3_bucket.this.id
+      s3_bucket_name     = "gargar-test1" #aws_s3_bucket.this.id
     }
   }
   
