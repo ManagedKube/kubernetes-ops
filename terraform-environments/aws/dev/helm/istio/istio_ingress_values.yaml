@@ -9,7 +9,7 @@
         service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:354114410416:certificate/cab4cc86-e94a-4dec-afc2-579114208350
         service.beta.kubernetes.io/aws-load-balancer-access-log-enabled: true
         service.beta.kubernetes.io/aws-load-balancer-access-log-emit-interval: 5
-        service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name: "expanse-elb-logs-dev"
+        service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name: "elb-logs-dev"
         # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html
         # service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
         # Setting this with Terraform since we need a custom TLS policy: https://github.q-internal.tech/qadium/shared-infra-automation/tree/master/aws-ent/qadium-dev/load-balancer/tls-policy
