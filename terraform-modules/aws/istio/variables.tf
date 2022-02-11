@@ -132,8 +132,14 @@ variable "acm_ttl" {
   description = "The certifcate TTL"
 }
 
-variable acm_subject_alternative_names {
+variable "acm_subject_alternative_names" {
   type        = list(string)
   default     = ["*.example.com"]
   description = "Subject alternative names for the cert (SAN)"
+}
+
+variable "acm_route53_zone_id" {
+  type        = string
+  default     = ""
+  description = "The route53 zone ID to perform DNS validation on the ACM cert"
 }

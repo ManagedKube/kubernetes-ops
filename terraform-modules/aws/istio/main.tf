@@ -96,4 +96,5 @@ module "acm_request_certificate" {
   process_domain_validation_options = true
   ttl                               = var.acm_ttl
   subject_alternative_names         = var.acm_subject_alternative_names
+  zone_id                           = var.acm_route53_zone_id
 }
