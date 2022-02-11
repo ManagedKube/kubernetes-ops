@@ -113,3 +113,27 @@ variable "helm_values_istio_egress" {
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module."
 }
+
+variable "create_acm_cert" {
+  type        = bool
+  default     = false
+  description = "Creates an ACM cert and applied to the istio ingress"
+}
+
+variable "acm_domain_name" {
+  type        = string
+  default     = "example.com"
+  description = "The domain name to create a certificate for"
+}
+
+variable "acm_ttl" {
+  type        = string
+  default     = "300"
+  description = "The certifcate TTL"
+}
+
+variable acm_subject_alternative_names {
+  type        = list(string)
+  default     = ["*.example.com"]
+  description = "Subject alternative names for the cert (SAN)"
+}

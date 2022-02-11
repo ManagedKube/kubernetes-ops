@@ -76,3 +76,15 @@ resource "helm_release" "helm_chart_istio_egress" {
     helm_release.helm_chart_istio_base
   ]
 }
+
+module "acm_request_certificate" {
+  source = "cloudposse/acm-request-certificate/aws"
+  version = "0.16.0"
+
+  count = var.create_acm_cert ? 1 : 0
+
+  domain_name                       = var.acm_domain_name
+  process_domain_validation_options = true
+  ttl                               = var.acm_ttl
+  subject_alternative_names         = var.subject_alternative_names
+}
