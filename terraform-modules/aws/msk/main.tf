@@ -65,7 +65,7 @@ resource "aws_s3_bucket_policy" "this" {
 #######################################
 # Private CA
 #######################################
-rresource "aws_acmpca_certificate_authority_certificate" "cacert" {
+resource "aws_acmpca_certificate_authority_certificate" "cacert" {
   certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
 
   certificate       = aws_acmpca_certificate.cert.certificate
