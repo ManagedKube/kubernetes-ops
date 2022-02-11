@@ -44,7 +44,8 @@ resource "helm_release" "helm_chart_istio_discovery" {
 }
 
 data "template_file" "helm_chart_istio_ingress" {
-  template = file("${path.module}/values/istio_ingress_values.tpl.yaml")
+  template = var.helm_values_istio_ingress
+  #file("${path.module}/values/istio_ingress_values.tpl.yaml")
 
   vars = {
     acmARN      = module.acm_request_certificate[0].arn
@@ -61,7 +62,7 @@ resource "helm_release" "helm_chart_istio_ingress" {
 
   values = [
     data.template_file.helm_chart_istio_ingress.rendered,
-    var.helm_values_istio_ingress,
+    # var.helm_values_istio_ingress,
   ]
 
   depends_on = [
