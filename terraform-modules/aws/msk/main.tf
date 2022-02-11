@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "this" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "example" {
+resource "aws_s3_bucket_acl" "this" {
   bucket = aws_s3_bucket.this.id
   acl    = "private"
 }
@@ -61,6 +61,13 @@ resource "aws_s3_bucket_policy" "this" {
 #######################################
 # Private CA
 #######################################
+resource "aws_acmpca_certificate_authority_certificate" "this" {
+  certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
+
+  certificate       = aws_acmpca_certificate.this.certificate
+  certificate_chain = aws_acmpca_certificate.this.certificate_chain
+}
+
 resource "aws_acmpca_certificate" "this" {
   certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
   certificate_signing_request = tls_cert_request.csr.cert_request_pem
@@ -69,6 +76,10 @@ resource "aws_acmpca_certificate" "this" {
     type  = "YEARS"
     value = 10
   }
+  
+  depends_on = [
+    aws_acmpca_certificate_authority.this
+  ]
 }
 
 resource "aws_acmpca_certificate_authority" "this" {
@@ -88,7 +99,7 @@ resource "aws_acmpca_certificate_authority" "this" {
       custom_cname       = "crl.${var.common_name}"
       # Disabling the CRL b/c the S3 bucket requirements are weird.  When creating the CA resource
       # it keeps on complaining about the S3 bucket permissions is not set correctly.
-      enabled            = false
+      enabled            = true
       expiration_in_days = var.expiration_in_days
       s3_bucket_name     = aws_s3_bucket.this.id
     }
