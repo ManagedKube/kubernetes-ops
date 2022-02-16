@@ -1,19 +1,30 @@
-variable "domain_name" {
-    description = "The domain name"
-    type = string
+variable "create_zones" {
+  description = "Whether to create Route53 zone"
+  type        = bool
+  default     = true
 }
 
-variable "kms_alias" {
-  description = "kms alias"
-  type        = string
-  default     = "key"
+variable "create_records" {
+  description = "Whether to create DNS records"
+  type        = bool
+  default     = true
 }
+
+variable "zones" {
+  description = "Map of Route53 zone parameters"
+  type        = any
+  default     = {}
+}
+
 variable "tags" {
-    type = map(any)
+  description = "Tags added to all zones. Will take precedence over tags from the 'zones' variable"
+  type        = map(any)
+  default     = {}
 }
 
-variable "kms_key_policy" {
-    description = "JSON policy for kms key"
-    type        = string
-    default     = ""
+variable "records" {
+  description = "List of maps of DNS records"
+  type        = any
+  default     = []
 }
+
