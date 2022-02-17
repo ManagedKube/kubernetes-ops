@@ -46,3 +46,15 @@ variable "issue_ref_kind" {
 variable "issue_ref_group" {
   default = "cert-manager.io"
 }
+
+variable "gateway_hosts" {
+  type    = list(string)
+  description = "the list of hosts available for the gateway"
+  default = ["*"]
+}
+
+variable "gateway_credentialName" {
+  type    = string
+  description = "This is the gateway matches the secretName field in the certificate"
+  default = "domain-wildcard" 
+}

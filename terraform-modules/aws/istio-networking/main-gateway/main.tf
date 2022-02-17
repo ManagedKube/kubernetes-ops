@@ -15,6 +15,8 @@ data "template_file" "gateway" {
 
   vars = {
     namespace  = var.namespace
+    gateway_hosts = var.gateway_hosts
+    gateway_credentialName = var.gateway_credentialName
   }
 }
 
