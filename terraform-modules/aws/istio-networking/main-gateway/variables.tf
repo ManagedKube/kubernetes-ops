@@ -28,7 +28,12 @@ variable "cert_dns_name" {
   type = string
   description = "The dns name for the certificate"
 }
-  
+
+variable "enable_certificate" {
+  type = bool
+  description = "Create certificate resource on-demand"
+}
+
 variable "issue_ref_name" {
   default = "letsencrypt-prod-dns01"
 }
