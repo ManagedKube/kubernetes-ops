@@ -32,6 +32,7 @@ variable "cert_dns_name" {
 variable "enable_certificate" {
   type = bool
   description = "If set to true, it will create the certificate resource on-demand"
+  default = true
 }
 
 variable "issue_ref_name" {
