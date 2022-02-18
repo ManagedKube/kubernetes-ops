@@ -107,22 +107,27 @@ locals {
   # we have to combine the configmap created by the eks module with the externally created node group/profile sub-modules
   aws_auth_configmap_yaml = <<-EOT
   ${chomp(module.eks.aws_auth_configmap_yaml)}
-      - rolearn: ${module.eks_managed_node_group.iam_role_arn}
+      - rolearn: foo
         username: system:node:{{EC2PrivateDNSName}}
         groups:
           - system:bootstrappers
           - system:nodes
-      - rolearn: ${module.self_managed_node_group.iam_role_arn}
-        username: system:node:{{EC2PrivateDNSName}}
-        groups:
-          - system:bootstrappers
-          - system:nodes
-      - rolearn: ${module.fargate_profile.fargate_profile_pod_execution_role_arn}
-        username: system:node:{{SessionName}}
-        groups:
-          - system:bootstrappers
-          - system:nodes
-          - system:node-proxier
+      # - rolearn: ${module.eks_managed_node_group.iam_role_arn}
+      #   username: system:node:{{EC2PrivateDNSName}}
+      #   groups:
+      #     - system:bootstrappers
+      #     - system:nodes
+      # - rolearn: ${module.self_managed_node_group.iam_role_arn}
+      #   username: system:node:{{EC2PrivateDNSName}}
+      #   groups:
+      #     - system:bootstrappers
+      #     - system:nodes
+      # - rolearn: ${module.fargate_profile.fargate_profile_pod_execution_role_arn}
+      #   username: system:node:{{SessionName}}
+      #   groups:
+      #     - system:bootstrappers
+      #     - system:nodes
+      #     - system:node-proxier
   EOT
 }
 
