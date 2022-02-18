@@ -25,61 +25,61 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
-# locals {
-#   kubeconfig = yamlencode({
-#     apiVersion      = "v1"
-#     kind            = "Config"
-#     current-context = "terraform"
-#     clusters = [{
-#       name = module.eks.cluster_id
-#       cluster = {
-#         certificate-authority-data = module.eks.cluster_certificate_authority_data
-#         server                     = module.eks.cluster_endpoint
-#       }
-#     }]
-#     contexts = [{
-#       name = "terraform"
-#       context = {
-#         cluster = module.eks.cluster_id
-#         user    = "terraform"
-#       }
-#     }]
-#     users = [{
-#       name = "terraform"
-#       user = {
-#         token = data.aws_eks_cluster_auth.cluster.token
-#       }
-#     }]
-#   })
+locals {
+  kubeconfig = yamlencode({
+    apiVersion      = "v1"
+    kind            = "Config"
+    current-context = "terraform"
+    clusters = [{
+      name = module.eks.cluster_id
+      cluster = {
+        certificate-authority-data = module.eks.cluster_certificate_authority_data
+        server                     = module.eks.cluster_endpoint
+      }
+    }]
+    contexts = [{
+      name = "terraform"
+      context = {
+        cluster = module.eks.cluster_id
+        user    = "terraform"
+      }
+    }]
+    users = [{
+      name = "terraform"
+      user = {
+        token = data.aws_eks_cluster_auth.cluster.token
+      }
+    }]
+  })
 
-#   current_auth_configmap = yamldecode(module.eks.aws_auth_configmap_yaml)
+  current_auth_configmap = yamldecode(module.eks.aws_auth_configmap_yaml)
 
-#   updated_auth_configmap_data = {
-#     data = {
-#       mapRoles = yamlencode(
-#         distinct(concat(
-#         yamldecode(local.current_auth_configmap.data.mapRoles), var.map_roles, )
-#       ))
-#       mapUsers = yamlencode(var.map_users)
-#     }
-#   }
+  updated_auth_configmap_data = {
+    data = {
+      mapRoles = yamlencode(
+        distinct(concat(
+        yamldecode(local.current_auth_configmap.data.mapRoles), var.map_roles, )
+      ))
+      mapUsers = yamlencode(var.map_users)
+    }
+  }
 
-# }
+}
 
-# resource "null_resource" "patch_aws_auth_configmap" {
-#   triggers = {
-#     cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
-#   }
+resource "null_resource" "patch_aws_auth_configmap" {
+  triggers = {
+    cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
+  }
 
-#   provisioner "local-exec" {
-#     interpreter = ["/bin/bash", "-c"]
-#     command     = self.triggers.cmd_patch
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = self.triggers.cmd_patch
 
-#     environment = {
-#       KUBECONFIG = base64encode(local.kubeconfig)
-#     }
-#   }
-# }
+    environment = {
+      KUBECONFIG = base64encode(local.kubeconfig)
+    }
+  }
+}
 
 # output "tmp" {
 #   value = local.kubeconfig
