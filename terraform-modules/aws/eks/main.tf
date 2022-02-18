@@ -124,7 +124,7 @@ resource "null_resource" "patch" {
 
     # cmd_patch  = "ls -l /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/terraform/aws/domain-services/dev/us-west-2/dvpc02/dc08/10-eks"
 
-    cmd_patch = "/github/kubectl --help"
+    cmd_patch = "./kubectl --help"
   }
 
   provisioner "local-exec" {
