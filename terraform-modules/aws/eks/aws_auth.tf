@@ -1,6 +1,10 @@
 # Source: https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v17.24.0/aws_auth.tf
 # Reason: 
 
+data "aws_partition" "current" {}
+
+data "aws_caller_identity" "current" {}
+
 locals {
   auth_launch_template_worker_roles = [
     for index in range(0, var.create_eks ? local.worker_group_launch_template_count : 0) : {
