@@ -94,5 +94,5 @@ resource "kubernetes_config_map" "aws_auth" {
     mapAccounts = yamlencode(var.map_accounts)
   }
 
-  depends_on = [data.http.wait_for_cluster[0]]
+  depends_on = [module.eks]
 }
