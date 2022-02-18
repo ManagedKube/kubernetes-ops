@@ -15,6 +15,8 @@ data "template_file" "gateway" {
 
   vars = {
     namespace  = var.namespace
+    gateway_hosts =  "${jsonencode(var.gateway_hosts)}"
+    gateway_credentialName = var.gateway_credentialName
   }
 }
 
@@ -24,6 +26,7 @@ resource "kubectl_manifest" "gateway" {
 
 # file templating
 data "template_file" "certificate" {
+  count    = var.enable_certificate ? 1 : 0
   template = file("${path.module}/certificate.tpl.yaml")
 
   vars = {
@@ -38,5 +41,6 @@ data "template_file" "certificate" {
 }
 
 resource "kubectl_manifest" "certificate" {
-  yaml_body = data.template_file.certificate.rendered
+  count     = var.enable_certificate ? 1 : 0
+  yaml_body = data.template_file.certificate[0].rendered
 }

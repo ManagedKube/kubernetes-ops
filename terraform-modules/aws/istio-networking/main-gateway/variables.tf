@@ -28,7 +28,13 @@ variable "cert_dns_name" {
   type = string
   description = "The dns name for the certificate"
 }
-  
+
+variable "enable_certificate" {
+  type = bool
+  description = "If set to true, it will create the certificate resource on-demand"
+  default = true
+}
+
 variable "issue_ref_name" {
   default = "letsencrypt-prod-dns01"
 }
@@ -39,4 +45,16 @@ variable "issue_ref_kind" {
 
 variable "issue_ref_group" {
   default = "cert-manager.io"
+}
+
+variable "gateway_hosts" {
+  type    = list(string)
+  description = "the list of hosts available for the gateway"
+  default = ["*"]
+}
+
+variable "gateway_credentialName" {
+  type    = string
+  description = "This is the gateway matches the secretName field in the certificate"
+  default = "domain-wildcard" 
 }
