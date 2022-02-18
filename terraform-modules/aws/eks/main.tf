@@ -120,7 +120,7 @@ resource "null_resource" "patch" {
     kubeconfig = base64encode(local.kubeconfig)
     # cmd_patch  = "kubectl patch configmap/aws-auth --patch \"${local.aws_auth_configmap_yaml}\" -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
     
-    cmd_patch  = "echo $KUBECONFIG | base64 -d > kubeconfig; echo \"${local.aws_auth_configmap_yaml}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
+    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.aws_auth_configmap_yaml}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
   }
 
   provisioner "local-exec" {
