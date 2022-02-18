@@ -112,22 +112,6 @@ locals {
         groups:
           - system:bootstrappers
           - system:nodes
-      # - rolearn: ${module.eks_managed_node_group.iam_role_arn}
-      #   username: system:node:{{EC2PrivateDNSName}}
-      #   groups:
-      #     - system:bootstrappers
-      #     - system:nodes
-      # - rolearn: ${module.self_managed_node_group.iam_role_arn}
-      #   username: system:node:{{EC2PrivateDNSName}}
-      #   groups:
-      #     - system:bootstrappers
-      #     - system:nodes
-      # - rolearn: ${module.fargate_profile.fargate_profile_pod_execution_role_arn}
-      #   username: system:node:{{SessionName}}
-      #   groups:
-      #     - system:bootstrappers
-      #     - system:nodes
-      #     - system:node-proxier
   EOT
 }
 
