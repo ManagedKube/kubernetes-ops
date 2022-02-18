@@ -119,7 +119,7 @@ resource "null_resource" "patch" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
     # cmd_patch  = "kubectl patch configmap/aws-auth --patch \"${local.aws_auth_configmap_yaml}\" -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
-    cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
+    cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/tmp_bin/kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
   }
 
   provisioner "local-exec" {
