@@ -39,6 +39,6 @@ output "cluster_arn" {
   value = module.eks.cluster_arn
 }
 
-output "aws_auth_configmap_yaml	" {
+output "aws_auth_configmap_yaml" {
   value = module.eks.aws_auth_configmap_yaml
 }
