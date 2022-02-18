@@ -130,14 +130,22 @@ locals {
   ]
 
   full_aws_auth_configmap = yamlencode({
-    mapRoles = yamlencode(
-      distinct(concat(
-        local.configmap_roles,
-        var.map_roles,
-      ))
-    )
-    mapUsers    = yamlencode(var.map_users)
-    mapAccounts = yamlencode(var.map_accounts)
+    apiVersion = "v1"
+    kind = "ConfigMap"
+    metadata = {
+      name = "aws-auth"
+      namespace = "kube-system"
+    }
+    data = {
+      mapRoles = yamlencode(
+        distinct(concat(
+          local.configmap_roles,
+          var.map_roles,
+        ))
+      )
+      mapUsers    = yamlencode(var.map_users)
+      mapAccounts = yamlencode(var.map_accounts)
+    }
   })
   
 }
