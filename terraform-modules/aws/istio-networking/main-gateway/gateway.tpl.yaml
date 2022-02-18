@@ -13,14 +13,13 @@ spec:
       number: 80
       name: http
       protocol: HTTP
-    hosts:
-    - "*"
+    host: ${gateway_hosts}
   - port:
       number: 443
       name: https
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      credentialName: domain-wildcard # This should match the Certificate secretName
+      credentialName: ${gateway_credentialName} # This should match the Certificate secretName
     hosts:
     - "*" # This should match a DNS name in the Certificate
