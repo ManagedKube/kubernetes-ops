@@ -79,6 +79,12 @@ variable "map_users" {
   description = "A list of users to give permission to access this cluster"
 }
 
+variable "map_accounts" {
+  description = "Additional AWS account numbers to add to the aws-auth configmap."
+  type        = list(string)
+  default     = []
+}
+
 variable "eks_managed_node_groups" {
   description = "Map of EKS managed node group definitions to create"
   type        = any
