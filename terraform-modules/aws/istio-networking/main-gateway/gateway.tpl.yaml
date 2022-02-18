@@ -13,10 +13,7 @@ spec:
       number: 80
       name: http
       protocol: HTTP
-    hosts: 
-      %{ for host in gateway_hosts ~}
-      - ${host}
-      %{ endfor ~}
+    host: ${gateway_hosts}
   - port:
       number: 443
       name: https
