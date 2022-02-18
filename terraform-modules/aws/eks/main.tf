@@ -83,6 +83,7 @@ locals {
 
 output "tmp" {
   value = local.kubeconfig
+  sensitive = true
 }
 
 resource "aws_kms_key" "eks" {
