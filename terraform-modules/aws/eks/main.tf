@@ -122,7 +122,9 @@ resource "null_resource" "patch" {
     
     # cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/tmp_bin/kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
 
-    cmd_patch  = "ls -l /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/terraform/aws/domain-services/dev/us-west-2/dvpc02/dc08/10-eks"
+    # cmd_patch  = "ls -l /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/terraform/aws/domain-services/dev/us-west-2/dvpc02/dc08/10-eks"
+
+    cmd_patch = "pwd; ls -l"
   }
 
   provisioner "local-exec" {
