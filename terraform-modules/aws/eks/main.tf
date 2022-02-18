@@ -105,23 +105,56 @@ locals {
   })
 
   # we have to combine the configmap created by the eks module with the externally created node group/profile sub-modules
-  aws_auth_configmap_yaml = <<-EOT
-  ${chomp(module.eks.aws_auth_configmap_yaml)}
-      - userarn: arn:aws:iam::827126933480:user/garland.kan
-        username: system:node:{{EC2PrivateDNSName}}
-        groups:
-          - system:masters
-          - system:bootstrappers
-          - system:nodes
-  EOT
+  # aws_auth_configmap_yaml = <<-EOT
+  # ${chomp(module.eks.aws_auth_configmap_yaml)}
+  #     - userarn: arn:aws:iam::827126933480:user/garland.kan
+  #       username: garland.kan
+  #       groups:
+  #         - system:masters
+  # EOT
+
+  configmap_roles = [
+    for item in module.eks.eks_managed_node_groups:
+    {
+      # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
+      # Strip the leading slash off so that Terraform doesn't think it's a regex
+      rolearn  = item.iam_role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups = tolist(concat(
+        [
+          "system:bootstrappers",
+          "system:nodes",
+        ],
+      ))
+    }
+  ]
+
+  full_aws_auth_configmap = yamlencode({
+    mapRoles = yamlencode(
+      distinct(concat(
+        local.configmap_roles,
+        var.map_roles,
+      ))
+    )
+    mapUsers    = yamlencode(var.map_users)
+    mapAccounts = yamlencode(var.map_accounts)
+  })
+  
 }
+
+      # - userarn: arn:aws:iam::827126933480:user/garland.kan
+      #   username: system:node:{{EC2PrivateDNSName}}
+      #   groups:
+      #     - system:masters
+      #     - system:bootstrappers
+      #     - system:nodes
 
 resource "null_resource" "patch" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
     # cmd_patch  = "kubectl patch configmap/aws-auth --patch \"${local.aws_auth_configmap_yaml}\" -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
     
-    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.aws_auth_configmap_yaml}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
+    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
   }
 
   provisioner "local-exec" {
