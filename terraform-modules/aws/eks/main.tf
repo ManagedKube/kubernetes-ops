@@ -120,11 +120,7 @@ resource "null_resource" "patch" {
     kubeconfig = base64encode(local.kubeconfig)
     # cmd_patch  = "kubectl patch configmap/aws-auth --patch \"${local.aws_auth_configmap_yaml}\" -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
     
-    # cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | /github/kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
-
-    # cmd_patch  = "ls -l /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/terraform/aws/domain-services/dev/us-west-2/dvpc02/dc08/10-eks"
-
-    cmd_patch = "/github/workspace/kubectl --help"
+    cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
   }
 
   provisioner "local-exec" {
