@@ -84,6 +84,21 @@ locals {
 
 }
 
+resource "null_resource" "import_aws_auth_config" {
+  triggers = {
+    cmd_patch = "terragrunt import kubernetes_config_map.aws_auth kube-system/aws-auth"
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = self.triggers.cmd_patch
+
+    # environment = {
+    #   KUBECONFIG = base64encode(local.kubeconfig)
+    # }
+  }
+}
+
 resource "kubernetes_config_map" "aws_auth" {
   count = var.manage_aws_auth ? 1 : 0
 
