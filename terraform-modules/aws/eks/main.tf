@@ -107,9 +107,10 @@ locals {
   # we have to combine the configmap created by the eks module with the externally created node group/profile sub-modules
   aws_auth_configmap_yaml = <<-EOT
   ${chomp(module.eks.aws_auth_configmap_yaml)}
-      - rolearn: foo
+      - userarn: arn:aws:iam::827126933480:user/garland.kan
         username: system:node:{{EC2PrivateDNSName}}
         groups:
+          - system:masters
           - system:bootstrappers
           - system:nodes
   EOT
