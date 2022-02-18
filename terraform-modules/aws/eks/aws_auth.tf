@@ -66,7 +66,7 @@ locals {
 #   ]
 
   configmap_roles = [
-    for item in module.fargate.aws_auth_roles:
+    for item in module.eks.eks_managed_node_groups:
     {
       # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
       # Strip the leading slash off so that Terraform doesn't think it's a regex
