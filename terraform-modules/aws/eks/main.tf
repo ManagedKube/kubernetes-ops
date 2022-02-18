@@ -25,62 +25,6 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
-# locals {
-#   kubeconfig = yamlencode({
-#     apiVersion      = "v1"
-#     kind            = "Config"
-#     current-context = "terraform"
-#     clusters = [{
-#       name = module.eks.cluster_id
-#       cluster = {
-#         certificate-authority-data = module.eks.cluster_certificate_authority_data
-#         server                     = module.eks.cluster_endpoint
-#       }
-#     }]
-#     contexts = [{
-#       name = "terraform"
-#       context = {
-#         cluster = module.eks.cluster_id
-#         user    = "terraform"
-#       }
-#     }]
-#     users = [{
-#       name = "terraform"
-#       user = {
-#         token = data.aws_eks_cluster_auth.cluster.token
-#       }
-#     }]
-#   })
-
-#   current_auth_configmap = yamldecode(module.eks.aws_auth_configmap_yaml)
-
-#   updated_auth_configmap_data = {
-#     data = {
-#       mapRoles = yamlencode(
-#         distinct(concat(
-#         yamldecode(local.current_auth_configmap.data.mapRoles), var.map_roles, )
-#       ))
-#       mapUsers = yamlencode(var.map_users)
-#     }
-#   }
-
-# }
-
-# resource "null_resource" "patch_aws_auth_configmap" {
-#   triggers = {
-#     cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
-#   }
-
-#   provisioner "local-exec" {
-#     interpreter = ["/bin/bash", "-c"]
-#     command     = self.triggers.cmd_patch
-
-#     environment = {
-#       KUBECONFIG = base64encode(local.kubeconfig)
-#     }
-#   }
-# }
-
 resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key"
   tags        = var.tags
@@ -123,3 +67,76 @@ module "eks" {
 
 }
 
+################################################################################
+# aws-auth configmap
+# Only EKS managed node groups automatically add roles to aws-auth configmap
+# so we need to ensure fargate profiles and self-managed node roles are added
+################################################################################
+
+data "aws_eks_cluster_auth" "this" {
+  name = module.eks.cluster_id
+}
+
+locals {
+  kubeconfig = yamlencode({
+    apiVersion      = "v1"
+    kind            = "Config"
+    current-context = "terraform"
+    clusters = [{
+      name = module.eks.cluster_id
+      cluster = {
+        certificate-authority-data = module.eks.cluster_certificate_authority_data
+        server                     = module.eks.cluster_endpoint
+      }
+    }]
+    contexts = [{
+      name = "terraform"
+      context = {
+        cluster = module.eks.cluster_id
+        user    = "terraform"
+      }
+    }]
+    users = [{
+      name = "terraform"
+      user = {
+        token = data.aws_eks_cluster_auth.this.token
+      }
+    }]
+  })
+
+  # we have to combine the configmap created by the eks module with the externally created node group/profile sub-modules
+  aws_auth_configmap_yaml = <<-EOT
+  ${chomp(module.eks.aws_auth_configmap_yaml)}
+      - rolearn: ${module.eks_managed_node_group.iam_role_arn}
+        username: system:node:{{EC2PrivateDNSName}}
+        groups:
+          - system:bootstrappers
+          - system:nodes
+      - rolearn: ${module.self_managed_node_group.iam_role_arn}
+        username: system:node:{{EC2PrivateDNSName}}
+        groups:
+          - system:bootstrappers
+          - system:nodes
+      - rolearn: ${module.fargate_profile.fargate_profile_pod_execution_role_arn}
+        username: system:node:{{SessionName}}
+        groups:
+          - system:bootstrappers
+          - system:nodes
+          - system:node-proxier
+  EOT
+}
+
+resource "null_resource" "patch" {
+  triggers = {
+    kubeconfig = base64encode(local.kubeconfig)
+    cmd_patch  = "kubectl patch configmap/aws-auth --patch \"${local.aws_auth_configmap_yaml}\" -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+    }
+    command = self.triggers.cmd_patch
+  }
+}
