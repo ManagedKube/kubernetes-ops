@@ -122,7 +122,7 @@ resource "null_resource" "patch" {
     
     # cmd_patch  = "echo \"${local.aws_auth_configmap_yaml}\" | /home/ec2-user/actions-runner/_work/do-infrastructure/do-infrastructure/tmp_bin/kubectl apply -n kube-system --kubeconfig <(echo $KUBECONFIG | base64 -d) -f -"
 
-    cmd_patch  = "kubectl --help"
+    cmd_patch  = "/home/runner/work/do-infrastructure/do-infrastructure/tmp_bin/kubectl --help"
   }
 
   provisioner "local-exec" {
