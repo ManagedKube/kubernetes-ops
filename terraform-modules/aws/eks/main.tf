@@ -146,14 +146,3 @@ provider "kubectl" {
 resource "kubectl_manifest" "test" {
     yaml_body = local.aws_auth_configmap_yaml
 }
-
-terraform {
-  required_version = ">= 0.13"
-
-  required_providers {
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.7.0"
-    }
-  }
-}
