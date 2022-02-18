@@ -43,18 +43,34 @@ locals {
 #   ]
 
   # Convert to format needed by aws-auth ConfigMap
+#   configmap_roles = [
+#     for role in concat(
+#     #   local.auth_launch_template_worker_roles,
+#     #   local.auth_worker_roles,
+#     #   module.node_groups.aws_auth_roles,
+#     #   module.fargate.aws_auth_roles,
+#       module.eks.eks_managed_node_groups,
+#     ) :
+#     {
+#       # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
+#       # Strip the leading slash off so that Terraform doesn't think it's a regex
+#       rolearn  = role.iam_role_arn
+#       username = "system:node:{{EC2PrivateDNSName}}"
+#       groups = tolist(concat(
+#         [
+#           "system:bootstrappers",
+#           "system:nodes",
+#         ],
+#       ))
+#     }
+#   ]
+
   configmap_roles = [
-    for role in concat(
-    #   local.auth_launch_template_worker_roles,
-    #   local.auth_worker_roles,
-    #   module.node_groups.aws_auth_roles,
-    #   module.fargate.aws_auth_roles,
-      module.eks.eks_managed_node_groups,
-    ) :
+    for item in module.fargate.aws_auth_roles:
     {
       # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
       # Strip the leading slash off so that Terraform doesn't think it's a regex
-      rolearn  = role.iam_role_arn
+      rolearn  = item.iam_role_arn
       username = "system:node:{{EC2PrivateDNSName}}"
       groups = tolist(concat(
         [
@@ -64,6 +80,8 @@ locals {
       ))
     }
   ]
+  
+
 }
 
 resource "kubernetes_config_map" "aws_auth" {
