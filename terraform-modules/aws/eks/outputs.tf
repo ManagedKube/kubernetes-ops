@@ -42,3 +42,7 @@ output "cluster_arn" {
 output "aws_auth_configmap_yaml" {
   value = module.eks.aws_auth_configmap_yaml
 }
+
+output "eks_managed_node_groups" {
+  value = module.eks.eks_managed_node_groups
+}
