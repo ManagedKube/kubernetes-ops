@@ -7,7 +7,7 @@ variable "create_zones" {
 variable "create_records" {
   description = "Whether to create DNS records"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "zones" {
@@ -28,3 +28,8 @@ variable "records" {
   default     = []
 }
 
+variable "private_zone" {
+  description = "Whether Route53 zone is private or public"
+  type        = bool
+  default     = false
+}
