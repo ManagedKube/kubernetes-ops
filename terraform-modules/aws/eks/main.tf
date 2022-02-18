@@ -66,19 +66,23 @@ locals {
 
 }
 
-resource "null_resource" "patch_aws_auth_configmap" {
-  triggers = {
-    cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
-  }
+# resource "null_resource" "patch_aws_auth_configmap" {
+#   triggers = {
+#     cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
+#   }
 
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = self.triggers.cmd_patch
+#   provisioner "local-exec" {
+#     interpreter = ["/bin/bash", "-c"]
+#     command     = self.triggers.cmd_patch
 
-    environment = {
-      KUBECONFIG = base64encode(local.kubeconfig)
-    }
-  }
+#     environment = {
+#       KUBECONFIG = base64encode(local.kubeconfig)
+#     }
+#   }
+# }
+
+output "tmp" {
+  value = local.kubeconfig
 }
 
 resource "aws_kms_key" "eks" {
