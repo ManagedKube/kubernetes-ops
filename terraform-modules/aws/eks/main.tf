@@ -25,6 +25,49 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
+resource "aws_kms_key" "eks" {
+  description = "EKS Secret Encryption Key"
+  tags        = var.tags
+}
+
+module "eks" {
+  source           = "terraform-aws-modules/eks/aws"
+  version          = "18.2.6"
+  cluster_name     = var.cluster_name
+  cluster_version  = var.cluster_version
+  enable_irsa      = var.enable_irsa
+  tags             = var.tags
+
+  vpc_id = var.vpc_id
+
+  # Using a conditional for backwards compatibility for those who started out only
+  # using the private_subnets for the input variable.  The new k8s_subnets is new
+  # and makes the subnet id input var name more generic to where the k8s worker nodes goes
+  subnet_ids = length(var.private_subnets) > 0 ? var.private_subnets : var.k8s_subnets
+
+  cluster_endpoint_public_access       = var.cluster_endpoint_public_access
+  cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
+
+  cluster_endpoint_private_access                = var.cluster_endpoint_private_access
+  cluster_security_group_additional_rules        = var.cluster_security_group_additional_rules
+
+  cluster_encryption_config = [{
+    provider_key_arn = aws_kms_key.eks.arn
+    resources        = ["secrets"]
+  }]
+
+  cluster_enabled_log_types     = var.cluster_enabled_log_types
+
+  eks_managed_node_groups = var.eks_managed_node_groups
+
+}
+
+################################################################################
+# aws-auth configmap
+# Only EKS managed node groups automatically add roles to aws-auth configmap
+# so we need to ensure fargate profiles and self-managed node roles are added
+################################################################################
+
 locals {
   kubeconfig = yamlencode({
     apiVersion      = "v1"
@@ -52,75 +95,54 @@ locals {
     }]
   })
 
-  current_auth_configmap = yamldecode(module.eks.aws_auth_configmap_yaml)
+  configmap_roles = [
+    for item in module.eks.eks_managed_node_groups:
+    {
+      # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
+      # Strip the leading slash off so that Terraform doesn't think it's a regex
+      rolearn  = item.iam_role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups = tolist(concat(
+        [
+          "system:bootstrappers",
+          "system:nodes",
+        ],
+      ))
+    }
+  ]
 
-  updated_auth_configmap_data = {
+  full_aws_auth_configmap = yamlencode({
+    apiVersion = "v1"
+    kind = "ConfigMap"
+    metadata = {
+      name = "aws-auth"
+      namespace = "kube-system"
+    }
     data = {
       mapRoles = yamlencode(
         distinct(concat(
-        yamldecode(local.current_auth_configmap.data.mapRoles), var.map_roles, )
-      ))
-      mapUsers = yamlencode(var.map_users)
+          local.configmap_roles,
+          var.map_roles,
+        ))
+      )
+      mapUsers    = yamlencode(var.map_users)
+      mapAccounts = yamlencode(var.map_accounts)
     }
-  }
-
+  })
+  
 }
 
-resource "null_resource" "patch_aws_auth_configmap" {
+resource "null_resource" "patch" {
   triggers = {
-    cmd_patch = "kubectl patch configmap/aws-auth -n kube-system --type merge -p '${chomp(jsonencode(local.updated_auth_configmap_data))}' --kubeconfig <(echo $KUBECONFIG | base64 --decode)"
+    kubeconfig = base64encode(local.kubeconfig)    
+    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
   }
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = self.triggers.cmd_patch
-
     environment = {
-      KUBECONFIG = base64encode(local.kubeconfig)
+      KUBECONFIG = self.triggers.kubeconfig
     }
+    command = self.triggers.cmd_patch
   }
 }
-
-
-resource "aws_kms_key" "eks" {
-  description = "EKS Secret Encryption Key"
-  tags        = var.tags
-}
-
-module "eks" {
-  source           = "terraform-aws-modules/eks/aws"
-  version          = "18.2.6"
-  cluster_name     = var.cluster_name
-  cluster_version  = var.cluster_version
-  enable_irsa      = var.enable_irsa
-  # write_kubeconfig = false
-  tags             = var.tags
-
-  # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
-  vpc_id = var.vpc_id
-
-  # Using a conditional for backwards compatibility for those who started out only
-  # using the private_subnets for the input variable.  The new k8s_subnets is new
-  # and makes the subnet id input var name more generic to where the k8s worker nodes goes
-  subnet_ids = length(var.private_subnets) > 0 ? var.private_subnets : var.k8s_subnets
-
-  cluster_endpoint_public_access       = var.cluster_endpoint_public_access
-  cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
-
-  cluster_endpoint_private_access                = var.cluster_endpoint_private_access
-  cluster_security_group_additional_rules        = var.cluster_security_group_additional_rules
-
-  cluster_encryption_config = [{
-    provider_key_arn = aws_kms_key.eks.arn
-    resources        = ["secrets"]
-  }]
-
-  cluster_enabled_log_types     = var.cluster_enabled_log_types
-
-  # map_roles = var.map_roles
-  # map_users = var.map_users
-
-  eks_managed_node_groups = var.eks_managed_node_groups
-
-}
-
