@@ -38,20 +38,3 @@ output "cluster_security_group_id" {
 output "cluster_arn" {
   value = module.eks.cluster_arn
 }
-
-#
-#
-# test outputs below
-#
-#
-output "aws_auth_configmap_yaml" {
-  value = module.eks.aws_auth_configmap_yaml
-}
-
-output "eks_managed_node_groups" {
-  value = module.eks.eks_managed_node_groups
-}
-
-output "eks_managed_node_groups_arn" {
-  value = module.eks.eks_managed_node_groups.ng1.iam_role_arn
-}
