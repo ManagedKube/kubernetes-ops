@@ -36,10 +36,8 @@ module "eks" {
   cluster_name     = var.cluster_name
   cluster_version  = var.cluster_version
   enable_irsa      = var.enable_irsa
-  # write_kubeconfig = false
   tags             = var.tags
 
-  # vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_id = var.vpc_id
 
   # Using a conditional for backwards compatibility for those who started out only
@@ -59,9 +57,6 @@ module "eks" {
   }]
 
   cluster_enabled_log_types     = var.cluster_enabled_log_types
-
-  # map_roles = var.map_roles
-  # map_users = var.map_users
 
   eks_managed_node_groups = var.eks_managed_node_groups
 
@@ -104,15 +99,6 @@ locals {
     }]
   })
 
-  # we have to combine the configmap created by the eks module with the externally created node group/profile sub-modules
-  # aws_auth_configmap_yaml = <<-EOT
-  # ${chomp(module.eks.aws_auth_configmap_yaml)}
-  #     - userarn: arn:aws:iam::827126933480:user/garland.kan
-  #       username: garland.kan
-  #       groups:
-  #         - system:masters
-  # EOT
-
   configmap_roles = [
     for item in module.eks.eks_managed_node_groups:
     {
@@ -150,13 +136,6 @@ locals {
   
 }
 
-      # - userarn: arn:aws:iam::827126933480:user/garland.kan
-      #   username: system:node:{{EC2PrivateDNSName}}
-      #   groups:
-      #     - system:masters
-      #     - system:bootstrappers
-      #     - system:nodes
-
 resource "null_resource" "patch" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)
@@ -173,14 +152,3 @@ resource "null_resource" "patch" {
     command = self.triggers.cmd_patch
   }
 }
-
-# provider "kubectl" {
-#   host                   = module.eks.cluster_endpoint
-#   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-#   token                  = data.aws_eks_cluster_auth.this.token
-#   load_config_file       = false
-# }
-
-# resource "kubectl_manifest" "test" {
-#     yaml_body = local.aws_auth_configmap_yaml
-# }
