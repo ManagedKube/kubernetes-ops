@@ -68,10 +68,6 @@ module "eks" {
 # so we need to ensure fargate profiles and self-managed node roles are added
 ################################################################################
 
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_id
-}
-
 locals {
   kubeconfig = yamlencode({
     apiVersion      = "v1"
@@ -94,7 +90,7 @@ locals {
     users = [{
       name = "terraform"
       user = {
-        token = data.aws_eks_cluster_auth.this.token
+        token = data.aws_eks_cluster_auth.cluster.token
       }
     }]
   })
