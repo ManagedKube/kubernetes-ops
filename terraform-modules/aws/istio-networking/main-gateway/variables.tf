@@ -22,11 +22,13 @@ variable "namespace" {
 variable "cert_common_name" {
   type = string
   description = "The common name for the certificate"
+  default = ""
 }
 
 variable "cert_dns_name" {
   type = string
   description = "The dns name for the certificate"
+  default = ""
 }
 
 variable "enable_certificate" {
