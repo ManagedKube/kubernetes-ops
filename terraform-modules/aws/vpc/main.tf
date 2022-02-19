@@ -35,20 +35,20 @@ module "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support
 
-  // public_subnet_tags = {
-  //   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-  //   "kubernetes.io/role/elb"                    = "1"
-  // }
+//  public_subnet_tags = {
+  //  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+   // "kubernetes.io/role/elb"                    = "1"
+//  }
 
-  // private_subnet_tags = {
-  //   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-  //   "kubernetes.io/role/internal-elb"           = "1"
-  // }
+ // private_subnet_tags = {
+ //   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+ //   "kubernetes.io/role/internal-elb"           = "1"
+//  }
 
-  //  elasticache_subnet_tags = {
-  //   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-  //  "kubernetes.io/role/internal-elb"           = "1"
-  //  "ops_purpose"                               = "Overloaded for k8s worker usage"
+//  elasticache_subnet_tags = {
+//    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+//    "kubernetes.io/role/internal-elb"           = "1"
+//    "ops_purpose"                               = "Overloaded for k8s worker usage"
  // }
 
   tags = var.tags
