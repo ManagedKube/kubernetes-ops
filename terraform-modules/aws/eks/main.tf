@@ -124,3 +124,38 @@ module "eks" {
 
 }
 
+resource "aws_ec2_tag" "vpc_tag" {
+  resource_id = data.terraform_remote_state.vpc.outputs.vpc_id
+  key         = "kubernetes.io/cluster/${var.cluster_name}"
+  value       = "shared"
+}
+
+resource "aws_ec2_tag" "private_subnet_tag" {
+  count = length(var.private_subnets)
+  resource_id = [data.terraform_remote_state.vpc.outputs.private_subnets[count.index].id]
+  key         = "kubernetes.io/role/elb"
+  value       = "1"
+}
+
+resource "aws_ec2_tag" "private_subnet_cluster_tag" {
+  count =       length(var.private_subnets)
+  resource_id = [data.terraform_remote_state.vpc.outputs.private_subnets[count.index].id]
+  key         = "kubernetes.io/cluster/${var.cluster_name}"
+  value       = "shared"
+}
+
+resource "aws_ec2_tag" "public_subnet_tag" {
+  
+  count = length(var.public_subnets)
+  resource_id = [data.terraform_remote_state.vpc.outputs.public_subnets[count.index].id]
+  key         = "kubernetes.io/role/elb"
+  value       = "1"
+}
+
+resource "aws_ec2_tag" "public_subnet_cluster_tag" {
+  count = length(var.public_subnets)
+  resource_id = [data.terraform_remote_state.vpc.outputs.public_subnets[count.index].id]
+  key         = "kubernetes.io/cluster/${var.cluster_name}"
+  value       = "shared"
+}
+
