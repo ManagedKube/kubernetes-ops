@@ -24,21 +24,31 @@ module "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support
 
-  public_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                    = "1"
-  }
+  public_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
+  private_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
 
-  private_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"           = "1"
-  }
+  # dynamic "public_subnet_tags" {
+  #   for_each = var.cluster_name
+  #   content {
+  #     "kubernetes.io/cluster/${public_subnet_tags.value}" = "shared"
+  #   }
+  # }
 
-  elasticache_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"           = "1"
-    "ops_purpose"                               = "Overloaded for k8s worker usage"
-  }
+  # elasticache_subnet_tags = {
+  #   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+  #   "kubernetes.io/role/internal-elb"           = "1"
+  #   "ops_purpose"                               = "Overloaded for k8s worker usage"
+  # }
 
   tags = var.tags
+}
+
+locals {
+  eks_tags = {
+    "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name[3]}" = "shared"
+  }
+
 }
