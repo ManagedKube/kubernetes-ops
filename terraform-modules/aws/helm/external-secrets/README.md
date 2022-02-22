@@ -1,9 +1,7 @@
 #  kubernetes-external-secrets
 
-# DEPRECATED
-
-Source project: https://github.com/external-secrets/kubernetes-external-secrets
-Source chart: https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets
+Source project: https://github.com/external-secrets/external-secrets
+Source chart: https://github.com/external-secrets/external-secrets/tree/main/deploy/charts/external-secrets
 
 EKS Kubernetes v1.19+
 
