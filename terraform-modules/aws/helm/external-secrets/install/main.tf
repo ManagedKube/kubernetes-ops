@@ -70,8 +70,8 @@ resource "helm_release" "helm_chart" {
 resource "kubernetes_manifest" "secret_store" {
   manifest = {
     "apiVersion" = "external-secrets.io/v1alpha1"
-    # "kind"       = "SecretStore"
-    "kind"       = "ClusterSecretStore"
+    "kind"       = "SecretStore"
+    # "kind"       = "ClusterSecretStore"
     "metadata" = {
       "name"      = "secretstore-main"
       # "namespace" = var.namespace
