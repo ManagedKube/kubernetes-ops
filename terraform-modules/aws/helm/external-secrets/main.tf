@@ -72,7 +72,7 @@ resource "kubernetes_manifest" "secret_store" {
     "apiVersion" = "external-secrets.io/v1alpha1"
     "kind"       = "SecretStore"
     "metadata" = {
-      "name"      = "secretstore-sample"
+      "name"      = "secretstore-main"
       "namespace" = var.namespace
       "labels"    = {
         "managed/by": "terraform"
