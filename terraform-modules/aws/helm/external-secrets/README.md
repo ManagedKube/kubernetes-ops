@@ -2,6 +2,7 @@
 
 Source project: https://github.com/external-secrets/external-secrets
 Source chart: https://github.com/external-secrets/external-secrets/tree/main/deploy/charts/external-secrets
+Usage Docs: https://external-secrets.io/v0.4.4/
 
 EKS Kubernetes v1.19+
 
