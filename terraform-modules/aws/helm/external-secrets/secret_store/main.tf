@@ -2,9 +2,9 @@ locals {
   base_name                = "external-secrets"
 }
 
-resource "kubernetes_manifest" "secret_store" {
-  data "aws_region" "current" {}
+data "aws_region" "current" {}
 
+resource "kubernetes_manifest" "secret_store" {
   manifest = {
     "apiVersion" = "external-secrets.io/v1alpha1"
     "kind"       = "SecretStore"
