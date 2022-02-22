@@ -13,7 +13,7 @@ spec:
       number: 80
       name: http
       protocol: HTTP
-    host: ${gateway_hosts}
+    hosts: ${gateway_hosts}
   - port:
       number: 443
       name: https
