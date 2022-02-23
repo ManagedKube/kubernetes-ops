@@ -39,7 +39,6 @@ resource "kubernetes_manifest" "cluster_secret_store" {
     "kind"       = "ClusterSecretStore"
     "metadata" = {
       "name"      = var.secret_store_name
-      "namespace" = var.namespace
       "labels"    = {
         "managed/by": "terraform"
       }
