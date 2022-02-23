@@ -23,20 +23,20 @@ resource "kubectl_manifest" "gateway" {
 }
 
 # file templating
-data "template_file" "certificate" {
-  template = file("${path.module}/certificate.tpl.yaml")
+# data "template_file" "certificate" {
+#   template = file("${path.module}/certificate.tpl.yaml")
 
-  vars = {
-    namespace  = var.namespace
-    cert_common_name = var.cert_common_name
-    cert_dns_name = var.cert_dns_name
-    issue_ref_name = var.issue_ref_name
-    issue_ref_name = var.issue_ref_name
-    issue_ref_kind = var.issue_ref_kind
-    issue_ref_group = var.issue_ref_group
-  }
-}
+#   vars = {
+#     namespace  = var.namespace
+#     cert_common_name = var.cert_common_name
+#     cert_dns_name = var.cert_dns_name
+#     issue_ref_name = var.issue_ref_name
+#     issue_ref_name = var.issue_ref_name
+#     issue_ref_kind = var.issue_ref_kind
+#     issue_ref_group = var.issue_ref_group
+#   }
+# }
 
-resource "kubectl_manifest" "certificate" {
-  yaml_body = data.template_file.certificate.rendered
-}
+# resource "kubectl_manifest" "certificate" {
+#   yaml_body = data.template_file.certificate.rendered
+# }
