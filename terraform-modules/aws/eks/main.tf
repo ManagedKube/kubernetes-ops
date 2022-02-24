@@ -71,6 +71,12 @@ module "eks" {
 # Only EKS managed node groups automatically add roles to aws-auth configmap
 # so we need to ensure fargate profiles and self-managed node roles are added
 #
+# This is necessary b/c of this issue: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1744
+# TL;DR - The new/updated EKS module wants to focus on the core EKS items and 
+#         since there are so many ways to setup authentication to the EKS cluster
+#         they have opted to pull this out of the module.  So we are doing the same
+#         thing and adding back in the aws-auth config.
+#
 # Following the same behavior as the example: https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v18.7.2/examples/complete/main.tf#L323-L327
 ################################################################################
 
