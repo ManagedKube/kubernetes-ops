@@ -79,22 +79,28 @@ variable "map_users" {
   description = "A list of users to give permission to access this cluster"
 }
 
-variable "node_groups" {
-  type = any
+variable "map_accounts" {
+  description = "Additional AWS account numbers to add to the aws-auth configmap."
+  type        = list(string)
+  default     = []
+}
+
+variable "eks_managed_node_groups" {
+  description = "Map of EKS managed node group definitions to create"
+  type        = any
   default = {
     ng1 = {
-      disk_size        = 20
-      desired_capacity = 1
-      max_capacity     = 1
-      min_capacity     = 1
-      instance_type    = "t2.small"
+      disk_size      = 20
+      desired_size   = 1
+      max_sise       = 1
+      min_size       = 1
+      instance_types = ["t2.small"]
       additional_tags = {
         Name = "foo",
       }
       k8s_labels = {}
     }
   }
-  description = "node group(s) configurations"
 }
 
 variable "cluster_enabled_log_types" {
@@ -131,4 +137,10 @@ variable "cluster_create_endpoint_private_access_sg_rule" {
   type        = bool
   default     = false
   description = "Whether to create security group rules for the access to the Amazon EKS private API server endpoint.  cluster_endpoint_private_access_cidrs must be set if this is true."
+}
+
+variable "cluster_security_group_additional_rules" {
+  description = "List of additional security group rules to add to the cluster security group created"
+  type        = any
+  default     = {}
 }
