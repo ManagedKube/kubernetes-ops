@@ -52,7 +52,7 @@ module "eks" {
   cluster_endpoint_private_access                = var.cluster_endpoint_private_access
   cluster_create_endpoint_private_access_sg_rule = var.cluster_create_endpoint_private_access_sg_rule
   cluster_endpoint_private_access_cidrs          = var.cluster_endpoint_private_access_cidrs
-  cluster_security_group_additional_rules        = 
+  
 
   cluster_encryption_config = [{
     provider_key_arn = aws_kms_key.eks.arn
