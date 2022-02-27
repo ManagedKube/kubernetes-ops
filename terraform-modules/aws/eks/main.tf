@@ -56,7 +56,7 @@ module "eks" {
     resources        = ["secrets"]
   }]
 
-  cluster_log_retention_in_days = var.cluster_log_retention_in_days
+  cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
   cluster_enabled_log_types     = var.cluster_enabled_log_types
 
   eks_managed_node_groups = var.eks_managed_node_groups
