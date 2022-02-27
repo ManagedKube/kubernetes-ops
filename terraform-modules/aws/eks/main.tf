@@ -44,7 +44,7 @@ module "eks" {
   # Using a conditional for backwards compatibility for those who started out only
   # using the private_subnets for the input variable.  The new k8s_subnets is new
   # and makes the subnet id input var name more generic to where the k8s worker nodes goes
-  subnets = length(var.private_subnets) > 0 ? var.private_subnets : var.k8s_subnets
+  subnet_ids = length(var.private_subnets) > 0 ? var.private_subnets : var.k8s_subnets
 
   cluster_endpoint_public_access       = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
