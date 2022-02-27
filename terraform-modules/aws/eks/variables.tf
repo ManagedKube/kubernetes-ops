@@ -115,7 +115,7 @@ variable "cluster_enabled_log_types" {
   description = "The Kubernetes log types to enable"
 }
 
-variable "cluster_log_retention_in_days" {
+variable "cloudwatch_log_group_retention_in_days" {
   type        = number
   default     = 90
   description = "Log retention in days"
@@ -125,18 +125,6 @@ variable "cluster_endpoint_private_access" {
   type        = bool
   default     = false
   description = "Enable or disable Kube API private access"
-}
-
-variable "cluster_endpoint_private_access_cidrs" {
-  type        = list(string)
-  default     = null
-  description = "Kube API public endpoint allow access cidrs"
-}
-
-variable "cluster_create_endpoint_private_access_sg_rule" {
-  type        = bool
-  default     = false
-  description = "Whether to create security group rules for the access to the Amazon EKS private API server endpoint.  cluster_endpoint_private_access_cidrs must be set if this is true."
 }
 
 variable "cluster_security_group_additional_rules" {
