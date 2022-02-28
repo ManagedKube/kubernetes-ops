@@ -35,8 +35,8 @@ output "cluster_iam_role_arn" {
   value = module.eks.cluster_iam_role_arn
 }
 
-output "worker_iam_role_arn" {
-  value = module.eks.worker_iam_role_arn
+output "oidc_provider_arn" {
+  value = module.eks.oidc_provider_arn
 }
 
 output "cluster_arn" {
