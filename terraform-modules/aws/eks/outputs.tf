@@ -42,3 +42,13 @@ output "oidc_provider_arn" {
 output "cluster_arn" {
   value = module.eks.cluster_arn
 }
+  
+output "eks_managed_node_groups_arns" {
+  value = [
+    for item in module.eks.eks_managed_node_groups:
+    {
+      rolearn  = item.iam_role_arn
+    }
+  ]
+}
+
