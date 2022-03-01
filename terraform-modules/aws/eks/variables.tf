@@ -132,3 +132,10 @@ variable "cluster_security_group_additional_rules" {
   type        = any
   default     = {}
 }
+
+variable "kubectl_binary" {
+  description = "The path the the kubectl binary.  Used for applying the aws-auth configmap"
+  type        = string
+  default     = "kubectl"
+  # This could be a path.  If running from Github Actions, you can download kubectl to: /github/workspace/kubectl and set this parameter to that location
+}
