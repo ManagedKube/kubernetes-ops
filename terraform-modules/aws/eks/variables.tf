@@ -140,6 +140,7 @@ variable "kubectl_binary" {
   # This could be a path.  If running from Github Actions, you can download kubectl to: /github/workspace/kubectl and set this parameter to that location
 }
 
+# Source on config params: https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/node_groups.tf#L166-L186
 variable "node_security_group_additional_rules" {
   type        = any
   description = "Additional security groups to add to the node_group"
@@ -150,6 +151,8 @@ variable "node_security_group_additional_rules" {
       from_port   = 15017
       to_port     = 15017
       type        = "ingress"
+      # This denotes that it should put the cluster's SG group ID as the source.  This
+      # would include the EKS API as the source
       source_cluster_security_group = true
     }
     istio_workload_cert_request = {
@@ -159,6 +162,14 @@ variable "node_security_group_additional_rules" {
       to_port     = 15012
       type        = "ingress"
       cidr_blocks = "172.16.0.0/12"
+    }
+    istio_envoy_healthchecks = {
+      description = "Allow inbound to istio envoy healthcheck port"
+      protocol    = "tcp"
+      from_port   = 15021
+      to_port     = 15021
+      type        = "ingress"
+      source_cluster_security_group = true
     }
   }
 }
