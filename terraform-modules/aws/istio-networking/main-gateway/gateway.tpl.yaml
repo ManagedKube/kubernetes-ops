@@ -14,7 +14,7 @@ spec:
       name: http
       protocol: HTTP
     hosts: ${gateway_hosts}
-  {{ if ${enable_certificate} }}
+  {{ if .Values.enable_certificate }}
   - port:
       number: 443
       name: https
