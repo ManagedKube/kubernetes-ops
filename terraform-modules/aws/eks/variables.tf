@@ -153,6 +153,11 @@ variable "node_security_group_additional_rules" {
       type        = "ingress"
       cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
     }
+    #
+    # The alternative is to start adding specific rules for each item.  It became a little too
+    # much to add even for just one service such as istio.  Then you will have to start adding
+    # rules for nginx-ingress webhook validation, prometheus, etc.
+    #
     # istio_webhook = {
     #   description = "Allow EKS API to reach Istio for CRD validation"
     #   protocol    = "tcp"
