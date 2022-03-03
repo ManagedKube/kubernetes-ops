@@ -147,9 +147,9 @@ variable "node_security_group_additional_rules" {
   default     = {
     allow_all_internal_ranges = {
       description = "Allow inbound to istiod for envoy to request a workload identity (cert)"
-      protocol    = "tcp"
-      from_port   = -1
-      to_port     = -1
+      protocol    = "all"
+      from_port   = 0
+      to_port     = 65535
       type        = "ingress"
       cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
     }
