@@ -161,7 +161,8 @@ variable "node_security_group_additional_rules" {
       from_port   = 15012
       to_port     = 15012
       type        = "ingress"
-      cidr_blocks = ["172.16.0.0/12"]
+      # cidr_blocks = ["172.16.0.0/12"]
+      self        = true
     }
     istio_envoy_healthchecks = {
       description = "Allow inbound to istio envoy healthcheck port"
