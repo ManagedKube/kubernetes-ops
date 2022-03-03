@@ -151,7 +151,7 @@ variable "node_security_group_additional_rules" {
       to_port     = 15017
       type        = "ingress"
       self        = true
-      source_cluster_security_grou = true
+      source_cluster_security_group = true
     }
   }
 }
