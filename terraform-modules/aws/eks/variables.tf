@@ -146,7 +146,7 @@ variable "node_security_group_additional_rules" {
   description = "Additional security groups to add to the node_group"
   default     = {
     allow_all_internal_ranges = {
-      description = "Allow all inbound range"
+      description = "Allow all inbound range from internal addresses"
       protocol    = "all"
       from_port   = 0
       to_port     = 65535
@@ -170,6 +170,15 @@ variable "node_security_group_additional_rules" {
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     }
+    # This is a blanket rule that allows the EKS to reach any of the nodes on any port
+    # The reason for the blanket rule is to allow the various webhook validation that
+    # happens when a service like istio, nginx-ingress, prometheus has CRDs and the
+    # Kubernetes API on submit wants to go to those controllers to validate that the
+    # CRD is valid.  Since each service sets it's own port and register that with the
+    # Kubernetes API on where the validation webhook is, it is hard to pick out only
+    # those ports that you want.  However, you can if you want these rules to be very
+    # restrictive.  The below examples starts to show how you can selectively allow
+    # the ports and source/destination that Istio wants to use.
     inbound_from_eks_api = {
       description = "Inbound from the EKS API to all EKS nodes"
       protocol    = "tcp"
