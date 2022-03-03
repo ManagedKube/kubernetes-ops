@@ -14,7 +14,7 @@ spec:
       name: http
       protocol: HTTP
     hosts: ${gateway_hosts}
-  {{if (default .Values.enable_certificate true)}}
+  {{- if .Values.enable_certificate }}
   - port:
       number: 443
       name: https
@@ -24,4 +24,4 @@ spec:
       credentialName: ${gateway_credentialName} # This should match the Certificate secretName
     hosts:
     - "*" # This should match a DNS name in the Certificate
-  {{ end }}
+  {{- end }}
