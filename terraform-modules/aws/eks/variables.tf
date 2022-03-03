@@ -145,32 +145,41 @@ variable "node_security_group_additional_rules" {
   type        = any
   description = "Additional security groups to add to the node_group"
   default     = {
-    istio_webhook = {
-      description = "Allow EKS API to reach Istio for CRD validation"
-      protocol    = "tcp"
-      from_port   = 15017
-      to_port     = 15017
-      type        = "ingress"
-      # This denotes that it should put the cluster's SG group ID as the source.  This
-      # would include the EKS API as the source
-      source_cluster_security_group = true
-    }
-    istio_workload_cert_request = {
+    allow_all_internal_ranges = {
       description = "Allow inbound to istiod for envoy to request a workload identity (cert)"
       protocol    = "tcp"
       from_port   = 15012
       to_port     = 15012
       type        = "ingress"
-      # cidr_blocks = ["172.16.0.0/12"]
-      self        = true
+      cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
     }
-    istio_envoy_healthchecks = {
-      description = "Allow inbound to istio envoy healthcheck port"
-      protocol    = "tcp"
-      from_port   = 15021
-      to_port     = 15021
-      type        = "ingress"
-      source_cluster_security_group = true
-    }
+    # istio_webhook = {
+    #   description = "Allow EKS API to reach Istio for CRD validation"
+    #   protocol    = "tcp"
+    #   from_port   = 15017
+    #   to_port     = 15017
+    #   type        = "ingress"
+    #   # This denotes that it should put the cluster's SG group ID as the source.  This
+    #   # would include the EKS API as the source
+    #   source_cluster_security_group = true
+    # }
+    # istio_workload_cert_request = {
+    #   description = "Allow inbound to istiod for envoy to request a workload identity (cert)"
+    #   protocol    = "tcp"
+    #   from_port   = 15012
+    #   to_port     = 15012
+    #   type        = "ingress"
+    #   # cidr_blocks = ["172.16.0.0/12"]
+    #   # 'self' denotes that the source is the node group's SG ID
+    #   self        = true
+    # }
+    # istio_envoy_healthchecks = {
+    #   description = "Allow inbound to istio envoy healthcheck port"
+    #   protocol    = "tcp"
+    #   from_port   = 15021
+    #   to_port     = 15021
+    #   type        = "ingress"
+    #   source_cluster_security_group = true
+    # }
   }
 }
