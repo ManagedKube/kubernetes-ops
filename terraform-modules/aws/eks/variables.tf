@@ -152,5 +152,13 @@ variable "node_security_group_additional_rules" {
       type        = "ingress"
       source_cluster_security_group = true
     }
+    istio_workload_cert_request = {
+      description = "Allow inbound to istiod for envoy to request a workload identity (cert)"
+      protocol    = "tcp"
+      from_port   = 15012
+      to_port     = 15012
+      type        = "ingress"
+      cidr_blocks = "172.16.0.0/12"
+    }
   }
 }
