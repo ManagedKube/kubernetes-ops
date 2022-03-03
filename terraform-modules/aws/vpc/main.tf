@@ -25,12 +25,13 @@ module "vpc" {
   enable_dns_support   = var.enable_dns_support
 
   public_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
-  private_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
+  private_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/intenal-elb" = "1" })
 
-  # dynamic "public_subnet_tags" {
+  
+  # dynamic "private_subnet_tags" {
   #   for_each = var.cluster_name
   #   content {
-  #     "kubernetes.io/cluster/${public_subnet_tags.value}" = "shared"
+  #     "kubernetes.io/cluster/${private_subnet_tags.value}" = "shared"
   #   }
   # }
 
@@ -44,11 +45,12 @@ module "vpc" {
 }
 
 locals {
-  eks_tags = {
-    "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
-    "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
-    "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
-    "kubernetes.io/cluster/${var.cluster_name[3]}" = "shared"
-  }
-
+  eks_tags = {}
+  # eks_tags = {
+  #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
+  #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
+  #   "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
+  #   "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
+  #   "kubernetes.io/cluster/${var.cluster_name[3]}" = "shared"
+  # }
 }
