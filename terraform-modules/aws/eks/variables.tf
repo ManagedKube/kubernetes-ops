@@ -139,3 +139,19 @@ variable "kubectl_binary" {
   default     = "kubectl"
   # This could be a path.  If running from Github Actions, you can download kubectl to: /github/workspace/kubectl and set this parameter to that location
 }
+
+variable "node_security_group_additional_rules" {
+  type        = any
+  description = "Additional security groups to add to the node_group"
+  default     = {
+    ingress_self_all = {
+      description = "Allow EKS API to reach Istio for CRD validation"
+      protocol    = "tcp"
+      from_port   = 15017
+      to_port     = 15017
+      type        = "ingress"
+      self        = true
+      source_cluster_security_grou = true
+    }
+  }
+}

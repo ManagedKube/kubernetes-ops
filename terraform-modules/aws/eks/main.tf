@@ -61,6 +61,8 @@ module "eks" {
 
   eks_managed_node_groups = var.eks_managed_node_groups
 
+  node_security_group_additional_rules = var.node_security_group_additional_rules
+
 }
 
 ################################################################################
