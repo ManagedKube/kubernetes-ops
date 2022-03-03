@@ -63,6 +63,21 @@ module "eks" {
 
 }
 
+
+resource "aws_ec2_tag" "private_subnet_cluster_tag" {
+  for_each    = toset(length(var.private_subnets) > 0 ? var.private_subnets : var.k8s_subnets)
+  resource_id = each.value
+  key         = "kubernetes.io/cluster/${var.cluster_name}"
+  value       = "shared"
+}
+
+resource "aws_ec2_tag" "public_subnet_cluster_tag" {
+  for_each    = toset(var.public_subnets)
+  resource_id = each.value
+  key         = "kubernetes.io/cluster/${var.cluster_name}"
+  value       = "shared"
+}
+
 ################################################################################
 # aws-auth configmap
 # Only EKS managed node groups automatically add roles to aws-auth configmap
@@ -137,6 +152,7 @@ resource "null_resource" "patch" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)    
     cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
+    # cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
   }
 
   provisioner "local-exec" {
