@@ -146,12 +146,39 @@ variable "node_security_group_additional_rules" {
   description = "Additional security groups to add to the node_group"
   default     = {
     allow_all_internal_ranges = {
-      description = "Allow inbound to istiod for envoy to request a workload identity (cert)"
+      description = "Allow all inbound range"
       protocol    = "all"
       from_port   = 0
       to_port     = 65535
       type        = "ingress"
       cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
+    }
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    }
+    inbound_from_eks_api = {
+      description = "Inbound from the EKS API to all EKS nodes"
+      protocol    = "tcp"
+      from_port   = 0
+      to_port     = 65535
+      type        = "ingress"
+      # This denotes that it should put the cluster's SG group ID as the source.  This
+      # would include the EKS API as the source
+      source_cluster_security_group = true
     }
     #
     # The alternative is to start adding specific rules for each item.  It became a little too
