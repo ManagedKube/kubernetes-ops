@@ -144,7 +144,7 @@ variable "node_security_group_additional_rules" {
   type        = any
   description = "Additional security groups to add to the node_group"
   default     = {
-    foo = {
+    istio_webhook = {
       description = "Allow EKS API to reach Istio for CRD validation"
       protocol    = "tcp"
       from_port   = 15017
