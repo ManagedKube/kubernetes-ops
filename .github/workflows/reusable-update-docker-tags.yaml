@@ -1,4 +1,4 @@
-name: "test pipeline"
+name: "update docker tags"
 
 on:
   pull_request_target:
@@ -49,15 +49,9 @@ jobs:
     steps:
     - run: echo "hello...${{ inputs.commit_message }}"
 
-    # - uses: jungwinter/split@v1
-    #   id: split
-    #   with:
-    #     seperator: ":"
-    #     msg: ${{ inputs.build_image_outputs }}
-    # - name: image_name
-    #   run: echo "${{ steps.split.outputs._0 }}"
     - name: image_tag
       run: echo "${{ inputs.update_tag_to }}"
+
    # Checkout the repo
     - name: Checkout
       uses: actions/checkout@v2
@@ -65,6 +59,7 @@ jobs:
         repository: ${{ inputs.repo_name_to_make_changes_in }}
         ref: ${{ inputs.repo_name_to_make_changes_in_branch }}
         token: ${{ secrets.github_personal_access_token_for_repo_to_make_changes_in }}
+
     # Update the docker tags in the TF/helm deployment
     - name: Update dev image tag
       uses: jacobtomlinson/gha-find-replace@0.1.4
@@ -74,8 +69,7 @@ jobs:
         find: "docker_tag\\s+=\\s+\".*\""
         replace: "docker_tag = \"${{ inputs.update_tag_to }}\""
         include: ${{ env.REPLACE_FILE_PATH }}
-    # - name: Terraform Format
-    #   run: terraform fmt ${{ env.REPLACE_FILE_PATH }}
+
     # Print the changes made
     - name: Check output
       run: |
@@ -85,6 +79,7 @@ jobs:
         echo "update_tag_to: ${{ inputs.update_tag_to }}"
         cat ${{ env.REPLACE_FILE_PATH }}
         git diff
+
     # Commit and push changes
     - name: Update deploy docker tags file
       uses: stefanzweifel/git-auto-commit-action@v4
