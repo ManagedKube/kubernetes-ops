@@ -17,10 +17,10 @@ on:
         required: true
         type: string
         # example: terraform-environments/aws/dev/helm/my-app/main.tf
-    #   build_image_outputs:
-    #     required: true
-    #     type: string
-    #     # example: ${{needs.build_image.outputs.docker_tag_with_sha}}
+      build_image_outputs:
+        required: true
+        type: string
+        # example: ${{needs.build_image.outputs.docker_tag_with_sha}}
     #   repo_name_to_make_changes_in:
     #     required: true
     #     type: string
