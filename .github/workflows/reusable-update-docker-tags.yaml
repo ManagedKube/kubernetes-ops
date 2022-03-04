@@ -29,9 +29,9 @@ on:
         required: true
         type: string
         # example: main
-    # secrets:
-    #   github_personal_access_token_for_repo_to_make_changes_in:
-    #     required: true
+    secrets:
+      github_personal_access_token_for_repo_to_make_changes_in:
+        required: true
 
 permissions:
   pull-requests: write
