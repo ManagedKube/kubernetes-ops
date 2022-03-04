@@ -10,25 +10,34 @@ on:
   workflow_call:
     inputs:
       commit_message:
+        description: "The commit message you want to include with the changes"
         required: true
         type: string
         # example: Deployed to dev
       file_to_update_full_path:
+        description: "The full path to the file you want to change"
         required: true
         type: string
         # example: terraform-environments/aws/dev/helm/my-app/main.tf
       build_image_outputs:
+        description: "The Docker Build and Push output for the images"
         required: true
         type: string
         # example: ${{needs.build_image.outputs.docker_tag_with_sha}}
       repo_name_to_make_changes_in:
+        description: "The repository name to make changes into"
         required: true
         type: string
         # example: <repo org/owner>/<repo name> 
       repo_name_to_make_changes_in_branch:
+        description: "The branch in the repository to make changes to"
         required: true
         type: string
         # example: main
+      is_test_run:
+        description: "Denote if it is a test run.  If true, the commit would not actually apply"
+        required: false
+        type: boolean
     secrets:
       github_personal_access_token_for_repo_to_make_changes_in:
         required: true
@@ -81,9 +90,10 @@ jobs:
         cat ${{ env.REPLACE_FILE_PATH }}
         git diff
     # Commit and push changes
-    # - name: Update deploy docker tags file
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
-    #     file_pattern: ${{ env.REPLACE_FILE_PATH }}
-    #     branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
+    - name: Update deploy docker tags file
+      if: ! ${{ inputs.is_test_run }}
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
+        file_pattern: ${{ env.REPLACE_FILE_PATH }}
+        branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
