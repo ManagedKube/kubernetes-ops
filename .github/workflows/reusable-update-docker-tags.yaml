@@ -39,8 +39,8 @@ permissions:
 jobs:
   update_docker_tag:
     runs-on: ubuntu-latest
-    # env:
-    #   REPLACE_FILE_PATH: ${{ inputs.file_to_update }}
+    env:
+      REPLACE_FILE_PATH: ${{ inputs.file_to_update_full_path }}
     steps:
     - run: echo "hello...${{ inputs.commit_message }}"
 
@@ -81,9 +81,9 @@ jobs:
         cat ${{ env.REPLACE_FILE_PATH }}
         git diff
     # Commit and push changes
-    - name: Update deploy docker tags file
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
-        file_pattern: ${{ env.REPLACE_FILE_PATH }}
-        branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
+    # - name: Update deploy docker tags file
+    #   uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
+    #     file_pattern: ${{ env.REPLACE_FILE_PATH }}
+    #     branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
