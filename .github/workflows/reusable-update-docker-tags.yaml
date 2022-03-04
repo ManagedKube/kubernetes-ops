@@ -13,10 +13,10 @@ on:
         required: true
         type: string
         # example: Deployed to dev
-    #   file_to_update_full_path:
-    #     required: true
-    #     type: string
-    #     # example: terraform-environments/aws/dev/helm/my-app/main.tf
+      file_to_update_full_path:
+        required: true
+        type: string
+        # example: terraform-environments/aws/dev/helm/my-app/main.tf
     #   build_image_outputs:
     #     required: true
     #     type: string
