@@ -8,6 +8,11 @@ on:
       - synchronize
       - reopened
   workflow_call:
+    inputs:
+      commit_message:
+        required: true
+        type: string
+        # example: Deployed to dev
 
 permissions:
   pull-requests: write
