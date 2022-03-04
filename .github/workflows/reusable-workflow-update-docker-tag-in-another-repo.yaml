@@ -1,6 +1,12 @@
 name: Update Docker Tag in Another Repo
 
 on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
   workflow_call:
     inputs:
       commit_message:
