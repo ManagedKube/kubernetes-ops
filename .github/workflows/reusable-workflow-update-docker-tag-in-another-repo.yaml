@@ -41,46 +41,48 @@ jobs:
       REPLACE_FILE_PATH: ${{ inputs.file_to_update }}
     steps:
     - run: echo "hello"
-      # - uses: jungwinter/split@v1
-      #   id: split
-      #   with:
-      #     seperator: ":"
-      #     msg: ${{ inputs.build_image_outputs }}
-      # - name: image_name
-      #   run: echo "${{ steps.split.outputs._0 }}"
-      # - name: image_tag
-      #   run: echo "${{ steps.split.outputs._1 }}"
-      # # Checkout the repo
-      # - name: Checkout
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: ${{ inputs.repo_name_to_make_changes_in }}
-      #     ref: ${{ inputs.repo_name_to_make_changes_in_branch }}
-      #     token: ${{ secrets.github_personal_access_token_for_repo_to_make_changes_in }}
-      # # Update the docker tags in the TF/helm deployment
-      # - name: Update dev image tag
-      #   uses: jacobtomlinson/gha-find-replace@0.1.4
-      #   env:
-      #     REPLACE_FILE_PATH: ${{ env.REPLACE_FILE_PATH }}
-      #   with:
-      #     find: "docker_tag\\s+=\\s+\".*\""
-      #     replace: "docker_tag = \"${{ steps.split.outputs._1 }}\""
-      #     include: ${{ env.REPLACE_FILE_PATH }}
-      # # - name: Terraform Format
-      # #   run: terraform fmt ${{ env.REPLACE_FILE_PATH }}
-      # # Print the changes made
-      # - name: Check output
-      #   run: |
-      #     echo "ref: ${{ github.ref }}"
-      #     echo "head_ref: ${{ github.head_ref }}"
-      #     echo "base_ref: ${{ github.base_ref }}"
-      #     echo "steps.split.outputs._1: ${{ steps.split.outputs._1 }}"
-      #     cat ${{ env.REPLACE_FILE_PATH }}
-      #     git diff
-      # # Commit and push changes
-      # - name: Update deploy docker tags file
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
-      #     file_pattern: ${{ env.REPLACE_FILE_PATH }}
-      #     branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
+
+
+    - uses: jungwinter/split@v1
+      id: split
+      with:
+        seperator: ":"
+        msg: ${{ inputs.build_image_outputs }}
+    - name: image_name
+      run: echo "${{ steps.split.outputs._0 }}"
+    - name: image_tag
+      run: echo "${{ steps.split.outputs._1 }}"
+    # Checkout the repo
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ inputs.repo_name_to_make_changes_in }}
+        ref: ${{ inputs.repo_name_to_make_changes_in_branch }}
+        token: ${{ secrets.github_personal_access_token_for_repo_to_make_changes_in }}
+    # Update the docker tags in the TF/helm deployment
+    - name: Update dev image tag
+      uses: jacobtomlinson/gha-find-replace@0.1.4
+      env:
+        REPLACE_FILE_PATH: ${{ env.REPLACE_FILE_PATH }}
+      with:
+        find: "docker_tag\\s+=\\s+\".*\""
+        replace: "docker_tag = \"${{ steps.split.outputs._1 }}\""
+        include: ${{ env.REPLACE_FILE_PATH }}
+    # - name: Terraform Format
+    #   run: terraform fmt ${{ env.REPLACE_FILE_PATH }}
+    # Print the changes made
+    - name: Check output
+      run: |
+        echo "ref: ${{ github.ref }}"
+        echo "head_ref: ${{ github.head_ref }}"
+        echo "base_ref: ${{ github.base_ref }}"
+        echo "steps.split.outputs._1: ${{ steps.split.outputs._1 }}"
+        cat ${{ env.REPLACE_FILE_PATH }}
+        git diff
+    # Commit and push changes
+    - name: Update deploy docker tags file
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
+        file_pattern: ${{ env.REPLACE_FILE_PATH }}
+        branch: ${{ inputs.repo_name_to_make_changes_in_branch }}
