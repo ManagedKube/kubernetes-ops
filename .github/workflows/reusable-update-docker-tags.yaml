@@ -21,7 +21,7 @@ on:
         required: true
         type: string
         # example: ${{needs.build_image.outputs.docker_tag_with_sha}}
-      repo_to_make_changes_in:
+      repo_name_to_make_changes_in:
         required: true
         type: string
         # example: <repo org/owner>/<repo name> 
