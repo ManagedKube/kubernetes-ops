@@ -91,7 +91,7 @@ jobs:
         git diff
     # Commit and push changes
     - name: Update deploy docker tags file
-      if: ! ${{ inputs.is_test_run }}
+      # if: ! ${{ inputs.is_test_run }}
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
