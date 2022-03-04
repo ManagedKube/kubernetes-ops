@@ -34,10 +34,6 @@ on:
         required: true
         type: string
         # example: main
-      is_test_run:
-        description: "Denote if it is a test run.  If true, the commit would not actually apply"
-        required: false
-        type: boolean
     secrets:
       github_personal_access_token_for_repo_to_make_changes_in:
         required: true
@@ -91,7 +87,6 @@ jobs:
         git diff
     # Commit and push changes
     - name: Update deploy docker tags file
-      # if: ! ${{ inputs.is_test_run }}
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "${{ inputs.commit_message }} | tags: ${{ steps.split.outputs._1 }}"
