@@ -1,6 +1,11 @@
 name: "update docker tags"
 
 on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - '*'
   pull_request_target:
     types:
       - opened
