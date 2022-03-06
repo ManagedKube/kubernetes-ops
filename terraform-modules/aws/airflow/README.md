@@ -1,0 +1,60 @@
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_apache-airflow"></a> [apache-airflow](#module\_apache-airflow) | github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic | v2.0.1 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [template_file.helm_values](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_airflow_config"></a> [airflow\_config](#input\_airflow\_config) | environment variables for airflow configs<br>    - airflow env-vars are structured: "AIRFLOW\_\_{config\_section}\_\_{config\_name}"<br>    - airflow configuration reference:<br>     https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     config:<br>       # dag configs<br>       AIRFLOW\_\_CORE\_\_LOAD\_EXAMPLES: "False"<br>       AIRFLOW\_\_SCHEDULER\_\_DAG\_DIR\_LIST\_INTERVAL: "30"<br><br>       # email configs<br>       AIRFLOW\_\_EMAIL\_\_EMAIL\_BACKEND: "airflow.utils.email.send\_email\_smtp"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_HOST: "smtpmail.example.com"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_MAIL\_FROM: "admin@example.com"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_PORT: "25"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_SSL: "False"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_STARTTLS: "False"<br><br>       # domain used in airflow emails<br>       AIRFLOW\_\_WEBSERVER\_\_BASE\_URL: "http://airflow.example.com"<br><br>       # ether environment variables<br>       HTTP\_PROXY: "http://proxy.example.com:8080" | `list()` | `{}` | no |
+| <a name="input_airflow_connections"></a> [airflow\_connections](#input\_airflow\_connections) | a list airflow connections to create<br>    - templates can ONLY be used in: `host`, `login`, `password`, `schema`, `extra`<br>    - templates used a bash-like syntax: {AWS\_ACCESS\_KEY} or $AWS\_ACCESS\_KEY<br>    - templates are defined in `connectionsTemplates`<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     connections:<br>       - id: my\_aws<br>         type: aws<br>         description: my AWS connection<br>         extra: \|-<br>           { "aws\_access\_key\_id": "{AWS\_KEY\_ID}",<br>             "aws\_secret\_access\_key": "{AWS\_ACCESS\_KEY}",<br>             "region\_name":"eu-central-1" } | `list(any)` | `[]` | no |
+| <a name="input_airflow_connectionsUpdate"></a> [airflow\_connectionsUpdate](#input\_airflow\_connectionsUpdate) | bash-like templates to be used in `airflow.connections`<br>    - see docs for `airflow.usersTemplates` | `bool` | `true` | no |
+| <a name="input_airflow_defaultAffinity"></a> [airflow\_defaultAffinity](#input\_airflow\_defaultAffinity) | default affinity configs for airflow Pods (is overridden by pod-specific values)<br>    - spec for Affinity:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core | `list()` | `{}` | no |
+| <a name="input_airflow_defaultNodeSelector"></a> [airflow\_defaultNodeSelector](#input\_airflow\_defaultNodeSelector) | default nodeSelector for airflow Pods (is overridden by pod-specific values)<br>    - docs for nodeSelector:<br>     https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector | `list()` | `{}` | no |
+| <a name="input_airflow_defaultSecurityContext"></a> [airflow\_defaultSecurityContext](#input\_airflow\_defaultSecurityContext) | sets the filesystem owner group of files/folders in mounted volumes<br>    this does NOT give root permissions to Pods, only the "root" group | `map()` | `"    fsGroup: 0\n"` | no |
+| <a name="input_airflow_defaultTolerations"></a> [airflow\_defaultTolerations](#input\_airflow\_defaultTolerations) | default toleration configs for airflow Pods (is overridden by pod-specific values)<br>    - spec for Toleration:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_executor"></a> [airflow\_executor](#input\_airflow\_executor) | the airflow executor type to use<br>    - allowed values: "CeleryExecutor", "KubernetesExecutor", "CeleryKubernetesExecutor"<br>    - customize the "KubernetesExecutor" pod-template with `airflow.kubernetesPodTemplate.*` | `string` | `"CeleryExecutor"` | no |
+| <a name="input_airflow_extraContainers"></a> [airflow\_extraContainers](#input\_airflow\_extraContainers) | extra containers for the airflow Pods<br>    - spec for Container:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_extraEnv"></a> [airflow\_extraEnv](#input\_airflow\_extraEnv) | extra environment variables for the airflow Pods<br>    - spec for EnvVar:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#envvar-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_extraPipPackages"></a> [airflow\_extraPipPackages](#input\_airflow\_extraPipPackages) | extra environment variables for the airflow Pods<br>    - spec for EnvVar:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#envvar-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_extraVolumeMounts"></a> [airflow\_extraVolumeMounts](#input\_airflow\_extraVolumeMounts) | extra VolumeMounts for the airflow Pods<br>    - spec for VolumeMount:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_extraVolumes"></a> [airflow\_extraVolumes](#input\_airflow\_extraVolumes) | extra Volumes for the airflow Pods<br>    - spec for Volume:<br>     https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core | `list(any)` | `[]` | no |
+| <a name="input_airflow_fernetKey"></a> [airflow\_fernetKey](#input\_airflow\_fernetKey) | the fernet encryption key (sets `AIRFLOW__CORE__FERNET_KEY`)<br>    - [WARNING] you must change this value to ensure the security of your airflow<br>    - set `AIRFLOW__CORE__FERNET_KEY` with `airflow.extraEnv` from a Secret to avoid storing this in your values<br>    - use this command to generate your own fernet key:<br>     python -c "from cryptography.fernet import Fernet; FERNET\_KEY = Fernet.generate\_key().decode(); print(FERNET\_KEY)" | `string` | `"7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc="` | no |
+| <a name="input_airflow_image"></a> [airflow\_image](#input\_airflow\_image) | n/a | `any` | n/a | yes |
+| <a name="input_airflow_legacyCommands"></a> [airflow\_legacyCommands](#input\_airflow\_legacyCommands) | if we use legacy 1.10 airflow commands | `bool` | `false` | no |
+| <a name="input_airflow_podAnnotations"></a> [airflow\_podAnnotations](#input\_airflow\_podAnnotations) | extra annotations for airflow Pods | `list()` | `{}` | no |
+| <a name="input_airflow_pools"></a> [airflow\_pools](#input\_airflow\_pools) | a list airflow pools to create<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     pools:<br>       - name: "pool\_1"<br>         description: "example pool with 5 slots"<br>         slots: 5<br>       - name: "pool\_2"<br>         description: "example pool with 10 slots"<br>         slots: 10 | `list(any)` | `[]` | no |
+| <a name="input_airflow_poolsUpdate"></a> [airflow\_poolsUpdate](#input\_airflow\_poolsUpdate) | if we create a Deployment to perpetually sync `airflow.pools`<br>    - see docs for `airflow.usersUpdate` | `bool` | `true` | no |
+| <a name="input_airflow_users"></a> [airflow\_users](#input\_airflow\_users) | a list of users to create<br>    - templates can ONLY be used in: `password`, `email`, `firstName`, `lastName`<br>    - templates used a bash-like syntax: {MY\_USERNAME}, $MY\_USERNAME<br>    - templates are defined in `usersTemplates` | `list()` | `"    - username: admin\n      password: admin\n      role: Admin\n      email: admin@example.com\n      firstName: admin\n      lastName: admin\n"` | no |
+| <a name="input_airflow_usersTemplates"></a> [airflow\_usersTemplates](#input\_airflow\_usersTemplates) | bash-like templates to be used in `airflow.users`<br>    - [WARNING] if a Secret or ConfigMap is missing, the sync Pod will crash<br>    - [WARNING] all keys must match the regex: ^[a-zA-Z\_][a-zA-Z0-9\_]*$<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     usersTemplates<br>       MY\_USERNAME:<br>         kind: configmap<br>         name: my-configmap<br>         key: username<br>       MY\_PASSWORD:<br>         kind: secret<br>         name: my-secret<br>         key: password | `list()` | `{}` | no |
+| <a name="input_airflow_usersUpdate"></a> [airflow\_usersUpdate](#input\_airflow\_usersUpdate) | if we create a Deployment to perpetually sync `airflow.users`<br>    - when `true`, users are updated in real-time, as ConfigMaps/Secrets change<br>    - when `true`, users changes from the WebUI will be reverted automatically<br>    - when `false`, users will only update one-time, after each `helm upgrade` | `bool` | `true` | no |
+| <a name="input_airflow_variables"></a> [airflow\_variables](#input\_airflow\_variables) | a list airflow variables to create<br>    - templates can ONLY be used in: `value`<br>    - templates used a bash-like syntax: {MY\_VALUE} or $MY\_VALUE<br>    - templates are defined in `connectionsTemplates`<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     variables:<br>       - key: "var\_1"<br>         value: "my\_value\_1"<br>       - key: "var\_2"<br>         value: "my\_value\_2" | `list(any)` | `[]` | no |
+| <a name="input_airflow_variablesTemplates"></a> [airflow\_variablesTemplates](#input\_airflow\_variablesTemplates) | bash-like templates to be used in `airflow.variables`<br>    - see docs for `airflow.usersTemplates` | `list()` | `{}` | no |
+| <a name="input_airflow_variablesUpdate"></a> [airflow\_variablesUpdate](#input\_airflow\_variablesUpdate) | if we create a Deployment to perpetually sync `airflow.variables`<br>    - see docs for `airflow.usersUpdate` | `bool` | `true` | no |
+| <a name="input_airflow_webserverSecretKey"></a> [airflow\_webserverSecretKey](#input\_airflow\_webserverSecretKey) | environment variables for airflow configs<br>    - airflow env-vars are structured: "AIRFLOW\_\_{config\_section}\_\_{config\_name}"<br>    - airflow configuration reference:<br>     https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html<br><br>    ____ EXAMPLE \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_<br>     config:<br>       # dag configs<br>       AIRFLOW\_\_CORE\_\_LOAD\_EXAMPLES: "False"<br>       AIRFLOW\_\_SCHEDULER\_\_DAG\_DIR\_LIST\_INTERVAL: "30"<br><br>       # email configs<br>       AIRFLOW\_\_EMAIL\_\_EMAIL\_BACKEND: "airflow.utils.email.send\_email\_smtp"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_HOST: "smtpmail.example.com"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_MAIL\_FROM: "admin@example.com"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_PORT: "25"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_SSL: "False"<br>       AIRFLOW\_\_SMTP\_\_SMTP\_STARTTLS: "False"<br><br>       # domain used in airflow emails<br>       AIRFLOW\_\_WEBSERVER\_\_BASE\_URL: "http://airflow.example.com"<br><br>       # ether environment variables<br>       HTTP\_PROXY: "http://proxy.example.com:8080" | `string` | `"THIS IS UNSAFE!"` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `"us-east-1"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | EKS cluster name | `string` | `"cluster"` | no |
+
+## Outputs
+
+No outputs.
