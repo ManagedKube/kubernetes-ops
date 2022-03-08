@@ -39,3 +39,6 @@ cr:
                       name: kiali
                       port:
                         number: 20001
+            tls:
+            - hosts:
+              - "kiali.kubernetes-ops.com"
