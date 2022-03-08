@@ -1,46 +1,46 @@
 ---
 namespaceOverride: monitoring
-# prometheusOperator:
-#   nodeSelector:
-#     app-type: my-app
-#   tolerations:
-#   - key: "app-type"
-#     operator: "Equal"
-#     value: "my-app"
-#     effect: "NoSchedule"
+
 # prometheus:
 #   prometheusSpec:
-#     nodeSelector:
-#       app-type: my-app
-#     tolerations:
-#     - key: "app-type"
-#       operator: "Equal"
-#       value: "my-app"
-#       effect: "NoSchedule"
-# alertmanager:
-#   enabled: true
-  # alertmanagerSpec:
-  #   nodeSelector:
-  #     app-type: my-app
-  #   tolerations:
-  #   - key: "app-type"
-  #     operator: "Equal"
-  #     value: "my-app"
-  #     effect: "NoSchedule"
-# nodeExporter:
-  # nodeSelector:
-  #   app-type: my-app
-  # tolerations:
-  # - key: "app-type"
-  #   operator: "Equal"
-  #   value: "my-app"
-  #   effect: "NoSchedule"
+#     storageSpec:
+#      volumeClaimTemplate:
+#        spec:
+#         #  storageClassName: gluster
+#          accessModes: ["ReadWriteOnce"]
+#          resources:
+#            requests:
+#              storage: 25Gi
+#     additionalScrapeConfigs:
+#     # Istio scrap endpoints
+#     # Doc: https://istio.io/latest/docs/ops/integrations/prometheus/#option-2-customized-scraping-configurations
+#     - job_name: 'istiod'
+#       kubernetes_sd_configs:
+#       - role: endpoints
+#         namespaces:
+#           names:
+#           - istio-system
+#       relabel_configs:
+#       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+#         action: keep
+#         regex: istiod;http-monitoring
+#     - job_name: 'envoy-stats'
+#       metrics_path: /stats/prometheus
+#       kubernetes_sd_configs:
+#       - role: pod
+
+#       relabel_configs:
+#       - source_labels: [__meta_kubernetes_pod_container_port_name]
+#         action: keep
+#         regex: '.*-envoy-prom'
+#     # End of istio scrape endpoints
+
 grafana:
   adminPassword: prom-operator
   ingress:
     enabled: true
     annotations:
-      kubernetes.io/ingress.class: ingress-external
+      kubernetes.io/ingress.class: istio
     hosts:
     - grafana.kubernetes-ops.com
   # nodeSelector:
@@ -73,6 +73,7 @@ alertmanager:
       - secretName: cert-manager-tls-cert
         hosts:
           - alertmanager.internal.managedkube.com
+        # secretName: domain-wildcard # This should match the Certificate secretName
 
   ## Alertmanager configuration directives
   ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
@@ -171,3 +172,25 @@ alertmanager:
     # - name: 'pagerduty-critical'
     #   pagerduty_configs:
     #   - service_key: xxxxx
+
+  additionalDataSources:
+  - name: loki
+    access: proxy
+    basicAuth: false
+    basicAuthPassword: pass
+    basicAuthUser: daco
+    editable: false
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: loki
+    url: http://loki-stack:3100
+    version: 1
+
+## Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
+## https://github.com/prometheus-community/helm-charts/issues/479#issuecomment-752709725
+# prometheusOperator:
+#   admissionWebhooks:
+#     patch:
+#       podAnnotations:
+#         sidecar.istio.io/inject: "false"
