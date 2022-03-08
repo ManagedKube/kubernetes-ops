@@ -1,3 +1,3 @@
-resource "kubernetes_manifest" "test-configmap" {
+resource "kubernetes_manifest" "manifest" {
   manifest = yamldecode(var.manifest)
 }
