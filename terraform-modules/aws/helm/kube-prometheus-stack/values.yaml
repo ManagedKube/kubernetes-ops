@@ -50,3 +50,124 @@ grafana:
   #   operator: "Equal"
   #   value: "my-app"
   #   effect: "NoSchedule"
+
+
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+
+  ingress:
+    enabled: false
+
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: alertmanager.internal.managedkube.com
+      kubernetes.io/ingress.class: nginx-external
+      # certmanager.k8s.io/cluster-issuer: prod
+      # certmanager.k8s.io/acme-http01-edit-in-place: "true"
+
+    hosts:
+      - alertmanager.internal.managedkube.com
+
+    tls:
+      - secretName: cert-manager-tls-cert
+        hosts:
+          - alertmanager.internal.managedkube.com
+
+  ## Alertmanager configuration directives
+  ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
+  ##      https://prometheus.io/webtools/alerting/routing-tree-editor/
+  ##
+  config:
+    route:
+      receiver: 'null'
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: 'null'
+      - match:
+          alertname: KubeControllerManagerDown
+        receiver: 'null'
+      - match:
+          alertname: KubeProxyDown
+        receiver: 'null'
+      - match:
+          alertname: KubeSchedulerDown
+        receiver: 'null'
+
+      # - match_re:
+      #     severity: critical|page|alert
+      #   receiver: slack-critical
+      #   continue: true
+      # - match:
+      #     severity: warning
+      #   receiver: slack-warning
+      #   continue: true
+      # - match_re:
+      #     severity: critical|page|alert
+      #   receiver: pagerduty-critical
+      #   continue: true
+
+    receivers:
+    - name: 'null'
+
+    ## Receiver config docs:
+    ## https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md
+    #
+    # - name: 'slack-tests'
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-test-dev-us
+
+    # - name: slack-critical
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-critical-dev-us
+
+    # - name: 'slack-warning'
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-warning-dev-us
+
+    # - name: 'pagerduty-critical'
+    #   pagerduty_configs:
+    #   - service_key: xxxxx
