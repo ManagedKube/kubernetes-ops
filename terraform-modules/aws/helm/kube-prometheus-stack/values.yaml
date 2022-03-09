@@ -43,10 +43,136 @@ grafana:
       kubernetes.io/ingress.class: istio
     hosts:
     - grafana.kubernetes-ops.com
+  # nodeSelector:
+  #   app-type: my-app
+  # tolerations:
+  # - key: "app-type"
+  #   operator: "Equal"
+  #   value: "my-app"
+  #   effect: "NoSchedule"
+
+
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+
+  ingress:
+    enabled: false
+
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: alertmanager.internal.managedkube.com
+      kubernetes.io/ingress.class: nginx-external
+      # certmanager.k8s.io/cluster-issuer: prod
+      # certmanager.k8s.io/acme-http01-edit-in-place: "true"
+
+    hosts:
+      - alertmanager.internal.managedkube.com
+
     tls:
-    - hosts:
-      - grafana.kubernetes-ops.com # This should match a DNS name in the Certificate
-      # secretName: domain-wildcard # This should match the Certificate secretName
+      - secretName: cert-manager-tls-cert
+        hosts:
+          - alertmanager.internal.managedkube.com
+        # secretName: domain-wildcard # This should match the Certificate secretName
+
+  ## Alertmanager configuration directives
+  ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
+  ##      https://prometheus.io/webtools/alerting/routing-tree-editor/
+  ##
+  config:
+    route:
+      receiver: 'null'
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: 'null'
+      - match:
+          alertname: KubeControllerManagerDown
+        receiver: 'null'
+      - match:
+          alertname: KubeProxyDown
+        receiver: 'null'
+      - match:
+          alertname: KubeSchedulerDown
+        receiver: 'null'
+
+      # - match_re:
+      #     severity: critical|page|alert
+      #   receiver: slack-critical
+      #   continue: true
+      # - match:
+      #     severity: warning
+      #   receiver: slack-warning
+      #   continue: true
+      # - match_re:
+      #     severity: critical|page|alert
+      #   receiver: pagerduty-critical
+      #   continue: true
+
+    receivers:
+    - name: 'null'
+
+    ## Receiver config docs:
+    ## https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md
+    #
+    # - name: 'slack-tests'
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-test-dev-us
+
+    # - name: slack-critical
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-critical-dev-us
+
+    # - name: 'slack-warning'
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/xxx/xxx/xxx
+    #     channel: kube-alerts
+    #     send_resolved: true
+    #     text: |-
+    #       {{ range .Alerts }}
+    #           Annotations:
+    #           {{ range $key, $value := .Annotations }} - {{ $key }}: {{ $value }}
+    #           {{ end }}
+    #           Details:
+    #           {{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}
+    #           {{ end }}
+    #       {{ end }}
+    #     title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
+    #     title_link: https://alertmanager.internal.managedkube.com
+    #     username: slack-warning-dev-us
+
+    # - name: 'pagerduty-critical'
+    #   pagerduty_configs:
+    #   - service_key: xxxxx
+
   additionalDataSources:
   - name: loki
     access: proxy
@@ -61,10 +187,10 @@ grafana:
     url: http://loki-stack:3100
     version: 1
 
-# Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
-# https://github.com/prometheus-community/helm-charts/issues/479#issuecomment-752709725
-prometheusOperator:
-  admissionWebhooks:
-    patch:
-      podAnnotations:
-        sidecar.istio.io/inject: "false"
+## Istio changes to not add the istio sidecar to the prometheus operator's addmission webhook patch
+## https://github.com/prometheus-community/helm-charts/issues/479#issuecomment-752709725
+# prometheusOperator:
+#   admissionWebhooks:
+#     patch:
+#       podAnnotations:
+#         sidecar.istio.io/inject: "false"
