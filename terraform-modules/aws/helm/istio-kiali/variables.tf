@@ -1,6 +1,6 @@
 variable helm_version {
   type        = string
-  default     = "33.2.0"
+  default     = "1.47.0"
   description = "Helm chart version"
 }
 
@@ -12,13 +12,13 @@ variable verify {
 
 variable namespace {
   type        = string
-  default     = "monitoring"
+  default     = "kiali-operator"
   description = "Namespace to install in"
 }
 
 variable chart_name {
   type        = string
-  default     = "kube-prometheus-stack"
+  default     = "kiali-operator"
   description = "Name to set the helm deployment to"
 }
 

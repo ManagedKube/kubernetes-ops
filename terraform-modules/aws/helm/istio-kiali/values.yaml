@@ -1,0 +1,44 @@
+# CR spec: https://kiali.io/docs/configuration/kialis.kiali.io/
+cr:
+  create: true
+  namespace: istio-system
+
+  # Kiali operator CRD spec/config
+  # the CRD kind is "Kiali"
+  spec:
+    auth:
+      strategy: anonymous
+
+    external_services:
+      prometheus:
+        # Prometheus service name is "metrics" and is in the "telemetry" namespace
+        url: "http://prometheus-operated.monitoring.svc:9090/"
+
+    deployment:
+      ingress:
+        # default: additional_labels is empty
+        additional_labels:
+          ingressAdditionalLabel: "ingressAdditionalLabelValue"
+        class_name: "istio"
+        # default: enabled is undefined
+        enabled: true
+        # default: override_yaml is undefined
+        override_yaml:
+          metadata:
+            annotations:
+              kubernetes.io/ingress.class: istio
+          spec:
+            rules:
+            - host: "kiali.kubernetes-ops.com"
+              http:
+                paths:
+                - path: "/kiali"
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: kiali
+                      port:
+                        number: 20001
+            tls:
+            - hosts:
+              - "kiali.kubernetes-ops.com"
