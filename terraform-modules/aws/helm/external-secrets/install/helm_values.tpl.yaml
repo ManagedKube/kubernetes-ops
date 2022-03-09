@@ -1,8 +1,8 @@
 ---
-extraEnv:
-- name: AWS_REGION
+env:
+  name: AWS_REGION
   value: ${awsRegion}
-- name: AWS_DEFAULT_REGION
+  name: AWS_DEFAULT_REGION
   value: ${awsRegion}
 
 serviceAccount:
