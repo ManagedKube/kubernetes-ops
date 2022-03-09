@@ -54,6 +54,6 @@ variable "secrets_prefix" {
 
 variable "account_id" {
   type        = string
-  default     = null
+  default     = ""
   description = "The account_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws_caller_id showing *** by obtaining the value of account_id "
 }

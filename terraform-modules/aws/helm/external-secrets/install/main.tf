@@ -21,7 +21,7 @@ module "iam_assumable_role_admin" {
 data "template_file" "iam_policy" {
   template = file("${path.module}/iam-policy.tpl.json")
   vars = {
-    awsAccountID  = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
+    awsAccountID  = var.account_id != "" ? var.account_id : data.aws_caller_identity.current.account_id
     awsRegion     = data.aws_region.current.name
     secretsPrefix = var.secrets_prefix
     envName       = var.environment_name
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
-    awsAccountID       = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
+    awsAccountID       = var.account_id != "" ? var.account_id : data.aws_caller_identity.current.account_id
     awsRegion          = data.aws_region.current.name
     #serviceAccountName = local.k8s_service_account_name
     resource_name      = "${local.base_name}-${var.environment_name}"
