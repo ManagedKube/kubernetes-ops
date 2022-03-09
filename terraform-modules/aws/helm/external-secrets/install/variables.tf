@@ -51,3 +51,9 @@ variable "secrets_prefix" {
   default     = ""
   description = "The prefix to your AWS Secrets.  This allows this module to craft a more tightly controlled set of IAM policies to only allow it to get certain secrets"
 }
+
+variable "account_id" {
+  type        = string
+  default     = null
+  description = "The account_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws_caller_id showing *** by obtaining the value of account_id "
+}
