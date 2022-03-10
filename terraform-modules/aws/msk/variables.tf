@@ -37,7 +37,7 @@ variable "subnet_ids" {
 # Supported versions: https://docs.aws.amazon.com/msk/latest/developerguide/supported-kafka-versions.html
 variable "kafka_version" {
   type        = string
-  defatul     = "2.8.1"
+  default     = "2.8.1"
   description = "The desired Kafka software version"
 }
 
@@ -49,7 +49,7 @@ variable "number_of_broker_nodes" {
 # https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types
 variable "broker_instance_type" {
   type        = string
-  defautl     = "kafka.t3.small"
+  default     = "kafka.t3.small"
   description = "The instance type to use for the Kafka brokers"
 }
 
