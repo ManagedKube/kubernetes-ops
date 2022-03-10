@@ -150,7 +150,9 @@ module "msk" {
   s3_logs_bucket                 = var.s3_logs_enabled == true ? aws_s3_bucket.this.id : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
-  client_sasl_iam_enabled       = var.client_sasl_iam_enabled
+  client_sasl_iam_enabled        = var.client_sasl_iam_enabled
+  node_exporter_enabled          = var.node_exporter_enabled
+  jmx_exporter_enabled           = var.jmx_exporter_enabled
 
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,

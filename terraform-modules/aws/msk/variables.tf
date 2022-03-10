@@ -104,11 +104,6 @@ variable "s3_logs_prefix" {
   description = "Prefix to append to the S3 folder name logs are delivered to"
 }
 
-variable "node_exporter_enabled" {
-  type        = bool
-  description = "Set true to enable the Node Exporter"
-}
-
 variable "security_groups" {
   type        = list(string)
   description = "The security_group_id_list output from the security_groups module"
@@ -117,6 +112,12 @@ variable "security_groups" {
 variable "client_tls_auth_enabled" {
   type        = bool
   description = "Set true to enable the Client TLS Authentication"
+}
+
+variable "client_sasl_iam_enabled" {
+  type        = bool
+  default     = false
+  description = "Enables client authentication via IAM policies (cannot be set to true at the same time as client_sasl_*_enabled)."
 }
 
 variable "common_name" {
@@ -143,8 +144,14 @@ variable "signing_algorithm" {
  default     = "SHA512WITHRSA"
 }
 
-variable "client_sasl_iam_enabled" {
+variable "node_exporter_enabled" {
   type        = bool
-  default     = true
-  description = "Enables client authentication via IAM policies (cannot be set to true at the same time as client_sasl_*_enabled)."
+  default     = false
+  description = "Set true to enable the Prometheus Node Exporter"
+}
+
+variable "jmx_exporter_enabled" {
+  type        = bool
+  default     = false
+  description = "Set true to enable the Prometheus JMX Exporter"
 }
