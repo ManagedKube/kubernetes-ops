@@ -141,18 +141,17 @@ module "msk" {
   tags                           = var.tags
   certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
+  client_sasl_iam_enabled        = var.client_sasl_iam_enabled
   encryption_in_cluster          = var.encryption_in_cluster
   encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn != null ? var.encryption_at_rest_kms_key_arn : aws_kms_key.this.arn
   cloudwatch_logs_enabled        = var.cloudwatch_logs_enabled
   cloudwatch_logs_log_group      = var.cloudwatch_logs_enabled == true ? var.cloudwatch_logs_log_group : ""
   enhanced_monitoring            = var.enhanced_monitoring
   node_exporter_enabled          = var.node_exporter_enabled
+  jmx_exporter_enabled           = var.jmx_exporter_enabled
   s3_logs_bucket                 = var.s3_logs_enabled == true ? aws_s3_bucket.this.id : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
-  client_sasl_iam_enabled        = var.client_sasl_iam_enabled
-  node_exporter_enabled          = var.node_exporter_enabled
-  jmx_exporter_enabled           = var.jmx_exporter_enabled
 
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
