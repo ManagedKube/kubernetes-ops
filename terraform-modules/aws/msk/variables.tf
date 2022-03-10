@@ -143,3 +143,8 @@ variable "signing_algorithm" {
  default     = "SHA512WITHRSA"
 }
 
+variable "client_sasl_iam_enabled" {
+  type        = bool
+  default     = true
+  description = "Enables client authentication via IAM policies (cannot be set to true at the same time as client_sasl_*_enabled)."
+}
