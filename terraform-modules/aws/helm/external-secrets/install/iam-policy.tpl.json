@@ -1,3 +1,4 @@
+# Source: https://external-secrets.io/v0.4.4/provider-aws-secrets-manager/
 {
   "Version": "2012-10-17",
   "Statement": [
