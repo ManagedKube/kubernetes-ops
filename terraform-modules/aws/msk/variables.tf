@@ -34,8 +34,10 @@ variable "subnet_ids" {
   description = "Subnet IDs for Client Broker"
 }
 
+# Supported versions: https://docs.aws.amazon.com/msk/latest/developerguide/supported-kafka-versions.html
 variable "kafka_version" {
   type        = string
+  default     = "2.8.1"
   description = "The desired Kafka software version"
 }
 
@@ -44,8 +46,10 @@ variable "number_of_broker_nodes" {
   description = "The desired total number of broker nodes in the kafka cluster. It must be a multiple of the number of specified client subnets."
 }
 
+# https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types
 variable "broker_instance_type" {
   type        = string
+  default     = "kafka.t3.small"
   description = "The instance type to use for the Kafka brokers"
 }
 
@@ -66,7 +70,8 @@ variable "encryption_in_cluster" {
 
 variable "encryption_at_rest_kms_key_arn" {
   type        = string
-  description = "You may specify a KMS key short ID or ARN (it will always output an ARN) to use for encrypting your data at rest"
+  default     = null
+  description = "You may specify a KMS key short ID or ARN (it will always output an ARN) to use for encrypting your data at rest.  If null the key created in this module will be used."
 }
 
 variable "cloudwatch_logs_enabled" {
@@ -99,11 +104,6 @@ variable "s3_logs_prefix" {
   description = "Prefix to append to the S3 folder name logs are delivered to"
 }
 
-variable "node_exporter_enabled" {
-  type        = bool
-  description = "Set true to enable the Node Exporter"
-}
-
 variable "security_groups" {
   type        = list(string)
   description = "The security_group_id_list output from the security_groups module"
@@ -112,6 +112,12 @@ variable "security_groups" {
 variable "client_tls_auth_enabled" {
   type        = bool
   description = "Set true to enable the Client TLS Authentication"
+}
+
+variable "client_sasl_iam_enabled" {
+  type        = bool
+  default     = false
+  description = "Enables client authentication via IAM policies (cannot be set to true at the same time as client_sasl_*_enabled)."
 }
 
 variable "common_name" {
@@ -138,3 +144,14 @@ variable "signing_algorithm" {
  default     = "SHA512WITHRSA"
 }
 
+variable "node_exporter_enabled" {
+  type        = bool
+  default     = false
+  description = "Set true to enable the Prometheus Node Exporter"
+}
+
+variable "jmx_exporter_enabled" {
+  type        = bool
+  default     = false
+  description = "Set true to enable the Prometheus JMX Exporter"
+}
