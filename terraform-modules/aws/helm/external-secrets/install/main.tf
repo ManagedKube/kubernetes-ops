@@ -1,5 +1,6 @@
 locals {
   base_name                = "external-secrets"
+  # Source policy from doc: # Source: https://external-secrets.io/v0.4.4/provider-aws-secrets-manager/
   iam_policy_file          = "iam-policy.tpl.json"
   k8s_service_account_name = "external-secrets"
 }
