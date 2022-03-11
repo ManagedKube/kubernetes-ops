@@ -75,6 +75,13 @@ alertmanager:
           - alertmanager.internal.managedkube.com
         # secretName: domain-wildcard # This should match the Certificate secretName
 
+  alertmanagerSpec:
+    alertmanagerConfigSelector:
+      matchLabels:
+        # The `AlertmanagerConfig` configs must have this label for 
+        # this alert manager to include in the config.
+        release: kube-prometheus-stack
+ 
   ## Alertmanager configuration directives
   ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
   ##      https://prometheus.io/webtools/alerting/routing-tree-editor/
