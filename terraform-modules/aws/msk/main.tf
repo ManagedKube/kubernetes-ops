@@ -20,21 +20,28 @@ resource "aws_s3_bucket" "this" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "this" {
-  bucket = aws_s3_bucket.this.id
-  acl    = "private"
-}
+# resource "aws_s3_bucket_acl" "this" {
+#   bucket = aws_s3_bucket.this.id
+#   acl    = "private"
+# }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-  bucket = aws_s3_bucket.this.bucket
+# When turning on server side encryption the ACM creation failes with:
+# │ Error: error creating ACM PCA Certificate Authority: ValidationException: Permission error with your S3 bucket '476264532441-us-west-2-msk-logs'. Check that your bucket policy, encryption settings, S3 Block Public Access settings, and global account permissions are configured correctly. For more information, check the service documentation.
+# │       status code: 400, request id: 3ba26851-f96a-48b6-a9a2-ca7a68be8e5f
+# │ 
+# │   with aws_acmpca_certificate_authority.this,
+# │   on main.tf line 91, in resource "aws_acmpca_certificate_authority" "this":
+# │   91: resource "aws_acmpca_certificate_authority" "this" {
+# resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+#   bucket = aws_s3_bucket.this.bucket
 
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.this.arn
-      sse_algorithm     = "aws:kms"
-    }
-  }
-}
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       kms_master_key_id = aws_kms_key.this.arn
+#       sse_algorithm     = "aws:kms"
+#     }
+#   }
+# }
 
 data "aws_iam_policy_document" "acmpca_bucket_access" {
   statement {
@@ -119,7 +126,7 @@ resource "aws_acmpca_certificate_authority" "this" {
 #######################################
 module "msk" {
   source                         = "cloudposse/msk-apache-kafka-cluster/aws"
-  version                        = "v0.8.3"
+  version                        = "v0.8.4"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
@@ -134,12 +141,14 @@ module "msk" {
   tags                           = var.tags
   certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
+  client_sasl_iam_enabled        = var.client_sasl_iam_enabled
   encryption_in_cluster          = var.encryption_in_cluster
-  encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn
+  encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn != null ? var.encryption_at_rest_kms_key_arn : aws_kms_key.this.arn
   cloudwatch_logs_enabled        = var.cloudwatch_logs_enabled
   cloudwatch_logs_log_group      = var.cloudwatch_logs_enabled == true ? var.cloudwatch_logs_log_group : ""
   enhanced_monitoring            = var.enhanced_monitoring
   node_exporter_enabled          = var.node_exporter_enabled
+  jmx_exporter_enabled           = var.jmx_exporter_enabled
   s3_logs_bucket                 = var.s3_logs_enabled == true ? aws_s3_bucket.this.id : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
