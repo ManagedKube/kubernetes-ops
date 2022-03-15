@@ -2,7 +2,7 @@ resource "aws_mwaa_environment" "this" {
   name               = var.airflow_name
   source_bucket_arn  = var.source_bucket_arn
   dag_s3_path        = var.dag_s3_path
-  execution_role_arn = aws_iam_role.example.arn
+  execution_role_arn = module.iam_assumable_role_admin.iam_role_arn
 
   logging_configuration {
     dag_processing_logs {
@@ -32,7 +32,7 @@ resource "aws_mwaa_environment" "this" {
   }
 
   network_configuration {
-    security_group_ids = [aws_security_group.example.id]
+    security_group_ids = [aws_security_group.this.id]
     subnet_ids         = var.subnet_ids
   }
 
@@ -54,14 +54,38 @@ module "iam_assumable_role_admin" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name_prefix = "cluster-autoscaler-${var.cluster_name}"
-  description = "EKS cluster-autoscaler policy for cluster ${var.eks_cluster_id}"
+  name_prefix = "cluster-autoscaler-${var.airflow_name}"
+  description = "Airflow policy"
   policy      = templatefile("default_iam_policy.json", {
     aws_region     = var.aws_region
     aws_account_id = data.aws_caller_identity.current.account_id
     airflow_name   = var.airflow_name
     s3_bucket_name = var.source_bucket_name
   })
+
+  tags = var.tags
+}
+
+resource "aws_security_group" "this" {
+  name        = var.airflow_name
+  description = "Airflow security group"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
   tags = var.tags
 }
