@@ -22,6 +22,13 @@ variable "subnet_ids" {
   description = "(Required) The private subnet IDs in which the environment should be created. MWAA requires two subnets."
 }
 
+variable "airflow_version" {
+  type        = string
+  default     = null
+  description = "(Optional) Airflow version of your environment, will be set by default to the latest version that MWAA supports."
+}
+
+
 variable "environment_class" {
   type        = string
   default     = "mw1.small"
