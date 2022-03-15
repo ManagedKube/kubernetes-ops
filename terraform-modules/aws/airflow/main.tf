@@ -50,6 +50,7 @@ module "iam_assumable_role_admin" {
   role_description        = "Airflow role"
   trusted_role_services   = ["airflow.amazonaws.com","airflow-env.amazonaws.com"]
   custom_role_policy_arns = [aws_iam_policy.policy.arn]
+  role_requires_mfa       = false
   tags                    = var.tags
 }
 
