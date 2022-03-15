@@ -1,5 +1,8 @@
 resource "aws_mwaa_environment" "this" {
   name               = var.airflow_name
+  environment_class  = var.environment_class
+  max_workers        = var.max_workers
+  min_workers        = var.min_workers
   source_bucket_arn  = var.source_bucket_arn
   dag_s3_path        = var.dag_s3_path
   execution_role_arn = module.iam_assumable_role_admin.iam_role_arn

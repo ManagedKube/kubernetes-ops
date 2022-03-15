@@ -22,6 +22,26 @@ variable "subnet_ids" {
   description = "(Required) The private subnet IDs in which the environment should be created. MWAA requires two subnets."
 }
 
+variable "environment_class" {
+  type        = string
+  default     = "mw1.small"
+  description = "(Optional) Environment class for the cluster. Possible options are mw1.small, mw1.medium, mw1.large. Will be set by default to mw1.small. Please check the AWS Pricing for more information about the environment classes."
+}
+
+variable "max_workers" {
+  type        = number
+  default     = 10
+  description = "(Optional) The maximum number of workers that can be automatically scaled up. Value need to be between 1 and 25. Will be 10 by default."
+}
+
+variable "min_workers" {
+  type        = number
+  default     = 1
+  description = "(Optional) The minimum number of workers that you want to run in your environment. Will be 1 by default."
+}
+
+
+
 variable "source_bucket_arn" {
   type        = string
   default     = "s3://foo"
