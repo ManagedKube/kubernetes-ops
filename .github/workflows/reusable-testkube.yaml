@@ -43,8 +43,8 @@ on:
     #   github_personal_access_token_for_repo_to_make_changes_in:
     #     required: true
 
-permissions:
-  pull-requests: write
+# permissions:
+#   pull-requests: write
 
 jobs:
   testkube:
