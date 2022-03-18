@@ -54,8 +54,8 @@ jobs:
     steps:
     - run: echo "hello...${{ inputs.commit_message }}"
 
-  #   - name: image_tag
-  #     run: echo "${{ inputs.update_tag_to }}"
+    - name: "get kubeconfig"
+      run: aws eks update-kubeconfig --name ops
 
   #  # Checkout the repo
   #   - name: Checkout
