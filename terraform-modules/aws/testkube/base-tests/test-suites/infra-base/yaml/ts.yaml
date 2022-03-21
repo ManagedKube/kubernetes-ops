@@ -1,0 +1,19 @@
+apiVersion: tests.testkube.io/v1
+kind: TestSuite
+metadata:
+  name: infra
+  namespace: testkube
+spec:
+  description: Infra testsuite
+  steps:
+  - execute:
+      name: infra-prometheus-endpoint
+      namespace: testkube
+    type: testExecution
+  # - delay:
+  #     duration: 2000
+  #   type: delay
+  - execute:
+      name: infra-alertmanager-slack-config
+      namespace: testkube
+    type: testExecution
