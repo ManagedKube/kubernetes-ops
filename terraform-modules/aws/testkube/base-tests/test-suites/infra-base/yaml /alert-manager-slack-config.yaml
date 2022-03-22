@@ -1,19 +1,8 @@
----
-apiVersion: tests.testkube.io/v2
-kind: Test
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: infra-base-alertmanager-slack-config
-  namespace: testkube
-spec:
-  content:
-    data: |
-      {
-          "command": [
-            "curl",
-            "http://alertmanager-operated.monitoring.svc:9093/api/v2/status"
-          ],
-          "expected_status": "200",
-          "expected_body": "slack_configs"
-      }
-    type: string
-  type: curl/test
+  name: game-demo
+  namespace: foobar
+data:
+  # property-like keys; each key maps to a simple value
+  player_initial_lives: "3"
