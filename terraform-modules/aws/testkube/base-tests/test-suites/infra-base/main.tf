@@ -6,5 +6,5 @@ module "manifest_set" {
 }
 
 output "manifest_set" {
-  value       = manifest_set.kubernetes_manifest.this
+  value       = module.manifest_set.kubernetes_manifest.this
 }
