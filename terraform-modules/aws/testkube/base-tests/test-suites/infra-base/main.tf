@@ -24,5 +24,5 @@ resource "kubernetes_manifest" "this" {
 
 resource "kubernetes_manifest" "that" {
 #   for_each = fileset(var.upload_directory, "**/*.*")
-  manifest = yamldecode(file("./yaml/ts.yaml"))
+  manifest = yamldecode(file("${path.cwd}/yaml/ts.yaml"))
 }
