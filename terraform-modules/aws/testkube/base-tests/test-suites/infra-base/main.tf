@@ -7,6 +7,6 @@
 
 resource "kubernetes_manifest" "this" {
   for_each = fileset("./yaml", "*")
-  manifest = yamldecode("${path.module}/yaml/file(${each.value})")
+  manifest = yamldecode(file("${path.module}/yaml/${each.value}"))
 }
 
