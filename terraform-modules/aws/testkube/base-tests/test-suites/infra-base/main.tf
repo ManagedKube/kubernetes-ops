@@ -4,3 +4,7 @@ module "manifest_set" {
     upload_source_path = path.cwd
     upload_directory   = "yaml"
 }
+
+output "manifest_set" {
+  value       = manifest_set.kubernetes_manifest.this
+}
