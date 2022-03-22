@@ -2,7 +2,7 @@
 apiVersion: tests.testkube.io/v1
 kind: TestSuite
 metadata:
-  name: infra
+  name: infra-base
   namespace: testkube
 spec:
   description: Infra testsuite
