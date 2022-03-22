@@ -1,19 +1,8 @@
----
-apiVersion: tests.testkube.io/v2
-kind: Test
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: infra-prometheus-endpoint
-  namespace: testkube
-spec:
-  content:
-    data: |
-      {
-          "command": [
-            "curl",
-            "http://prometheus-operated.monitoring.svc:9090/-/ready"
-          ],
-          "expected_status": "200",
-          "expected_body": "Prometheus is Ready."
-      }
-    type: string
-  type: curl/test
+  name: game-demo
+  namespace: foobar
+data:
+  # property-like keys; each key maps to a simple value
+  player_initial_lives: "3"

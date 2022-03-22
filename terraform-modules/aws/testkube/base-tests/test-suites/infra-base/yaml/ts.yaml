@@ -1,20 +1,8 @@
----
-apiVersion: tests.testkube.io/v1
-kind: TestSuite
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: infra-base
-  namespace: testkube
-spec:
-  description: Infra testsuite
-  steps:
-  - execute:
-      name: infra-prometheus-endpoint
-      namespace: testkube
-    type: testExecution
-  # - delay:
-  #     duration: 2000
-  #   type: delay
-  - execute:
-      name: infra-alertmanager-slack-config
-      namespace: testkube
-    type: testExecution
+  name: game-demo
+  namespace: foobar
+data:
+  # property-like keys; each key maps to a simple value
+  player_initial_lives: "3"
