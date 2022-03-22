@@ -1,5 +1,5 @@
 # Uploads all of the files in the pass in dir path and subdirectories
 resource "kubernetes_manifest" "this" {
   for_each = fileset(var.upload_directory, "**/*.*")
-  manifest = yamldecode("file(each.value)")
+  manifest = yamldecode(file("${path.module}/yaml/${each.value}")
 }
