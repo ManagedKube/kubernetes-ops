@@ -4,10 +4,3 @@ module "manifest_set" {
     upload_source_path = path.cwd
     upload_directory   = "yaml"
 }
-
-
-# resource "kubernetes_manifest" "this" {
-#   for_each = fileset("./yaml", "*")
-#   manifest = yamldecode(file("${path.module}/yaml/${each.value}"))
-# }
-
