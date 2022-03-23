@@ -9,3 +9,11 @@ variable "upload_source_path" {
   default     = "path.cwd"
   description = "The full path to where the directory var.upload_directory resides (not including the var.upload_directory dir name)."
 }
+
+variable "template_vars" {
+  type        = map
+  default     = {}
+  description = "The map for the templatefile() function to run the yamls through"
+}
+
+
