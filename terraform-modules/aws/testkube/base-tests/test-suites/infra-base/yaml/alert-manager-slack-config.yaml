@@ -12,7 +12,7 @@ spec:
             "http://alertmanager-operated.monitoring.svc:9093/api/v2/status"
           ],
           "expected_status": "200",
-          "expected_body": "slack_configszzz"
+          "expected_body": "slack_configs"
       }
     type: string
   type: curl/test
