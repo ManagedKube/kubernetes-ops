@@ -4,6 +4,13 @@ variable "upload_directory" {
   description = "Just the directory name containing the folder to recursively apply from."
 }
 
+variable "fileset_pattern" {
+  type        = string
+  default     = "**/*.*"
+  description = "The fileset() pattern match string.  Useful if you have other files that are not yaml files that you dont want to add in to be applied to the kube manifest."
+}
+
+
 variable "upload_source_path" {
   type        = string
   default     = "path.cwd"
