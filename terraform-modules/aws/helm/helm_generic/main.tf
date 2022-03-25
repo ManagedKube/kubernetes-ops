@@ -10,6 +10,7 @@ resource "helm_release" "helm_chart" {
   values = [
     var.helm_values,
     var.helm_values_2,
+    file("${path.module}/probes.yaml") 
   ]
 
 }
