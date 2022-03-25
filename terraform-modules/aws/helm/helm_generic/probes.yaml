@@ -1,4 +1,3 @@
-{{- if .Values.probes.enabled }}
 livenessProbe:
   httpGet:
     path: /status
@@ -7,4 +6,3 @@ readinessProbe:
   httpGet:
     path: /status
     port: http
-{{- end }}
