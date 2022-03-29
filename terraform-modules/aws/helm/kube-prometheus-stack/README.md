@@ -14,6 +14,13 @@ You can use the `../../kubernetes/menifest` module to apply arbitrary Kubernetes
 
 You can create the `AlertmanagerConfig` CR to send alerts to slack:
 ```
+# This is the global alert config that prometheus is pointed to
+# Doc: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/alerting.md#specify-global-alertmanager-config
+#
+# The reason why we are defining the prometheus global alert config setting is because, by default the kube-prometheus-stack operator
+# sets the alert configs that are not global with a namespace selector on the "matcher" rules.  This means that you can not do a global
+# alert config.  Their use case is that each namespace should set it's own alert configs.
+#
 # example: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/alerting.md#alertmanagerconfig-resource
 # API doc: 
 # * https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md
@@ -21,7 +28,7 @@ You can create the `AlertmanagerConfig` CR to send alerts to slack:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
-  name: alert-config
+  name: global-alert-config
   namespace: monitoring
   labels:
     # This label has to match the `alertmanagerConfigSelector` config on what that is set to
@@ -33,18 +40,31 @@ spec:
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 12h
-    receiver: 'slack-${account_name}'
-    matchers:
-      ## Label to match.
-    - name: severity
-      ## Label value to match.
-      value: critical
-      ## Match type: !=, =, =~, !~
-      ## Match operation available with AlertManager >= v0.22.0 and takes precedence over Regex (deprecated) if non-empty.
-      # matchType: "="
-      ## true | False - deprecated
-      # regex: false
+    receiver: "null"
+    routes:
+    - receiver: "null"
+      continue: false
+      matchers:
+      - matchType: "=~"
+        name: alertname
+        value: Watchdog|KubeControllerManagerDown|KubeProxyDown|KubeSchedulerDown
+    - receiver: "null"
+      continue: false
+      matchers:
+      - matchType: "=~"
+        name: alertname
+        value: TargetDown
+      - matchType: "=~"
+        name: job
+        value: kube-proxy|kubelet
+    - receiver: 'slack-${account_name}'
+      continue: true
+      matchers:
+      - matchType: =~
+        name: severity
+        value: critical|warning
   receivers:
+  - name: "null"
   # https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#slackconfig
   - name: 'slack-${account_name}'
     slackConfigs:
@@ -67,6 +87,7 @@ spec:
               {{ end }}
           {{ end }}
 
+# # Example
 # # Kubernetes Secret format
 # ---
 # apiVersion: v1
@@ -82,3 +103,36 @@ spec:
 You can then place the secret into AWS Secrets and use the `../../external-secrets` module to 
 sync the secret for this CR to use.  By going this route (which is way more work), you don't
 have to commit the secret into git.
+
+## How to test an alert
+Once you have your alert config(s) in place, the following shows you, how you can send a test alert to the Alert Manager to see if it sends it off to your desired destination(s).
+
+We are going to mimick how Prometheus sends an alert to the Alert Manager
+
+Port forward to the Alert Manager:
+```
+kubectl -n monitoring port-forward svc/kube-prometheus-stack-alertmanager 9093
+```
+
+
+
+```
+curl -si -X POST -H "Content-Type: application/json" "http://localhost:9093/api/v1/alerts" -d '
+[
+  {
+    "labels": {
+      "alertname": "TestAlert",
+      "instance": "localhost:8080",
+      "job": "node",
+      "severity": "critical",
+      "namespace": "foobar"
+    },
+    "annotations": {
+      "summary": "Test alert"
+    },
+    "generatorURL": "http://localhost:9090/graph"
+  }
+]'
+```
+
+This will send an alert with the labels `severity=critical`.  Depending on what you want to trigger, you can adjust the items in the alert.
