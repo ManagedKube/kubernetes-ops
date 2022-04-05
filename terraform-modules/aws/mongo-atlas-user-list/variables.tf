@@ -56,3 +56,15 @@ variable "roles" {
 }
 
 
+variable "database_users" {
+  # type        = map(object({
+  #   cidr_block = string
+  # }))
+  type = map(object(any))
+  description = "description"
+  default     = {
+    {
+      username = "foo"
+    }
+  }
+}
