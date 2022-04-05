@@ -3,18 +3,6 @@ variable "mongodbatlas_projectid" {
   description = "The unique ID for the project to create the database user."
 }
 
-variable "create_aws_secret" {
-  type        = bool
-  description = "To create an AWS secret or not"
-  default     = false
-}
-
-variable "aws_secret_name" {
-  type        = string
-  description = "The name for the AWS secret"
-  default     = null
-}
-
 variable "aws_secret_description" {
   type        = string
   description = "The aws secret description"
@@ -68,6 +56,7 @@ variable "database_users" {
       # Setting create_aws_secret to true should be done as all or none to the users in this list
       # autogenerate a password and put it into AWS Secrets
       create_aws_secret = false
+      aws_secret_name   = "my_secret"
       # Only needed if create_aws_secret==false, then all user needs to have
       # this password filled out.
       user_password = null
