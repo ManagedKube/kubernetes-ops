@@ -27,7 +27,7 @@ variable "cluster_name" {
 }
 
 variable "cluster_version" {
-  default = "1.18"
+  default = "1.21"
 }
 
 variable "enable_irsa" {
@@ -90,15 +90,28 @@ variable "eks_managed_node_groups" {
   type        = any
   default = {
     ng1 = {
+      create_launch_template = false
+      launch_template_name   = ""
+
+      # Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group
+      # (Optional) Force version update if existing pods are unable to be drained due to a pod disruption budget issue.
+      force_update_version = true
+
+      # doc: https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami
+      # doc: https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html
+      ami_type = "BOTTLEROCKET_x86_64"
+      platform = "bottlerocket"
+      version  = "1.21"
+
       disk_size      = 20
       desired_size   = 1
-      max_sise       = 1
+      max_size       = 1
       min_size       = 1
       instance_types = ["t2.small"]
-      additional_tags = {
+      additional_tags  = {
         Name = "foo",
       }
-      k8s_labels = {}
+      k8s_labels       = {}
     }
   }
 }
