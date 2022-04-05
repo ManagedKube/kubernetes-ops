@@ -45,7 +45,7 @@ variable "database_username" {
 }
 
 variable "roles" {
-  type        = list[map]
+  type        = list(any)
   default     = [
     {
       role_name = "readWrite"
