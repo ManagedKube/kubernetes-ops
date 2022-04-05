@@ -16,7 +16,7 @@ resource "mongodbatlas_database_user" "this" {
   auth_database_name = var.database_users[count.index].auth_database_name
 
   dynamic "roles" {
-    for_each = var.database_users[count.index].username.roles
+    for_each = var.database_users[count.index].roles
     content {
       role_name     = roles.value["role_name"]
       database_name = roles.value["database_name"]
