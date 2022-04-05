@@ -65,7 +65,11 @@ variable "database_users" {
   default     = [
     {
       username = "foo"
+      # Setting create_aws_secret to true should be done as all or none to the users in this list
+      # autogenerate a password and put it into AWS Secrets
       create_aws_secret = false
+      # Only needed if create_aws_secret==false, then all user needs to have
+      # this password filled out.
       user_password = null
       auth_database_name = "admin"
       roles = [

@@ -11,7 +11,7 @@ terraform {
 resource "mongodbatlas_database_user" "this" {
   count              = length(var.database_users)
   username           = var.database_users[count.index].username
-  password           = var.database_users[count.index].create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
+  password           = var.database_users[count.index].create_aws_secret ? aws_secretsmanager_secret_version.this[count.index].secret_string : var.user_password
   project_id         = var.mongodbatlas_projectid
   auth_database_name = var.database_users[count.index].auth_database_name
 
@@ -30,7 +30,7 @@ resource "mongodbatlas_database_user" "this" {
 # Option to add the password into AWS secret
 ################################################
 resource "aws_secretsmanager_secret" "this" {
-  count                   = var.create_aws_secret ? 1 : 0
+  count                   = length(var.database_users)
   name                    = var.aws_secret_name
   description             = var.aws_secret_description
   recovery_window_in_days = var.recovery_window_in_days
@@ -38,7 +38,7 @@ resource "aws_secretsmanager_secret" "this" {
 }
 
 resource "random_password" "password" {
-  count            = var.create_aws_secret ? 1 : 0
+  count            = length(var.database_users)
   length           = 16
   min_lower        = 2
   min_numeric      = 2
@@ -50,7 +50,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  count         = var.create_aws_secret ? 1 : 0
+  count         = length(var.database_users)
   secret_id     = aws_secretsmanager_secret.this[0].id
-  secret_string = random_password.password[0].result
+  secret_string = random_password.password[count.index].result
 }
