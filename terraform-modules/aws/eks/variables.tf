@@ -224,3 +224,9 @@ variable "node_security_group_additional_rules" {
     # }
   }
 }
+
+variable "force_update_version" {
+  type        = bool
+  default     = false
+  description = "(Optional) Force version update if existing pods are unable to be drained due to a pod disruption budget issue."
+}

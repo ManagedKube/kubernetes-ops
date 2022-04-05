@@ -59,6 +59,10 @@ module "eks" {
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
   cluster_enabled_log_types     = var.cluster_enabled_log_types
 
+  # Doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group
+  # (Optional) Force version update if existing pods are unable to be drained due to a pod disruption budget issue.
+  force_update_version = var.force_update_version
+
   eks_managed_node_groups = var.eks_managed_node_groups
 
   node_security_group_additional_rules = var.node_security_group_additional_rules
