@@ -65,6 +65,15 @@ variable "database_users" {
   default     = [
     {
       username = "foo"
+      create_aws_secret = false
+      user_password = null
+      auth_database_name = "admin"
+      roles = [
+        {
+          role_name = "readWrite"
+          database_name = "my_db"
+        },
+      ]
     },
   ]
 }

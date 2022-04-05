@@ -11,12 +11,12 @@ terraform {
 resource "mongodbatlas_database_user" "this" {
   count              = length(var.database_users)
   username           = var.database_users[count.index].username
-  password           = var.create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
+  password           = var.database_users[count.index].create_aws_secret ? aws_secretsmanager_secret_version.this[0].secret_string : var.user_password
   project_id         = var.mongodbatlas_projectid
-  auth_database_name = "admin"
+  auth_database_name = var.database_users[count.index].auth_database_name
 
   dynamic "roles" {
-    for_each = var.roles
+    for_each = var.database_users[count.index].roles
     content {
       role_name     = roles.value["role_name"]
       database_name = roles.value["database_name"]
