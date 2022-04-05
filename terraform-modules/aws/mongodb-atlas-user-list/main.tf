@@ -31,10 +31,10 @@ resource "mongodbatlas_database_user" "this" {
 ################################################
 resource "aws_secretsmanager_secret" "this" {
   count                   = length(var.database_users)
-  name                    = var.aws_secret_name
-  description             = var.aws_secret_description
-  recovery_window_in_days = var.recovery_window_in_days
-  tags                    = var.tags
+  name                    = var.database_users[count.index].aws_secret_name
+  description             = var.database_users[count.index].aws_secret_description
+  recovery_window_in_days = var.database_users[count.index].recovery_window_in_days
+  tags                    = var.database_users[count.index].tags
 }
 
 resource "random_password" "password" {

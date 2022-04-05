@@ -3,18 +3,6 @@ variable "mongodbatlas_projectid" {
   description = "The unique ID for the project to create the database user."
 }
 
-variable "aws_secret_description" {
-  type        = string
-  description = "The aws secret description"
-  default     = ""
-}
-
-variable "recovery_window_in_days" {
-  type        = number
-  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days. The default value is 30."
-  default     = 0
-}
-
 variable "user_password" {
   type        = string
   description = "The password for the user"
@@ -57,6 +45,9 @@ variable "database_users" {
       # autogenerate a password and put it into AWS Secrets
       create_aws_secret = false
       aws_secret_name   = "my_secret"
+      aws_secret_description = "my secret description"
+      # (Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days. The default value is 30.
+      recovery_window_in_days = 0
       # Only needed if create_aws_secret==false, then all user needs to have
       # this password filled out.
       user_password = null
@@ -67,6 +58,7 @@ variable "database_users" {
           database_name = "my_db"
         },
       ]
+      tags = {}
     },
   ]
 }
