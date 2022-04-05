@@ -60,11 +60,11 @@ variable "database_users" {
   # type        = map(object({
   #   cidr_block = string
   # }))
-  type = list(any)
+  type = any
   description = "description"
   default     = [
     {
       username = "foo"
-    }
+    },
   ]
 }
