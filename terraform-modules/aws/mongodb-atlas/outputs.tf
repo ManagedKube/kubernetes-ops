@@ -26,3 +26,7 @@ output "connect_string_aws_private_endpoint" {
 output "connect_string_standard" {
     value = mongodbatlas_cluster.cluster.connection_strings[0].standard
 }
+
+output "tmp" {
+  value = mongodbatlas_cluster.cluster
+}
