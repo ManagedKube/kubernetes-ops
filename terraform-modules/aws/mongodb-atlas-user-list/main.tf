@@ -30,7 +30,7 @@ resource "mongodbatlas_database_user" "this" {
 # Option to add the password into AWS secret
 ################################################
 resource "aws_secretsmanager_secret" "this" {
-  count                   = length(var.database_users)
+  count                   = var.database_users[count.index].create_aws_secret ? length(var.database_users) : 0
   name                    = var.database_users[count.index].aws_secret_name
   description             = var.database_users[count.index].aws_secret_description
   recovery_window_in_days = var.database_users[count.index].recovery_window_in_days
@@ -50,7 +50,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  count         = length(var.database_users)
+  count         = var.database_users[count.index].create_aws_secret ? length(var.database_users) : 0
   secret_id     = aws_secretsmanager_secret.this[0].id
   secret_string = random_password.password[count.index].result
 }
