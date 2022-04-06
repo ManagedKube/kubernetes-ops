@@ -31,6 +31,11 @@ variable "roles" {
   description = "The set of roles that are applied to the user"
 }
 
+variable "enable_aws_secret" {
+  type        = bool
+  default     = false
+  description = "A flag to denote that we will put the password secret into aws secret"
+}
 
 variable "database_users" {
   # type        = map(object({
