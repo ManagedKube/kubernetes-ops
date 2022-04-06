@@ -3,12 +3,6 @@ variable "mongodbatlas_projectid" {
   description = "The unique ID for the project to create the database user."
 }
 
-variable "user_password" {
-  type        = string
-  description = "The password for the user"
-  default     = null
-}
-
 variable "tags" {
   description = "A list of Tags"
   type        = map(any)
