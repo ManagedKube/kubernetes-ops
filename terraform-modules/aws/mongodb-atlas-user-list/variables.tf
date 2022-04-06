@@ -14,12 +14,6 @@ variable "tags" {
   type        = map(any)
 }
 
-variable "database_username" {
-  description = "The username to create"
-  type        = string
-  default     = "admin"
-}
-
 variable "roles" {
   type        = list(any)
   default     = [
