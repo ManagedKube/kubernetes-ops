@@ -46,14 +46,11 @@ variable "database_users" {
   default     = [
     {
       username = "foo"
-      # Setting create_aws_secret to true should be done as all or none to the users in this list
-      # autogenerate a password and put it into AWS Secrets
-      create_aws_secret = false
       aws_secret_name   = "my_secret"
       aws_secret_description = "my secret description"
       # (Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days. The default value is 30.
       recovery_window_in_days = 0
-      # Only needed if create_aws_secret==false, then all user needs to have
+      # Only needed if enable_aws_secret==false, then all user needs to have
       # this password filled out.
       user_password = null
       auth_database_name = "admin"
