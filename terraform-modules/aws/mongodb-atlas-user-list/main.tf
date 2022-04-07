@@ -52,5 +52,5 @@ resource "random_password" "password" {
 resource "aws_secretsmanager_secret_version" "this" {
   count         = var.enable_aws_secret ? length(var.database_users) : 0
   secret_id     = aws_secretsmanager_secret.this[0].id
-  secret_string = random_password.password[count.index].result
+  secret_string = "foo" #random_password.password[count.index].result
 }
