@@ -1,0 +1,8 @@
+# source: https://github.com/grafana/helm-charts/tree/main/charts/tempo
+---
+persistence:
+  enabled: true
+  # storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  size: 25Gi
