@@ -1,3 +1,13 @@
+
+terraform {
+  required_providers {
+    mongodbatlas = {
+      source  = "mongodb/mongodbatlas"
+      version = "1.0.1"
+    }
+  }
+}
+
 locals {
     all_alerts = "merge of the default and user alerts"
 }
