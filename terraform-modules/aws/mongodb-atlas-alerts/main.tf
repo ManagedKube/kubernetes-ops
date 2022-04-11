@@ -13,9 +13,11 @@ locals {
 }
 
 resource "mongodbatlas_alert_configuration" "defaults" {
+  count = length(var.default_alerts)
+
   project_id = var.mongodbatlas_projectid
-  event_type = "OUTSIDE_METRIC_THRESHOLD"
-  enabled    = true
+  event_type = var.default_alerts[count.index].event_type
+  enabled    = var.default_alerts[count.index].enabled
 
   notification {
     type_name     = "GROUP"

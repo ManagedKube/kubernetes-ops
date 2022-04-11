@@ -4,8 +4,13 @@ variable "mongodbatlas_projectid" {
 }
 
 variable "default_alerts" {
-  type        = string
-  default     = ""
+  type        = list(any)
+  default     = [
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+    },
+  ]
   description = "description"
 }
 
