@@ -19,22 +19,38 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   event_type = var.default_alerts[count.index].event_type
   enabled    = var.default_alerts[count.index].enabled
 
-  notification {
-    type_name     = "GROUP"
-    interval_min  = 5
-    delay_min     = 0
-    sms_enabled   = false
-    email_enabled = true
-    roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+  dynamic "notification" {
+    for_each = var.default_alerts[count.index].notification
+    content {
+      namespace = setting.value["namespace"]
+      name = setting.value["name"]
+      value = setting.value["value"]
+
+      type_name     = notification.value.type_name
+      interval_min  = notification.value.interval_min
+      delay_min     = notification.value.delay_min
+      sms_enabled   = notification.value.sms_enabled
+      email_enabled = notification.value.email_enabled
+      roles = notification.value.roles
+    }
   }
 
-  notification {
-    type_name     = "ORG"
-    interval_min  = 5
-    delay_min     = 0
-    sms_enabled   = true
-    email_enabled = false
-  }
+  # notification {
+  #   type_name     = "GROUP"
+  #   interval_min  = 5
+  #   delay_min     = 0
+  #   sms_enabled   = false
+  #   email_enabled = true
+  #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+  # }
+
+  # notification {
+  #   type_name     = "ORG"
+  #   interval_min  = 5
+  #   delay_min     = 0
+  #   sms_enabled   = true
+  #   email_enabled = false
+  # }
 
   matcher {
     field_name = "HOSTNAME_AND_PORT"
