@@ -27,7 +27,7 @@ resource "mongodbatlas_alert_configuration" "defaults" {
       delay_min     = notification.value.delay_min
       sms_enabled   = notification.value.sms_enabled
       email_enabled = notification.value.email_enabled
-      roles = notification.value.roles
+      roles = try(notification.value.roles, null)
     }
   }
 
