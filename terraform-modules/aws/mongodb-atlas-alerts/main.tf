@@ -22,10 +22,6 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   dynamic "notification" {
     for_each = var.default_alerts[count.index].notification
     content {
-      namespace = setting.value["namespace"]
-      name = setting.value["name"]
-      value = setting.value["value"]
-
       type_name     = notification.value.type_name
       interval_min  = notification.value.interval_min
       delay_min     = notification.value.delay_min
