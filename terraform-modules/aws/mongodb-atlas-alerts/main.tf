@@ -22,11 +22,11 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   dynamic "notification" {
     for_each = var.default_alerts[count.index].notification
     content {
-      type_name     = notification.value.type_name
-      interval_min  = notification.value.interval_min
-      delay_min     = notification.value.delay_min
-      sms_enabled   = notification.value.sms_enabled
-      email_enabled = notification.value.email_enabled
+      type_name     = try(notification.value.type_name, null)
+      interval_min  = try(notification.value.interval_min, null)
+      delay_min     = try(notification.value.delay_min, null)
+      sms_enabled   = try(notification.value.sms_enabled, null)
+      email_enabled = try(notification.value.email_enabled, null)
       roles = try(notification.value.roles, null)
     }
   }
