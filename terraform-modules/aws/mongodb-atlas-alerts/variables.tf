@@ -34,6 +34,11 @@ variable "global_notification_settings" {
   description = "Global notification setting that is applied to all alerts created by this module"
 }
 
+variable "enable_default_alerts" {
+  type        = bool
+  default     = true
+  description = "To use the set of default alerts or not"
+}
 
 # Alerts vars: https://www.mongodb.com/docs/atlas/reference/api/alert-configurations-create-config/#request-body-parameters
 # MongoDB Host Metric reference: https://www.mongodb.com/docs/atlas/reference/alert-host-metrics/

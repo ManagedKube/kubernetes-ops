@@ -13,7 +13,7 @@ locals {
 }
 
 resource "mongodbatlas_alert_configuration" "defaults" {
-  count = length(var.default_alerts)
+  count = var.enable_default_alerts ? length(var.default_alerts) : 0
 
   project_id = var.mongodbatlas_projectid
   event_type = var.default_alerts[count.index].event_type
