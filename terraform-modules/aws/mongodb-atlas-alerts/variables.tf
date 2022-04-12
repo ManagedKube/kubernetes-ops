@@ -78,13 +78,7 @@ variable "default_alerts" {
       metric_threshold_config = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      threshold_config = [
-        {
-          operator    = "LESS_THAN"
-          threshold   = 1
-          units       = "HOURS"
-        }
-      ]
+      threshold_config = []
     },
   ]
   description = "description"
