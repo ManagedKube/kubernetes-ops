@@ -11,6 +11,8 @@ variable "use_global_notification_settings" {
 
 variable "global_notification_settings" {
   type        = list
+  # The items in the list all has to have the same number of items or the apply will fail
+  # due to Terraform deaming the items in the list being inconsistent
   default     = [
     {
       type_name = "GROUP"
@@ -167,14 +169,14 @@ variable "default_alerts" {
       event_type = "REPLICATION_OPLOG_WINDOW_RUNNING_OUT"
       enabled = true
       notification = [
-        {
-          type_name = "GROUP"
-          interval_min  = 5
-          delay_min     = 0
-          sms_enabled   = false
-          email_enabled = true
-          roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
-        },
+        # {
+        #   type_name = "GROUP"
+        #   interval_min  = 5
+        #   delay_min     = 0
+        #   sms_enabled   = false
+        #   email_enabled = true
+        #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+        # },
         # {
         #   type_name     = "ORG"
         #   interval_min  = 5
