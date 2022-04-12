@@ -31,13 +31,19 @@ variable "default_alerts" {
         operator   = "EQUALS"
         value      = "SECONDARY"
       }
-      metric_threshold_config = {
-        metric_name = "ASSERT_REGULAR"
-        operator    = "LESS_THAN"
-        threshold   = 99.0
-        units       = "RAW"
-        mode        = "AVERAGE"
-      }
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "ASSERT_REGULAR"
+          operator    = "LESS_THAN"
+          threshold   = 99.0
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
   ]
