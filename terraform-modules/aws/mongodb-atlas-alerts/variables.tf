@@ -5,7 +5,7 @@ variable "mongodbatlas_projectid" {
 
 variable "use_global_notification_settings" {
   type        = bool
-  default     = true
+  default     = false
   description = "This will override all notification settings with the global_notification_settings variable"
 }
 
