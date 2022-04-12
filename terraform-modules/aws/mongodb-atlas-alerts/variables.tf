@@ -26,7 +26,7 @@ variable "global_notification_settings" {
       delay_min     = 0
       sms_enabled   = true
       email_enabled = false
-      roles = null
+      roles = []
     },
   ]
   description = "Global notification setting that is applied to all alerts created by this module"
