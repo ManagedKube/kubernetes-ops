@@ -31,34 +31,23 @@ resource "mongodbatlas_alert_configuration" "defaults" {
     }
   }
 
-  # notification {
-  #   type_name     = "GROUP"
-  #   interval_min  = 5
-  #   delay_min     = 0
-  #   sms_enabled   = false
-  #   email_enabled = true
-  #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
-  # }
-
-  # notification {
-  #   type_name     = "ORG"
-  #   interval_min  = 5
-  #   delay_min     = 0
-  #   sms_enabled   = true
-  #   email_enabled = false
-  # }
-
   matcher {
-    field_name = "HOSTNAME_AND_PORT"
-    operator   = "EQUALS"
-    value      = "SECONDARY"
+    field_name = var.default_alerts[count.index].matcher.field_name
+    operator   = var.default_alerts[count.index].matcher.operator
+    value      = var.default_alerts[count.index].matcher.value
   }
 
   metric_threshold_config {
-    metric_name = "ASSERT_REGULAR"
-    operator    = "LESS_THAN"
-    threshold   = 99.0
-    units       = "RAW"
-    mode        = "AVERAGE"
+    metric_name = var.default_alerts[count.index].metric_threshold_config.metric_name
+    operator    = var.default_alerts[count.index].metric_threshold_config.operator
+    threshold   = var.default_alerts[count.index].metric_threshold_config.threshold
+    units       = var.default_alerts[count.index].metric_threshold_config.units
+    mode        = var.default_alerts[count.index].metric_threshold_config.mode
+  }
+
+  threshold_config {
+    operator    = null
+    threshold   = null
+    units       = null
   }
 }
