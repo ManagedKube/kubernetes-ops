@@ -9,7 +9,7 @@ terraform {
 }
 
 locals {
-    all_alerts = "merge of the default and user alerts"
+  all_alerts = "merge of the default and user alerts"
 }
 
 resource "mongodbatlas_alert_configuration" "defaults" {
@@ -22,15 +22,27 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   dynamic "notification" {
     for_each = var.use_global_notification_settings ? var.global_notification_settings : var.default_alerts[count.index].notification
     content {
-      type_name     = try(notification.value.type_name, null)
-      interval_min  = try(notification.value.interval_min, null)
-      delay_min     = try(notification.value.delay_min, null)
-      sms_enabled   = try(notification.value.sms_enabled, null)
-      email_enabled = try(notification.value.email_enabled, null)
-      roles = try(notification.value.roles, null)
-      api_token = try(notification.value.api_token, null)
-      channel_name = try(notification.value.channel_name, null)
-      datadog_region = try(notification.value.datadog_region, null)
+      type_name              = try(notification.value.type_name, null)
+      interval_min           = try(notification.value.interval_min, null)
+      delay_min              = try(notification.value.delay_min, null)
+      sms_enabled            = try(notification.value.sms_enabled, null)
+      email_enabled          = try(notification.value.email_enabled, null)
+      roles                  = try(notification.value.roles, null)
+      api_token              = try(notification.value.api_token, null)
+      channel_name           = try(notification.value.channel_name, null)
+      datadog_region         = try(notification.value.datadog_region, null)
+      email_address          = try(notification.value.email_address, null)
+      flowdock_api_token     = try(notification.value.flowdock_api_token, null)
+      flow_name              = try(notification.value.flow_name, null)
+      mobile_number          = try(notification.value.mobile_number, null)
+      ops_genie_api_key      = try(notification.value.ops_genie_api_key, null)
+      ops_genie_region       = try(notification.value.ops_genie_region, null)
+      team_id                = try(notification.value.team_id, null)
+      team_name              = try(notification.value.team_name, null)
+      username               = try(notification.value.username, null)
+      victor_ops_api_key     = try(notification.value.victor_ops_api_key, null)
+      victor_ops_routing_key = try(notification.value.victor_ops_routing_key, null)
+
 
     }
   }
@@ -58,9 +70,9 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   dynamic "threshold_config" {
     for_each = var.default_alerts[count.index].threshold_config
     content {
-      operator    = try(threshold_config.value.operator, null)
-      threshold   = try(threshold_config.value.threshold, null)
-      units       = try(threshold_config.value.units, null)
+      operator  = try(threshold_config.value.operator, null)
+      threshold = try(threshold_config.value.threshold, null)
+      units     = try(threshold_config.value.units, null)
     }
   }
 }

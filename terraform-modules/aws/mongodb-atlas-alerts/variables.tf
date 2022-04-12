@@ -10,17 +10,17 @@ variable "use_global_notification_settings" {
 }
 
 variable "global_notification_settings" {
-  type        = list
+  type = list(any)
   # The items in the list all has to have the same number of items or the apply will fail
   # due to Terraform deaming the items in the list being inconsistent
-  default     = [
+  default = [
     {
-      type_name = "GROUP"
+      type_name     = "GROUP"
       interval_min  = 5
       delay_min     = 0
       sms_enabled   = false
       email_enabled = true
-      roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+      roles         = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
     },
     {
       type_name     = "ORG"
@@ -28,7 +28,7 @@ variable "global_notification_settings" {
       delay_min     = 0
       sms_enabled   = true
       email_enabled = false
-      roles = []
+      roles         = []
     },
   ]
   description = "Global notification setting that is applied to all alerts created by this module"
@@ -43,13 +43,13 @@ variable "enable_default_alerts" {
 # Alerts vars: https://www.mongodb.com/docs/atlas/reference/api/alert-configurations-create-config/#request-body-parameters
 # MongoDB Host Metric reference: https://www.mongodb.com/docs/atlas/reference/alert-host-metrics/
 variable "default_alerts" {
-  type        = list(any)
-  default     = [
+  type = list(any)
+  default = [
     {
-      event_type = "REPLICATION_OPLOG_WINDOW_RUNNING_OUT"
-      enabled = true
+      event_type   = "REPLICATION_OPLOG_WINDOW_RUNNING_OUT"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -57,17 +57,17 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = [
         {
-          operator    = "LESS_THAN"
-          threshold   = 1
-          units       = "HOURS"
+          operator  = "LESS_THAN"
+          threshold = 1
+          units     = "HOURS"
         }
       ]
     },
     {
-      event_type = "NO_PRIMARY"
-      enabled = true
+      event_type   = "NO_PRIMARY"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -76,10 +76,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "CLUSTER_MONGOS_IS_MISSING"
-      enabled = true
+      event_type   = "CLUSTER_MONGOS_IS_MISSING"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -88,10 +88,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -108,10 +108,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -128,10 +128,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -148,10 +148,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "CREDIT_CARD_ABOUT_TO_EXPIRE"
-      enabled = true
+      event_type   = "CREDIT_CARD_ABOUT_TO_EXPIRE"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -160,10 +160,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -180,10 +180,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "HOST_HAS_INDEX_SUGGESTIONS"
-      enabled = true
+      event_type   = "HOST_HAS_INDEX_SUGGESTIONS"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -192,10 +192,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "HOST_MONGOT_CRASHING_OOM"
-      enabled = true
+      event_type   = "HOST_MONGOT_CRASHING_OOM"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -204,10 +204,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -224,10 +224,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
-      enabled = true
+      event_type   = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = [
@@ -244,10 +244,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "HOST_NOT_ENOUGH_DISK_SPACE"
-      enabled = true
+      event_type   = "HOST_NOT_ENOUGH_DISK_SPACE"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -256,10 +256,10 @@ variable "default_alerts" {
       threshold_config = []
     },
     {
-      event_type = "JOINED_GROUP"
-      enabled = true
+      event_type   = "JOINED_GROUP"
+      enabled      = true
       notification = []
-      matcher = []
+      matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
