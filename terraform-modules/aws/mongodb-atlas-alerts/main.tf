@@ -28,6 +28,10 @@ resource "mongodbatlas_alert_configuration" "defaults" {
       sms_enabled   = try(notification.value.sms_enabled, null)
       email_enabled = try(notification.value.email_enabled, null)
       roles = try(notification.value.roles, null)
+      api_token = try(notification.value.api_token, null)
+      channel_name = try(notification.value.channel_name, null)
+      datadog_region = try(notification.value.datadog_region, null)
+
     }
   }
 
