@@ -3,6 +3,35 @@ variable "mongodbatlas_projectid" {
   description = "The unique ID for the project to create the database user."
 }
 
+variable "use_global_notification_settings" {
+  type        = bool
+  default     = true
+  description = "This will override all notification settings with the global_notification_settings variable"
+}
+
+variable "global_notification_settings" {
+  type        = list(any)
+  default     = [
+    {
+      type_name = "GROUP"
+      interval_min  = 5
+      delay_min     = 0
+      sms_enabled   = false
+      email_enabled = true
+      roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+    },
+    {
+      type_name     = "ORG"
+      interval_min  = 5
+      delay_min     = 0
+      sms_enabled   = true
+      email_enabled = false
+    },
+  ]
+  description = "Global notification setting that is applied to all alerts created by this module"
+}
+
+
 # Alerts vars: https://www.mongodb.com/docs/atlas/reference/api/alert-configurations-create-config/#request-body-parameters
 # MongoDB Host Metric reference: https://www.mongodb.com/docs/atlas/reference/alert-host-metrics/
 variable "default_alerts" {
