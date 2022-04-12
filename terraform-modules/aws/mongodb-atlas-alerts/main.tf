@@ -45,9 +45,18 @@ resource "mongodbatlas_alert_configuration" "defaults" {
     mode        = var.default_alerts[count.index].metric_threshold_config.mode
   }
 
-  try(threshold_config {
+  threshold_config {
     operator    = null
     threshold   = null
     units       = null
-  })
+  }
+
+  dynamic "threshold_config" {
+    for_each = var.default_alerts[count.index].threshold_config
+    content {
+      operator    = try(threshold_config.value.operator, null)
+      threshold   = try(threshold_config.value.threshold, null)
+      units       = try(threshold_config.value.units, null)
+    }
+  }
 }
