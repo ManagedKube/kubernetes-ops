@@ -1,0 +1,100 @@
+# This is a set of pods that will generate APM metrics into the setup so that you
+# can view the spans in Grafana.  There are two apps in here
+
+# app 1: opentelemtry-example-app - this app has a frontend and a backend.  You will
+# have to port forward to this app and visit the website to induce any action
+
+# app 2: jaegertracing-example-app - this app has a frontend that also hits some sql
+# servers on the backend.  You will have to port forward to the app and then it will
+# trigger the spans and data into Tempo.
+
+# Inspired source: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/examples/tracing/docker-compose.yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: opentelemtry-example-app
+  namespace: monitoring
+  labels:
+    app: opentelemtry-example-app
+spec:
+  #  serviceAccountName: x2-auth-d
+  containers:
+  - image: openzipkin/example-sleuth-webmvc
+    #image: amazon/aws-cli
+    args:
+    - "Frontend"
+    env:
+    - name: JAVA_OPTS
+      value: -Dspring.zipkin.baseUrl=http://opentelemtry-collector-collector:9411
+    ports:
+    - containerPort: 8081
+    imagePullPolicy: IfNotPresent
+    name: app
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend
+  namespace: monitoring
+  labels:
+    app: backend
+spec:
+  #  serviceAccountName: x2-auth-d
+  containers:
+  - image: openzipkin/example-sleuth-webmvc
+    #image: amazon/aws-cli
+    args:
+    - "Backend"
+    env:
+    - name: JAVA_OPTS
+      value: -Dspring.zipkin.baseUrl=http://opentelemtry-collector-collector:9411
+    ports:
+    - containerPort: 9000
+      name: http
+    imagePullPolicy: IfNotPresent
+    name: app
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - name: backend
+    protocol: TCP
+    port: 9000
+    targetPort: http
+
+
+
+
+# example from: https://grafana.com/blog/2021/04/13/how-to-send-traces-to-grafana-clouds-tempo-service-with-opentelemetry-collector/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jaegertracing-example-app
+  namespace: monitoring
+  labels:
+    app: jaegertracing-example-app
+spec:
+  #  serviceAccountName: x2-auth-d
+  containers:
+  - image: jaegertracing/example-hotrod:latest
+    args:
+    - "all"
+    env:
+    - name: JAEGER_AGENT_HOST
+      value: opentelemtry-collector-collector
+    - name: JAEGER_AGENT_PORT
+      value: "6831"
+    ports:
+    - containerPort: 8080
+    imagePullPolicy: IfNotPresent
+    name: app
+  restartPolicy: Always
