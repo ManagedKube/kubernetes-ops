@@ -1,0 +1,447 @@
+{
+  "links": [
+    {
+      "href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/111111111111111111/alertConfigs?pretty=true&pageNum=1&itemsPerPage=100",
+      "rel": "self"
+    }
+  ],
+  "results": [
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "REPLICATION_OPLOG_WINDOW_RUNNING_OUT",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b79",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b79",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "threshold": {
+        "operator": "LESS_THAN",
+        "threshold": 1,
+        "units": "HOURS"
+      },
+      "typeName": "REPLICA_SET",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "NO_PRIMARY",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b7b",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b7b",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 15,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "REPLICA_SET",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "CLUSTER_MONGOS_IS_MISSING",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b7d",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b7d",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 15,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "CLUSTER",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b7f",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b7f",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "CONNECTIONS_PERCENT",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 80,
+        "units": "RAW"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b82",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b82",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "DISK_PARTITION_SPACE_USED_DATA",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 90,
+        "units": "RAW"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b84",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b84",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "QUERY_TARGETING_SCANNED_OBJECTS_PER_RETURNED",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 1000,
+        "units": "RAW"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "CREDIT_CARD_ABOUT_TO_EXPIRE",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b86",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b86",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 1440,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "BILLING",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b88",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b88",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "NORMALIZED_SYSTEM_CPU_USER",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 95,
+        "units": "RAW"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "HOST_HAS_INDEX_SUGGESTIONS",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b8a",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b8a",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 10,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "HOST_MONGOT_CRASHING_OOM",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b8c",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b8c",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_SERVERLESS_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b8e",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b8e",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "SERVERLESS_CONNECTIONS_PERCENT",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 80,
+        "units": "RAW"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "SERVERLESS_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "OUTSIDE_SERVERLESS_METRIC_THRESHOLD",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b90",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b90",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "metricThreshold": {
+        "metricName": "SERVERLESS_DATA_SIZE_TOTAL",
+        "mode": "AVERAGE",
+        "operator": "GREATER_THAN",
+        "threshold": 0.75,
+        "units": "TERABYTES"
+      },
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "SERVERLESS_METRIC",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "HOST_NOT_ENOUGH_DISK_SPACE",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b92",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b92",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "roles": [
+            "GROUP_OWNER"
+          ],
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "HOST",
+      "updated": "2022-01-15T00:32:40Z"
+    },
+    {
+      "created": "2022-01-15T00:32:40Z",
+      "enabled": true,
+      "eventTypeName": "JOINED_GROUP",
+      "groupId": "111111111111111111",
+      "id": "61e2162831a32a210d907b94",
+      "links": [
+        {
+          "href": "https://cloud.mongodb.com/api/public/v1.0/groups/111111111111111111/alertConfigs/61e2162831a32a210d907b94",
+          "rel": "self"
+        }
+      ],
+      "matchers": [],
+      "notifications": [
+        {
+          "delayMin": 0,
+          "emailEnabled": true,
+          "intervalMin": 60,
+          "smsEnabled": false,
+          "typeName": "GROUP"
+        }
+      ],
+      "typeName": "USER",
+      "updated": "2022-01-15T00:32:40Z"
+    }
+  ],
+  "totalCount": 14
+}
