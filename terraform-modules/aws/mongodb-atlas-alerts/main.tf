@@ -42,8 +42,6 @@ resource "mongodbatlas_alert_configuration" "defaults" {
       username               = try(notification.value.username, null)
       victor_ops_api_key     = try(notification.value.victor_ops_api_key, null)
       victor_ops_routing_key = try(notification.value.victor_ops_routing_key, null)
-
-
     }
   }
 
