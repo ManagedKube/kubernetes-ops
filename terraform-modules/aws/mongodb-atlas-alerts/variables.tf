@@ -38,6 +38,7 @@ variable "default_alerts" {
         units       = "RAW"
         mode        = "AVERAGE"
       }
+      threshold_config = []
     },
   ]
   description = "description"
