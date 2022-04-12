@@ -25,19 +25,19 @@ variable "default_alerts" {
           sms_enabled   = true
           email_enabled = false
         },
-        matcher = {
-          field_name = "HOSTNAME_AND_PORT"
-          operator   = "EQUALS"
-          value      = "SECONDARY"
-        }
-        metric_threshold_config = {
-          metric_name = "ASSERT_REGULAR"
-          operator    = "LESS_THAN"
-          threshold   = 99.0
-          units       = "RAW"
-          mode        = "AVERAGE"
-        }
       ]
+      matcher = {
+        field_name = "HOSTNAME_AND_PORT"
+        operator   = "EQUALS"
+        value      = "SECONDARY"
+      }
+      metric_threshold_config = {
+        metric_name = "ASSERT_REGULAR"
+        operator    = "LESS_THAN"
+        threshold   = 99.0
+        units       = "RAW"
+        mode        = "AVERAGE"
+      }
     },
   ]
   description = "description"
