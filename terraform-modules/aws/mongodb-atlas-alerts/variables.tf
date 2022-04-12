@@ -10,7 +10,7 @@ variable "use_global_notification_settings" {
 }
 
 variable "global_notification_settings" {
-  type        = list(any)
+  type        = list
   default     = [
     {
       type_name = "GROUP"
