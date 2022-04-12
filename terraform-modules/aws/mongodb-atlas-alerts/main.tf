@@ -20,7 +20,7 @@ resource "mongodbatlas_alert_configuration" "defaults" {
   enabled    = var.default_alerts[count.index].enabled
 
   dynamic "notification" {
-    for_each = var.use_global_notification_settings: var.global_notification_settings ? var.default_alerts[count.index].notification
+    for_each = var.use_global_notification_settings ? var.global_notification_settings : var.default_alerts[count.index].notification
     content {
       type_name     = try(notification.value.type_name, null)
       interval_min  = try(notification.value.interval_min, null)
