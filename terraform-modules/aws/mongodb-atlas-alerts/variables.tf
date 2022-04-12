@@ -33,6 +33,7 @@ variable "default_alerts" {
       }
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      # If event_type is set to OUTSIDE_METRIC_THRESHOLD, the metric_threshold_config field must also be set
       metric_threshold_config = [
         {
           metric_name = "ASSERT_REGULAR"
@@ -46,8 +47,9 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
+    # User joins group
     {
-      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      event_type = "JOINED_GROUP"
       enabled = true
       notification = [
         {
@@ -73,18 +75,14 @@ variable "default_alerts" {
       }
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      metric_threshold_config = [
-        {
-          metric_name = "ASSERT_REGULAR"
-          operator    = "LESS_THAN"
-          threshold   = 99.0
-          units       = "RAW"
-          mode        = "AVERAGE"
-        }
-      ]
+      metric_threshold_config = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      threshold_config = []
+      threshold_config = [
+        operator    = "LESS_THAN"
+        threshold   = 1
+        units       = "HOURS"
+      ]
     },
   ]
   description = "description"
