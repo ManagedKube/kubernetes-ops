@@ -168,23 +168,7 @@ variable "default_alerts" {
     {
       event_type = "REPLICATION_OPLOG_WINDOW_RUNNING_OUT"
       enabled = true
-      notification = [
-        # {
-        #   type_name = "GROUP"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = false
-        #   email_enabled = true
-        #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
-        # },
-        # {
-        #   type_name     = "ORG"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = true
-        #   email_enabled = false
-        # },
-      ]
+      notification = []
       matcher = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
@@ -202,23 +186,7 @@ variable "default_alerts" {
     {
       event_type = "NO_PRIMARY"
       enabled = true
-      notification = [
-        # {
-        #   type_name = "GROUP"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = false
-        #   email_enabled = true
-        #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
-        # },
-        # {
-        #   type_name     = "ORG"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = true
-        #   email_enabled = false
-        # },
-      ]
+      notification = []
       matcher = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
@@ -230,23 +198,7 @@ variable "default_alerts" {
     {
       event_type = "CLUSTER_MONGOS_IS_MISSING"
       enabled = true
-      notification = [
-        # {
-        #   type_name = "GROUP"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = false
-        #   email_enabled = true
-        #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
-        # },
-        # {
-        #   type_name     = "ORG"
-        #   interval_min  = 5
-        #   delay_min     = 0
-        #   sms_enabled   = true
-        #   email_enabled = false
-        # },
-      ]
+      notification = []
       matcher = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
@@ -255,6 +207,36 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "CONNECTIONS_PERCENT"
+          operator    = "GREATER_THAN"
+          threshold   = 80
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+
+
+
+
+
+
+
+
+
+
 
 
 
