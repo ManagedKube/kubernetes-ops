@@ -227,14 +227,142 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
-
-
-
-
-
-
-
-
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "DISK_PARTITION_SPACE_USED_DATA"
+          operator    = "GREATER_THAN"
+          threshold   = 90
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "QUERY_TARGETING_SCANNED_OBJECTS_PER_RETURNED"
+          operator    = "GREATER_THAN"
+          threshold   = 1000
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "CREDIT_CARD_ABOUT_TO_EXPIRE"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "NORMALIZED_SYSTEM_CPU_USER"
+          operator    = "GREATER_THAN"
+          threshold   = 95
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "HOST_HAS_INDEX_SUGGESTIONS"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "HOST_MONGOT_CRASHING_OOM"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "SERVERLESS_CONNECTIONS_PERCENT"
+          operator    = "GREATER_THAN"
+          threshold   = 80
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
+    {
+      event_type = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
+      enabled = true
+      notification = []
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "SERVERLESS_DATA_SIZE_TOTAL"
+          operator    = "GREATER_THAN"
+          threshold   = 0.75
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
 
 
 
