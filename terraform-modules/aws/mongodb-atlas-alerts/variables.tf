@@ -46,6 +46,46 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
+    {
+      event_type = "OUTSIDE_METRIC_THRESHOLD"
+      enabled = true
+      notification = [
+        {
+          type_name = "GROUP"
+          interval_min  = 5
+          delay_min     = 0
+          sms_enabled   = false
+          email_enabled = true
+          roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+        },
+        {
+          type_name     = "ORG"
+          interval_min  = 5
+          delay_min     = 0
+          sms_enabled   = true
+          email_enabled = false
+        },
+      ]
+      matcher = {
+        field_name = "HOSTNAME_AND_PORT"
+        operator   = "EQUALS"
+        value      = "SECONDARY"
+      }
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "ASSERT_REGULAR"
+          operator    = "LESS_THAN"
+          threshold   = 99.0
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
   ]
   description = "description"
 }
