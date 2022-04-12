@@ -185,11 +185,7 @@ variable "default_alerts" {
         #   email_enabled = false
         # },
       ]
-      matcher = {
-        field_name = "HOSTNAME_AND_PORT"
-        operator   = "EQUALS"
-        value      = "SECONDARY"
-      }
+      matcher = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -223,11 +219,7 @@ variable "default_alerts" {
         #   email_enabled = false
         # },
       ]
-      matcher = {
-        field_name = "HOSTNAME_AND_PORT"
-        operator   = "EQUALS"
-        value      = "SECONDARY"
-      }
+      matcher = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       metric_threshold_config = []
@@ -235,7 +227,34 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
-
+    {
+      event_type = "CLUSTER_MONGOS_IS_MISSING"
+      enabled = true
+      notification = [
+        # {
+        #   type_name = "GROUP"
+        #   interval_min  = 5
+        #   delay_min     = 0
+        #   sms_enabled   = false
+        #   email_enabled = true
+        #   roles = ["GROUP_DATA_ACCESS_READ_ONLY", "GROUP_CLUSTER_MANAGER", "GROUP_DATA_ACCESS_ADMIN"]
+        # },
+        # {
+        #   type_name     = "ORG"
+        #   interval_min  = 5
+        #   delay_min     = 0
+        #   sms_enabled   = true
+        #   email_enabled = false
+        # },
+      ]
+      matcher = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
 
 
 

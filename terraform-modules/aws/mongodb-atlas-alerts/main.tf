@@ -31,10 +31,13 @@ resource "mongodbatlas_alert_configuration" "defaults" {
     }
   }
 
-  matcher {
-    field_name = var.default_alerts[count.index].matcher.field_name
-    operator   = var.default_alerts[count.index].matcher.operator
-    value      = var.default_alerts[count.index].matcher.value
+  dynamic "matcher" {
+    for_each = var.default_alerts[count.index].matcher
+    content {
+      field_name = matcher.value.field_name
+      operator   = matcher.value.operator
+      value      = matcher.value.value
+    }
   }
 
   dynamic "metric_threshold_config" {
