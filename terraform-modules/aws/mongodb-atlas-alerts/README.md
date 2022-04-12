@@ -5,6 +5,10 @@ notifications for all of these alerts with Terraform.  Currently there is no way
 set those alerts with default notification without going into each one and setting it.
 
 
+## var.default_alerts
+The default alerts are the set of alerts that Mongo Atlas provides to your project when
+you create it.  These are basic standard alerts applicable to any installation
+
 ## Creating a Mongo Atlas API key
 
 https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
