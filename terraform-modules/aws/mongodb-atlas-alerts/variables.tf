@@ -355,7 +355,7 @@ variable "default_alerts" {
           metric_name = "SERVERLESS_DATA_SIZE_TOTAL"
           operator    = "GREATER_THAN"
           threshold   = 0.75
-          units       = "RAW"
+          units       = "TERABYTES"
           mode        = "AVERAGE"
         }
       ]
