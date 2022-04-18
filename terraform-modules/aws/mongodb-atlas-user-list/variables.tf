@@ -28,7 +28,7 @@ variable "enable_aws_secret" {
 variable "enable_percent_encoding_password" {
   type        = bool
   default     = false
-  description = "A flag to denote that we will put the password secret into aws secret in percent encoding accourding mongodb documentation: https://www.mongodb.com/docs/manual/reference/connection-string/#examples"
+  description = "A flag to denote that we will put the password secret into aws secret in percent encoding according mongodb documentation: https://www.mongodb.com/docs/manual/reference/connection-string/#examples"
 }
 
 variable "database_users" {
