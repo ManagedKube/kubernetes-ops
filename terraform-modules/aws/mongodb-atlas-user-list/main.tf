@@ -11,7 +11,7 @@ terraform {
 resource "mongodbatlas_database_user" "this" {
   count              = length(var.database_users)
   username           = var.database_users[count.index].username
-  password           = var.enable_aws_secret ? aws_secretsmanager_secret_version.this[count.index].secret_string : var.database_users[count.index].user_password
+  password           = var.enable_aws_secret ? random_password.password[count.index].result : var.database_users[count.index].user_password
   project_id         = var.mongodbatlas_projectid
   auth_database_name = var.database_users[count.index].auth_database_name
 
@@ -52,5 +52,5 @@ resource "random_password" "password" {
 resource "aws_secretsmanager_secret_version" "this" {
   count         = var.enable_aws_secret ? length(var.database_users) : 0
   secret_id     = aws_secretsmanager_secret.this[count.index].id
-  secret_string = random_password.password[count.index].result
+  secret_string = var.enable_percent_encoding_password ? urlencode(random_password.password[count.index].result) : random_password.password[count.index].result
 }
