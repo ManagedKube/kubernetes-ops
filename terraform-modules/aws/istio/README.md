@@ -10,6 +10,11 @@ in this pattern: `istio-<version>` to keep our folders consistent.
 
 The package comes with a lot of files and you only need to check in the `istion-<version>/manifest` folder.
 
+Remove folders from the extract (not needed)
+* bin
+* samples
+* tools
+
 ## Install
 General Helm install docs: https://istio.io/latest/docs/setup/install/helm/
 
