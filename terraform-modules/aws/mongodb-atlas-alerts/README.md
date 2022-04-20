@@ -26,3 +26,39 @@ curl --user "${MONGODB_ATLAS_PUBLIC_KEY}:${MONGODB_ATLAS_PRIVATE_KEY}" --digest 
   --request GET "https://cloud.mongodb.com/api/atlas/v1.0/groups/61e2162831a32a210d907b76/alertConfigs?pretty=true"
 ```
 
+# Slack API Token
+
+You can follow this doc to create the token: https://api.slack.com/authentication/basics
+
+The token will be in the form of: `xoxb-xxxx-xxxxx-xxxxx`
+
+## Testing the token
+Get a list of the Slack channel:
+
+```
+curl https://slack.com/api/conversations.list -H "Authorization: Bearer <SLACK API TOKEN>"
+```
+
+You will need to get the channel string from this list and put it into the next request to send a message.
+
+You will need to @ the bot and add the bot to the channel you want to send the message to.
+
+Send a message to the channel:
+```
+curl -X POST -F channel=CGM7387SP -F text="test test" https://slack.com/api/chat.postMessage -H "Authorization: Bearer <SLACK API TOKEN>"
+```
+
+## TL;DR generating the API Token
+
+Without having to read that entire doc =)
+
+1. Create a new app “from scratch”
+1. Name: MongoAtlasAlerting
+1. Select the ExactPay workspace
+1. Click on create app
+1. This will bring you to the app’s management page
+1. On the left hand side click on: OAuth & Permissions
+1. Go down to Scopes → Bot Token Scopes
+1. Add the “chat:write” scope
+1. Go back up to “OAuth Tokens for Your Workspace” and click on “Install into Workspace” and allow the app to access our workspace
+1. This will bring you back to the app’s management page and now there is a token there with the format of: xoxb-xxxx-xxx-xxx
