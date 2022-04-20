@@ -1,7 +1,8 @@
 
 output "zone_id" {
   description = "Zone ID of Route53 zone"
-  value       = values(module.zones.route53_zone_zone_id)[0]
+  # value       = values(module.zones.route53_zone_zone_id)[0]
+  value       = module.zones.route53_zone_zone_id
 }
 
 output "name_servers" {
