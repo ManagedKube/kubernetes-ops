@@ -203,6 +203,8 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
+    # These alerts didnt work when trying to apply it.  Leaving it out for now.
+    # Returned a nondescriptive generic error.
     # {
     #   event_type   = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
     #   enabled      = true
