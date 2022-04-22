@@ -210,7 +210,10 @@ variable "default_alerts" {
       matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      metric_threshold_config = [
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = [
         {
           metric_name = "SERVERLESS_CONNECTIONS_PERCENT"
           operator    = "GREATER_THAN"
@@ -219,9 +222,6 @@ variable "default_alerts" {
           mode        = "AVERAGE"
         }
       ]
-      # This can only be a list of 1
-      # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      threshold_config = []
     },
     {
       event_type   = "OUTSIDE_SERVERLESS_METRIC_THRESHOLD"
@@ -230,7 +230,10 @@ variable "default_alerts" {
       matcher      = []
       # This can only be a list of 1
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      metric_threshold_config = [
+      metric_threshold_config = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = [
         {
           metric_name = "SERVERLESS_DATA_SIZE_TOTAL"
           operator    = "GREATER_THAN"
@@ -239,9 +242,6 @@ variable "default_alerts" {
           mode        = "AVERAGE"
         }
       ]
-      # This can only be a list of 1
-      # If is "metric_threshold_config" set, then "threshold_config" is not needed
-      threshold_config = []
     },
     {
       event_type   = "HOST_NOT_ENOUGH_DISK_SPACE"
