@@ -59,6 +59,6 @@ Without having to read that entire doc =)
 1. This will bring you to the app’s management page
 1. On the left hand side click on: OAuth & Permissions
 1. Go down to Scopes → Bot Token Scopes
-1. Add the “chat:write” scope
+1. Add the “chat:write,channels:read,groups:read,mpim:read,im:read” scope
 1. Go back up to “OAuth Tokens for Your Workspace” and click on “Install into Workspace” and allow the app to access our workspace
 1. This will bring you back to the app’s management page and now there is a token there with the format of: xoxb-xxxx-xxx-xxx
