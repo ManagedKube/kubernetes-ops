@@ -74,3 +74,9 @@ variable "external_nat_ip_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "create_elasticache_subnet_route_table" {
+  description = "Controls if separate route table for elasticache should be created"
+  type        = bool
+  default     = true
+}
