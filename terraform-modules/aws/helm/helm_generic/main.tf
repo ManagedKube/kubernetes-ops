@@ -8,7 +8,7 @@ resource "helm_release" "helm_chart" {
   repository       = var.repository
   repository_username = var.repository_username
   repository_password = var.repository_password
-
+  force_update = true
   values = [
     var.helm_values,
     var.helm_values_2,
