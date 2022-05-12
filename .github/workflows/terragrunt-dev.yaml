@@ -1,5 +1,5 @@
 # The name of the pipeline.  Must be unique.
-name: "Terraform - AWS"
+name: "Terragrunt-dev - AWS"
 
 on:
   push:
