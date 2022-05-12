@@ -126,7 +126,7 @@ jobs:
           ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
           ## instantitation
           ############################################################################
-          role-to-assume: arn:aws:iam::296183888531:role/github_oidc_terraform-dev
+          role-to-assume: arn:aws:iam::296183888531:role/github_oidc
           #${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
           role-session-name: githubAWSSession
           role-duration-seconds: 900
