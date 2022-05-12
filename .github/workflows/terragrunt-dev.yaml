@@ -26,7 +26,7 @@ on:
     - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/terragrunt-dev/environment.hcl'
 
 env:
-  AWS_REGION: us-west-2
+  AWS_REGION: us-east-1
   tf_version: '1.0.11'
   tg_version: 'v0.35.13'
 
