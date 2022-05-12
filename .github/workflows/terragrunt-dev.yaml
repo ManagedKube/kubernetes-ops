@@ -122,7 +122,11 @@ jobs:
       - name: 'Configure AWS credentials'
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::687032922525:role/github_oidc
+          ############################################################################
+          ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
+          ## instantitation
+          ############################################################################
+          role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
           role-session-name: githubAWSSession
           role-duration-seconds: 900
           aws-region: ${{ env.AWS_REGION }}
