@@ -55,3 +55,173 @@ Apply:
 ```
 terragrunt apply
 ```
+
+The output:
+```
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_openid_connect_provider.this[0] will be created
+  + resource "aws_iam_openid_connect_provider" "this" {
+      + arn             = (known after apply)
+      + client_id_list  = [
+          + "sts.amazonaws.com",
+        ]
+      + id              = (known after apply)
+      + tags            = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+      + tags_all        = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+      + thumbprint_list = [
+          + "6938fd4d98bab03faadb97b34396831e3780aea1",
+        ]
+      + url             = "https://token.actions.githubusercontent.com"
+    }
+
+  # aws_iam_policy.iam_policy will be created
+  + resource "aws_iam_policy" "iam_policy" {
+      + arn         = (known after apply)
+      + description = "IAM Policy for the Github OIDC Federation permissions"
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + name_prefix = "github_oidc_terraform-dev"
+      + path        = "/"
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "*"
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id   = (known after apply)
+      + tags        = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+      + tags_all    = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+    }
+
+  # module.iam_assumable_role_admin.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringEquals = {
+                              + "token.actions.githubusercontent.com:sub" = [
+                                  + "repo:managedkube/kubernetes-ops:pull_request",
+                                  + "repo:managedkube/kubernetes-ops:ref:refs/heads/main",
+                                  + "repo:managedkube/kubernetes-ops:workflow_dispatch",
+                                ]
+                            }
+                          + StringLike   = {
+                              + "token.actions.githubusercontent.com:sub" = "repo:octo-org/octo-repo:ref:refs/heads/feature/*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::xxxxxxxxxxxxxx:oidc-provider/token.actions.githubusercontent.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "github_oidc_terraform-dev"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+      + tags_all              = {
+          + "ops_env"              = "terraform-dev"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "managedkube/kubernetes-ops"
+          + "ops_source_repo_path" = "terraform-environments/aws/terraform-dev/us-east-1/terragrunt-dev/050-github-aws-permissions"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy {
+          + name   = (known after apply)
+          + policy = (known after apply)
+        }
+    }
+
+  # module.iam_assumable_role_admin.aws_iam_role_policy_attachment.custom[0] will be created
+  + resource "aws_iam_role_policy_attachment" "custom" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "github_oidc_terraform-dev"
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + arn = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_iam_openid_connect_provider.this[0]: Creating...
+aws_iam_policy.iam_policy: Creating...
+module.iam_assumable_role_admin.aws_iam_role.this[0]: Creating...
+aws_iam_openid_connect_provider.this[0]: Creation complete after 0s [id=arn:aws:iam::xxxxxxxxxxxxxx:oidc-provider/token.actions.githubusercontent.com]
+aws_iam_policy.iam_policy: Creation complete after 0s [id=arn:aws:iam::xxxxxxxxxxxxxx:policy/github_oidc_terraform-dev20220512182828671900000001]
+module.iam_assumable_role_admin.aws_iam_role.this[0]: Creation complete after 1s [id=github_oidc_terraform-dev]
+module.iam_assumable_role_admin.aws_iam_role_policy_attachment.custom[0]: Creating...
+module.iam_assumable_role_admin.aws_iam_role_policy_attachment.custom[0]: Creation complete after 0s [id=github_oidc_terraform-dev-20220512182829972200000002]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+arn = "arn:aws:iam::xxxxxxxxxxxxxx:role/github_oidc_terraform-dev"
+```
+
+The output will be used in the Github Action workflow file as an input
+to assuming the role.  This will have to be manually done.

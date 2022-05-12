@@ -1,5 +1,5 @@
 # The name of the pipeline.  Must be unique.
-name: "Terraform - AWS"
+name: "Terragrunt-dev - AWS"
 
 on:
   push:
@@ -124,7 +124,9 @@ jobs:
         with:
           ############################################################################
           ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
-          ## instantitation
+          ## instantitation/apply.  
+          ##
+          ## It will be in the form of: arn:aws:iam::xxxxxxxxx:role/github_oidc_<posible more to the name>
           ############################################################################
           role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
           role-session-name: githubAWSSession
