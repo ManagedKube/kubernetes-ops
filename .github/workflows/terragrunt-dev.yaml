@@ -1,0 +1,198 @@
+# The name of the pipeline.  Must be unique.
+name: "Terraform - AWS"
+
+on:
+  push:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-environments/aws/terragrunt-dev/**/*.hcl'
+    - 'terraform-environments/aws/terragrunt-dev/**/*.yaml'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/terragrunt.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/common.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/region.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/terragrunt-dev/environment.hcl'
+    branches:
+      - main
+  pull_request:
+    # only run when files in this path changes
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-using-positive-and-negative-patterns-1
+    paths:
+    - 'terraform-environments/aws/terragrunt-dev/**/*.hcl'
+    - 'terraform-environments/aws/terragrunt-dev/**/*.yaml'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/terragrunt.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/common.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/region.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/terragrunt-dev/environment.hcl'
+
+env:
+  AWS_REGION: us-east-1
+  tf_version: '1.0.11'
+  tg_version: 'v0.35.13'
+
+# Used for getting permissions to AWS resources through an OIDC federation
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout@v1
+
+jobs:
+  ## This generates a matrix of changed directory to run Terraform on
+  generate_matrix:
+    runs-on: ubuntu-latest
+    env:
+      # The path that you want to construct the matrix on.  Only files in this
+      # path that has changed will be included in.
+      TERRAFORM_CHECK_PATH: terraform-environments/aws/terragrunt-dev
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: get parent directory and set matrix
+        id: set-matrix
+        run: |
+          # A list of files that changed
+          git diff --name-only HEAD^ HEAD $TERRAFORM_CHECK_PATH > files1.txt
+          # Output a list of parent folder stripping out the file name
+          # leaving only the parent dir name
+          while IFS= read -r file
+          do
+            parent_dir=$(dirname -- "$file")
+
+            echo "xx parent_dir: $parent_dir"
+            echo "xx file: $file"
+
+            if [[ "$parent_dir" != "terraform-environments/aws/terragrunt-dev/us-west-2/dev01" ]] && [[ "$parent_dir" != "terraform-environments/aws/terragrunt-dev" ]] && [[ "$parent_dir" != "terraform-environments/aws/terragrunt-dev/us-west-2" ]]; then
+              echo "aa: $parent_dir"
+              echo $parent_dir >> file2.txt
+            fi
+
+
+          done < files1.txt
+          echo "## All changed directories"
+          cat file2.txt
+          # There can be duplicates in the parent dir name if multiple
+          # files changed in that parent dir.  This is to output a list
+          # that is unqiue so that we don't run the plan on the same 
+          # folder multiple times.
+          cat file2.txt | uniq > file3.txt
+          echo "## Unique list of changed dirs only"
+          cat file3.txt
+          echo "##"
+          # Set the parent dir into the Github Actions json matrix
+          # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#fromjson
+          tf_config=''
+          while IFS= read -r file
+          do
+            echo "file = $file"
+            # parent_dir=$(dirname -- "$file")
+            # echo "parent_dir = $parent_dir"
+            
+            if [[ -z $tf_config ]]; then
+              tf_config="{\"tf_config\":\"$file\"}"
+            else
+              tf_config="$tf_config, {\"tf_config\":\"$file\"}"
+            fi
+          done < file3.txt
+          tf_config="{\"include\":[$tf_config]}"
+          echo "::set-output name=matrix::$tf_config"
+  terragrunt:
+    name: 'Terragrunt'
+    needs: [generate_matrix]
+    strategy:
+      matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
+    runs-on: ubuntu-latest
+    env:
+      tf_working_dir: ${{matrix.tf_config}}
+      TF_VAR_key_name: ${{ secrets.KEY_NAME }} 
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Download kubergrunt'
+        run: |
+          wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.7.11/kubergrunt_linux_amd64
+          chmod 755 kubergrunt_linux_amd64
+          mkdir ${{ github.workspace }}/tmp_bin
+          cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
+
+      - name: 'Configure AWS credentials'
+        uses: aws-actions/configure-aws-credentials@v1.6.1
+        with:
+          ############################################################################
+          ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
+          ## instantitation
+          ############################################################################
+          role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
+          role-session-name: githubAWSSession
+          role-duration-seconds: 900
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 'Terragrunt Format'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
+          tf_actions_binary: 'terraform'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Terragrunt Init'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: 'Terragrunt Validate'
+      #   uses: the-commons-project/terragrunt-github-actions@master
+      #   with:
+      #     tf_actions_version: ${{ env.tf_version }}
+      #     tg_actions_version: ${{ env.tg_version }}
+      #     tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
+      #     tf_actions_binary: 'terraform'
+      #     tf_actions_subcommand: 'validate'
+      #     tf_actions_working_dir: ${{ env.tf_working_dir }}
+      #     tf_actions_comment: true
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Terragrunt Plan'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
+          # TF_LOG: DEBUG
+
+      - name: Terragrunt Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
