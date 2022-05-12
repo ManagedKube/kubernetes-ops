@@ -119,6 +119,11 @@ jobs:
           mkdir ${{ github.workspace }}/tmp_bin
           cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
 
+      - name: 'Download kubectl'
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod 755 kubectl
+
       - name: 'Configure AWS credentials'
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
