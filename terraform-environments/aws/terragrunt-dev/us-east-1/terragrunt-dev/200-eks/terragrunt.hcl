@@ -75,6 +75,11 @@ inputs = {
       username = "gkan-temp"
       groups   = ["system:masters"]
     },
+    {
+      userarn  = "AWSReservedSSO_AdministratorAccess_1f8d5e80fd7b3359/garland"
+      username = "gkan-federated"
+      groups   = ["system:masters"]
+    },
   ]
 
   eks_managed_node_groups = {
