@@ -120,7 +120,7 @@ jobs:
           cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
 
       - name: 'Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
           ############################################################################
           ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
