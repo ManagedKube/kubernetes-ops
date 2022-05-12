@@ -31,9 +31,9 @@ env:
   tg_version: 'v0.35.13'
 
 # Used for getting permissions to AWS resources through an OIDC federation
-# permissions:
-  # id-token: write
-  # contents: read    # This is required for actions/checkout@v1
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout@v1
 
 jobs:
   ## This generates a matrix of changed directory to run Terraform on
@@ -126,7 +126,7 @@ jobs:
           ## This role is an output from the 050-github-aws-permissions Terraform/Terragrunt
           ## instantitation
           ############################################################################
-          role-to-assume: arn:aws:iam::296183888531:role/github_oidc_terraform-dev 
+          role-to-assume: arn:aws:iam::296183888531:role/github_oidc_terraform-dev
           #${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
           role-session-name: githubAWSSession
           role-duration-seconds: 900
