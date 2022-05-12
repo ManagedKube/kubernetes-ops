@@ -31,9 +31,9 @@ env:
   tg_version: 'v0.35.13'
 
 # Used for getting permissions to AWS resources through an OIDC federation
-permissions:
-  id-token: write
-  contents: read    # This is required for actions/checkout@v1
+# permissions:
+  # id-token: write
+  # contents: read    # This is required for actions/checkout@v1
 
 jobs:
   ## This generates a matrix of changed directory to run Terraform on
