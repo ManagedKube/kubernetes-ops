@@ -163,6 +163,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 'Output .terraform.lock.hcl file'
+        run: |
+          cd ${{ env.tf_working_dir }}
+          cat .terraform.lock.hcl
+
       # - name: 'Terragrunt Validate'
       #   uses: the-commons-project/terragrunt-github-actions@master
       #   with:
