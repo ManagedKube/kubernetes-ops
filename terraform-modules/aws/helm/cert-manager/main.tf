@@ -113,9 +113,9 @@ data "template_file" "dns01_cluster_issuer_yaml" {
   }
 }
 
-resource "kubectl_manifest" "dns01_cluster_issuer" {
-  count     = var.enable_dns01_cluster_issuer
-  yaml_body = data.template_file.dns01_cluster_issuer_yaml.rendered
+resource "kubernetes_manifest" "dns01_cluster_issuer" {
+  count    = var.enable_dns01_cluster_issuer
+  manifest = data.template_file.dns01_cluster_issuer_yaml.rendered
 
   depends_on = [
     module.cert-manager
@@ -137,9 +137,9 @@ data "template_file" "http01_cluster_issuer_yaml" {
   }
 }
 
-resource "kubectl_manifest" "http01_cluster_issuer" {
-  count     = var.enable_http01_cluster_issuer
-  yaml_body = data.template_file.http01_cluster_issuer_yaml.rendered
+resource "kubernetes_manifest" "http01_cluster_issuer" {
+  count    = var.enable_http01_cluster_issuer
+  manifest = data.template_file.http01_cluster_issuer_yaml.rendered
 
   depends_on = [
     module.cert-manager
