@@ -8,8 +8,8 @@ on:
     paths:
     - 'terraform-environments/aws/terragrunt-dev/**/*.hcl'
     - 'terraform-environments/aws/terragrunt-dev/**/*.yaml'
-    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/terragrunt.hcl'
-    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/common.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/terragrunt.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/common.hcl'
     - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/region.hcl'
     - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/terragrunt-dev/environment.hcl'
     branches:
@@ -20,8 +20,8 @@ on:
     paths:
     - 'terraform-environments/aws/terragrunt-dev/**/*.hcl'
     - 'terraform-environments/aws/terragrunt-dev/**/*.yaml'
-    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/terragrunt.hcl'
-    - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/common.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/terragrunt.hcl'
+    - '!terraform-environments/aws/terragrunt-dev/common.hcl'
     - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/region.hcl'
     - '!terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/us-east-1/terragrunt-dev/environment.hcl'
 
