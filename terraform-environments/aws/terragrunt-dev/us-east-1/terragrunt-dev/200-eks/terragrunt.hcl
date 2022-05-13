@@ -68,16 +68,16 @@ inputs = {
       username = "github-actions-pipeline-access"
       groups   = ["system:masters"]
     },
+    {
+      rolearn  = "arn:aws:iam::${get_aws_account_id()}:role/AWSReservedSSO_AdministratorAccess_1f8d5e80fd7b3359"
+      username = "sso-admin-users"
+      groups   = ["system:masters"]
+    },
   ]
   map_users = [
     {
       userarn  = "arn:aws:iam::${get_aws_account_id()}:user/gkan-temp"
       username = "gkan-temp"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:sts::${get_aws_account_id()}:assumed-role/AWSReservedSSO_AdministratorAccess_1f8d5e80fd7b3359/garland"
-      username = "gkan-federated"
       groups   = ["system:masters"]
     },
   ]
