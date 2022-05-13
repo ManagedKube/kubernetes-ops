@@ -50,5 +50,3 @@ inputs = {
 
   tags             = local.tags
 }
-
-
