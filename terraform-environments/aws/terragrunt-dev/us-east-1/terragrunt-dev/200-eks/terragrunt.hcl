@@ -76,7 +76,7 @@ inputs = {
       groups   = ["system:masters"]
     },
     {
-      userarn  = "AWSReservedSSO_AdministratorAccess_1f8d5e80fd7b3359/garland"
+      userarn  = "arn:aws:sts::${get_aws_account_id()}:assumed-role/AWSReservedSSO_AdministratorAccess_1f8d5e80fd7b3359/garland"
       username = "gkan-federated"
       groups   = ["system:masters"]
     },
