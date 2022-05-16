@@ -10,6 +10,12 @@ variable verify {
   description = "Verify the helm download"
 }
 
+variable force_update {
+  type        = bool
+  default     = false
+  description = "Boolean for force_update argument passed to Helm "
+}
+
 variable namespace {
   type        = string
   default     = "monitoring"
