@@ -101,7 +101,7 @@ inputs = {
       desired_size   = 2
       max_size       = 3
       min_size       = 0
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
       additional_tags  = local.tags
       k8s_labels       = {}
     }
