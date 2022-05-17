@@ -24,7 +24,9 @@ module "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support
 
-  public_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
+  # Removed k8s tagging of public subnets as this makes LB to route to public subnets too - Sridhar
+  # public_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
+
   private_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/intenal-elb" = "1" })
 
   
