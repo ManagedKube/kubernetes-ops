@@ -1,6 +1,8 @@
 locals {
   zone_name = sort(keys(module.zones.route53_zone_zone_id))[0]
-  #  zone_id = module.zones.route53_zone_zone_id["app.terraform-aws-modules-example.com"]
+  # zone_id = module.zones.route53_zone_zone_id["app.terraform-aws-modules-example.com"]
+  zone_id = sort(values(module.zones.route53_zone_zone_id))[0]
+
 }
 
 module "zones" {
@@ -17,8 +19,8 @@ module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "v2.6.0"
 
-  zone_name = local.zone_name
-  #  zone_id = local.zone_id
+  # zone_name = local.zone_name
+  zone_id = local.zone_id
 
   create       = var.create_records
   private_zone = var.private_zone
