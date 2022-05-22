@@ -29,5 +29,5 @@ inputs = {
     name        = local.environment_vars.locals.project_name
     description = "Digital Ocean Managed Kube"
     purpose     = "Infra Testing"
-    environment = "dev"
+    environment = "development"
 }

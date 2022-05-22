@@ -19,5 +19,5 @@ variable "purpose" {
 variable "environment" {
     type = string
     description = "Kind of dev, qa or prod"
-    default = "dev"
+    default = "development"
 }
