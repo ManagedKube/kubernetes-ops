@@ -26,7 +26,7 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-    name        = local.common_vars.locals.project_name
+    name        = local.environment_vars.locals.project_name
     description = "Digital Ocean Managed Kube"
     purpose     = "Infra Testing"
     environment = "dev"
