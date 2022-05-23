@@ -1,6 +1,5 @@
 ## Description
 The module is capable of creating a project to group a set of digital ocean resources
-Module in digital ocean: https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/project    
 
 ## Requirements
 
@@ -14,7 +13,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="digitalocean_project"></a> [project](#module\digitalocean_project) | [terraform-aws-modules/vpc/aws](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/project) | x.x.x |
+| digitalocean_project | [registry.terraform.io/providers/digitalocean/project](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/project) | 2.19.0 |
 
 ## Resources
 
