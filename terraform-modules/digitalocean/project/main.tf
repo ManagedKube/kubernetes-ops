@@ -7,8 +7,8 @@ terraform {
   }
 }
 resource "digitalocean_project" "project" {
-  name        = var.name
-  description = var.description
-  purpose     = var.purpose
-  environment = var.environment
+  project_name        = var.name
+  project_description = var.description
+  project_purpose     = var.purpose
+  project_environment = var.environment
 }

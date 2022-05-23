@@ -4,6 +4,6 @@ output "project_id" {
 }
 
 output "project_owner_uuid" {
-  description = "the unique universal identifier of the project owner."
+  description = "The unique universal identifier of the project owner."
   value       = digitalocean_project.project.owner_uuid
 }
