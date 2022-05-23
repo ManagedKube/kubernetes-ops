@@ -11,12 +11,6 @@ variable "do_token" {}
 provider "digitalocean" {
   token = var.do_token
 }
-
-data "digitalocean_ssh_key" "terraform" {
-  name = "digitalocean"
-  public_key = "${file("~/.ssh/digitalocean.pub")}"
-}
-
 resource "digitalocean_project" "project" {
   name        = var.name
   description = var.description
