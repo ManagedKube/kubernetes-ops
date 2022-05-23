@@ -1,3 +1,7 @@
+## Description
+The module is capable of creating a project to group a set of digital ocean resources
+Module in digital ocean: https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/project    
+
 ## Requirements
 
 No requirements.
