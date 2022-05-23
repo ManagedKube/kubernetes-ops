@@ -20,14 +20,14 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="project_name"></a>| `"The name of the project"` | `string` | `"playground"` | yes |
-| <a name="project_description"></a>| `"The name of description"` | `string` | `"A project to represent development resources."` | no |
-| <a name="project_purpose"></a>| `"A purpose for the project"` | `string` | `"Web Application"` | no |
-| <a name="project_environment"></a>| `"Kind of dev, qa or prod"` | `string` | `"development"` | no |
+| `project_name` | `"The name of the project"` | `string` | `"playground"` | yes |
+| `project_description` | `"The name of description"` | `string` | `"A project to represent development resources."` | no |
+| `project_purpose` | `"A purpose for the project"` | `string` | `"Web Application"` | no |
+| `project_environment` | `"Kind of dev, qa or prod"` | `string` | `"development"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="project_id"></a> | The id of the project |
-| <a name="project_owner_uuid"></a> | the unique universal identifier of the project owner. |
+| `project_id` | The id of the project |
+| `project_owner_uuid` | the unique universal identifier of the project owner. |
