@@ -1,5 +1,0 @@
-apiVersion: v2
-name: kube-metrics-adapter
-version: v0.1.0
-appVersion: v0.1.0
-description: Kube Metrics Adapter is a general purpose metrics adapter for Kubernetes that can collect and serve custom and external metrics for Horizontal Pod Autoscaling.

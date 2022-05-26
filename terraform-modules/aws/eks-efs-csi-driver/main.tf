@@ -32,7 +32,9 @@ data "template_file" "helm_values" {
 }
 
 module "eks-efs-csi-driver" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
+  # source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
+  source = "github.com/Intacct/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.3.9"
+
 
   repository          = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
   official_chart_name = "aws-efs-csi-driver"

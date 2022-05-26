@@ -90,7 +90,9 @@ data "template_file" "helm_values" {
 }
 
 module "loki" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.30"
+  # source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.30"
+  source = "github.com/Intacct/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.3.9"
+
 
   repository          = "https://grafana.github.io/helm-charts"
   official_chart_name = local.name

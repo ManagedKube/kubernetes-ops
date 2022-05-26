@@ -1,9 +1,0 @@
-nginx-ingress:
-  controller:
-    electionID: ingress-controller-leader-internal
-    ingressClass: nginx-internal
-
-    service:
-      annotations:
-        service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
-        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:11111111111:certificate/1111111-1111-1111-1111-111111111"

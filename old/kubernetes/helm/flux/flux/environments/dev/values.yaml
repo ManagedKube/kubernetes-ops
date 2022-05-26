@@ -1,5 +1,0 @@
-flux:
-  git:
-    url: git@github.com:ManagedKube/kubernetes-ops.git
-    branch: master
-    path: "kubernetes/flux/releases/gcp/dev"

@@ -151,8 +151,8 @@ locals {
 resource "null_resource" "patch" {
   triggers = {
     kubeconfig = base64encode(local.kubeconfig)    
-    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
-    # cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
+    # cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | /github/workspace/kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
+    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | kubectl apply -n kube-system --kubeconfig ./kubeconfig -f -"
   }
 
   provisioner "local-exec" {

@@ -60,7 +60,8 @@ data "template_file" "helm_values" {
 }
 
 module "external-dns" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.27"
+  # source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.27"
+  source = "github.com/Intacct/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.3.9"
 
   repository          = local.helm_repository
   official_chart_name = local.official_chart_name

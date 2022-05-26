@@ -1,5 +1,0 @@
----
-cert-manager:
-  global:
-    leaderElection:
-      namespace: cert-manager
