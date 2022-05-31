@@ -106,7 +106,40 @@ variable "default_security_group_egress" {
 variable "default_security_group_ingress" {
   description = "List of maps of ingress rules to set on the default security group	"
   type        = list(map(string))
-  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
+  default     = [
+    {
+      cidr_blocks = "10.0.0.0/8"
+      description = "rfc1918: Private Address Space"
+      from_port   = 0
+      protocol    = "-1"
+      self        = false
+      to_port     = 0
+    },
+    {
+      cidr_blocks = "172.16.0.0/12"
+      description = "rfc1918: Private Address Space"
+      from_port   = 0
+      protocol    = "-1"
+      self        = false
+      to_port     = 0
+    },
+    {
+      cidr_blocks = "192.168.0.0/16"
+      description = "rfc1918: Private Address Space"
+      from_port   = 0
+      protocol    = "-1"
+      self        = false
+      to_port     = 0
+    },
+    {
+      cidr_blocks = "100.64.0.0/10"
+      description = "rfc6598: Private Address Space"
+      from_port   = 0
+      protocol    = "-1"
+      self        = false
+      to_port     = 0
+    }
+  ]
 }
 
 variable "default_security_group_tags" {
