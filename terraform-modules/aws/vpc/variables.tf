@@ -91,7 +91,16 @@ variable "default_security_group_name" {
 variable "default_security_group_egress" {
   description = "List of maps of egress rules to set on the default security group"
   type        = list(map(string))
-  default     = ["0.0.0.0/0"]
+  default     = [
+    {
+      cidr_blocks = "0.0.0.0/0"
+      description = "Allow all"
+      from_port   = 0
+      protocol    = "-1"
+      self        = false
+      to_port     = 0
+    }
+  ]
 }
 
 variable "default_security_group_ingress" {
