@@ -38,6 +38,14 @@ module "vpc" {
     "kubernetes.io/role/internal-elb"           = "1"
     "ops_purpose"                               = "Overloaded for k8s worker usage"
   }
-
+  
   tags = var.tags
+
+  #Default Security Group Management (Default: secure)
+  manage_default_security_group   = var.manage_default_security_group
+  default_security_group_name     = var.default_security_group_name
+  default_security_group_egress   = var.default_security_group_egress
+  default_security_group_ingress  = var.default_security_group_ingress
+  default_security_group_tags     = var.default_security_group_tags
+  
 }
