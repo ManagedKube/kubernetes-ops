@@ -85,7 +85,7 @@ variable "manage_default_security_group" {
 variable "default_security_group_name" {
   description = "Name to be used on the default security group	"
   type        = string
-  default     = "sgdefault"
+  default     = "default"
 }
 
 variable "default_security_group_egress" {
