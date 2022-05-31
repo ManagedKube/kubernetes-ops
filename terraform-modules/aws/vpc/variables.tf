@@ -97,7 +97,7 @@ variable "default_security_group_egress" {
 variable "default_security_group_ingress" {
   description = "List of maps of ingress rules to set on the default security group	"
   type        = list(map(string))
-  default     = []
+  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"]
 }
 
 variable "default_security_group_tags" {
