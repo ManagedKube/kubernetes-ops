@@ -7,7 +7,7 @@ terraform {
   }
 }
 #Create vpc in digital ocean
-resource "digitalocean_vpc" "vpc" {
+resource "digitalocean_vpc" "this" {
   name        = var.vpc_name
   description = var.vpc_description
   region      = var.vpc_region

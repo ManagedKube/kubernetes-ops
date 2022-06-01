@@ -6,7 +6,7 @@ terraform {
     }
   }
 }
-resource "digitalocean_project" "project" {
+resource "digitalocean_project" "this" {
   project_name        = var.name
   project_description = var.description
   project_purpose     = var.purpose
