@@ -1,4 +1,4 @@
 locals {
-  digitalocean_region = "SFO3"
+  digitalocean_region = "sfo3"
   aws_region = "us-east-1"
 }
