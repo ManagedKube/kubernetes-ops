@@ -14,10 +14,3 @@ resource "digitalocean_vpc" "vpc" {
   ip_range    = var.vpc_ip_range
 }
 
-#Asociate vpc to project
-resource "digitalocean_project_resources" "project_associate" {
-  project = var.project_id
-  resources = [
-    digitalocean_vpc.vpc.urn
-  ]
-}
