@@ -18,7 +18,7 @@ variable "vpc_ip_range" {
     description = "The range of IP addresses for the VPC in CIDR notation."
     default = "10.10.10.0/24"
 }
-variable "vpc_project_id" {
+variable "project_id" {
    type = string
    description = "The id of the project where the vpc will be associated"
 }
