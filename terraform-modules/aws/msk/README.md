@@ -26,3 +26,7 @@ go test ./ -v -count=1
 ## How to run the debugger
 
 TBD
+
+## Connecting to the MSK cluster doc
+
+https://docs.aws.amazon.com/msk/latest/developerguide/create-client-machine.html
