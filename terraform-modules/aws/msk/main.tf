@@ -72,54 +72,54 @@ resource "aws_s3_bucket_policy" "this" {
 #######################################
 # Private CA
 #######################################
-data "aws_partition" "current" {
-}
+# data "aws_partition" "current" {
+# }
 
-resource "aws_acmpca_certificate_authority_certificate" "cacert" {
-  certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
+# resource "aws_acmpca_certificate_authority_certificate" "cacert" {
+#   certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
 
-  certificate       = aws_acmpca_certificate.cert.certificate
-  certificate_chain = aws_acmpca_certificate.cert.certificate_chain
-}
+#   certificate       = aws_acmpca_certificate.cert.certificate
+#   certificate_chain = aws_acmpca_certificate.cert.certificate_chain
+# }
 
-resource "aws_acmpca_certificate" "cert" {
-  certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
-  certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
-  signing_algorithm           = "SHA512WITHRSA"
+# resource "aws_acmpca_certificate" "cert" {
+#   certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
+#   certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
+#   signing_algorithm           = "SHA512WITHRSA"
 
-  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
+#   template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
 
-  validity {
-    type  = "YEARS"
-    value = local.years_valid
-  }
-}
+#   validity {
+#     type  = "YEARS"
+#     value = local.years_valid
+#   }
+# }
 
-resource "aws_acmpca_certificate_authority" "this" {
-  certificate_authority_configuration {
-    key_algorithm     = var.key_algorithm
-    signing_algorithm = var.signing_algorithm
+# resource "aws_acmpca_certificate_authority" "this" {
+#   certificate_authority_configuration {
+#     key_algorithm     = var.key_algorithm
+#     signing_algorithm = var.signing_algorithm
 
-    subject {
-      common_name = var.common_name
-    }
-  }
+#     subject {
+#       common_name = var.common_name
+#     }
+#   }
   
-  type = "ROOT"
+#   type = "ROOT"
 
-  revocation_configuration {
-    crl_configuration {
-      custom_cname       = "crl.${var.common_name}"
-      enabled            = true
-      expiration_in_days = var.expiration_in_days
-      s3_bucket_name     = aws_s3_bucket.this.id
-    }
-  }
+#   revocation_configuration {
+#     crl_configuration {
+#       custom_cname       = "crl.${var.common_name}"
+#       enabled            = true
+#       expiration_in_days = var.expiration_in_days
+#       s3_bucket_name     = aws_s3_bucket.this.id
+#     }
+#   }
   
-  tags   = var.tags
+#   tags   = var.tags
 
-  depends_on = [aws_s3_bucket_policy.this]
-}
+#   depends_on = [aws_s3_bucket_policy.this]
+# }
 
 #######################################
 # MSK Cluster
@@ -139,7 +139,7 @@ module "msk" {
   broker_instance_type           = var.broker_instance_type
   broker_volume_size             = var.broker_volume_size
   tags                           = var.tags
-  certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
+  certificate_authority_arns     = [] #[aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
   client_sasl_iam_enabled        = var.client_sasl_iam_enabled
   encryption_in_cluster          = var.encryption_in_cluster
