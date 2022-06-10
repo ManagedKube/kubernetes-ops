@@ -32,3 +32,9 @@ variable "iam_policy_json" {
   description = "The IAM policy json"
   default     = "{}"
 }
+
+variable "iam_policy_arns" {
+  type        = list(string)
+  description = "The IAM policy readonly list"
+  default     = []
+}
