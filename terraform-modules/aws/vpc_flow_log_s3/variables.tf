@@ -1,5 +1,5 @@
 variable "vpc_flow_log_destination_type" {
-  default = "S3"
+  default = "s3"
   description = "The type of the logging destination. Valid values: cloud-watch-logs, s3"
 }
 
