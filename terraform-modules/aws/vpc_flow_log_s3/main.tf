@@ -1,4 +1,4 @@
-resource "aws_flow_log" {
+resource "aws_flow_log" "this" {
   log_destination      = var.vpc_flow_log_destination
   log_destination_type = var.vpc_flow_log_destination_type
   traffic_type         = var.vpc_flow_traffic_type
