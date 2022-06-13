@@ -1,3 +1,8 @@
+variable "vpc_flow_log_name" {
+  default = "vpc_flow_log"
+  description = "The name of the flow_log"
+}
+
 variable "vpc_flow_log_destination_type" {
   default = "s3"
   description = "The type of the logging destination. Valid values: cloud-watch-logs, s3"
