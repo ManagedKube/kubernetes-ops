@@ -1,6 +1,6 @@
 resource "aws_kms_key" "kms_key" {
   description             = "This key is used to encrypt bucket objects"
-  deletion_window_in_days = 10
+  deletion_window_in_days = var.deletion_window_in_days
 
   enable_key_rotation = var.enable_key_rotation
 
