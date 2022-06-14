@@ -5,7 +5,6 @@ resource "aws_kms_key" "kms_key" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket
-  acl    = var.acl
   policy = var.policy
 
   tags = var.tags
