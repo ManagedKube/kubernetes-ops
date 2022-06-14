@@ -5,7 +5,6 @@ resource "aws_kms_key" "kms_key" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket
-  policy = var.policy
 
   tags = var.tags
 }
@@ -29,4 +28,9 @@ resource "aws_s3_bucket_public_access_block" "acl" {
   ignore_public_acls      = var.ignore_public_acls
   restrict_public_buckets = var.restrict_public_buckets
 
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
+  policy = var.policy
 }
