@@ -37,3 +37,9 @@ variable "policy" {
   type        = string
   default     = null
 }
+
+variable "enable_key_rotation " {
+  type        = bool
+  description = "(Optional) Specifies whether key rotation is enabled. Defaults to false."
+  default     = true
+}
