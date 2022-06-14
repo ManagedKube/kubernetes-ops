@@ -13,11 +13,6 @@ variable "bucket" {
   description = "The name of the bucket. If omitted, Terraform will assign a random, unique name. Must be less than or equal to 63 characters in length."
 }
 
-variable "acl" {
-  type        = string
-  description = "The canned ACL to apply. Valid values are private, public-read, public-read-write, aws-exec-read, authenticated-read, and log-delivery-write. Defaults to private. Conflicts with grant."
-}
-
 variable "block_public_acls" {
   type        = bool
   description = "Whether Amazon S3 should block public ACLs for this bucket."
@@ -41,4 +36,16 @@ variable "restrict_public_buckets" {
 variable "policy" {
   type        = string
   default     = null
+}
+
+variable "enable_key_rotation" {
+  type        = bool
+  description = "(Optional) Specifies whether key rotation is enabled. Defaults to false."
+  default     = true
+}
+
+variable "deletion_window_in_days" {
+  type        = number
+  description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key."
+  default     = 10
 }

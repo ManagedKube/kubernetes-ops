@@ -1,16 +1,25 @@
-resource "aws_s3_bucket" "bucket" {
-  bucket = var.bucket
-  acl    = var.acl
-  policy = var.policy
+resource "aws_kms_key" "kms_key" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = var.deletion_window_in_days
+
+  enable_key_rotation = var.enable_key_rotation
 
   tags = var.tags
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
-      }
-      bucket_key_enabled = true
+resource "aws_s3_bucket" "bucket" {
+  bucket = var.bucket
+
+  tags = var.tags
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.kms_key.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }
@@ -23,4 +32,9 @@ resource "aws_s3_bucket_public_access_block" "acl" {
   ignore_public_acls      = var.ignore_public_acls
   restrict_public_buckets = var.restrict_public_buckets
 
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
+  policy = var.policy
 }
