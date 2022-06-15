@@ -37,3 +37,23 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.bucket.id
   policy = var.policy
 }
+
+resource "aws_s3_bucket_versioning" "versioning" {
+  count = var.enable_versioning ? 1 : 0
+
+  bucket = aws_s3_bucket.bucket.id
+  versioning_configuration {
+    status = var.versioning
+  }
+}
+
+resource "aws_s3_bucket_logging" "logging" {
+  count = var.enable_logging ? 1 : 0
+
+  # Bucket to enable logging on
+  bucket = aws_s3_bucket.bucket.id
+
+  # (Required) The name of the bucket where you want Amazon S3 to store server access logs.
+  target_bucket = var.logging_bucket_name
+  target_prefix = "log/"
+}
