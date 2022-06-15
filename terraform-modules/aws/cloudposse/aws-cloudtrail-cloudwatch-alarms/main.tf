@@ -67,7 +67,6 @@ module "cloudtrail" {
   include_global_service_events = true
   is_multi_region_trail         = true
   enable_logging                = true
-  # TODO: Add event_selector
   s3_bucket_name = module.cloudtrail_s3_bucket.bucket_id
   # https://github.com/terraform-providers/terraform-provider-aws/issues/14557#issuecomment-671975672
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.default.arn}:*"
