@@ -49,3 +49,9 @@ variable "deletion_window_in_days" {
   description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key."
   default     = 10
 }
+
+variable "versioning" {
+  type        = string
+  description = "(Required) The versioning state of the bucket. Valid values: Enabled, Suspended, or Disabled. Disabled should only be used when creating or importing resources that correspond to unversioned S3 buckets."
+  default     = "Enabled"
+}
