@@ -50,8 +50,32 @@ variable "deletion_window_in_days" {
   default     = 10
 }
 
+variable "enable_versioning" {
+  type        = bool
+  description = "Enable S3 versioning"
+  default     = true
+}
+
 variable "versioning" {
   type        = string
   description = "(Required) The versioning state of the bucket. Valid values: Enabled, Suspended, or Disabled. Disabled should only be used when creating or importing resources that correspond to unversioned S3 buckets."
   default     = "Enabled"
+}
+
+variable "enable_logging" {
+  type        = bool
+  description = "Enable S3 logging"
+  default     = false
+}
+
+variable "logging_bucket_name" {
+  type        = string
+  description = "(Required) The name of the bucket where you want Amazon S3 to store server access logs.  Could be the same as the bucket name."
+  default     = "can-be-the-same-as-the-bucket-name"
+}
+
+variable "logging_bucket_prefix" {
+  type        = string
+  description = "The prefix to add to the logs"
+  default     = "s3-log/"
 }
