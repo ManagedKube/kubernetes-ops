@@ -54,6 +54,6 @@ resource "aws_s3_bucket_logging" "logging" {
   bucket = aws_s3_bucket.bucket.id
 
   # (Required) The name of the bucket where you want Amazon S3 to store server access logs.
-  target_bucket = aws_s3_bucket.log_bucket.id
+  target_bucket = var.logging_bucket_name
   target_prefix = "log/"
 }
