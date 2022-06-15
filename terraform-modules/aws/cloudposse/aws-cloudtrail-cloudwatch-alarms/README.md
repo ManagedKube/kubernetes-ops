@@ -4,6 +4,7 @@ Builds AWS-CloudTrail-CloudWatch-Alarms for support to PCI-DSS certifications us
 
 
 **What does it solve?**
+
 https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#cis-1.1-remediation
 https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#cis-3.3-remediation
 - 1.1 – Avoid the use of the "root" account
