@@ -1,8 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
-
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
 
