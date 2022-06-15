@@ -78,7 +78,8 @@ module "cloudtrail" {
 
 ## This is the module being used
 module "cis_alarms" {
-  source         = "../../"
+  source         = "cloudposse/cloudtrail-cloudwatch-alarms/aws"
+  version        = "0.14.3"
   log_group_name = aws_cloudwatch_log_group.default.name
   metrics        = module.metric_configs.map_configs
 }
