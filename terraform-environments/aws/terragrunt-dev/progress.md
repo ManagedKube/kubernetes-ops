@@ -115,5 +115,7 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/320
 
 # 100-cert-manager
 
+* TestKube is dependent on cert-manager for it's internal usage
+
 
 
