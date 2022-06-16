@@ -3,8 +3,13 @@
 # Created
 
 ## Pipelines
-* PR plan pipeline and apply on merge
-* Destroy pipeline
+
+## PR plan pipeline and apply on merge
+
+## Destroy pipeline
+Example of the destroy pipeline running:
+* Wanted to rename the istio directory so I had to delete it first
+* https://github.com/ManagedKube/kubernetes-ops/runs/6912249701?check_suite_focus=true
 
 ## Base infrastructure
 * 050-github-aws-permissions 
