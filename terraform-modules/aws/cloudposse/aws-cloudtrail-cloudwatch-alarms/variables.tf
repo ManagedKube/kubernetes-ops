@@ -8,7 +8,7 @@ variable "metrics_paths" {
 }
 
 variable "cloudtrail_event_selector" {
-  type        = map(list(object))
+  type        = list(map(object))
   description = "This enables the cloudtrail even selector to track all S3 API calls: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail."
   default = [
     {
