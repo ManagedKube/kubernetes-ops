@@ -4,7 +4,7 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/eks?ref=v2.0.0"
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/eks?ref=eks-module-auth"
 }
 
 dependency "vpc" {
@@ -62,7 +62,7 @@ inputs = {
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
   kubectl_binary = "/github/workspace/kubectl"
   
-  map_roles = [
+  aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::${get_aws_account_id()}:role/github_oidc_${local.common_vars.locals.environment_name}"
       username = "github-actions-pipeline-access"
@@ -74,7 +74,7 @@ inputs = {
       groups   = ["system:masters"]
     },
   ]
-  map_users = [
+  aws_auth_users = [
     {
       userarn  = "arn:aws:iam::${get_aws_account_id()}:user/gkan-temp"
       username = "gkan-temp"
