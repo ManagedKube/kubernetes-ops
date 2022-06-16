@@ -151,6 +151,7 @@ PR for setting the 200-eks terragrunt to the release tag: https://github.com/Man
 * It was on the branch for the module before so that I can test it out without having to merge and release the eks updated module
 
 # 100-cert-manager
+TestKube is dependent on cert-manager for it's internal usage
 
 Cert manager was failing:
 
@@ -197,5 +198,7 @@ The PR to separate this out to two modules:https://github.com/ManagedKube/kubern
 This PR: https://github.com/ManagedKube/kubernetes-ops/pull/321
 * Applies the cert-manager helm install
 * no issuers
+
+
 
 
