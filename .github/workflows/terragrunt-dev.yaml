@@ -163,7 +163,9 @@ jobs:
           tf_actions_cli_credentials_token: ${{ secrets.TF_API_TOKEN_DEV }}
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: ${{ env.tf_working_dir }}
-          args: --terragrunt-non-interactive
+          # This will answer yes to all the terragrunt questions, such as do you want to create
+          # the S3 bucket
+          # args: --terragrunt-non-interactive
           tf_actions_comment: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
