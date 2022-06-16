@@ -192,4 +192,10 @@ was working before.
 The idea now is to separate out the cert-manager helm chart install and then have another
 module to apply the cert-manager's issuers.
 
+The PR to separate this out to two modules:https://github.com/ManagedKube/kubernetes-ops/pull/326
+
+This PR: https://github.com/ManagedKube/kubernetes-ops/pull/321
+* Applies the cert-manager helm install
+* no issuers
+
 
