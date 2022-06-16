@@ -112,6 +112,7 @@ jobs:
     env:
       tf_working_dir: ${{matrix.tf_config}}
       TF_VAR_key_name: ${{ secrets.KEY_NAME }} 
+      TF_LOG: DEBUG
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
