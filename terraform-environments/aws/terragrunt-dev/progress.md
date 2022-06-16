@@ -13,8 +13,8 @@ Example of the destroy pipeline running:
 
 ## Base infrastructure
 * 050-github-aws-permissions 
-* 150-route53-hostedzone     
-* 100-vpc
+* 100-route53-hostedzone     
+* 150-vpc
 * 200-eks
 * 250-eks-cluster-autoscaler environment.hcl
 * 300-kubernetes
