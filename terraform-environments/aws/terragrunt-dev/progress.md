@@ -20,7 +20,8 @@ Example of the destroy pipeline running:
 * 300-kubernetes
 
 ## Kubernetes items
-* 10-cert-manager
+* 100-testkube
+* 110-testkube-test-suites
 
 
 
@@ -29,6 +30,7 @@ Example of the destroy pipeline running:
 * testkube-test-suites
 * external-dns
 * external-secrets
+* cert-manager
 * istio
 * kube-prometheus-stack
 * grafana-loki
