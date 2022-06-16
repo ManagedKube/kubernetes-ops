@@ -17,9 +17,9 @@ Example of the destroy pipeline running:
 * 150-vpc
 * 200-eks
 * 250-eks-cluster-autoscaler
-* 300-kubernetes
 
 ## Kubernetes items
+* 300-kubernetes - are in this folder
 
 ### Infrastructure support
 * 100-cert-manager
@@ -110,3 +110,10 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/319
 * I just touched the file since it was already in the repository to make the pipeline create it all again
 
 # 250-eks-cluster-autoscaler
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/320
+
+# 100-cert-manager
+
+
+
