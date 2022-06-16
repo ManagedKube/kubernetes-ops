@@ -63,97 +63,12 @@ module "eks" {
 
   node_security_group_additional_rules = var.node_security_group_additional_rules
 
-}
+  # aws-auth configmap
+  manage_aws_auth_configmap = true
 
-################################################################################
-# aws-auth configmap
-# Only EKS managed node groups automatically add roles to aws-auth configmap
-# so we need to ensure fargate profiles and self-managed node roles are added
-#
-# This is necessary b/c of this issue: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1744
-# TL;DR - The new/updated EKS module wants to focus on the core EKS items and 
-#         since there are so many ways to setup authentication to the EKS cluster
-#         they have opted to pull this out of the module.  So we are doing the same
-#         thing and adding back in the aws-auth config.
-#
-# Following the same behavior as the example: https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v18.7.2/examples/complete/main.tf#L323-L327
-################################################################################
+  aws_auth_roles = var.aws_auth_roles
 
-locals {
-  kubeconfig = yamlencode({
-    apiVersion      = "v1"
-    kind            = "Config"
-    current-context = "terraform"
-    clusters = [{
-      name = module.eks.cluster_id
-      cluster = {
-        certificate-authority-data = module.eks.cluster_certificate_authority_data
-        server                     = module.eks.cluster_endpoint
-      }
-    }]
-    contexts = [{
-      name = "terraform"
-      context = {
-        cluster = module.eks.cluster_id
-        user    = "terraform"
-      }
-    }]
-    users = [{
-      name = "terraform"
-      user = {
-        token = data.aws_eks_cluster_auth.cluster.token
-      }
-    }]
-  })
+  aws_auth_users = var.aws_auth_users
 
-  configmap_roles = [
-    for item in module.eks.eks_managed_node_groups:
-    {
-      # Work around https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/153
-      # Strip the leading slash off so that Terraform doesn't think it's a regex
-      rolearn  = item.iam_role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = tolist(concat(
-        [
-          "system:bootstrappers",
-          "system:nodes",
-        ],
-      ))
-    }
-  ]
-
-  full_aws_auth_configmap = yamlencode({
-    apiVersion = "v1"
-    kind = "ConfigMap"
-    metadata = {
-      name = "aws-auth"
-      namespace = "kube-system"
-    }
-    data = {
-      mapRoles = yamlencode(
-        distinct(concat(
-          local.configmap_roles,
-          var.map_roles,
-        ))
-      )
-      mapUsers    = yamlencode(var.map_users)
-      mapAccounts = yamlencode(var.map_accounts)
-    }
-  })
-  
-}
-
-resource "null_resource" "patch" {
-  triggers = {
-    kubeconfig = base64encode(local.kubeconfig)    
-    cmd_patch  = "echo $KUBECONFIG | base64 -d > ./kubeconfig; echo \"${local.full_aws_auth_configmap}\" | ${var.kubectl_binary} apply -n kube-system --kubeconfig ./kubeconfig -f -"
-  }
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = self.triggers.kubeconfig
-    }
-    command = self.triggers.cmd_patch
-  }
+  aws_auth_accounts = var.aws_auth_accounts
 }

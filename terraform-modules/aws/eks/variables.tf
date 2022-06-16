@@ -50,7 +50,7 @@ variable "cluster_endpoint_public_access_cidrs" {
   description = "Kube API public endpoint allow access cidrs"
 }
 
-variable "map_roles" {
+variable "aws_auth_roles" {
   type = list(any)
   default = [
     {
@@ -62,7 +62,7 @@ variable "map_roles" {
   description = "A list of roles to give permission to access this cluster"
 }
 
-variable "map_users" {
+variable "aws_auth_users" {
   type = list(any)
   default = [
     {
@@ -79,7 +79,7 @@ variable "map_users" {
   description = "A list of users to give permission to access this cluster"
 }
 
-variable "map_accounts" {
+variable "aws_auth_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth configmap."
   type        = list(string)
   default     = []
