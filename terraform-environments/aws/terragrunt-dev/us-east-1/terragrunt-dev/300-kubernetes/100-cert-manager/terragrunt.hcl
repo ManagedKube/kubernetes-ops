@@ -17,7 +17,7 @@ dependency "eks" {
 }
 
 dependency "route53_hosted_zone" {
-  config_path = "${get_terragrunt_dir()}/../../150-route53-hostedzone"
+  config_path = "${get_terragrunt_dir()}/../../100-route53-hostedzone"
 
   mock_outputs = {
     vpc_id            = "vpc-abcd1234"
