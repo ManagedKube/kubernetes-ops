@@ -152,5 +152,44 @@ PR for setting the 200-eks terragrunt to the release tag: https://github.com/Man
 
 # 100-cert-manager
 
+Cert manager was failing:
+
+```
+ │Error: Failed to determine GroupVersionResource for manifest
+│
+│  with kubernetes_manifest.dns01_cluster_issuer[0],
+│  on main.tf line 107, in resource "kubernetes_manifest" "dns01_cluster_issuer":
+│ 107: resource "kubernetes_manifest" "dns01_cluster_issuer" {
+│
+│no matches for kind "ClusterIssuer" in group "cert-manager.io"
+╵
+╷
+│Error: Failed to determine GroupVersionResource for manifest
+│
+│  with kubernetes_manifest.http01_cluster_issuer[0],
+│  on main.tf line 131, in resource "kubernetes_manifest" "http01_cluster_issuer":
+│ 131: resource "kubernetes_manifest" "http01_cluster_issuer" {
+│
+│no matches for kind "ClusterIssuer" in group "cert-manager.io"
+╵
+time=2022-06-16T22:56:58Z level=error msg=1 error occurred:
+	* exit status 1
+```
+
+The cert-manager module does have a wait for the cert-manager helm chart to be installed first
+then this error is trying to apply the cert-manager's CRDs for the ClusterIssuer which tells
+cert-manager how you want to validate the Let's Encrypt certs like use the DNS and add a record there.
+
+
+Reading the `kubernetes_manifest` doc: 
+
+https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest
+
+Right at the top it does say that this will access to your kube API and try this out even
+during the plan stage.  This is why it is failing.  This behavior did change b/c this module
+was working before.
+
+The idea now is to separate out the cert-manager helm chart install and then have another
+module to apply the cert-manager's issuers.
 
 

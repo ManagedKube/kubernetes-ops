@@ -1,0 +1,16 @@
+# doc: https://cert-manager.io/docs/configuration/acme/http01/
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-http01
+spec:
+  acme:
+    server: ${letsEncryptServer}
+    email: ${emailAddress}
+    privateKeySecretRef:
+      name: http01-issuer-account-key
+    solvers:
+    - http01:
+       ingress:
+         class: ${ingressClass}

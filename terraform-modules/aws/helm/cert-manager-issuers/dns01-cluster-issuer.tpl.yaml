@@ -1,0 +1,40 @@
+# doc: https://cert-manager.io/docs/configuration/acme/dns01/route53/
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-dns01
+spec:
+  acme:
+    server: ${letsEncryptServer}
+    email: ${emailAddress}
+    privateKeySecretRef:
+      name: dns01-issuer-account-key
+    solvers:
+
+    # example: cross-account zone management for example.com
+    # this solver uses ambient credentials (i.e. inferred from the environment or EC2 Metadata Service)
+    # to assume a role in a different account
+    - selector:
+        dnsZones:
+          - "${domainName}"
+      dns01:
+        route53:
+          region: ${awsRegion}
+          hostedZoneID: ${dnsZhostedZoneIDone} # optional, see policy above
+          # role: "arn:aws:iam::${awsAccountID}:role/${chartName}-${clusterName}"
+
+    # this solver handles example.org challenges
+    # and uses explicit credentials
+    # - selector:
+    #     dnsZones:
+    #       - "example.org"
+    #   dns01:
+    #     route53:
+    #       region: eu-central-1
+    #       accessKeyID: AKIAIOSFODNN7EXAMPLE
+    #       secretAccessKeySecretRef:
+    #         name: prod-route53-credentials-secret
+    #         key: secret-access-key
+    #       # you can also assume a role with these credentials
+    #       role: arn:aws:iam::YYYYYYYYYYYY:role/dns-manager
