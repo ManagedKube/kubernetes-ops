@@ -21,11 +21,12 @@ Example of the destroy pipeline running:
 
 ## Kubernetes items
 * 10-cert-manager
-* 20-testkube
-* 30-testkube-test-suites
+
 
 
 ## Todo:
+* testkube
+* testkube-test-suites
 * external-dns
 * external-secrets
 * istio
