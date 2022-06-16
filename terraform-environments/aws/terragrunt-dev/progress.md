@@ -16,7 +16,7 @@ Example of the destroy pipeline running:
 * 100-route53-hostedzone     
 * 150-vpc
 * 200-eks
-* 250-eks-cluster-autoscaler environment.hcl
+* 250-eks-cluster-autoscaler
 * 300-kubernetes
 
 ## Kubernetes items
@@ -106,3 +106,7 @@ Went fine: https://github.com/ManagedKube/kubernetes-ops/pull/318
 
 # 200-eks
 
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/319
+* I just touched the file since it was already in the repository to make the pipeline create it all again
+
+# 250-eks-cluster-autoscaler

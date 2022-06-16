@@ -63,5 +63,3 @@ inputs = {
   eks_cluster_id              = dependency.eks.outputs.cluster_id
   eks_cluster_oidc_issuer_url = dependency.eks.outputs.cluster_oidc_issuer_url
 }
-
-
