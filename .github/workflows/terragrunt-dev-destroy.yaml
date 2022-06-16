@@ -1,0 +1,53 @@
+name: "Terragrunt-dev - AWS - destroy"
+
+on: 
+  workflow_dispatch:
+    inputs:
+      pathToRunDestroyOn:
+        description: 'The path from the root of the repo to run terragrunt destroy on'     
+        required: true
+        default: 'null'
+
+env:
+  AWS_REGION: us-east-1
+  tf_version: '1.0.11'
+  tg_version: 'v0.35.13'
+  kg_version: 'v0.7.11'
+
+# Used for getting permissions to AWS resources through an OIDC federation
+permissions:
+  id-token: write
+  contents: read    # This is required for actions/checkout@v1
+
+jobs:
+  terragrunt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Download kubergrunt'
+        run: |
+          wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.7.11/kubergrunt_linux_amd64
+          chmod 755 kubergrunt_linux_amd64
+          mkdir ${{ github.workspace }}/tmp_bin
+          cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
+
+      - name: 'Configure AWS credentials from p1 account'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_TERRAFORM_DEV }}
+          role-session-name: githubAWSSession
+          role-duration-seconds: 900
+          aws-region: ${{ env.AWS_REGION }}
+    
+      - name: 'Terragrunt Destroy'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_subcommand: 'destroy'
+          tf_actions_working_dir: ${{ github.event.inputs.pathToRunDestroyOn }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
