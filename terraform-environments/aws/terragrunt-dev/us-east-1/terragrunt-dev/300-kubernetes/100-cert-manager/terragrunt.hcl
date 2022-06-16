@@ -72,6 +72,7 @@ inputs = {
   eks_cluster_id              = dependency.eks.outputs.cluster_id
   eks_cluster_oidc_issuer_url = dependency.eks.outputs.cluster_oidc_issuer_url
   route53_hosted_zones        = dependency.route53_hosted_zone.outputs.zone_id
+  ingress_class               = local.environment_vars.locals.ingress_class_name
   domain_name                 = local.environment_vars.locals.domain_name
   lets_encrypt_email          = local.common_vars.locals.lets_encrypt_email
   helm_values_2               = file("./values.yaml")
