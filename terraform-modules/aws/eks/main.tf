@@ -32,7 +32,7 @@ resource "aws_kms_key" "eks" {
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
-  version          = "18.7.2"
+  version          = "18.23.0"
   cluster_name     = var.cluster_name
   cluster_version  = var.cluster_version
   enable_irsa      = var.enable_irsa
