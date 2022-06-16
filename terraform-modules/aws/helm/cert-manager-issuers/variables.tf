@@ -18,6 +18,12 @@ variable "route53_hosted_zones" {
   description = "The hosted zone permissions granted to: arn:aws:route53:::hostedzone/<route53_hosted_zones ID"
 }
 
+variable "ingress_class" {
+  type        = string
+  default     = "nginx-external"
+  description = "The ingress class that will be used for the http01 resolver to put the inbound check onto"
+}
+
 variable "enable_http01_cluster_issuer" {
   type        = number
   default     = 1
