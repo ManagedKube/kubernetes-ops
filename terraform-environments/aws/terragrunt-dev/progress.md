@@ -152,5 +152,7 @@ PR for setting the 200-eks terragrunt to the release tag: https://github.com/Man
 
 # 100-cert-manager
 
+* TestKube is dependent on cert-manager for it's internal usage
+
 
 
