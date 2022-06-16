@@ -71,7 +71,7 @@ module "cloudtrail" {
   # https://github.com/terraform-providers/terraform-provider-aws/issues/14557#issuecomment-671975672
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.default.arn}:*"
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_cloudwatch_events_role.arn
-
+  event_selector = var.cloudtrail_event_selector
   context = module.this.context
 }
 

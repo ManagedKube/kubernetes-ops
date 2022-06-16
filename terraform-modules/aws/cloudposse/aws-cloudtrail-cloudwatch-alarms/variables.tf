@@ -6,3 +6,20 @@ variable "metrics_paths" {
   type        = list(string)
   description = "List of paths to CloudWatch metrics configurations"
 }
+
+variable "cloudtrail_event_selector" {
+  type        = list(any)
+  description = "This enables the cloudtrail even selector to track all S3 API calls: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail."
+  default = [
+    {
+      include_management_events = true
+      read_write_type           = "All"
+      data_resource             = {
+        type   = "AWS::S3::Object"
+        values = ["arn:aws:s3"]
+      }
+    }
+  ]
+}
+
+
