@@ -100,3 +100,9 @@ This probably should be split into more than one module/instantiation:
 1. With the output of the hosted zone's NS records add it to the parent zone (which might be in another AWS account).  Which makes this harder to do
 1. Update this hosted zone to enable DNSSEC
 
+# 150-vpc
+
+Went fine: https://github.com/ManagedKube/kubernetes-ops/pull/318
+
+# 200-eks
+
