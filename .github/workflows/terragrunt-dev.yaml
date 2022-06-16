@@ -104,6 +104,10 @@ jobs:
     needs: [generate_matrix]
     strategy:
       matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
+      ## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast
+      ## Prevents the entire matrix to stop when one fails
+      ## If Github Actions stops a run mid-run, the TF state file sometime might not be written out before it fails or stops
+      fail-fast: false
     runs-on: ubuntu-latest
     env:
       tf_working_dir: ${{matrix.tf_config}}
