@@ -71,4 +71,5 @@ inputs = {
   cluster_name                = local.common_vars.locals.environment_name
   route53_hosted_zones        = dependency.route53_hosted_zone.outputs.zone_id
   domain_name                 = local.environment_vars.locals.domain_name
+  ingress_class               = local.environment_vars.locals.ingress_class
 }
