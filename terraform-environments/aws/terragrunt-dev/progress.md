@@ -113,6 +113,35 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/319
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/320
 
+Then subsequently, I saw that AWS EKS module that we are using now supports (again) the kubernetes
+auth configmap: https://github.com/terraform-aws-modules/terraform-aws-eks
+
+```
+  # aws-auth configmap
+  manage_aws_auth_configmap = true
+
+  aws_auth_roles = [
+    {
+      rolearn  = "arn:aws:iam::66666666666:role/role1"
+      username = "role1"
+      groups   = ["system:masters"]
+    },
+  ]
+```
+
+They took this out before because the AWS EKS module said they didnt want to take care of this and
+was out of scope for this module.  I guess they changed their minds which is good b/c this was
+a pain for the user of this module to take care of it on their own.
+
+Updating our usage of the module to use this again: https://github.com/ManagedKube/kubernetes-ops/pull/322
+
+Another note.  You might be wondering why we dont just use the source AWS EKS module directly.  That is
+a good question.  The reason is b/c that module needs stuff like the AWS KMS keys resources.  We are "wrapping"
+our module around theirs so that it takes care of all of this for the end user.  You can think of the AWS EKS
+module and a primitive like an int/map/etc.  This kubernetes-ops module you are using is like a "function" that
+takes those primitives and adds other stuff to it to make it easier for the end user to use for this specific
+use case.
+
 # 100-cert-manager
 
 
