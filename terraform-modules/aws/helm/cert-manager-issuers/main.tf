@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 #############################
 # cert-manager DNS01 cluster-issuer
 # https://cert-manager.io/docs/configuration/acme/dns01/route53/#creating-an-issuer-or-clusterissuer
