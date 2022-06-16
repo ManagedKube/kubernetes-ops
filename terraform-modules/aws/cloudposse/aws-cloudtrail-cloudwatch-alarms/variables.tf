@@ -25,7 +25,7 @@ variable "cloudtrail_event_selector" {
         type   = "AWS::S3::Object"
         values = ["arn:aws:s3"]
       }
-    },
+    }
   ]
 }
 
