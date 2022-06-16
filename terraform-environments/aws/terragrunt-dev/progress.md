@@ -20,22 +20,24 @@ Example of the destroy pipeline running:
 * 300-kubernetes
 
 ## Kubernetes items
+### Testing
 * 100-testkube
 * 110-testkube-test-suites
 
+### Infrastructure support
+* 200-external-dns
+* 210-external-secrets
+* 220-cert-manager
 
+### Infrastructure
+* 300-istio
+* 310-kube-prometheus-stack
+* 320-grafana-loki
+* 330-opentelemetry
 
-## Todo:
-* testkube
-* testkube-test-suites
-* external-dns
-* external-secrets
-* cert-manager
-* istio
-* kube-prometheus-stack
-* grafana-loki
-* opentelemetry
+### Applications
+* 500-app-that-pushes metrics to opentelemetry
 
-* Sample app that will push data into opentelemetry
+# Todo
 * CloudWatch Alarms and CloudTrail (S3)
 
