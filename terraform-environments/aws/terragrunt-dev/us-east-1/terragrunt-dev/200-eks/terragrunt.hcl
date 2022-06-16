@@ -8,7 +8,7 @@ terraform {
 }
 
 dependency "vpc" {
-  config_path = "${get_terragrunt_dir()}/../100-vpc"
+  config_path = "${get_terragrunt_dir()}/../150-vpc"
 
   mock_outputs = {
     vpc_id            = "vpc-abcd1234"
@@ -107,3 +107,4 @@ inputs = {
     }
   }
 }
+
