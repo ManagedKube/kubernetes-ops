@@ -27,8 +27,8 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  tf_version: '1.0.11'
-  tg_version: 'v0.35.13'
+  tf_version: '1.2.3'
+  tg_version: 'v0.37.4'
 
 # Used for getting permissions to AWS resources through an OIDC federation
 permissions:
@@ -104,17 +104,22 @@ jobs:
     needs: [generate_matrix]
     strategy:
       matrix: ${{fromJson(needs.generate_matrix.outputs.matrix)}}
+      ## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast
+      ## Prevents the entire matrix to stop when one fails
+      ## If Github Actions stops a run mid-run, the TF state file sometime might not be written out before it fails or stops
+      fail-fast: false
     runs-on: ubuntu-latest
     env:
       tf_working_dir: ${{matrix.tf_config}}
       TF_VAR_key_name: ${{ secrets.KEY_NAME }} 
+      TF_LOG: DEBUG
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
 
       - name: 'Download kubergrunt'
         run: |
-          wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.7.11/kubergrunt_linux_amd64
+          wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.9.0/kubergrunt_linux_amd64
           chmod 755 kubergrunt_linux_amd64
           mkdir ${{ github.workspace }}/tmp_bin
           cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
