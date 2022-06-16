@@ -146,6 +146,10 @@ PR for testing out using that updated module: https://github.com/ManagedKube/kub
 * Looks good!
 * Auth is working as well for the user that created the cluster and my local user
 
+
+PR for setting the 200-eks terragrunt to the release tag: https://github.com/ManagedKube/kubernetes-ops/pull/324
+* It was on the branch for the module before so that I can test it out without having to merge and release the eks updated module
+
 # 100-cert-manager
 
 
