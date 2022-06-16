@@ -20,20 +20,19 @@ Example of the destroy pipeline running:
 * 300-kubernetes
 
 ## Kubernetes items
-### Testing
-* 100-testkube
-* 110-testkube-test-suites
 
 ### Infrastructure support
-* 200-external-dns
-* 210-external-secrets
-* 220-cert-manager
+* 100-cert-manager
+* 110-testkube
+* 120-external-dns
+* 130-external-secrets
+
 
 ### Infrastructure
-* 300-istio
-* 310-kube-prometheus-stack
-* 320-grafana-loki
-* 330-opentelemetry
+* 200-istio
+* 210-kube-prometheus-stack
+* 220-grafana-loki
+* 230-opentelemetry
 
 ### Applications
 * 500-app-that-pushes metrics to opentelemetry
