@@ -13,7 +13,7 @@ variable "cloudtrail_event_selector" {
     read_write_type             = string
     data_resource               = map(object({ type = string values = list(string) }))
   })))
-  
+
   description = "This enables the cloudtrail even selector to track all S3 API calls: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail."
   default = [
     {
@@ -23,7 +23,7 @@ variable "cloudtrail_event_selector" {
         type   = "AWS::S3::Object"
         values = ["arn:aws:s3"]
       }
-    }
+    },
   ]
 }
 
