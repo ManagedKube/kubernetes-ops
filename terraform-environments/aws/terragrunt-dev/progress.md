@@ -237,3 +237,9 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/332
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/334
 
+Failed to apply:
+* https://github.com/ManagedKube/kubernetes-ops/actions/runs/2517587090
+
+PR to investigate and to fix this:
+* https://github.com/ManagedKube/kubernetes-ops/pull/335
+
