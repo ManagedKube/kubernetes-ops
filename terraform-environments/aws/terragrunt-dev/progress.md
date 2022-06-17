@@ -233,3 +233,7 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/332
 * Commenting out the testkube run for now
 
 
+# 120-external-dns
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/334
+
