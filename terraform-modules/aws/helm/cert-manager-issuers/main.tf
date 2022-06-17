@@ -1,3 +1,7 @@
+locals {
+  official_chart_name = "cert-manager"
+}
+
 data "aws_caller_identity" "current" {}
 
 #############################
