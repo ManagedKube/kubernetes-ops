@@ -213,4 +213,15 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/330
 
 These are basic test that can apply to any cluster provided by ManagedKube
 
+# 110-testkube-local
+This is an example on how to structure your testkube so that you can use the kubernetes-ops `base-tests`
+and have your own `local` tests (this directory).  While this `local` directory resides in this kubernetes-ops
+repo, it is really meant to go into your own repo and you can reference the source from there.  The reason
+is that the set of tests here in this module is specific to you and really to no one else.
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/331
+* Has the local module with the testkube (which should be in your own repo instead of this one)
+* Instantiation of that module to apply the testkube CRDs (test and testsuites)
+  * You will need to change the `source` of this module to your own repo
+
 

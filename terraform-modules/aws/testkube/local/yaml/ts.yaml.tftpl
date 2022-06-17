@@ -1,0 +1,16 @@
+apiVersion: tests.testkube.io/v1
+kind: TestSuite
+metadata:
+  name: infra-local
+  namespace: testkube
+spec:
+  description: Infra local testsuite
+  steps:
+  - execute:
+      name: local-my-app-endpoint
+      namespace: testkube
+    type: testExecution
+  # - delay:
+  #     duration: 2000
+  #   type: delay
+
