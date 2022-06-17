@@ -195,9 +195,12 @@ module to apply the cert-manager's issuers.
 
 The PR to separate this out to two modules:https://github.com/ManagedKube/kubernetes-ops/pull/326
 
-This PR: https://github.com/ManagedKube/kubernetes-ops/pull/321
+This PR: https://github.com/ManagedKube/kubernetes-ops/pull/327
 * Applies the cert-manager helm install
 * no issuers
+
+This PR: https://github.com/ManagedKube/kubernetes-ops/pull/328
+* Applies the cert-manager-issuer items
 
 
 
