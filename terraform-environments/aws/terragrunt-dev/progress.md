@@ -224,4 +224,12 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/331
 * Instantiation of that module to apply the testkube CRDs (test and testsuites)
   * You will need to change the `source` of this module to your own repo
 
+# gha-testkube-run
+Now that we have testkube in.  We can test run it to check if it is working.
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/332
+* The test fails but that is known since it is hitting a currently none existent endpoint
+* The point of this was to check if it is running and if you look at the PR and look at the runs you can see testkube running successfully
+* Commenting out the testkube run for now
+
 
