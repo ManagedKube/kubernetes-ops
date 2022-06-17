@@ -36,7 +36,8 @@ provider "helm" {
     # kubergrunt binary to be installed and on your PATH.
     exec {
       api_version = "client.authentication.k8s.io/v1alpha1"
-      command     = "${kubergrunt_exec}"
+      // command     = "${kubergrunt_exec}"
+      command     = "aws"
       args        = ["eks", "token", "--cluster-id", "${eks_cluster_name}"]
     }
   }
