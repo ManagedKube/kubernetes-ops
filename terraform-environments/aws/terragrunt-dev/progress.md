@@ -237,3 +237,37 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/332
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/334
 
+Failed to apply:
+* https://github.com/ManagedKube/kubernetes-ops/actions/runs/2517587090
+
+PR to investigate and to fix this:
+* https://github.com/ManagedKube/kubernetes-ops/pull/335
+* The last commit commented out the `if` statement in the GHA pipeline so that it will apply without having to merge this PR first.  This is a way to test if it is working.  You probably should only do this in a dev type env.
+* Turns out that the problem was not the external-dns helm chart
+
+The problem:
+It turns out that the Terraform helm provider just updated from version `2.5.1` to `2.6.0`.
+
+Was searching around the internet for this error in the GHA run:
+```
+ │Error: Kubernetes cluster unreachable: exec plugin: invalid apiVersion "client.authentication.k8s.io/v1alpha1"
+```
+
+Nothing that directly told me a fix but people were eluding to versions of kubectl and helm and maybe
+even aws cli.  I dont specifically set that but I do provide the helm version through the Terraform helm
+provider.
+
+Looking at a recent run of the `10-cert-manager`'s `.terraform.lock.file` and indeed the versions
+changed.  So I made this change to use the older version to see if it would work: 
+* https://github.com/ManagedKube/kubernetes-ops/pull/335/files#diff-e64319124f37bef2c05ed3a1916e4b0c58cd6616e36091d00e2a77a3618427caR23
+
+After making this change:
+* The apply run went fine:
+* https://github.com/ManagedKube/kubernetes-ops/runs/6942225637?check_suite_focus=true
+
+This is a good lesson that teaches us the following:
+* It is important to use the `.terraform.lock.hcl` file
+* Sometimes it is not our fault.  We use a lot of open source items here and are dependent on a lot of other
+upstream items that have their own life cycle and releases.  While we dont want to lock all versions and fork every single thing that we use because it would just be too much for us to maintain, we can lock/peg some versions to help us control this ever changing world we live in.
+
+
