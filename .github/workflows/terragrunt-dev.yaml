@@ -29,6 +29,7 @@ env:
   AWS_REGION: us-east-1
   tf_version: '1.2.3'
   tg_version: 'v0.37.4'
+  ENVIRONMENT_NAME: terragrunt-dev
 
 # Used for getting permissions to AWS resources through an OIDC federation
 permissions:
@@ -202,6 +203,14 @@ jobs:
           KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
           # TF_LOG: DEBUG
 
+      # - name: Testkube Pre-Apply
+      #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      #   id: testkube
+      #   uses: ManagedKube/github-action-testkube@v1.0.14
+      #   with:
+      #     test-suite-name: 'infra-base'
+      #     cluster-name: ${{ env.ENVIRONMENT_NAME }}
+
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: the-commons-project/terragrunt-github-actions@master
@@ -215,3 +224,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
+
+      # - name: Testkube Post-Apply
+      #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      #   id: testkube
+      #   uses: ManagedKube/github-action-testkube@v1.0.14
+      #   with:
+      #     test-suite-name: 'infra-base'
+      #     cluster-name: ${{ env.ENVIRONMENT_NAME }}

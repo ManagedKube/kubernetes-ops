@@ -76,3 +76,4 @@ inputs = {
   lets_encrypt_email          = local.common_vars.locals.lets_encrypt_email
   helm_values_2               = file("./values.yaml")
 }
+
