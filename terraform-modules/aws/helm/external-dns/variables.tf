@@ -28,7 +28,7 @@ variable "user_chart_name" {
 }
 
 variable "helm_chart_version" {
-  default = "1.2.0"
+  default = "1.9.0"
   description = "The version of this helm chart to use"
 }
 
