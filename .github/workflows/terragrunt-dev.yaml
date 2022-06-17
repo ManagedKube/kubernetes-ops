@@ -117,19 +117,17 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@master
 
-      ## Switched back to using only the aws cli in the `provider_k8s_helm_for_eks.template.hcl` file
-      ## We should not need the following anymore.
-      # - name: 'Download kubergrunt'
-      #   run: |
-      #     wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.9.0/kubergrunt_linux_amd64
-      #     chmod 755 kubergrunt_linux_amd64
-      #     mkdir ${{ github.workspace }}/tmp_bin
-      #     cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
+      - name: 'Download kubergrunt'
+        run: |
+          wget https://github.com/gruntwork-io/kubergrunt/releases/download/v0.9.0/kubergrunt_linux_amd64
+          chmod 755 kubergrunt_linux_amd64
+          mkdir ${{ github.workspace }}/tmp_bin
+          cp kubergrunt_linux_amd64 ${{ github.workspace }}/tmp_bin/kubergrunt
 
-      # - name: 'Download kubectl'
-      #   run: |
-      #     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      #     chmod 755 kubectl
+      - name: 'Download kubectl'
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod 755 kubectl
 
       - name: 'Configure AWS credentials'
         uses: aws-actions/configure-aws-credentials@v1.6.1
