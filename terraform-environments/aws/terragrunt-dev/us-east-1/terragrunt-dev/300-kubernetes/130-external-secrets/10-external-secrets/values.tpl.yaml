@@ -1,0 +1,4 @@
+---
+env:
+  AWS_REGION: ${aws_region}
+  AWS_DEFAULT_REGION: ${aws_region}
