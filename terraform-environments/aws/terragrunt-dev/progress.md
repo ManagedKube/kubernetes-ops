@@ -271,3 +271,6 @@ This is a good lesson that teaches us the following:
 upstream items that have their own life cycle and releases.  While we dont want to lock all versions and fork every single thing that we use because it would just be too much for us to maintain, we can lock/peg some versions to help us control this ever changing world we live in.
 
 
+# 130-external-secrets
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/336
+
