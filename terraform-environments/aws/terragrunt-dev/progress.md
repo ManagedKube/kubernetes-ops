@@ -272,6 +272,8 @@ upstream items that have their own life cycle and releases.  While we dont want 
 
 
 # 130-external-secrets
+This installs the external-secrets helm chart which is an operator
+
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/336
 
 Looks like this also has the same helm provider version problem
@@ -279,4 +281,10 @@ Looks like this also has the same helm provider version problem
 
 Will have to peg all new ones to the older version for now.
 * https://github.com/ManagedKube/kubernetes-ops/pull/337
+
+# 130-external-secrets-store
+This installs the CRDs for external-secrets to tell it what AWS secret store
+to use.
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/338
 
