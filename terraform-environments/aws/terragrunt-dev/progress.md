@@ -207,4 +207,10 @@ This PR: https://github.com/ManagedKube/kubernetes-ops/pull/328
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/329
 
+# 110-testkube-infra-base
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/330
+
+These are basic test that can apply to any cluster provided by ManagedKube
+
 
