@@ -242,4 +242,5 @@ Failed to apply:
 
 PR to investigate and to fix this:
 * https://github.com/ManagedKube/kubernetes-ops/pull/335
+* The last commit commented out the `if` statement in the GHA pipeline so that it will apply without having to merge this PR first.  This is a way to test if it is working.  You probably should only do this in a dev type env.
 
