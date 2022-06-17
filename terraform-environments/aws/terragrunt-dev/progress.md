@@ -274,3 +274,7 @@ upstream items that have their own life cycle and releases.  While we dont want 
 # 130-external-secrets
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/336
 
+Looks like this also has the same helm provider version problem
+* https://github.com/ManagedKube/kubernetes-ops/runs/6943822623?check_suite_focus=true
+
+Will have to peg all new ones to the older version for now.
