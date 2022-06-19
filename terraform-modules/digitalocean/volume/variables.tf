@@ -1,6 +1,7 @@
+
 variable "volume_name" {
     type = string
-    description = "(Required) A name for the block storage volume. Must be lowercase and be composed only of numbers, letters and "-", up to a limit of 64 characters."
+    description = "(Required) A name for the block storage volume. Must be lowercase and be composed only of numbers, letters and -, up to a limit of 64 characters."
 }
 
 variable "volume_region" {
@@ -10,6 +11,7 @@ variable "volume_region" {
 
 variable "volume_size" {
     type = number
+    default = 20
     description = "(Required) The size of the block storage volume in GiB. If updated, can only be expanded."
 }
 
