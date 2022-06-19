@@ -33,5 +33,6 @@ inputs = {
     volume_name = "vol-${local.environment_vars.locals.project_name}"
     volume_region = local.region_vars.locals.digitalocean_region
     volume_description = "Volumen of ${local.environment_vars.locals.project_name} in region: ${local.region_vars.locals.digitalocean_region}"
+    volume_initial_filesystem_type = "xfs"
     volume_project_id = dependency.project.outputs.project_id
 }
