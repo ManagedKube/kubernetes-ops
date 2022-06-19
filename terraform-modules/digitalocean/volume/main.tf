@@ -14,3 +14,10 @@ resource "digitalocean_volume" "this" {
   initial_filesystem_type = var.volume_initial_filesystem_type
   description             = var.volume_description
 }
+
+resource "digitalocean_project_resources" "project" {
+  project = var.volume_project_id
+  resources = [
+    digitalocean_volume.this.urn
+  ]
+}

@@ -25,3 +25,7 @@ variable "volume_description" {
     description = "(Optional) A free-form text field up to a limit of 1024 bytes to describe a block storage volume.."
 }
 
+variable "volume_project_id" {
+   type = string
+   description = "(Optional) The id of the project where the vpc will be associated"
+}

@@ -4,7 +4,11 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/digitalocean/vpc?ref=digitalocean-kube-ops"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/digitalocean/volume?ref=digitalocean-kube-ops"
+}
+
+dependency "project" {
+  config_path = "${get_terragrunt_dir()}/../050-project"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -26,8 +30,8 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-    vpc_name        = "ManageKubeVpc"
-    vpc_region      = local.region_vars.locals.digitalocean_region
-    vpc_description = "Vpc for testing ManageKube in Digital Ocean"
-    vpc_ip_range    = "10.10.10.0/24"
+    volume_name = "vol-${local.environment_vars.locals.project_name}"
+    volume_region = local.region_vars.locals.digitalocean_region
+    volume_description = "Volumen of ${local.environment_vars.locals.project_name} in region: ${local.region_vars.locals.digitalocean_region}"
+    volume_project_id = dependency.project.outputs.project_id
 }
