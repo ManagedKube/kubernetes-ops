@@ -27,5 +27,5 @@ variable "volume_description" {
 
 variable "volume_project_id" {
    type = string
-   description = "(Optional) The id of the project where the vpc will be associated"
+   description = "(Optional) The id of the project where the volume will be associated"
 }

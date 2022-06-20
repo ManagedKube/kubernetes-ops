@@ -4,11 +4,15 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/digitalocean/volume?ref=digitalocean-kube-ops"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/digitalocean/droplet?ref=digitalocean-kube-ops"
 }
 
 dependency "project" {
   config_path = "${get_terragrunt_dir()}/../050-project"
+}
+
+dependency "vpc" {
+  config_path = "${get_terragrunt_dir()}/../0100-project"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -24,7 +28,11 @@ locals {
   # Load environment-level variables
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
 
-  
+  # Project name
+  project_name = local.environment_vars.locals.project_name
+
+  # Region name
+  region_name=local.region_vars.locals.digitalocean_region 
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -32,9 +40,11 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-    volume_name = "vol-${local.environment_vars.locals.project_name}"
-    volume_region = local.region_vars.locals.digitalocean_region
-    volume_description = "Volumen of ${local.environment_vars.locals.project_name} in region: ${local.region_vars.locals.digitalocean_region}"
-    volume_initial_filesystem_type = "xfs"
-    volume_project_id = dependency.project.outputs.project_id
+    droplet_name = "drop-${local.project_name}"
+    droplet_image = "ubuntu-18-04-x64"
+    droplet_monitoring = true
+    droplet_region = "${local.region_name}"
+    droplet_size = "s-1vcpu-1gb"
+    droplet_user_data = ""
+    droplet_vpc_uuid = dependency.project.outputs.project_id
 }

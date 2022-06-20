@@ -34,4 +34,8 @@ variable "droplet_user_data" {
     type = string
     description = "(Optional) A string of the desired User Data for the Droplet."
 }
- 
+
+variable "droplet_project_id" {
+   type = string
+   description = "(Optional) The id of the project where the droplet will be associated"
+}
