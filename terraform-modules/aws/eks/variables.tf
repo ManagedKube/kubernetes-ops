@@ -237,3 +237,10 @@ variable "node_security_group_additional_rules" {
     # }
   }
 }
+
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key#enable_key_rotation
+variable "cluster_kms_enable_rotation" {
+  type        = bool
+  default     = true
+  description = "(Optional) Specifies whether key rotation is enabled. Defaults to true."
+}

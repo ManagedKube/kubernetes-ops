@@ -27,6 +27,7 @@ provider "kubernetes" {
 
 resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key"
+  enable_key_rotation = var.cluster_kms_enable_rotation
   tags        = var.tags
 }
 
