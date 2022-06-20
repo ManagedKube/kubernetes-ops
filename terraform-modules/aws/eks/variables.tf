@@ -242,5 +242,5 @@ variable "node_security_group_additional_rules" {
 variable "cluster_kms_enable_rotation" {
   type        = bool
   default     = true
-  description = "(Optional) Specifies whether key rotation is enabled. Defaults to false."
+  description = "(Optional) Specifies whether key rotation is enabled. Defaults to true."
 }
