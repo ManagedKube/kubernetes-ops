@@ -12,7 +12,7 @@ dependency "project" {
 }
 
 dependency "vpc" {
-  config_path = "${get_terragrunt_dir()}/../0100-project"
+  config_path = "${get_terragrunt_dir()}/../0100-vpc"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -46,5 +46,6 @@ inputs = {
     droplet_region = "${local.region_name}"
     droplet_size = "s-1vcpu-1gb"
     droplet_user_data = ""
-    droplet_vpc_uuid = dependency.project.outputs.project_id
+    droplet_vpc_uuid = dependency.vpc.outputs.vpc_id
+    droplet_project_id = dependency.project.outputs.project_id
 }
