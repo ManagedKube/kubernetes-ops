@@ -59,7 +59,7 @@ resource "aws_s3_bucket_logging" "logging" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "bucket_ownership_controls" {
-  count = var.bucket_owner_enforced ? 1 : 0
+  count = var.enable_bucket_owner_enforced ? 1 : 0
   bucket = aws_s3_bucket.bucket.id
   rule {
     object_ownership = "BucketOwnerEnforced"
