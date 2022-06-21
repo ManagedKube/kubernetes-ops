@@ -289,3 +289,6 @@ to use.
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/338
 
 # 200-istio
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/339
+
