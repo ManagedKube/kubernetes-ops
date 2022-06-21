@@ -83,6 +83,12 @@ variable "logging_bucket_prefix" {
 variable "enable_bucket_owner_enforced" {
   type        = bool
   description = "BucketOwnerEnforced choice of object ownership, which is used to disable ACL-s."
-  default     = true
+  #Bucket owner enforced (recommended) – ACLs are disabled, and the bucket
+  #owner automatically owns and has full control over every object in the bucket. 
+  #ACLs no longer affect permissions to data in the S3 bucket. The bucket uses policies 
+  #to define access control.
+  #https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html
+  default     = true 
+
 }
 
