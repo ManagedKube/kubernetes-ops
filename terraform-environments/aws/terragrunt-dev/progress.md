@@ -291,4 +291,7 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/338
 # 200-istio
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/339
+* failed b/c of the lock file
 
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/340
+* Updated the lock file
