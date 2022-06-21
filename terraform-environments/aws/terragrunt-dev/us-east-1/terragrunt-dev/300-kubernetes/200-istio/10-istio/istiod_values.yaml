@@ -1,0 +1,10 @@
+---
+## Discovery Settings
+# pilot:
+#   # Resources for a small pilot install
+#   # This setting is for development only.  It is recommended to comment this out for production systems
+#   # and use the istio defaults.
+#   resources:
+#     requests:
+#       cpu: 10m
+#       memory: 256Mi
