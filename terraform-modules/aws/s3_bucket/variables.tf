@@ -83,6 +83,6 @@ variable "logging_bucket_prefix" {
 variable "enable_bucket_owner_enforced" {
   type        = bool
   description = "BucketOwnerEnforced choice of object ownership, which is used to disable ACL-s."
-  default     = "false"
+  default     = true
 }
 
