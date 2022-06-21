@@ -80,7 +80,7 @@ variable "logging_bucket_prefix" {
   default     = "s3-log/"
 }
 
-variable "bucket_owner_enforced" {
+variable "enable_bucket_owner_enforced" {
   type        = bool
   description = "BucketOwnerEnforced choice of object ownership, which is used to disable ACL-s."
   default     = "false"
