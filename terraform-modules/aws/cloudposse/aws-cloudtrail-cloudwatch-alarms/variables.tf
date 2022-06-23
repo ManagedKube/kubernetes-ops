@@ -58,4 +58,3 @@ variable "acl" {
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
   default     = "log-delivery-write"
 }
-

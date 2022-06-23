@@ -63,6 +63,18 @@ module "metric_configs" {
   context = module.this.context
 }
 
+module "kms_key" {
+  source  = "cloudposse/kms-key/aws"
+  version = "0.12.1"
+
+  description             = "KMS key for CloudTrail Logs"
+  deletion_window_in_days = 10
+  enable_key_rotation     = true
+  
+
+  context = module.this.context
+}
+
 module "cloudtrail" {
   source                        = "cloudposse/cloudtrail/aws"
   version                       = "0.17.0"
@@ -75,6 +87,7 @@ module "cloudtrail" {
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.default.arn}:*"
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_cloudwatch_events_role.arn
   event_selector = var.cloudtrail_event_selector
+  kms_key_arn = module.kms_key.key_arn
   context = module.this.context
 }
 
