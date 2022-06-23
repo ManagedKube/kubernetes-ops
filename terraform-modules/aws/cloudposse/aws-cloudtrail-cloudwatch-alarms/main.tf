@@ -2,7 +2,7 @@
 data "aws_caller_identity" "current" {}
 
 module "cloudtrail_s3_bucket" {
-  source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git"
+  source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=0.24.0"
   #version = "master"
   force_destroy          = var.force_destroy
   versioning_enabled     = var.versioning_enabled
