@@ -1,3 +1,7 @@
+locals {
+  arn_format  = "arn:${data.aws_partition.current.partition}"
+}
+
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
 
