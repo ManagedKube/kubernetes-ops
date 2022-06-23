@@ -10,7 +10,6 @@ module "cloudtrail_s3_bucket" {
   allow_ssl_requests_only= var.allow_ssl_requests_only
   acl                    = var.acl
   s3_object_ownership    = var.s3_object_ownership
-  kms_master_key_arn     = module.kms_key.key_arn
   context = module.this.context
 }
 
