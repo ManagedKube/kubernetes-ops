@@ -64,5 +64,3 @@ inputs = {
       domain_name = local.environment_vars.locals.domain_name
   }
 }
-
-
