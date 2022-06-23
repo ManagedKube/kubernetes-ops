@@ -56,12 +56,12 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  helm_values = templatefile(
-    "values.yaml",
-    {
-      domain_name = local.environment_vars.locals.domain_name
-    }
-  )
+  // manifest = templatefile(
+  //   "yaml/certificate.yaml",
+  //   {
+  //     domain_name = local.environment_vars.locals.domain_name
+  //   }
+  // )
 
   // upload_source_path = "./yaml"
   upload_directory   = "yaml"
