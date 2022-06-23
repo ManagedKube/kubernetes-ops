@@ -16,7 +16,7 @@ module "cloudtrail_s3_bucket" {
 resource "aws_cloudwatch_log_group" "default" {
   name              = module.this.id
   tags              = module.this.tags
-  retention_in_days = 90
+  retention_in_days = 365
 }
 
 data "aws_iam_policy_document" "log_policy" {
