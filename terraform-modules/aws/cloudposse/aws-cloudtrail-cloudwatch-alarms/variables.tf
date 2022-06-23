@@ -64,3 +64,9 @@ variable "is_multi_region_trail" {
   default     = true
   description = "Specifies whether the trail is created in the current region or in all regions"
 }
+
+variable "restrict_public_buckets" {
+  type        = bool
+  default     = true
+  description = "Set to `false` to disable the restricting of making the bucket public"
+}
