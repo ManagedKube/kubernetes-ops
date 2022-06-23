@@ -22,5 +22,40 @@ variable "cloudtrail_event_selector" {
     }
   ]
 }
+variable "force_destroy" {
+  type        = bool
+  default     = false
+  description = "(Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
+}
+#Buckets input vars
 
+variable "versioning_enabled" {
+  type        = bool
+  description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket"
+  default     = false
+}
+
+variable "access_log_bucket_name" {
+  type        = string
+  default     = ""
+  description = "Name of the S3 bucket where s3 access log will be sent to"
+}
+
+variable "allow_ssl_requests_only" {
+  type        = bool
+  default     = true
+  description = "Set to `true` to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
+}
+
+variable "s3_object_ownership" {
+  type        = string
+  default     = "BucketOwnerPreferred"
+  description = "Specifies the S3 object ownership control. Valid values are `ObjectWriter`, `BucketOwnerPreferred`, and 'BucketOwnerEnforced'."
+}
+
+variable "acl" {
+  type        = string
+  description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
+  default     = "log-delivery-write"
+}
 

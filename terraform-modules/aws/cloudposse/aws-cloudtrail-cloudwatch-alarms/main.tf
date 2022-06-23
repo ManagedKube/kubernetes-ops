@@ -2,11 +2,14 @@
 data "aws_caller_identity" "current" {}
 
 module "cloudtrail_s3_bucket" {
-  source  = "cloudposse/cloudtrail-s3-bucket/aws"
-  version = "0.15.0"
-
-  force_destroy = true
-
+  source  = "ManagedKube/cloudtrail-s3-bucket/aws"
+  version = "master"
+  force_destroy          = var.force_destroy
+  versioning_enabled     = var.versioning_enabled
+  access_log_bucket_name = var.access_log_bucket_name
+  allow_ssl_requests_only= var.allow_ssl_requests_only
+  acl                    = var.acl
+  s3_object_ownership    = var.s3_object_ownership
   context = module.this.context
 }
 
