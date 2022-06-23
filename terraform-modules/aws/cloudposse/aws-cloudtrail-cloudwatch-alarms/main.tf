@@ -1,48 +1,5 @@
-locals {
-  arn_format  = "arn:${data.aws_partition.current.partition}"
-}
-
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
-data "aws_partition" "current" {}
-data "aws_iam_policy_document" "kms" {
-  count = module.this.enabled ? 1 : 0
-  statement {
-    sid    = "Enable Root User Permissions"
-    effect = "Allow"
-
-    actions = [
-      "kms:Create*",
-      "kms:Describe*",
-      "kms:Enable*",
-      "kms:List*",
-      "kms:Put*",
-      "kms:Update*",
-      "kms:Revoke*",
-      "kms:Disable*",
-      "kms:Get*",
-      "kms:Delete*",
-      "kms:Tag*",
-      "kms:Untag*",
-      "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion"
-    ]
-
-    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
-    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
-    resources = [
-      "*"
-    ]
-
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
-    }
-  }
-}
 
 module "cloudtrail_s3_bucket" {
   source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git"
@@ -107,21 +64,6 @@ module "metric_configs" {
   context = module.this.context
 }
 
-
-
-
-module "kms_key" {
-  source  = "cloudposse/kms-key/aws"
-  version = "0.12.1"
-
-  description             = "KMS key for CloudTrail Logs"
-  deletion_window_in_days = 10
-  enable_key_rotation     = true
-  
-
-  context = module.this.context
-}
-
 module "cloudtrail" {
   source                        = "cloudposse/cloudtrail/aws"
   version                       = "0.17.0"
@@ -134,7 +76,6 @@ module "cloudtrail" {
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.default.arn}:*"
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_cloudwatch_events_role.arn
   event_selector = var.cloudtrail_event_selector
-  kms_key_arn = module.kms_key.key_arn
   context = module.this.context
 }
 
