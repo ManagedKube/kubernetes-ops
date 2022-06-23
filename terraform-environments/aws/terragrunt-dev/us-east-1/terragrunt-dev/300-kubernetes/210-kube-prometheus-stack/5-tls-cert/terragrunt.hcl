@@ -56,13 +56,6 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  // manifest = templatefile(
-  //   "yaml/certificate.yaml",
-  //   {
-  //     domain_name = local.environment_vars.locals.domain_name
-  //   }
-  // )
-
   upload_source_path = "./"
   upload_directory   = "yaml"
   fileset_pattern    = "**/*.yaml"
