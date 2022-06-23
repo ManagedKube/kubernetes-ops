@@ -63,6 +63,47 @@ module "metric_configs" {
   context = module.this.context
 }
 
+data "aws_iam_policy_document" "kms" {
+  count = module.this.enabled ? 1 : 0
+
+  source_json = var.kms_policy_source_json
+
+  statement {
+    sid    = "Enable Root User Permissions"
+    effect = "Allow"
+
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:Tag*",
+      "kms:Untag*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
+    ]
+
+    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
+    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
+    resources = [
+      "*"
+    ]
+
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+  }
+  
 module "kms_key" {
   source  = "cloudposse/kms-key/aws"
   version = "0.12.1"
