@@ -4,6 +4,8 @@ locals {
 
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
 
 module "cloudtrail_s3_bucket" {
   source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git"
