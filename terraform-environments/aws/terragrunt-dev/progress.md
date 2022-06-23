@@ -298,6 +298,10 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/340
 
 # 210-kube-prometheus-stack cert
 
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/344
+
+This gets the cert-manager/Let's Encrypt wild card cert that
+will be in this namespace for this ingress to use.
 
 # 210-kube-prometheus-stack
 

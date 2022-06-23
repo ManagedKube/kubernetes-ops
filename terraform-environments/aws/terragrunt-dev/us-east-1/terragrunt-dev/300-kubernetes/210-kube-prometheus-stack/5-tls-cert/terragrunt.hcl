@@ -63,7 +63,7 @@ inputs = {
     }
   )
 
-  upload_source_path = path.cwd
+  upload_source_path = "./"
   upload_directory   = "yaml"
   fileset_pattern    = "**/*.yaml"
   template_vars      = {
