@@ -46,6 +46,9 @@ grafana:
     tls:
     - hosts:
       - grafana.${domain_name} # This should match a DNS name in the Certificate
+      # Istio doc: https://istio.io/latest/docs/ops/integrations/certmanager/#kubernetes-ingress
+      # If using istio and using the domain-wildcard cert, the cert-manager kind: certificate
+      # should be created in the istio-system namespace.
       secretName: domain-wildcard # This should match the Certificate secretName
   additionalDataSources:
   # - name: loki
