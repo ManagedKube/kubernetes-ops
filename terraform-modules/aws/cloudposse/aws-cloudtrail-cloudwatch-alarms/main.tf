@@ -63,6 +63,7 @@ module "metric_configs" {
   context = module.this.context
 }
 
+
 data "aws_iam_policy_document" "kms" {
   count = module.this.enabled ? 1 : 0
 
@@ -103,7 +104,8 @@ data "aws_iam_policy_document" "kms" {
       ]
     }
   }
-  
+}
+
 module "kms_key" {
   source  = "cloudposse/kms-key/aws"
   version = "0.12.1"
