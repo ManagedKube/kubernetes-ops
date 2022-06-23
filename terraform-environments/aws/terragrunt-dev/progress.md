@@ -324,6 +324,9 @@ grafana:
       secretName: domain-wildcard # This should match the Certificate secretName
 ```
 
+This will get a wild card certificate for the entire cluster to use.  In most cases just
+getting this one certificate would be good enough.
+
 # 210-kube-prometheus-stack
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/343
