@@ -80,7 +80,7 @@ module "cloudtrail" {
   version                       = "0.17.0"
   enable_log_file_validation    = true
   include_global_service_events = true
-  is_multi_region_trail         = true
+  is_multi_region_trail         = var.is_multi_region_trail
   enable_logging                = true
   s3_bucket_name = module.cloudtrail_s3_bucket.bucket_id
   # https://github.com/terraform-providers/terraform-provider-aws/issues/14557#issuecomment-671975672

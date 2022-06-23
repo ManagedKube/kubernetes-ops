@@ -58,3 +58,9 @@ variable "acl" {
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
   default     = "log-delivery-write"
 }
+
+variable "is_multi_region_trail" {
+  type        = bool
+  default     = true
+  description = "Specifies whether the trail is created in the current region or in all regions"
+}
