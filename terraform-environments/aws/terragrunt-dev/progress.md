@@ -296,12 +296,33 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/339
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/340
 * Updated the lock file
 
-# 210-kube-prometheus-stack cert
+# 200-istio cert
 
-PR: https://github.com/ManagedKube/kubernetes-ops/pull/344
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/345
 
 This gets the cert-manager/Let's Encrypt wild card cert that
-will be in this namespace for this ingress to use.
+can be used for all namespaces.
+
+For example the kube prometheus stack will reference the secret
+name created here:
+
+```yaml
+grafana:
+  adminPassword: prom-operator
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: istio
+    hosts:
+    - grafana.${domain_name}
+    tls:
+    - hosts:
+      - grafana.${domain_name} # This should match a DNS name in the Certificate
+      # Istio doc: https://istio.io/latest/docs/ops/integrations/certmanager/#kubernetes-ingress
+      # If using istio and using the domain-wildcard cert, the cert-manager kind: certificate
+      # should be created in the istio-system namespace.
+      secretName: domain-wildcard # This should match the Certificate secretName
+```
 
 # 210-kube-prometheus-stack
 
