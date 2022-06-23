@@ -46,7 +46,7 @@ grafana:
     tls:
     - hosts:
       - grafana.${domain_name} # This should match a DNS name in the Certificate
-      # secretName: domain-wildcard # This should match the Certificate secretName
+      secretName: domain-wildcard # This should match the Certificate secretName
   additionalDataSources:
   # - name: loki
   #   access: proxy

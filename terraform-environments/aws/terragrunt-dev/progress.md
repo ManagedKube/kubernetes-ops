@@ -296,6 +296,9 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/339
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/340
 * Updated the lock file
 
+# 210-kube-prometheus-stack cert
+
+
 # 210-kube-prometheus-stack
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/343
