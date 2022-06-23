@@ -5,7 +5,44 @@ locals {
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
+data "aws_iam_policy_document" "kms" {
+  count = module.this.enabled ? 1 : 0
+  statement {
+    sid    = "Enable Root User Permissions"
+    effect = "Allow"
 
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:Tag*",
+      "kms:Untag*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
+    ]
+
+    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
+    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
+    resources = [
+      "*"
+    ]
+
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+  }
+}
 
 module "cloudtrail_s3_bucket" {
   source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git"
@@ -16,6 +53,7 @@ module "cloudtrail_s3_bucket" {
   allow_ssl_requests_only= var.allow_ssl_requests_only
   acl                    = var.acl
   s3_object_ownership    = var.s3_object_ownership
+  kms_master_key_arn     = module.kms_key.key_arn
   context = module.this.context
 }
 
@@ -70,44 +108,7 @@ module "metric_configs" {
 }
 
 
-data "aws_iam_policy_document" "kms" {
-  count = module.this.enabled ? 1 : 0
-  statement {
-    sid    = "Enable Root User Permissions"
-    effect = "Allow"
 
-    actions = [
-      "kms:Create*",
-      "kms:Describe*",
-      "kms:Enable*",
-      "kms:List*",
-      "kms:Put*",
-      "kms:Update*",
-      "kms:Revoke*",
-      "kms:Disable*",
-      "kms:Get*",
-      "kms:Delete*",
-      "kms:Tag*",
-      "kms:Untag*",
-      "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion"
-    ]
-
-    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
-    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
-    resources = [
-      "*"
-    ]
-
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
-    }
-  }
-}
 
 module "kms_key" {
   source  = "cloudposse/kms-key/aws"
