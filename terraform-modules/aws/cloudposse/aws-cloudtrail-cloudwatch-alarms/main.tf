@@ -23,7 +23,21 @@ resource "aws_cloudwatch_log_group" "default" {
 data "aws_iam_policy_document" "log_policy" {
   statement {
     effect  = "Allow"
-    actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    actions = ["logs:CreateLogStream"]
+    resources = [
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:log-stream:*"
+    ]
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["logs:PutLogEvents"]
+    resources = [
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:log-stream:*"
+    ]
+  }
+  statement {
+    effect  = "Allow"
+    actions = ["logs:LogGroup"]
     resources = [
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:log-stream:*"
     ]
