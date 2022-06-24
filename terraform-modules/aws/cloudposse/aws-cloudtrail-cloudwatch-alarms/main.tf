@@ -35,6 +35,15 @@ data "aws_iam_policy_document" "log_policy" {
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:*:*"
     ]
   }
+  statement {
+    actions = [
+      "logs:PutRetentionPolicy"
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}"
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "assume_policy" {
