@@ -62,3 +62,4 @@ locals {
 inputs = {
   app_namespace = "my-app"
 }
+
