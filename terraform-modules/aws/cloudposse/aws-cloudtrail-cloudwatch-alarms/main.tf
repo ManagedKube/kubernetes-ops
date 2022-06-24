@@ -1,6 +1,12 @@
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
 
+/*ToDo: We are collaborating with cloudposse to bring this solution to your project, we have the task of following up this pr to integrate it 
+          and return to the direct version of cloudposse.
+          
+          Cloudposse' issue: New input variable s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#62
+          Cloudposse' pr: add input var s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#63
+*/
 module "cloudtrail_s3_bucket" {
   source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=0.24.0"
   #version = "master"
@@ -18,6 +24,7 @@ resource "aws_cloudwatch_log_group" "default" {
   name              = module.this.id
   tags              = module.this.tags
   retention_in_days = 365
+  #prowler issue: https://github.com/prowler-cloud/prowler/issues/1229
 }
 
 data "aws_iam_policy_document" "log_policy" {
