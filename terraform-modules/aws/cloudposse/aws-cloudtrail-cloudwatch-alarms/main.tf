@@ -1,27 +1,38 @@
 ## Everything after this is standard cloudtrail setup
 data "aws_caller_identity" "current" {}
 
+/*ToDo: We are collaborating with cloudposse to bring this solution to your project, we have the task of following up this pr to integrate it 
+          and return to the direct version of cloudposse.
+          
+          Cloudposse' issue: New input variable s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#62
+          Cloudposse' pr: add input var s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#63
+*/
 module "cloudtrail_s3_bucket" {
-  source  = "cloudposse/cloudtrail-s3-bucket/aws"
-  version = "0.15.0"
-
-  force_destroy = true
-
+  source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=0.24.0"
+  #version = "master"
+  force_destroy          = var.force_destroy
+  versioning_enabled     = var.versioning_enabled
+  access_log_bucket_name = var.access_log_bucket_name
+  allow_ssl_requests_only= var.allow_ssl_requests_only
+  acl                    = var.acl
+  s3_object_ownership    = var.s3_object_ownership
+  sse_algorithm          = "aws:kms"
   context = module.this.context
 }
 
 resource "aws_cloudwatch_log_group" "default" {
   name              = module.this.id
   tags              = module.this.tags
-  retention_in_days = 90
+  retention_in_days = 365
+  #prowler issue: https://github.com/prowler-cloud/prowler/issues/1229
 }
 
 data "aws_iam_policy_document" "log_policy" {
   statement {
     effect  = "Allow"
-    actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    actions = ["logs:CreateLogStream","logs:PutLogEvents"]
     resources = [
-      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:log-stream:*"
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.default.name}:*:*"
     ]
   }
 }
@@ -65,7 +76,7 @@ module "cloudtrail" {
   version                       = "0.17.0"
   enable_log_file_validation    = true
   include_global_service_events = true
-  is_multi_region_trail         = true
+  is_multi_region_trail         = var.is_multi_region_trail
   enable_logging                = true
   s3_bucket_name = module.cloudtrail_s3_bucket.bucket_id
   # https://github.com/terraform-providers/terraform-provider-aws/issues/14557#issuecomment-671975672
