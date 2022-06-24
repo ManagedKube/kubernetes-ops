@@ -331,4 +331,4 @@ getting this one certificate would be good enough.
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/343
 
-
+Can reach grafana at this URL: https://grafana.terragrunt-dev.managedkube.com
