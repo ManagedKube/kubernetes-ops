@@ -218,7 +218,7 @@ jobs:
       #     cluster-name: ${{ env.ENVIRONMENT_NAME }}
 
       - name: Terragrunt Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
