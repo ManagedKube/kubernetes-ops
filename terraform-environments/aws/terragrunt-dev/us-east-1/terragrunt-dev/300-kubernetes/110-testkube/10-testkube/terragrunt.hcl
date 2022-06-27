@@ -55,6 +55,8 @@ locals {
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
+#
+# Chart source: https://github.com/kubeshop/helm-charts/tree/main/charts/testkube
 inputs = {
   repository          = "https://kubeshop.github.io/helm-charts"
   official_chart_name = "testkube"
