@@ -9,7 +9,7 @@ spec:
       {
           "command": [
             "curl",
-            "http://alertmanager-operated.monitoring.svc:9093/api/v2/status"
+            "http://kube-prometheus-stack-alertmanager.monitoring.svc:9093/api/v2/status"
           ],
           "expected_status": "200",
           "expected_body": "slack_configs"
