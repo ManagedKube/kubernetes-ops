@@ -130,7 +130,7 @@ variable "cluster_enabled_log_types" {
 
 variable "cloudwatch_log_group_retention_in_days" {
   type        = number
-  default     = 90
+  default     = 365
   description = "Log retention in days"
 }
 
