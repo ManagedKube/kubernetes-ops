@@ -61,7 +61,7 @@ inputs = {
   repository          = "https://kubeshop.github.io/helm-charts"
   official_chart_name = "testkube"
   user_chart_name     = "testkube"
-  helm_version        = "1.2.43"
+  helm_version        = "1.0.25"
   namespace           = "testkube"
   helm_values         = file("values.yaml")
 }
