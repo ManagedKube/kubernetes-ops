@@ -27,6 +27,21 @@ deployment:
       containerPort: 8081
       servicePort: 8081
 
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: istio
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - path: /
+      servicePort: http
+  hosts:
+  - sample-app-1.${domain_name}
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
 # ingress:
 #   enabled: true
 #   annotations:
@@ -36,7 +51,7 @@ deployment:
 #     - path: /
 #       servicePort: http
 #   hosts:
-#   - ops.x2.exactpay.com
+#   - sample-app-1.${domain_name}
 #   tls: []
 #    - hosts:
 #      - sample-app-1.${domain_name}
