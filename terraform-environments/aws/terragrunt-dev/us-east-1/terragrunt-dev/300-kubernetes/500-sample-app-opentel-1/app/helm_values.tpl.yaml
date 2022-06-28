@@ -28,7 +28,7 @@ deployment:
       servicePort: 8081
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     kubernetes.io/ingress.class: istio
     # kubernetes.io/tls-acme: "true"
