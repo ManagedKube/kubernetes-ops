@@ -51,7 +51,7 @@ locals {
   }
 
   namespace         = "500-sample-app-opentel-2"
-  fullname_override = "opentelemtry-example-app"
+  fullname_override = "jaegertracing-example-app"
   replica_count     = 1
   docker_repository = "jaegertracing/example-hotrod"
   docker_tag        = "latest"
