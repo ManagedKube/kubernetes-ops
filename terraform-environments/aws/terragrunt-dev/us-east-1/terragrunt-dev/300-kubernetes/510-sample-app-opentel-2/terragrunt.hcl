@@ -50,7 +50,7 @@ locals {
     ops_owners           = "devops"
   }
 
-  namespace         = "500-sample-app-opentel-2"
+  namespace         = "510-sample-app-opentel-2"
   fullname_override = "jaegertracing-example-app"
   replica_count     = 1
   docker_repository = "jaegertracing/example-hotrod"
