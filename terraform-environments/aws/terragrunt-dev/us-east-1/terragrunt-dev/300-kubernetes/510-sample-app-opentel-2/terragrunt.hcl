@@ -8,7 +8,7 @@ terraform {
 }
 
 dependency "eks" {
-  config_path = "${get_terragrunt_dir()}/../../../200-eks"
+  config_path = "${get_terragrunt_dir()}/../../200-eks"
 
   mock_outputs = {
     zone_id = "zzzz"
