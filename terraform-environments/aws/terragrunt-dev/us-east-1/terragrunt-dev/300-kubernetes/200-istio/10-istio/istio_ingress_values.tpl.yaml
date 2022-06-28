@@ -28,5 +28,5 @@ gateways:
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
       # service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
-      external-dns.alpha.kubernetes.io/hostname: my-app.${domain_name},my-app2.${domain_name}
+      external-dns.alpha.kubernetes.io/hostname: "*.${domain_name},my-app.${domain_name},my-app2.${domain_name}"
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
