@@ -384,3 +384,47 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/352
 
 This is also a good example of using the ManagedKube's Generic Application
 Helm chart to deploy out any containers that we find out there.
+
+# istio DNS star route
+Instead of adding each individual domain name in for external-dns to setup
+we can add in a *.${domain_name} route then it would slurp everything in.
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/353
+
+Once this was applied...looking at the external-dns logs:
+
+```
+time="2022-06-28T22:30:48Z" level=info msg="Applying provider record filter for domains: [terragrunt-dev.managedkube.com. .terragrunt-dev.managedkube.com.]"
+time="2022-06-28T22:30:49Z" level=info msg="Desired change: CREATE *.terragrunt-dev.managedkube.com A [Id: /hostedzone/Z056815334Y63ULFJ8RDG]"
+time="2022-06-28T22:30:49Z" level=info msg="Desired change: CREATE *.terragrunt-dev.managedkube.com TXT [Id: /hostedzone/Z056815334Y63ULFJ8RDG]"
+time="2022-06-28T22:30:49Z" level=info msg="2 record(s) in zone terragrunt-dev.managedkube.com. [Id: /hostedzone/Z056815334Y63ULFJ8RDG] were successfully updated"
+```
+
+We can see the records are created.
+
+Testing it out to make sure it is resolving:
+
+```
+dig foobar.terragrunt-dev.managedkube.com 
+
+; <<>> DiG 9.10.6 <<>> foobar.terragrunt-dev.managedkube.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55064
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;foobar.terragrunt-dev.managedkube.com. IN A
+
+;; ANSWER SECTION:
+foobar.terragrunt-dev.managedkube.com. 60 IN A  52.206.197.145
+foobar.terragrunt-dev.managedkube.com. 60 IN A  54.152.224.149
+
+;; Query time: 99 msec
+;; SERVER: 192.168.86.1#53(192.168.86.1)
+;; WHEN: Tue Jun 28 15:31:48 PDT 2022
+;; MSG SIZE  rcvd: 98
+```
+
