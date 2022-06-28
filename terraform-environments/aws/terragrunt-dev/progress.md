@@ -366,3 +366,9 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/349
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/350
 * This is for the operator that will setup the opentel collector
+
+# 230-opentelemetry collector
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/351
+* Applies the opentelemetry CRD to create a collector
+* This collector sends its outputs to the tempo server
