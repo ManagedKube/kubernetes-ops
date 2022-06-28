@@ -59,8 +59,5 @@ inputs = {
   upload_source_path = "./"
   upload_directory   = "yaml"
   fileset_pattern    = "**/*.yaml"
-  template_vars      = {
-      namespace   = "istio-system"
-      domain_name = local.environment_vars.locals.domain_name
-  }
+  template_vars      = {}
 }
