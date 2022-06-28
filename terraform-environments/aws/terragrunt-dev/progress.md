@@ -353,3 +353,6 @@ It might be because of the kube version of the client or the server?
 
 Going to skip this for now.
 
+# 220-grafana-loki
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/348
