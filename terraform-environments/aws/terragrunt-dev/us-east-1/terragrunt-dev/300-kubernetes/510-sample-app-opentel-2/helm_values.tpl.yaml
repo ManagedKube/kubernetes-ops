@@ -11,7 +11,7 @@ deployment:
       tag: ${docker_tag}
       pullPolicy: Always
 
-    args: [
+    commands: [
       "all"
     ]
 
