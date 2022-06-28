@@ -1,0 +1,48 @@
+replicaCount: ${replica_count}
+
+fullnameOverride: ${fullname_override}
+namespace: ${namespace}
+
+deployment:
+  containers:
+  - name: ${fullname_override}
+    image:
+      repository: ${docker_repository}
+      tag: ${docker_tag}
+      pullPolicy: Always
+
+    args: [
+      "all"
+    ]
+
+    env:
+      base:
+      - name: JAEGER_AGENT_HOST
+        value: "opentelemtry-collector-collector.monitoring.svc"
+      - name: JAEGER_AGENT_PORT
+        value: "6831"
+      perEnv: []
+
+    ports:
+    - name: http
+      protocol: TCP
+      containerPort: 8080
+      servicePort: 8080
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: istio
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - path: /
+      servicePort: http
+  hosts:
+  - sample-app-2.${domain_name}
+  tls:
+   - hosts:
+     - sample-app-2.${domain_name}
+      # Istio doc: https://istio.io/latest/docs/ops/integrations/certmanager/#kubernetes-ingress
+      # If using istio and using the domain-wildcard cert, the cert-manager kind: certificate
+      # should be created in the istio-system namespace.
+     secretName: domain-wildcard # This should match the Certificate secretName
