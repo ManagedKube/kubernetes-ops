@@ -356,3 +356,13 @@ Going to skip this for now.
 # 220-grafana-loki
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/348
+
+# 230-opentelemetry
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/349
+* This is for the tempo server
+
+# 230-opentelemetry operator
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/350
+* This is for the operator that will setup the opentel collector
