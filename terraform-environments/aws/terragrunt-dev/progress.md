@@ -380,4 +380,7 @@ This is an example application that uses:
   which has a frontend and a backend.  It will send the APM traces to the 
   opentelemetry collector which then can be visualized in Grafana.
 
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/352
 
+This is also a good example of using the ManagedKube's Generic Application
+Helm chart to deploy out any containers that we find out there.
