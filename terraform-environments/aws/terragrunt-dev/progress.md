@@ -428,3 +428,6 @@ foobar.terragrunt-dev.managedkube.com. 60 IN A  54.152.224.149
 ;; MSG SIZE  rcvd: 98
 ```
 
+# 510-sample-app-opentel-2
+Second sample app that has opentelemetry tracing enabled
+
