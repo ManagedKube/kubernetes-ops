@@ -332,3 +332,24 @@ getting this one certificate would be good enough.
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/343
 
 Can reach grafana at this URL: https://grafana.terragrunt-dev.managedkube.com
+
+# enabling testkube
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/346
+
+We added testkube deployments into the cluster above but it was disabled b/c the initial
+test was testing to see if the prometheus endpoint was up or not.  Now that it is,
+we can enable it so that it would actually pass.
+
+The testkube stuff seems broken right now.  Im not able to get the testkube items for
+some reason:
+
+```
+kubectl testkube get tests
+⨯ setting up client type (error: exec plugin: invalid apiVersion "client.authentication.k8s.io/v1alpha1")
+```
+
+It might be because of the kube version of the client or the server?
+
+Going to skip this for now.
+
