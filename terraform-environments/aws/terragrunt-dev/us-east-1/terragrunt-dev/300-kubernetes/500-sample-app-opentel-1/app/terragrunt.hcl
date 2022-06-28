@@ -81,6 +81,7 @@ inputs = {
       replica_count              = local.replica_count
       docker_repository          = local.docker_repository
       docker_tag                 = local.docker_tag
+      domain_name                = local.environment_vars.locals.domain_name
     }
   )
 }

@@ -27,18 +27,20 @@ deployment:
       containerPort: 8081
       servicePort: 8081
 
-# ingress:
-#   enabled: false
-#   annotations:
-#     kubernetes.io/ingress.class: nginx-external
-#     # kubernetes.io/tls-acme: "true"
-#   paths:
-#     - path: /
-#       servicePort: http
-#   hosts:
-#   - ops.x2.exactpay.com
-#   tls: []
-#   #  - secretName: chart-example-tls
-#   #    hosts:
-#   #      - chart-example.local
-
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: istio
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - path: /
+      servicePort: http
+  hosts:
+  - ops.x2.exactpay.com
+  tls: []
+   - hosts:
+     - sample-app-1.${domain_name}
+      # Istio doc: https://istio.io/latest/docs/ops/integrations/certmanager/#kubernetes-ingress
+      # If using istio and using the domain-wildcard cert, the cert-manager kind: certificate
+      # should be created in the istio-system namespace.
+     secretName: domain-wildcard # This should match the Certificate secretName
