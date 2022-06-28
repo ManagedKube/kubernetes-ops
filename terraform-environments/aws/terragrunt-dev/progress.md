@@ -372,3 +372,12 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/350
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/351
 * Applies the opentelemetry CRD to create a collector
 * This collector sends its outputs to the tempo server
+
+# 500-sample-app opentelemetry - 1
+This is an example application that uses:
+* The Generic Application helm chart to easily deploy any docker container
+* The application that this deploys is the opentelemetry's example application
+  which has a frontend and a backend.  It will send the APM traces to the 
+  opentelemetry collector which then can be visualized in Grafana.
+
+
