@@ -1,0 +1,44 @@
+replicaCount: ${replica_count}
+
+fullnameOverride: ${fullname_override}
+namespace: ${namespace}
+
+deployment:
+  containers:
+  - name: ${fullname_override}
+    image:
+      repository: ${docker_repository}
+      tag: ${docker_tag}
+      pullPolicy: Always
+
+    args: [
+      "Backend"
+    ]
+
+    env:
+      base:
+      - name: JAVA_OPTS
+        value: "-Dspring.zipkin.baseUrl=http://opentelemtry-collector-collector.monitoring.svc:9411"
+      perEnv: []
+
+    ports:
+    - name: http
+      protocol: TCP
+      containerPort: 9000
+      servicePort: 9000
+
+# ingress:
+#   enabled: false
+#   annotations:
+#     kubernetes.io/ingress.class: nginx-external
+#     # kubernetes.io/tls-acme: "true"
+#   paths:
+#     - path: /
+#       servicePort: http
+#   hosts:
+#   - ops.x2.exactpay.com
+#   tls: []
+#   #  - secretName: chart-example-tls
+#   #    hosts:
+#   #      - chart-example.local
+
