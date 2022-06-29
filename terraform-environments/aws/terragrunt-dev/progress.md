@@ -432,3 +432,63 @@ foobar.terragrunt-dev.managedkube.com. 60 IN A  54.152.224.149
 Second sample app that has opentelemetry tracing enabled
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/354
+
+Was having a problem getting sub pages that are required for the entire page to load.
+In the web browser it was saing that it was not able to get: `https://sample-app-2.terragrunt-dev.managedkube.com/jquery-3.1.1.min.js`
+
+Trying it out in cURL shows the same things.
+
+
+```bash
+curl https://sample-app-2.terragrunt-dev.managedkube.com/jquery-3.1.1.min.js -v               
+*   Trying 54.152.224.149:443...
+* Connected to sample-app-2.terragrunt-dev.managedkube.com (54.152.224.149) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* successfully set certificate verify locations:
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (OUT), TLS handshake, Client hello (1):
+* (304) (IN), TLS handshake, Server hello (2):
+* (304) (IN), TLS handshake, Unknown (8):
+* (304) (IN), TLS handshake, Certificate (11):
+* (304) (IN), TLS handshake, CERT verify (15):
+* (304) (IN), TLS handshake, Finished (20):
+* (304) (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / AEAD-AES256-GCM-SHA384
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: CN=*.terragrunt-dev.managedkube.com
+*  start date: Jun 23 22:56:41 2022 GMT
+*  expire date: Sep 21 22:56:40 2022 GMT
+*  subjectAltName: host "sample-app-2.terragrunt-dev.managedkube.com" matched cert's "*.terragrunt-dev.managedkube.com"
+*  issuer: C=US; O=Let's Encrypt; CN=R3
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multiplexing
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x7f92ce011a00)
+> GET /jquery-3.1.1.min.js HTTP/2
+> Host: sample-app-2.terragrunt-dev.managedkube.com
+> user-agent: curl/7.79.1
+> accept: */*
+> 
+* Connection state changed (MAX_CONCURRENT_STREAMS == 2147483647)!
+< HTTP/2 404 
+< date: Wed, 29 Jun 2022 19:38:21 GMT
+< server: istio-envoy
+< 
+* Connection #0 to host sample-app-2.terragrunt-dev.managedkube.com left intact
+```
+
+Manually testing the change on the ingress to add a `*` in the path:
+```
+Rules:
+  Host                                         Path  Backends
+  ----                                         ----  --------
+  sample-app-2.terragrunt-dev.managedkube.com  /*
+                          
+```
+
+This fixes the problem.
+

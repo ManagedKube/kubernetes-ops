@@ -33,7 +33,7 @@ ingress:
     kubernetes.io/ingress.class: istio
     # kubernetes.io/tls-acme: "true"
   paths:
-    - path: /
+    - path: /*
       servicePort: http
   hosts:
   - sample-app-1.${domain_name}
