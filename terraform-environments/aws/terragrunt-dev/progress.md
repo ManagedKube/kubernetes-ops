@@ -492,3 +492,6 @@ Rules:
 
 This fixes the problem.
 
+Rolling that fix into code:
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/355
