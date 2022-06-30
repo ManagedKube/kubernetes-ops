@@ -37,7 +37,7 @@ ingress:
   paths:
     - path: /
       pathType: Prefix
-      servicePort: http
+      servicePort: 8080
   hosts:
   - sample-app-2.${domain_name}
   tls:
