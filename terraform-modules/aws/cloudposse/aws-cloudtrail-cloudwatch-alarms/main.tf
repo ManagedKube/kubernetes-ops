@@ -1,12 +1,97 @@
-## Everything after this is standard cloudtrail setup
+locals {
+  arn_format  = "arn:${data.aws_partition.current.partition}"
+}
+data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
+## Everything after this is standard cloudtrail setup
 /*ToDo: We are collaborating with cloudposse to bring this solution to your project, we have the task of following up this pr to integrate it 
           and return to the direct version of cloudposse.
           
           Cloudposse' issue: New input variable s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#62
           Cloudposse' pr: add input var s3_object_ownership cloudposse/terraform-aws-cloudtrail-s3-bucket#63
 */
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE A KMS 
+# We can attach KMS to CloudWatch Log.
+# ---------------------------------------------------------------------------------------------------------------------
+data "aws_iam_policy_document" "kms" {
+  statement {
+    sid    = "Enable Root User Permissions"
+    effect = "Allow"
+
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:Tag*",
+      "kms:Untag*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
+    ]
+
+    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
+    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
+    resources = [
+      "*"
+    ]
+
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "Allow KMS to CloudWatch Log Group ${element(var.attributes,0)}"
+    effect = "Allow"
+
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*"
+    ]
+
+    resources = [
+      "*"
+    ]
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "logs.${data.aws_region.current.name}.amazonaws.com"
+      ]
+    }
+    condition {
+      test = "ArnEquals"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+      values = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${element(var.attributes,0)}"]
+    }
+  }
+}
+
+resource "aws_kms_key" "kms" {
+  description             = "KMS key for ${element(var.attributes,0)}"
+  deletion_window_in_days = 10
+  enable_key_rotation     = true
+  policy                  = join("", data.aws_iam_policy_document.kms.*.json)
+}
+
 module "cloudtrail_s3_bucket" {
   source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=0.24.0"
   #version = "master"
@@ -25,6 +110,7 @@ resource "aws_cloudwatch_log_group" "default" {
   tags              = module.this.tags
   retention_in_days = 365
   #prowler issue: https://github.com/prowler-cloud/prowler/issues/1229
+  kms_key_id = aws_kms_key.kms.arn
 }
 
 data "aws_iam_policy_document" "log_policy" {
