@@ -35,7 +35,8 @@ ingress:
     kubernetes.io/ingress.class: istio
     # kubernetes.io/tls-acme: "true"
   paths:
-    - path: /*
+    - path: /
+      pathType: Prefix
       servicePort: http
   hosts:
   - sample-app-2.${domain_name}
@@ -46,3 +47,8 @@ ingress:
       # If using istio and using the domain-wildcard cert, the cert-manager kind: certificate
       # should be created in the istio-system namespace.
      secretName: domain-wildcard # This should match the Certificate secretName
+  ingressClass:
+    enabled: true
+    # Docs: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingressclass-scope
+    spec:
+      controller: istio.io/ingress-controller
