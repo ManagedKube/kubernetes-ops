@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    sid    = "Allow KMS to CloudWatch Log Group ${var.name}"
+    sid    = "Allow KMS to CloudWatch Log Group ${element(var.attributes,0)}"
     effect = "Allow"
 
     actions = [
@@ -80,13 +80,13 @@ data "aws_iam_policy_document" "kms" {
     condition {
       test = "ArnEquals"
       variable = "kms:EncryptionContext:aws:logs:arn"
-      values = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${var.name}"]
+      values = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:${${element(var.attributes,0)}"]
     }
   }
 }
 
 resource "aws_kms_key" "kms" {
-  description             = "KMS key for ${var.name}"
+  description             = "KMS key for ${element(var.attributes,0)"
   deletion_window_in_days = 10
   enable_key_rotation     = true
   policy                  = join("", data.aws_iam_policy_document.kms.*.json)
