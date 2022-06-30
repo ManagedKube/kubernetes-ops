@@ -69,7 +69,7 @@ inputs = {
   # This is what you want to name the chart when deploying
   user_chart_name = local.fullname_override
   # The helm chart version you want to use
-  helm_version = "1.0.25"
+  helm_version = "1.0.26"
   # The namespace you want to install the chart into - it will create the namespace if it doesnt exist
   namespace = local.namespace
   # The helm chart values file
