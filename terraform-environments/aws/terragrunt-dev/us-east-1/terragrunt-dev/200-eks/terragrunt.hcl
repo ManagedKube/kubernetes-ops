@@ -31,7 +31,7 @@ locals {
   # Load environment-level variables
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
 
-  eks_cluster_version = "1.21"
+  eks_cluster_version = "1.22"
 
   tags = {
     ops_env              = local.common_vars.locals.environment_name
