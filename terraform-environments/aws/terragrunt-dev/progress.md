@@ -495,3 +495,113 @@ This fixes the problem.
 Rolling that fix into code:
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/355
+
+# Problem: HTTP/2 connection reuse 
+After getting both sample applications up and running I found a problem.
+
+Each sample app seems to have worked indepedantly.  While I was bringing up each app and testing
+it, I was able to hit the URLs of each app and it returned the expected webpage.  DNS was working
+and I was even able to hit the https endpoint as well.
+
+However, after setting up both apps up and testing to see if the OpenTelemetry tracing worked, I had
+to hit 3 URLs on the system that were all going through the istio ingress:
+1. Grafana: https://grafana.terragrunt-dev.managedkube.com - to see the traces
+1. sample app 1: https://sample-app-1.terragrunt-dev.managedkube.com/
+1. sample app 2: https://sample-app-2.terragrunt-dev.managedkube.com/
+
+This is where the problem started.
+
+In my browser (Firefox and Chrome), I first went to the Grafana endpoint.  That loaded up fine.
+
+Then I went to sample app 1 and that loaded up fine.
+
+Then I went to sample app 2 and I got back a 404 not found.  This was odd because this was working
+before when I was testing it out.  In the browser, in debug mode and inspecting the details of the 
+request headers returned and things, the `server: istio-envoy` which means that the Istio ingress
+was returning the 404.
+
+I did all the usual dig on all 3 of the hostnames and it all pointed back to the AWS NLB.  DNS was not 
+the issue.
+
+Using cURL to retrieve each endpoint gave successful responses as in not a 404 and the webpage content
+that I was expecting.  This was interesting that it works with cURL but not in my two browsers.
+
+I even thought it might be my laptop and I even tried to hit up the 3 endpoints on another machine that
+I have and it yielded the same results.
+
+This was leading me to think that it was something to do with my browser and the interaction with Istio.
+Somehow maybe the host headers and things were not being passed correctly or interpereted correctly?  Inspecting
+the browser requests in debug mode, everything looked ok.  Im pretty sure I wasnt looking at the correct thing
+in there.  I just didnt see anything out of the normal.  I didnt have much to go on here.
+
+I started to look at my Istio ingress usage.  The way this was exposing all of these endpoints out on the
+Istio ingress was through the regular Kubernetes Ingress resource type: https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#configuring-ingress-using-an-ingress-resource.  The configuration
+at this time is here: https://github.com/ManagedKube/kubernetes-ops/blob/26e5fc0167634ccbe2c5dda80b890244a1630c8a/terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/300-kubernetes/500-sample-app-opentel-1/app/helm_values.tpl.yaml#L30.  This is sort of a cheat or maybe more of a shortcut to exposing out an endpoint
+via the Istio Ingress without having to create an Istio Gateway and VirtualService resource.  So I used it,
+I like shortcuts (if it works).
+
+Since I still didnt know why this was happening, I needed more information, so I went back to the Istio
+docs.  In the same Istio docs but further down in the same page: https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#specifying-ingressclass.  It talks about enabling TLS and using
+the newer Kubernetes resource type `IngressClass` (which I was not using).  This is starting to look interesting.
+I knew the requests were making it to the Istio ingress but that was returning a 404.  Perhaps without the
+`IngressClass` it was getting confused on which endpoints this hostname was for?
+
+I updated the `standard-application` helm chart used to deploy out the sample apps with to add in
+the `IngressClass` resources: https://github.com/ManagedKube/helm-charts/pull/44.  Then updating the
+usage of sample app to use this new helm chart version release: https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/aab554fa868edd8b7b45290c21b1d5d318791019.  After having the IaC deploy that out, I tested reaching
+the endpoints again.
+* cURL worked for all 3 endpoints (was working before)
+* The browser still had the same behavior.  The first of the 3 endpoint I would go to would work but the other two would not.
+
+I guess that was not the fix since nothing has changed.  Things just can't be that easy.  I was however shooting
+in the dark a little bit.  I didnt have specific information that that would have fixed it nor did I have 
+specific information from Istio itself on why it was returning a 404.  I did try to use `istioctl` trying to
+get more information but that path didn't yield anything useful.  So I'm still shooting a little bit in the dark
+here.
+
+At this point, you do what any one else would do.  Start searching google to see if others are seeing this problem =).
+
+I think mostly by luck and refining my search here and there I landed on this Istio doc: https://istio.io/latest/docs/ops/common-problems/network-issues/#404-errors-occur-when-multiple-gateways-configured-with-same-tls-certificate
+
+This explains pretty much exactly what I was experiencing!!
+
+It just goes to show that nothing I'm doing here is new and others has already ran into pretty much all of the
+problems that I have and more importantly they have solved it!
+
+You can read this but the TL;DR is saying that since the hostnames resolved to the same IP, your browser is
+re-using the HTTP/2 connection which is resulting in returning the 404 because on the Istio Ingress side, the
+hostname for the second request of the hostname wouldn't match.
+
+Then this doc goes on to say that you should create an Istio `Gateway` and a `VirtualService` for each endpoint.
+
+I guess I can't do the Kubernetes `Ingress` shortcut anymore.
+
+We will first have to create an Istio `Gateway`.  I decided for this example, I will create one Istio `Gateway`
+that any applications can use in this cluster.  The idea would be that the "DevOps" team would provide manage
+the `Gateway` and then application teams can use this gateway for ingressess that they want.  This can expand
+to more gateways over time as the need fo the company changes and different requirements for the gateway arrise.
+
+This addition was added to the PR trying to fix the ingress: https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/218473f0829ee2beed8b804178c440faedfd1e68#diff-65ccd470fca6177a755868fd694b60ec33969ea1231f1d97c2b1977fb2113e88R2-R27
+
+After applying there is a `gateway`:
+```
+kubectl -n istio-system get gateway
+NAME           AGE
+main-gateway   80s
+```
+
+The next steps were to test this out to see if it works.  I modified the `standard-application` helm chart we
+are using to deploy the sample apps with to add in the Istio `VirtualService`: https://github.com/ManagedKube/helm-charts/pull/47.  This will allow each application to add in it's own `VirtualService` and then bind to
+the Istio `Gateway` that each app wants to bind to.
+
+This commit in the same PR adds the virtual service params to the helm chart:
+* sample application 1
+* https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/f39b77c4a7602fbb6407f1bd4f3c9e2932bab3a4
+* This worked
+
+The commit for the sample app 2
+* https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/d7c2a1ae79148b6c77eddbc08588cd098a024ff1
+* This is working
+
+After all of the previous changes, everything is working as expected:
+* In the same browser I can go to all three endpoints http or https
