@@ -4,7 +4,7 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kubernetes/manifest_set?ref=v2.0.12"
 }
 
 dependency "eks" {
@@ -49,12 +49,6 @@ locals {
     ops_source_repo_path = "${local.common_vars.locals.base_repository_path}/${path_relative_to_include()}"
     ops_owners           = "devops"
   }
-
-  namespace         = "500-sample-app-opentel-1"
-  fullname_override = "opentelemtry-example-app"
-  replica_count     = 1
-  docker_repository = "openzipkin/example-sleuth-webmvc"
-  docker_tag        = "latest"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -62,27 +56,11 @@ locals {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  # this is the helm repo add URL
-  repository = "https://helm-charts.managedkube.com"
-  # This is the helm repo add name
-  official_chart_name = "standard-application"
-  # This is what you want to name the chart when deploying
-  user_chart_name = local.fullname_override
-  # The helm chart version you want to use
-  helm_version = "1.0.28"
-  # The namespace you want to install the chart into - it will create the namespace if it doesnt exist
-  namespace = local.namespace
-  # The helm chart values file
-  helm_values = templatefile(
-    "./helm_values.tpl.yaml",
-    {
-      fullname_override          = local.fullname_override
-      namespace                  = local.namespace
-      replica_count              = local.replica_count
-      docker_repository          = local.docker_repository
-      docker_tag                 = local.docker_tag
-      domain_name                = local.environment_vars.locals.domain_name
-    }
-  )
+  upload_source_path = "./"
+  upload_directory   = "yaml"
+  fileset_pattern    = "**/*.yaml"
+  template_vars      = {
+      namespace   = "istio-system"
+      domain_name = local.environment_vars.locals.domain_name
+  }
 }
-
