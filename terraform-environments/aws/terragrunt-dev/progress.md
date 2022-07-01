@@ -594,5 +594,7 @@ The next steps were to test this out to see if it works.  I modified the `standa
 are using to deploy the sample apps with to add in the Istio `VirtualService`: https://github.com/ManagedKube/helm-charts/pull/47.  This will allow each application to add in it's own `VirtualService` and then bind to
 the Istio `Gateway` that each app wants to bind to.
 
+This commit in the same PR adds the virtual service params to the helm chart:
+* https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/f39b77c4a7602fbb6407f1bd4f3c9e2932bab3a4
 
 
