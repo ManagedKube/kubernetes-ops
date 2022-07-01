@@ -605,3 +605,9 @@ The commit for the sample app 2
 
 After all of the previous changes, everything is working as expected:
 * In the same browser I can go to all three endpoints http or https
+
+# eks-update-1-22
+Updating the cluster to the EKS 1.22 version
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/358
+
