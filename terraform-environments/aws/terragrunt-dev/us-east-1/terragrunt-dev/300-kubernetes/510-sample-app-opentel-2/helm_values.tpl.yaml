@@ -30,7 +30,7 @@ deployment:
       servicePort: 8080
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
     kubernetes.io/ingress.class: istio
     # kubernetes.io/tls-acme: "true"
@@ -52,3 +52,31 @@ ingress:
     # Docs: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingressclass-scope
     spec:
       controller: istio.io/ingress-controller
+
+#
+# Istio virtual service
+#
+istio:
+  ##
+  ## https://istio.io/latest/docs/reference/config/networking/virtual-service/
+  virtualService:
+    enabled: true
+    apiVersion: networking.istio.io/v1alpha3
+    gateways:
+    # <namespace>/gateway-name
+    - istio-system/main-gateway
+    hosts:
+    - sample-app-2.${domain_name}
+    ##
+    ## The definition for the http, tls, tcp, etc.  Per the istio virtual service doc
+    ## This template will just put everything under "protocolDefinition" into the virtualservice
+    protocolDefinition:
+      http:
+      - match:
+        - uri:
+            prefix: /
+        route:
+        - destination:
+            port:
+              number: 8080
+            host: ${fullname_override}

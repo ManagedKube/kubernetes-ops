@@ -595,6 +595,9 @@ are using to deploy the sample apps with to add in the Istio `VirtualService`: h
 the Istio `Gateway` that each app wants to bind to.
 
 This commit in the same PR adds the virtual service params to the helm chart:
+* sample application 1
 * https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/f39b77c4a7602fbb6407f1bd4f3c9e2932bab3a4
+* This worked
 
-
+The commit for the sample app 2
+* 
