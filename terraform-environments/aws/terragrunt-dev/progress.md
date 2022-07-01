@@ -600,4 +600,8 @@ This commit in the same PR adds the virtual service params to the helm chart:
 * This worked
 
 The commit for the sample app 2
-* 
+* https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/d7c2a1ae79148b6c77eddbc08588cd098a024ff1
+* This is working
+
+After all of the previous changes, everything is working as expected:
+* In the same browser I can go to all three endpoints http or https
