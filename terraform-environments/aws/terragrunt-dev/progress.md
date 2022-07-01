@@ -581,6 +581,15 @@ that any applications can use in this cluster.  The idea would be that the "DevO
 the `Gateway` and then application teams can use this gateway for ingressess that they want.  This can expand
 to more gateways over time as the need fo the company changes and different requirements for the gateway arrise.
 
+This addition was added to the PR trying to fix the ingress: https://github.com/ManagedKube/kubernetes-ops/pull/357/commits/218473f0829ee2beed8b804178c440faedfd1e68#diff-65ccd470fca6177a755868fd694b60ec33969ea1231f1d97c2b1977fb2113e88R2-R27
+
+After applying there is a `gateway`:
+```
+kubectl -n istio-system get gateway
+NAME           AGE
+main-gateway   80s
+```
+
 The next steps were to test this out to see if it works.  I modified the `standard-application` helm chart we
 are using to deploy the sample apps with to add in the Istio `VirtualService`: https://github.com/ManagedKube/helm-charts/pull/47.  This will allow each application to add in it's own `VirtualService` and then bind to
 the Istio `Gateway` that each app wants to bind to.
