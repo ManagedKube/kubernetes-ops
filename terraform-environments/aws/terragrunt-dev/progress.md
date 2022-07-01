@@ -609,4 +609,5 @@ After all of the previous changes, everything is working as expected:
 # eks-update-1-22
 Updating the cluster to the EKS 1.22 version
 
-PR: 
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/358
+
