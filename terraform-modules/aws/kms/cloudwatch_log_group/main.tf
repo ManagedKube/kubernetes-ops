@@ -1,4 +1,5 @@
 # This is a standard kms that frees any cloud watch log group from vulnerabilities.
+# Docs: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html
 
 locals {
   arn_format  = "arn:${data.aws_partition.current.partition}"
