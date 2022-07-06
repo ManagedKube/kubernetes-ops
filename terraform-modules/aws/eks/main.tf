@@ -31,6 +31,14 @@ resource "aws_kms_key" "eks" {
   tags        = var.tags
 }
 
+
+module "kms_cloudwatch_log_group" {
+  source                  = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/eks?ref=feat-kms-eks-cloud-watch"
+  log_group_name          = eks.cloudwatch_log_group_name
+  tags                    = var.tags
+}
+
+
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "18.23.0"
@@ -57,6 +65,7 @@ module "eks" {
     resources        = ["secrets"]
   }]
 
+  cloudwatch_log_group_kms_key_id = kms_cloudwatch_log_group.kms_arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
   cluster_enabled_log_types     = var.cluster_enabled_log_types
 
