@@ -1,3 +1,7 @@
+data "aws_partition" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
 module "kms_cloudwatch_log_group" {
   source                  = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
   log_group_name          = element(var.attributes, 0)
