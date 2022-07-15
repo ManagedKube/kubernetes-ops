@@ -1,5 +1,8 @@
 # This is a standard kms that frees any cloudtrail/trails from vulnerabilities.
 # Docs: https://dev.to/aws-builders/encrypt-cloudtrail-logs-with-multi-region-key-with-terraform-1hln
+data "aws_partition" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 data "aws_iam_policy_document" "kms" {
   statement {
