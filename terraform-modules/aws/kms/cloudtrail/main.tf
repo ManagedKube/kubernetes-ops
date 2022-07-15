@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "kms" {
   }
 }
 
-resource "aws_kms_alias" "alias" {
+resource "aws_kms_alias" "a" {
   name          = "alias/${var.cloudtrail_name}"
   target_key_id = aws_kms_key.a.key_id
 }
