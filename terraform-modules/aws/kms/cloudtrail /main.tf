@@ -1,0 +1,38 @@
+# This is a standard kms that frees any cloudtrail/trails from vulnerabilities.
+# Docs: https://dev.to/aws-builders/encrypt-cloudtrail-logs-with-multi-region-key-with-terraform-1hln
+
+data "aws_iam_policy_document" "kms" {
+  statement {
+    sid    = "Allow CloudTrail to encrypt  - ${var.cloudtrail_name}"
+    effect    = "Allow"
+    actions   = ["kms:GenerateDataKey*"]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+      values   = ["arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.cloudtrail_name}"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.cloudtrail_name}"]
+    }
+  }
+}
+
+resource "aws_kms_alias" "alias" {
+  name          = "alias/${var.cloudtrail_name}"
+  target_key_id = aws_kms_key.a.key_id
+}
+
+resource "aws_kms_key" "kms" {
+  description             = "KMS key for cloudtrail: ${var.cloudtrail_name}"
+  deletion_window_in_days = 10
+  enable_key_rotation     = true
+  policy                  = join("", data.aws_iam_policy_document.kms.*.json)
+  tags                    = var.tags
+}
