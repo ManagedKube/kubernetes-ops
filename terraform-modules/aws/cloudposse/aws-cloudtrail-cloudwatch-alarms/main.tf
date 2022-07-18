@@ -38,7 +38,7 @@ resource "aws_cloudwatch_log_group" "default" {
   tags              = module.this.tags
   retention_in_days = 365
   #prowler issue: https://github.com/prowler-cloud/prowler/issues/1229
-  kms_key_id = var.kms_cloudwatch_loggroup_enable ? module.kms_cloudwatch_log_group.kms_arn[count] : null
+  kms_key_id = var.kms_cloudwatch_loggroup_enable ? module.kms_cloudwatch_log_group.kms_arn[0] : null
 }
 
 data "aws_iam_policy_document" "log_policy" {
