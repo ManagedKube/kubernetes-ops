@@ -74,8 +74,8 @@ resource "aws_kms_alias" "a" {
 
 resource "aws_kms_key" "kms" {
   description             = "KMS key for cloudtrail: ${var.cloudtrail_name}"
-  deletion_window_in_days = 10
-  enable_key_rotation     = true
+  deletion_window_in_days = var.kms_deletion_window_in_days
+  enable_key_rotation     = var.kms_enable_key_rotation
   policy                  = join("", data.aws_iam_policy_document.kms.*.json)
   tags                    = var.tags
 }
