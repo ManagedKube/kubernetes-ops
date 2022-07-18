@@ -70,3 +70,41 @@ variable "restrict_public_buckets" {
   default     = true
   description = "Set to `false` to disable the restricting of making the bucket public"
 }
+
+
+#KMS Variables
+variable "kms_cloudwatch_loggroup_enable" {
+  type        = bool
+  default     = true
+  description = "It will create for you a standard kms for cloudwatch that will free it from possible vulnerabilities. (cloudwatch-loggroup)"
+}
+
+variable "kms_cloudtrail_enable" {
+  type        = bool
+  default     = true
+  description = "It will create for you a standard kms for cloudwatch that will free it from possible vulnerabilities.. (cloudwatch-loggroup)"
+}
+
+variable "kms_cloudwatch_loggroup_deletion_window_in_days" {
+  type        = number
+  default     = 30
+  description = "The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. (cloudwatch-loggroup)"
+}
+
+variable "kms_cloudwatch_loggroup_kms_enable_key_rotation" {
+  type        = bool
+  default     = true
+  description = "Specifies whether key rotation is enabled. Defaults to false. (cloudwatch-loggroup)"
+}
+
+variable "kms_cloudtrail_deletion_window_in_days" {
+  type        = number
+  default     = 30
+  description = "The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. (cloudtrail-trails)"
+}
+
+variable "kms_cloudtrail_kms_enable_key_rotation" {
+  type        = bool
+  default     = true
+  description = "Specifies whether key rotation is enabled. Defaults to false. (cloudtrail-trails)"
+}

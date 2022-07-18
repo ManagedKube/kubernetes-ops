@@ -1,7 +1,7 @@
-variable "log_group_name" {
+variable "cloudtrail_name" {
   type        = string
-  default     = "log-group-default"
-  description = "Log group name of cloud watch"
+  default     = "cloudtrail-default"
+  description = "Cloudtrail/trail for attaching currently kms"
 }
 
 variable "kms_deletion_window_in_days" {
@@ -15,7 +15,6 @@ variable "kms_enable_key_rotation" {
   default     = true
   description = "Specifies whether key rotation is enabled. Defaults to false."
 }
-
 
 variable "tags" {
   type = map(any)
