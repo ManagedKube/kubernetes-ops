@@ -4,7 +4,7 @@ data "aws_region" "current" {}
 
 module "kms_cloudwatch_log_group" {
   count                       = var.kms_cloudwatch_loggroup_enable ? 1 : 0
-  source                      = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=v2.0.37"
+  source                      = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/kms/cloudwatch_log_group?ref=feat-kms-cloudtrail"
   log_group_name              = element(var.attributes, 0)
   kms_deletion_window_in_days = var.kms_cloudwatch_loggroup_deletion_window_in_days
   kms_enable_key_rotation     = var.kms_cloudwatch_loggroup_kms_enable_key_rotation
