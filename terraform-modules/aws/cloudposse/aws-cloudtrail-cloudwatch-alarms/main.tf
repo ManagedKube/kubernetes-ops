@@ -38,7 +38,7 @@ resource "aws_cloudwatch_log_group" "default" {
   tags              = module.this.tags
   retention_in_days = 365
   #prowler issue: https://github.com/prowler-cloud/prowler/issues/1229
-  kms_key_id = var.kms_cloudwatch_loggroup_enable ? module.kms_cloudwatch_log_group.kms_arn : null
+  kms_key_id = var.kms_cloudwatch_loggroup_enable ? module.kms_cloudwatch_log_group.kms_arn[count] : null
 }
 
 data "aws_iam_policy_document" "log_policy" {
@@ -97,7 +97,7 @@ module "cloudtrail" {
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.default.arn}:*"
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_cloudwatch_events_role.arn
   event_selector = var.cloudtrail_event_selector
-  kms_key_arn = var.kms_cloudtrail_enable ? module.kms_cloudtrail.kms_arn  : null
+  kms_key_arn = var.kms_cloudtrail_enable ? module.kms_cloudtrail.kms_arn[0]  : null
   context = module.this.context
 }
 
