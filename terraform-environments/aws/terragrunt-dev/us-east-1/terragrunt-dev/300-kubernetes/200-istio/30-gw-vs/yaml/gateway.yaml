@@ -1,3 +1,4 @@
+# Doc: https://istio.io/latest/docs/tasks/traffic-management/ingress/secure-ingress/#configure-a-tls-ingress-gateway-for-a-single-host
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
