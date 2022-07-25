@@ -63,7 +63,7 @@ inputs = {
   namespace           = "kiali-operator"
   helm_values         = templatefile(
       "./values.yaml", {
-          domain_name = local.account_vars.locals.domain_name.name
+          domain_name = local.environment_vars.locals.domain_name
       },
     )
 }
