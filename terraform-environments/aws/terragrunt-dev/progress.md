@@ -611,3 +611,7 @@ Updating the cluster to the EKS 1.22 version
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/358
 
+# Kiali
+
+PR: https://github.com/ManagedKube/kubernetes-ops/pull/364
+
