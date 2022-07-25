@@ -615,3 +615,5 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/358
 
 PR: https://github.com/ManagedKube/kubernetes-ops/pull/364
 
+Updating Kiali to the latest version PR:
+* https://github.com/ManagedKube/kubernetes-ops/pull/365
