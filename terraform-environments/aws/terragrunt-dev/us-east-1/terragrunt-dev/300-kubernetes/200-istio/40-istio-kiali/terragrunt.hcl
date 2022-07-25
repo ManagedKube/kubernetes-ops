@@ -1,30 +1,17 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# TERRAGRUNT CONFIGURATION
-# This is the configuration for Terragrunt, a thin wrapper for Terraform that helps keep your code DRY and
-# maintainable: https://github.com/gruntwork-io/terragrunt
-# ---------------------------------------------------------------------------------------------------------------------
-
-# Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
-# working directory, into a temporary folder, and execute your Terraform commands in that folder. If you're iterating
-# locally, you can use --terragrunt-source /path/to/local/checkout/of/module to override the source parameter to a
-# local check out of the module for faster iteration.
-terraform {
-  #source = "git::git@github.com:gruntwork-io/aws-service-catalog.git//modules/networking/vpc?ref=v0.63.3"
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
-}
-
 # Include all settings from the root terragrunt.hcl file
 include {
   path = find_in_parent_folders()
 }
 
+terraform {
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
+}
+
 dependency "eks" {
-  config_path = "${get_terragrunt_dir()}/../../0200-eks"
+  config_path = "${get_terragrunt_dir()}/../../../200-eks"
 
   mock_outputs = {
-    vpc_id            = "vpc-abcd1234"
-    vpc_cidr_block    = "10.0.0.0/16"
-    public_subnet_ids = ["subnet-abcd1234", "subnet-bcd1234a", ]
+    zone_id = "zzzz"
   }
   mock_outputs_allowed_terraform_commands = ["validate", ]
 }
@@ -46,23 +33,22 @@ generate "k8s_helm" {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  # Automatically load common variables shared across all accounts
+  # Load common variables shared across all accounts
   common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
 
-  # Extract the name prefix for easy access
-  name_prefix = local.common_vars.locals.name_prefix
-
-  # Automatically load account-level variables
-  account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl"))
-
-  # Extract the account_name for easy access
-  account_name = local.account_vars.locals.account_name
-
-  # Automatically load region-level variables
+  # Load region-level variables
   region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl"))
 
-  # Extract the region for easy access
-  aws_region = local.region_vars.locals.aws_region
+  # Load environment-level variables
+  environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+
+  tags = {
+    ops_env              = local.common_vars.locals.environment_name
+    ops_managed_by       = "terraform"
+    ops_source_repo      = local.common_vars.locals.repository_name
+    ops_source_repo_path = "${local.common_vars.locals.base_repository_path}/${path_relative_to_include()}"
+    ops_owners           = "devops"
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
