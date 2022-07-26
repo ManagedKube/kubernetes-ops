@@ -8,3 +8,9 @@
 #     requests:
 #       cpu: 10m
 #       memory: 256Mi
+global:
+  proxy:
+    ## Sets privileged to true for the istio-proxy container for debugging 
+    ## Doc: https://github.com/istio/istio/issues/30982#issuecomment-782972271
+    ## If set to true, istio-proxy container will have privileged securityContext
+    privileged: true
