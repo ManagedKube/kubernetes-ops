@@ -640,6 +640,9 @@ openssl x509 -req -in wildcard.com.csr -CA rootCA.crt -CAkey rootCA.key -CAcreat
 
 ```
 
+NOTE:
+* This can now be created automatically via the cert-manager's self signed cert.
+
 ## Add kube secrets
 
 kubectl -n istio-system create secret tls main-gateway-cert --key=/Users/kees/Downloads/wildcard.com.key --cert=/Users/kees/Downloads/wildcard.com.crt
