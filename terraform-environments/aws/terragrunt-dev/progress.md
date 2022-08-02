@@ -617,3 +617,154 @@ PR: https://github.com/ManagedKube/kubernetes-ops/pull/364
 
 Updating Kiali to the latest version PR:
 * https://github.com/ManagedKube/kubernetes-ops/pull/365
+
+
+# Create self signed cert
+
+## Create the root cert
+https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309
+
+Password: root
+
+## create the wild card cert
+```
+openssl genrsa -out wildcard.com.key 2048
+
+openssl req -new -key wildcard.com.key -out wildcard.com.csr
+
+openssl req -new -sha256 -key wildcard.com.key -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=*.epqa.cc" -out wildcard.com.csr
+
+openssl req -in wildcard.com.csr -noout -text
+
+openssl x509 -req -in wildcard.com.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out wildcard.com.crt -days 500 -sha256
+
+```
+
+NOTE:
+* This can now be created automatically via the cert-manager's self signed cert.
+
+## Add kube secrets
+
+kubectl -n istio-system create secret tls main-gateway-cert --key=/Users/kees/Downloads/wildcard.com.key --cert=/Users/kees/Downloads/wildcard.com.crt
+* Goes into the istio-system namespace even if the gateway resource is in another namespace
+
+
+# Istioctl check mTLS
+
+```
+istioctl x describe pod opentelemtry-example-app-74587db677-rqzcq -n 500-sample-app-opentel-1
+Pod: opentelemtry-example-app-74587db677-rqzcq
+   Pod Revision: default
+   Pod Ports: 8081 (opentelemtry-example-app), 15090 (istio-proxy)
+Suggestion: add 'app' label to pod for Istio telemetry.
+Suggestion: add 'version' label to pod for Istio telemetry.
+--------------------
+Service: opentelemtry-example-app
+   Port: http 8081/HTTP targets pod port 8081
+--------------------
+Effective PeerAuthentication:
+   Workload mTLS mode: PERMISSIVE
+
+
+Exposed on Ingress Gateway http://
+VirtualService: opentelemtry-example-app
+   /*
+```
+
+
+Can try to edit the `istio-sidecar-injector` configmap to give the istio-proxy permission to run tcpdump
+
+
+```
+kubectl apply -n 500-sample-app-opentel-1 -f - <<EOF
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: "default"
+spec:
+  mtls:
+    mode: STRICT
+EOF
+```
+
+```
+kubectl apply -n 510-sample-app-opentel-2 -f - <<EOF
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: "default"
+spec:
+  mtls:
+    mode: STRICT
+EOF
+```
+
+When adding the `PeerAuthentication` into each of the namespaces, then curling from the `istio-proxy`
+side car to the various kube services it is telling us that:
+
+It is not accepting http/plain tex traffic:
+```
+istio-proxy@opentelemtry-example-app-74587db677-hghzv:/$ curl -v http://jaegertracing-example-app.510-sample-app-opentel-2:8080 -k
+*   Trying 172.20.238.254:8080...
+* TCP_NODELAY set
+* Connected to jaegertracing-example-app.510-sample-app-opentel-2 (172.20.238.254) port 8080 (#0)
+> GET / HTTP/1.1
+> Host: jaegertracing-example-app.510-sample-app-opentel-2:8080
+> User-Agent: curl/7.68.0
+> Accept: */*
+> 
+* Recv failure: Connection reset by peer
+* Closing connection 0
+curl: (56) Recv failure: Connection reset by peer
+```
+
+And that it requres a cert to connect to the kube service:
+```
+istio-proxy@opentelemtry-example-app-74587db677-hghzv:/$ curl -v https://jaegertracing-example-app.510-sample-app-opentel-2:8080 -k
+*   Trying 172.20.238.254:8080...
+* TCP_NODELAY set
+* Connected to jaegertracing-example-app.510-sample-app-opentel-2 (172.20.238.254) port 8080 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* successfully set certificate verify locations:
+*   CAfile: /etc/ssl/certs/ca-certificates.crt
+  CApath: /etc/ssl/certs
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.3 (IN), TLS handshake, Request CERT (13):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (OUT), TLS handshake, Certificate (11):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: [NONE]
+*  start date: Jul 25 19:29:28 2022 GMT
+*  expire date: Jul 26 19:31:28 2022 GMT
+*  issuer: O=cluster.local
+*  SSL certificate verify result: self signed certificate in certificate chain (19), continuing anyway.
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x560e2bbbce30)
+> GET / HTTP/2
+> Host: jaegertracing-example-app.510-sample-app-opentel-2:8080
+> user-agent: curl/7.68.0
+> accept: */*
+> 
+* TLSv1.3 (IN), TLS alert, unknown (628):
+* OpenSSL SSL_read: error:1409445C:SSL routines:ssl3_read_bytes:tlsv13 alert certificate required, errno 0
+* Failed receiving HTTP2 data
+* OpenSSL SSL_write: SSL_ERROR_ZERO_RETURN, errno 0
+* Failed sending HTTP2 data
+* Connection #0 to host jaegertracing-example-app.510-sample-app-opentel-2 left intact
+curl: (56) OpenSSL SSL_read: error:1409445C:SSL routines:ssl3_read_bytes:tlsv13 alert certificate required, errno 0
+```
+
+
+
+We can capture this traffic if we wanted to.  Fire up an ubuntu pod and capture the traffic to each of the pods.
