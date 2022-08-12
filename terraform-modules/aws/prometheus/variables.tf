@@ -20,7 +20,7 @@ variable "account_id" {
 }
 
 variable "iam_access_grant_list" {
-  type        = list(map)
+  type        = list
   description = "The list of IAM roles for granting various EKS cluster(s) permissions to perform a remote write to this AMP instance."
   default     = [
     {
