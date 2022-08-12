@@ -24,7 +24,8 @@ variable "iam_access_grant_list" {
   description = "The list of IAM roles for granting various EKS cluster(s) permissions to perform a remote write to this AMP instance."
   default     = [
     {
-        # EKS cluster oidc issuer url
+        # EKS cluster oidc issuer url.  The cluster to give access to this AMP.
+        # It could be an EKS OIDC URL from another AWS account
         eks_cluster_oidc_issuer_url = "https://foo",
         # Namespace for the OIDC federation sub matching that the source EKS service account this will be used in
         namespace                   = "monitoring",
