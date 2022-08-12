@@ -27,7 +27,7 @@ module "iam_assumable_role_admin" {
   # role_path                     = "/token-file-web-identity/"
   provider_url                  = replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.this.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
 }
 
 # Policy sourced from the AWS setup guide: https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html#set-up-irsa-ingest
