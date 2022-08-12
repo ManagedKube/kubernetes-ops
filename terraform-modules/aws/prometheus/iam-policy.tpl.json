@@ -8,7 +8,9 @@
            "aps:GetLabels",
            "aps:GetMetricMetadata"
         ], 
-        "Resource": "*"
+        "Resource": [
+          "arn:aws:aps:${awsRegion}:${awsAccountID}:workspace/${workspace_id}"
+        ]
       }
    ]
 }
