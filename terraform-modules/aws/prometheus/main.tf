@@ -35,7 +35,8 @@ module "iam_assumable_role_admin" {
   role_name   = "${local.base_name}-${var.iam_access_grant_list[count.index].environment_name}"
   # role_path                     = "/token-file-web-identity/"
   aws_account_id                = data.aws_caller_identity.current.account_id
-  provider_url                  = replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
+  provider_url                  = "oidc.eks.us-west-2.amazonaws.com/id/B4EA44BE30ABD91AC23C475F32379593"
+  #replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.this.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
   tags                          = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name, description=var.iam_access_grant_list[count.index].description})
