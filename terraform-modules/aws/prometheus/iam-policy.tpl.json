@@ -6,7 +6,8 @@
            "aps:RemoteWrite", 
            "aps:GetSeries", 
            "aps:GetLabels",
-           "aps:GetMetricMetadata"
+           "aps:GetMetricMetadata",
+           "sts:AssumeRole"
         ], 
         "Resource": [
           "arn:aws:aps:${awsRegion}:${awsAccountID}:workspace/${workspace_id}"

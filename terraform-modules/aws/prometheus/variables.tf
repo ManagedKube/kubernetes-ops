@@ -27,6 +27,7 @@ variable "iam_access_grant_list" {
         # Arbitrary name for this instance
         # Will be appended to the tags for the items this instance creates
         instance_name                 = "dev cluster"
+        description                   = "To grant access to the remote EKS cluster"
         # The AWS OIDC provider information
         # We will be adding an OIDC provider to this AWS account to trust the
         # external EKS cluster's OIDC provider.  This will grant permissions to
@@ -43,9 +44,6 @@ variable "iam_access_grant_list" {
         oidc_provider_thumbprint_list = [
           "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
         ]
-        # The AWS account ID where the EKS cluster resides in.  This will be used with the
-        # federation strings used when granting this remote EKS cluster access to this AMP.
-        # aws_account_id                = "1234"
         # EKS cluster oidc issuer url.  The cluster to give access to this AMP.
         # It could be an EKS OIDC URL from another AWS account
         eks_cluster_oidc_issuer_url   = "https://foo",

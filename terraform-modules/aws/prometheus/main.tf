@@ -24,7 +24,7 @@ resource "aws_iam_openid_connect_provider" "this" {
   url             = var.iam_access_grant_list[count.index].oidc_provider_url
   client_id_list  = var.iam_access_grant_list[count.index].oidc_provider_client_id_list
   thumbprint_list = var.iam_access_grant_list[count.index].oidc_provider_thumbprint_list
-  tags            = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name})
+  tags            = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name, description=var.iam_access_grant_list[count.index].description})
 }
 
 module "iam_assumable_role_admin" {
@@ -38,7 +38,7 @@ module "iam_assumable_role_admin" {
   provider_url                  = replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.this.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
-  tags                          = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name})
+  tags                          = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name, description=var.iam_access_grant_list[count.index].description})
 }
 
 # Policy sourced from the AWS setup guide: https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html#set-up-irsa-ingest
