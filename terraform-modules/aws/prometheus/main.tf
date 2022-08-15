@@ -39,7 +39,9 @@ module "iam_assumable_role_admin" {
   # The Statement[].Principal.Federated value in the AWS IAM Role's -> Trust Relationship
   # In this case we are going to set the principal to the OIDC provider we created above which is
   # the remote EKS cluster that we want to trust.
-  provider_url                  = aws_iam_openid_connect_provider.this[count.index].arn
+  # The replace is removing the duplicate arn info that this iam-assumable-role-with-oidc module concats
+  # into the string when it forms this provider_url string
+  provider_url                  = replace(aws_iam_openid_connect_provider.this[count.index].arn, "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/", "")
 
   # The Statement[].Condition.StringEqual matching condition to match the EKS cluster ID, system:serviceaccount:<k8s namespace>:<k8s service account name>
   # The identity in the JWT's sub has this information in it which is cryptographically signed.  It would be very hard to reproduce this anywhere else
