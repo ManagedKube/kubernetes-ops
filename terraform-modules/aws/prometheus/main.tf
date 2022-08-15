@@ -35,10 +35,20 @@ module "iam_assumable_role_admin" {
   role_name   = "${local.base_name}-${var.iam_access_grant_list[count.index].environment_name}"
   # role_path                     = "/token-file-web-identity/"
   aws_account_id                = data.aws_caller_identity.current.account_id
-  provider_url                  = "oidc.eks.us-west-2.amazonaws.com/id/B4EA44BE30ABD91AC23C475F32379593"
-  #replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns              = [aws_iam_policy.this.arn]
+
+  # The Statement[].Principal.Federated value in the AWS IAM Role's -> Trust Relationship
+  # In this case we are going to set the principal to the OIDC provider we created above which is
+  # the remote EKS cluster that we want to trust.
+  provider_url                  = aws_iam_openid_connect_provider.this.arn
+
+  # The Statement[].Condition.StringEqual matching condition to match the EKS cluster ID, system:serviceaccount:<k8s namespace>:<k8s service account name>
+  # The identity in the JWT's sub has this information in it which is cryptographically signed.  It would be very hard to reproduce this anywhere else
+  # without owning this EKS cluster.
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
+  
+  # AWS IAM Policy to place onto this role
+  role_policy_arns              = [aws_iam_policy.this.arn]
+
   tags                          = merge(var.tags, {instance_name=var.iam_access_grant_list[count.index].instance_name, description=var.iam_access_grant_list[count.index].description})
 }
 
