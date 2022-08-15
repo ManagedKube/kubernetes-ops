@@ -15,7 +15,7 @@ This module is geared towards creating a centralized Prometheus collector.
 │                              │               │         │                                              │      │
 │                              │               │         │                                              │      │
 │     ┌─────────────────┐      │               │         │        ┌─────────────────────────────┐       │      │
-│     │      AWS        │      │               │         │        │                             │       │      │
+│     │      AWS        │      │    Prometheus │         │        │                             │       │      │
 │     │    Managed      │      │     Remote    │         │        │   kube-prometheus-stack     │       │      │
 │     │    Prometheus   │◄─────┼───────────────┼─────────┼────────┤                             │       │      │
 │     │                 │      │     Write     │         │        │                             │       │      │
