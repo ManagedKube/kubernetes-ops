@@ -45,7 +45,7 @@ variable "iam_access_grant_list" {
         ]
         # The AWS account ID where the EKS cluster resides in.  This will be used with the
         # federation strings used when granting this remote EKS cluster access to this AMP.
-        aws_account_id                = "1234"
+        # aws_account_id                = "1234"
         # EKS cluster oidc issuer url.  The cluster to give access to this AMP.
         # It could be an EKS OIDC URL from another AWS account
         eks_cluster_oidc_issuer_url   = "https://foo",
