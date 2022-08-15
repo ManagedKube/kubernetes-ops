@@ -100,3 +100,49 @@ Thing to try:
 * The Statement.Condition.StringEqual
   * `oidc.eks.us-west-2.amazonaws.com/id/<Remote EKS ID>:sub` - the `<Remote EKS ID>` should be the ID of the remote EKS cluster
   * should be in this format.  `system:serviceaccount:<k8s namespace>:<k8s service account name>`.  It will not work if it is not.
+
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_iam_assumable_role_admin"></a> [iam\_assumable\_role\_admin](#module\_iam\_assumable\_role\_admin) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 3.6.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_iam_openid_connect_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_prometheus_workspace.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/prometheus_workspace) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [template_file.iam_policy](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The account\_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws\_caller\_id showing *** by obtaining the value of account\_id | `string` | `null` | no |
+| <a name="input_iam_access_grant_list"></a> [iam\_access\_grant\_list](#input\_iam\_access\_grant\_list) | The list of IAM roles for granting various EKS cluster(s) permissions to perform a remote write to this AMP instance. | `list` | <pre>[<br>  {<br>    "description": "To grant access to the remote EKS cluster",<br>    "eks_cluster_oidc_issuer_url": "https://foo",<br>    "environment_name": "dev",<br>    "instance_name": "dev cluster",<br>    "namespace": "monitoring",<br>    "oidc_provider_client_id_list": [<br>      "sts.amazonaws.com"<br>    ],<br>    "oidc_provider_thumbprint_list": [<br>      "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"<br>    ],<br>    "oidc_provider_url": "https://oidc.eks.us-east-1.amazonaws.com/id/B4EA44BE30ABD91AC23C475F3237111"<br>  }<br>]</pre> | no |
+| <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | An instance name to attach to some resources.  Optional only needed if you are going to create more than one of these items in an AWS account | `string` | `"env"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | AWS tags | `map(any)` | n/a | yes |
+| <a name="input_workspace_alias"></a> [workspace\_alias](#input\_workspace\_alias) | n/a | `string` | `"prometheus-test"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_arn"></a> [arn](#output\_arn) | ARN |
+| <a name="output_id"></a> [id](#output\_id) | Identifier of the workspace |
+| <a name="output_prometheus_endpoint"></a> [prometheus\_endpoint](#output\_prometheus\_endpoint) | Prometheus endpoint available for this workspace. |
