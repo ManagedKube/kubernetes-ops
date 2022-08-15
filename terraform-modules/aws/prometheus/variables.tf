@@ -46,7 +46,7 @@ variable "iam_access_grant_list" {
         ]
         # EKS cluster oidc issuer url.  The cluster to give access to this AMP.
         # It could be an EKS OIDC URL from another AWS account
-        eks_cluster_oidc_issuer_url   = "https://foo",
+        eks_cluster_oidc_issuer_url   = "https://xxxxxxxxxxxxxxxxxxxxx.sk1.us-east-1.eks.amazonaws.com",
         # Namespace for the OIDC federation sub matching that the source EKS service account this will be used in
         namespace                     = "monitoring",
         environment_name              = "dev",
