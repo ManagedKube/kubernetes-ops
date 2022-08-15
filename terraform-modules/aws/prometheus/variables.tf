@@ -24,15 +24,34 @@ variable "iam_access_grant_list" {
   description = "The list of IAM roles for granting various EKS cluster(s) permissions to perform a remote write to this AMP instance."
   default     = [
     {
+        # Arbitrary name for this instance
+        # Will be appended to the tags for the items this instance creates
+        instance_name                 = "dev cluster"
+        # The AWS OIDC provider information
+        # We will be adding an OIDC provider to this AWS account to trust the
+        # external EKS cluster's OIDC provider.  This will grant permissions to
+        # this AMP to the remote EKS cluster.
+        # One way to get the thumbprint is to go into the AWS console:
+        # IAM -> Access Management -> Identiry Provider
+        # Then add a provider -> OpenID Connect
+        # Add in the EKS OpenID Connect provider URL (can be found in the AWS console in the EKS cluster's overview tab)
+        # Click on Get Thumbprint.  It will generate a thumbprint such as: 9e99a48a9960b14926bb7f3b02e22da2b0ab7280
+        oidc_provider_url             = "https://oidc.eks.us-east-1.amazonaws.com/id/B4EA44BE30ABD91AC23C475F3237111"
+        oidc_provider_client_id_list  = [
+          "sts.amazonaws.com"
+        ]
+        oidc_provider_thumbprint_list = [
+          "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+        ]
         # The AWS account ID where the EKS cluster resides in.  This will be used with the
         # federation strings used when granting this remote EKS cluster access to this AMP.
-        aws_account_id              = "1234"
+        aws_account_id                = "1234"
         # EKS cluster oidc issuer url.  The cluster to give access to this AMP.
         # It could be an EKS OIDC URL from another AWS account
-        eks_cluster_oidc_issuer_url = "https://foo",
+        eks_cluster_oidc_issuer_url   = "https://foo",
         # Namespace for the OIDC federation sub matching that the source EKS service account this will be used in
-        namespace                   = "monitoring",
-        environment_name            = "dev",
+        namespace                     = "monitoring",
+        environment_name              = "dev",
     },
   ]
 }

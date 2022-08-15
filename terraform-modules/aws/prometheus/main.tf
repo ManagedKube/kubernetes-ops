@@ -1,3 +1,8 @@
+locals {
+  tags = merge(var.tags, {
+    instance_name=var.iam_access_grant_list[count.index].instance_name
+    })
+}
 #
 # The AWS Managed Prometheus service (AMP)
 #
@@ -18,6 +23,15 @@ locals {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+resource "aws_iam_openid_connect_provider" "this" {
+  count = length(var.iam_access_grant_list)
+
+  url             = var.iam_access_grant_list[count.index].oidc_provider_url
+  client_id_list  = var.iam_access_grant_list[count.index].oidc_provider_client_id_list
+  thumbprint_list = var.iam_access_grant_list[count.index].oidc_provider_thumbprint_list
+  tags            = local.tags
+}
+
 module "iam_assumable_role_admin" {
   count       = length(var.iam_access_grant_list)
   source      = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
@@ -29,6 +43,7 @@ module "iam_assumable_role_admin" {
   provider_url                  = replace(var.iam_access_grant_list[count.index].eks_cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.this.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
+  tags                          = local.tags
 }
 
 # Policy sourced from the AWS setup guide: https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html#set-up-irsa-ingest
@@ -45,4 +60,5 @@ resource "aws_iam_policy" "this" {
   name_prefix = "${local.base_name}-${var.instance_name}"
   description = "${local.base_name} for ${var.instance_name}"
   policy      = data.template_file.iam_policy.rendered
+  tags        = var.tags
 }
