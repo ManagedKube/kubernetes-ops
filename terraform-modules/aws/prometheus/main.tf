@@ -12,7 +12,6 @@ resource "aws_prometheus_workspace" "this" {
 #
 locals {
   base_name                = "aws-managed-prometheus"
-  k8s_service_account_name = "aws-managed-prometheus"
 }
 
 data "aws_caller_identity" "current" {}
@@ -46,7 +45,7 @@ module "iam_assumable_role_admin" {
   # The Statement[].Condition.StringEqual matching condition to match the EKS cluster ID, system:serviceaccount:<k8s namespace>:<k8s service account name>
   # The identity in the JWT's sub has this information in it which is cryptographically signed.  It would be very hard to reproduce this anywhere else
   # without owning this EKS cluster.
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${local.k8s_service_account_name}-${var.iam_access_grant_list[count.index].environment_name}"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.iam_access_grant_list[count.index].namespace}:${var.iam_access_grant_list[count.index].kube_service_account_name}"]
   
   # AWS IAM Policy to place onto this role
   role_policy_arns              = [aws_iam_policy.this.arn]

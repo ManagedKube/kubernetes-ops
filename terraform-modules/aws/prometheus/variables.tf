@@ -50,6 +50,9 @@ variable "iam_access_grant_list" {
         # Namespace for the OIDC federation sub matching that the source EKS service account this will be used in
         namespace                     = "monitoring",
         environment_name              = "dev",
+        # The kubernetes service account name to grant access to.
+        # The default here is the name that the kube-prometheus-stack names the service account by default
+        kube_service_account_name     = "kube-prometheus-stack-prometheus",
     },
   ]
 }
