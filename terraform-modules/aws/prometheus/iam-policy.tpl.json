@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+   "Statement": [
+       {"Effect": "Allow",
+        "Action": [
+           "aps:RemoteWrite", 
+           "aps:GetSeries", 
+           "aps:GetLabels",
+           "aps:GetMetricMetadata",
+           "sts:AssumeRole"
+        ], 
+        "Resource": [
+          "arn:aws:aps:${awsRegion}:${awsAccountID}:workspace/${workspace_id}"
+        ]
+      }
+   ]
+}
