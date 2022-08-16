@@ -16,31 +16,31 @@ This module is geared towards creating a centralized Prometheus collector.
 │                              │               │         │                                              │      │
 │     ┌─────────────────┐      │               │         │        ┌─────────────────────────────┐       │      │
 │     │       AWS       │      │               │         │        │                             │       │      │
-│     │    Managed      │      │               │         │        │   kube-prometheus-stack     │       │      │
+│     │    Managed      │      │   (3) remote  │         │        │   kube-prometheus-stack     │       │      │
 │     │    Prometheus   │◄─────┼───────────────┼─────────┼────────┤                             │       │      │
-│     │                 │      │               │         │        │                             │       │      │
+│     │                 │      │     write     │         │        │                             │       │      │
 │     └─────────────────┘      │               │         │        │                             │       │      │
 │                              │               │         │        │                             │       │      │
 │      ┌──────────┐            │               │         │        │      ┌──────────┐           │       │      │
-│      │    AWS   │            │   trust       │         │        │      │ service  │           │       │      │
+│      │    AWS   │            │   (1) trust   │         │        │      │ service  │           │       │      │
 │      │ identity ├────────────┼───────────────┼────────►│        │      │ account  │           │       │      │
 │      │ provider │            │   relationship│         │        │      └─────▲────┘           │       │      │
 │      └──────────┘            │   to EKS      │         │        │            │                │       │      │
 │                              │               │         │        │            │                │       │      │
 │      ┌───────────┐           │               │         │        └────────────┼────────────────┘       │      │
-│      │  IAM      │           │  Service      │         │                     │                        │      │
+│      │  IAM      │           │  (2) Service  │         │                     │                        │      │
 │      │ role      ├───────────┼───────────────┼─────────┼─────────────────────┘                        │      │
 │      │Federation │           │  account      │         │                                              │      │
 │      └───────────┘           │  assume       │         │                                              │      │
 │                              │  role         │         │                                              │      │
 │                              │               │         │                 EKS Cluster                  │      │
 │            VPC               │               │         │                                              │      │
-│                              │               │         └──────────────────────────────────────────────┘      │
+│       AWS Account #1         │               │         └──────────────────────────────────────────────┘      │
 └──────────────────────────────┘               │                                                               │
                                                │                                                               │
                                                │                                                               │
                                                │                              VPC                              │
-                                               │                                                               │
+                                               │                      AWS Account #2                           │
                                                └───────────────────────────────────────────────────────────────┘
 ```
 
@@ -61,6 +61,45 @@ to one or more external EKS cluster that are not in the same AWS account (howeve
 in the same AWS account).  The IAM role created uses this Identity Provider for authentication of the remote
 EKS pod trying to assume this role and it is scoped down to the EKS Kubernetes service account and Kubernetes
 namespace.
+
+From the above picture:
+(1) An AWS Identity Provider is created in the AWS account #1 that has the identity provider (IdP) of the AWS
+account #2's EKS cluster (each EKS cluster creates an IdP).  This means that aws account #1 knows about the
+AWS account #2's EKS cluster at this point.  It knows it's endpoint but we havent applied any rules to what
+to trust about it yet.  We will now be able to reference this Identity Providers in the upcoming IAM roles
+and when AWS is trying to validate an incoming authentication request it will go to this EKS cluster's IdP for
+verification of the identity.
+
+(2) There are two things happening here.
+
+The first one is that in the AWS account #1 an IAM role is created with certain attributes:
+* The Trust Relationship json points to the AWS Identity provider we created in the previous step.  This is
+  saying that when something is trying to assume this IAM role, this is the how we will validate it.
+* The Trust Relationship json validates the attributes in the authentication JWT sent to us.  These items
+  are cryptographically signed by the source EKS cluster so it is very difficult to spoof this if you don't
+  have control of the source EKS cluster.  We are limiting the access to that particular EKS cluster, that
+  it is a kubernetes service accout, the kubernetes namespace that it comes from, and the name of the
+  kubernetes service account.  This scopes it down tightly to a very limited set on what the source identity can be.
+* The permission which is the IAM policy attached to this role grants permission for assuming roles and 
+  permission to write to the AWS managed Prometheus.  It also scopes the resource to the ARN of this AMP
+  that this module creates.
+
+The second thing is on the AWS account #2 side, a service account is created and the EKS IRSA assume role
+annotations are placed onto it.  The role ARN is the ARN from the AWS account #1 side.  The service account
+will have all of the previous attributes we specified and the Prometheus using this service account identity
+will assume the IAM role that was created in AWS account #1.  It will send the it's identity and the cryptographically
+signed items of it's own identity (which we have meticulously crafted to match in the previous section) to AWS STS.
+Then AWS STS will proceed to validate the identity to ensure that the identity sent in is who they say they are.
+It will go to the AWS account #2's EKS cluster's IdP to validate per the AWS account #1's Identity provider's 
+information.  This is important because at this point AWS account #1 can NOT trust anything that the AWS account
+#2 assume role information that is given.  It could be just any random auth request from the internet.  With the
+information that was previously configured into the AWS account #1's about this identity provider it uses this
+information to go forth and verifying the information.  Once that information is verified successfully it will return to
+the AWS account #2's prometheus a set of temporary AWS credential it can use to gain access to the AWS account #1's
+AMP per the IAM policy attached to this role.
+
+TODO:
+* A ladder diagram of this flow might be easier to express and understand?
 
 # Troubleshooting
 Getting this to work correctly can sometimes be challenging.  A few things has to align specifically or the
