@@ -8,7 +8,7 @@ terraform {
   // and have your own `local` tests (this directory).  While this `local` directory resides in this kubernetes-ops
   // repo, it is really meant to go into your own repo and you can reference the source from there.  The reason
   // is that the set of tests here in this module is specific to you and really to no one else.
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/testkube/local?ref=main"
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/testkube/local?ref=testkube-testing"
 }
 
 dependency "eks" {
