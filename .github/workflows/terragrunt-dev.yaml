@@ -206,7 +206,7 @@ jobs:
       - name: Testkube Pre-Apply
         # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         id: testkube
-        uses: ManagedKube/github-action-testkube@v1.0.14
+        uses: ManagedKube/github-action-testkube@v1.0.15
         with:
           test-suite-name: 'infra-base'
           cluster-name: ${{ env.ENVIRONMENT_NAME }}
@@ -228,7 +228,7 @@ jobs:
       # - name: Testkube Post-Apply
       #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       #   id: testkube
-      #   uses: ManagedKube/github-action-testkube@v1.0.14
+      #   uses: ManagedKube/github-action-testkube@v1.0.15
       #   with:
       #     test-suite-name: 'infra-base'
       #     cluster-name: ${{ env.ENVIRONMENT_NAME }}
