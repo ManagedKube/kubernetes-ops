@@ -203,16 +203,16 @@ jobs:
           KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
           # TF_LOG: DEBUG
 
-      # - name: Testkube Pre-Apply
-      #   # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   id: testkube
-      #   uses: ManagedKube/github-action-testkube@v1.0.15
-      #   with:
-      #     test-suite-name: 'infra-base'
-      #     cluster-name: ${{ env.ENVIRONMENT_NAME }}
+      - name: Testkube Pre-Apply
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        id: testkube
+        uses: ManagedKube/github-action-testkube@v1.0.15
+        with:
+          test-suite-name: 'infra-base'
+          cluster-name: ${{ env.ENVIRONMENT_NAME }}
 
       - name: Terragrunt Apply
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
           tf_actions_version: ${{ env.tf_version }}
@@ -226,7 +226,7 @@ jobs:
           KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
 
       - name: Testkube Post-Apply
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: testkube2
         uses: ManagedKube/github-action-testkube@v1.0.15
         with:
