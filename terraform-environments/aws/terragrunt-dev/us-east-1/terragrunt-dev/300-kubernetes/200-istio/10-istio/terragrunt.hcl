@@ -4,7 +4,7 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/istio?ref=v2.0.17"
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/istio?ref=v2.0.44"
 }
 
 dependency "eks" {
