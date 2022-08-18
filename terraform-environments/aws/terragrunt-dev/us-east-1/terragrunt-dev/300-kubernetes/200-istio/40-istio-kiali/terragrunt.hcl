@@ -59,7 +59,7 @@ inputs = {
   repository          = "https://kiali.org/helm-charts"
   official_chart_name = "kiali-operator"
   user_chart_name     = "kiali-operator"
-  helm_version        = "1.53.0"
+  helm_version        = "1.55.0"
   namespace           = "kiali-operator"
   helm_values         = templatefile(
       "./values.yaml", {
