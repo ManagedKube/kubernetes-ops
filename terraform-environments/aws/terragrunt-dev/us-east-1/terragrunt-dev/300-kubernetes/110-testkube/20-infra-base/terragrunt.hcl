@@ -4,7 +4,7 @@ include {
 }
 
 terraform {
-  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/testkube/base-tests/test-suites/infra-base?ref=testkube-testing"
+  source = "github.com/ManagedKube/kubernetes-ops.git//terraform-modules/aws/testkube/base-tests/test-suites/infra-base?ref=v2.0.45"
 }
 
 dependency "eks" {
