@@ -204,7 +204,7 @@ jobs:
           # TF_LOG: DEBUG
 
       - name: Testkube Pre-Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: testkube
         uses: ManagedKube/github-action-testkube@v1.0.15
         with:
