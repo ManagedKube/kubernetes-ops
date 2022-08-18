@@ -1,5 +1,10 @@
 # Istio
 
+## Why is there an Istio Terraform module?
+The big reason is that Istio does NOT host their own helm repository that we can readily just use and that is
+how we want to install Istio.  This means that we either setup our own helm repository with the Istio helm
+chart or put it into here.  The decision for this module was to put the Istio Helm chart here.
+
 ## Release page:
 https://github.com/istio/istio/releases/
 
