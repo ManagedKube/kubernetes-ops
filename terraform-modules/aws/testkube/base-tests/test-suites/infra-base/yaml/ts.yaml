@@ -13,7 +13,7 @@ spec:
   # - delay:
   #     duration: 2000
   #   type: delay
-  - execute:
-      name: infra-base-alertmanager-slack-config
-      namespace: testkube
-    type: testExecution
+  # - execute:
+  #     name: infra-base-alertmanager-slack-config
+  #     namespace: testkube
+  #   type: testExecution
