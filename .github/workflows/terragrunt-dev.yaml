@@ -227,7 +227,7 @@ jobs:
 
       - name: Testkube Post-Apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        id: testkube
+        id: testkube2
         uses: ManagedKube/github-action-testkube@v1.0.15
         with:
           test-suite-name: 'infra-base'
