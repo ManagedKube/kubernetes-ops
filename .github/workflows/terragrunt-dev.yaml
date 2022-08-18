@@ -203,13 +203,13 @@ jobs:
           KUBERGRUNT_EXEC: ${{ github.workspace }}/tmp_bin/kubergrunt
           # TF_LOG: DEBUG
 
-      # - name: Testkube Pre-Apply
-      #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      #   id: testkube
-      #   uses: ManagedKube/github-action-testkube@v1.0.14
-      #   with:
-      #     test-suite-name: 'infra-base'
-      #     cluster-name: ${{ env.ENVIRONMENT_NAME }}
+      - name: Testkube Pre-Apply
+        # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        id: testkube
+        uses: ManagedKube/github-action-testkube@v1.0.14
+        with:
+          test-suite-name: 'infra-base'
+          cluster-name: ${{ env.ENVIRONMENT_NAME }}
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
