@@ -5,5 +5,6 @@ resource "aws_iam_role" "this" {
   max_session_duration  = var.iam_max_session_duration
   inline_policy         = var.iam_inline_policy
   managed_policy_arns   = var.iam_managed_policy_arns
+  assume_role_policy    = var.iam_assume_role_policy
   tags                  = var.tags
 }

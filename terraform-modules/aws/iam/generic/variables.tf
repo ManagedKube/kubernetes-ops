@@ -39,8 +39,11 @@ variable "iam_managed_policy_arns" {
 
 
 #Trust relationship section---------------------------------
-
-
+variable "iam_assume_role_policy " {
+  type        = string
+  description = "Json to create assume_role_policy in line"
+  default     = "{}"
+}
 #End Trust relationship section-----------------------------
 
 
