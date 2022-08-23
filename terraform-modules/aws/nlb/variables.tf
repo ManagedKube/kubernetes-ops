@@ -9,3 +9,9 @@ variable "enable_internal" {
     description = "Enable internal load balancer"
     default = true
 }
+
+variable "nlb_name" {
+    type = string
+    description = "Network load balancer name"
+    default = "test-nlb-tf"
+}
