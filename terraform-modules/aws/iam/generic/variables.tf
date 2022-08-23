@@ -17,7 +17,7 @@ variable iam_force_detach_policies {
 
 variable iam_max_session_duration {
   type        = number
-  default     = 60
+  default     = 3600
   description = "(Optional) Maximum session duration (in seconds) that you want to set for the specified role his setting can have a value from 1 hour to 12 hours."
 }
 
