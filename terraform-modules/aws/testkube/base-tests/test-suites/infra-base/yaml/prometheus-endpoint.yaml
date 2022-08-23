@@ -12,7 +12,7 @@ spec:
             "http://prometheus-operated.monitoring.svc:9090/-/ready"
           ],
           "expected_status": "200",
-          "expected_body": "Prometheus is Ready."
+          "expected_body": "Prometheus"
       }
     type: string
   type: curl/test
