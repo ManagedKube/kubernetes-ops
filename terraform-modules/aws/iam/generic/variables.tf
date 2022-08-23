@@ -27,7 +27,7 @@ variable iam_max_session_duration {
 variable iam_inline_policy {
   type        = string
   description = "Json to create policy in line"
-  default     = "{}"
+  default     = null
 }
 
 variable iam_managed_policy_arns {
