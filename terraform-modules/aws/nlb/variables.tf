@@ -15,3 +15,8 @@ variable "nlb_name" {
     description = "Network load balancer name"
     default = "test-nlb-tf"
 }
+
+variable "nlb_subnets" {
+    type = list(string)
+    description = "NLB Subnets"  
+}
