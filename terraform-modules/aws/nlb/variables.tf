@@ -101,3 +101,10 @@ variable "nlb_access_logs_s3_prefix" {
     type = string
     default = null  
 }
+
+variable "nlb_s3_bucket_name" {
+    description = "nlb_s3_bucket_name"
+    type = string
+    default = null   
+  
+}
