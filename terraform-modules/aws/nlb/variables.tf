@@ -95,11 +95,6 @@ variable "enable_http2" {
     default = false 
 }
 
-variable "nlb_access_logs_s3_bucket_name" {
-    description = "nlb_access_logs_s3_bucket_name"
-    type = string
-    default = null  
-}
 
 variable "nlb_access_logs_s3_prefix" {
     description = "nlb_access_logs_s3_prefix"
