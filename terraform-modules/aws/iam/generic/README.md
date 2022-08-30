@@ -41,7 +41,7 @@ No modules.
 ## Example Usage
 Here are some examples of how we can consume the module from terragrunt through inputs.
 
-1. IAM Role Basic Example With Managed Policy Attached
+1. **IAM Role Basic Example With Managed Policy Attached**
 You can create a basic iam role with Managed Policy Attached
 The iam_managed_policy_arns input param allows an array with one or more managed policies
 ```
@@ -58,7 +58,7 @@ inputs = {
 }
 ```
 
-2. Role With Inline policy 
+2. **Role With Inline policy** 
 You can create a Iam Role with your own inline policy
 
     2.1 Create a new policy file (example: mypolicy.json)
@@ -99,7 +99,7 @@ You can create a Iam Role with your own inline policy
     }
     ```
 
-3. Role With Trusted relationship policy
+3. **Role With Trusted relationship policy**
 Trust relationship – This policy defines which principals can assume the role, 
 and under which conditions. This is sometimes referred to as a resource-based policy 
 for the IAM role. We’ll refer to this policy simply as the ‘trust policy’. 
