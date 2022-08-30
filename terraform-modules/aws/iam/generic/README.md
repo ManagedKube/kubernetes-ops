@@ -79,6 +79,7 @@ You can create a Iam Role with your own inline policy
         ]
     }
     ```
+    2.2 Consume the module sending as parameter the previous file with its respective parameters. 
     ```
     iam_name                  = local.iam_rolename
     iam_description           = local.iam_description
@@ -113,6 +114,7 @@ for the IAM role. We’ll refer to this policy simply as the ‘trust policy’.
             ]
         }
     ```
+    3.2 Consume the module sending as parameter the previous file with its respective parameters.
     ```
     iam_name                  = local.iam_rolename
     iam_description           = local.iam_description
