@@ -39,23 +39,17 @@ No modules.
 
 
 ## Example Usage
-Here are some examples of how we can consume the module from terragrunt through inputs.
+Here are some examples of how we can consume the module through the inputs variables.
 
 1. **IAM Role Basic Example With Managed Policy Attached**
 You can create a basic iam role with Managed Policy Attached
 The iam_managed_policy_arns input param allows an array with one or more managed policies
 ```
-# ---------------------------------------------------------------------------------------------------------------------
-# MODULE PARAMETERS
-# These are the variables we have to pass in to use the module specified in the terragrunt configuration above
-# ---------------------------------------------------------------------------------------------------------------------
-inputs = {
   iam_name                  = local.iam_rolename
   iam_description           = local.iam_description
   iam_force_detach_policies = true
   iam_managed_policy_arns   = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   tags                      = local.tags
-}
 ```
 
 2. **Role With Inline policy** 
@@ -86,17 +80,11 @@ You can create a Iam Role with your own inline policy
     }
     ```
     ```
-    # ---------------------------------------------------------------------------------------------------------------------
-    # MODULE PARAMETERS
-    # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
-    # ---------------------------------------------------------------------------------------------------------------------
-    inputs = {
     iam_name                  = local.iam_rolename
     iam_description           = local.iam_description
     iam_force_detach_policies = true
     input_iam_inline_policy   = templatefile("mypolicy.json", { bucket_name="my_bucket_name" })
     tags                      = local.tags
-    }
     ```
 
 3. **Role With Trusted relationship policy**
@@ -126,15 +114,9 @@ for the IAM role. We’ll refer to this policy simply as the ‘trust policy’.
         }
     ```
     ```
-    # ---------------------------------------------------------------------------------------------------------------------
-    # MODULE PARAMETERS
-    # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
-    # ---------------------------------------------------------------------------------------------------------------------
-    inputs = {
     iam_name                  = local.iam_rolename
     iam_description           = local.iam_description
     iam_force_detach_policies = true
     iam_assume_role_policy    = templatefile("assume_role_policy.json", { account_id = local.account_id, external_id = local.iam_external_id})
     tags                      = local.tags
-    }
     ```
