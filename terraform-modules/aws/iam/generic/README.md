@@ -57,83 +57,84 @@ inputs = {
   tags                      = local.tags
 }
 ```
+
 2. Role With Inline policy 
 You can create a Iam Role with your own inline policy
 
-2.1 Create a new policy file (example: mypolicy.json)
-```
-{
-    "Id": "ExamplePolicy",
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Sid": "AllowSSLRequestsOnly",
-        "Action": "s3:*",
-        "Effect": "Deny",
-        "Resource": [
-          "arn:aws:s3:::${bucket_name}",
-          "arn:aws:s3:::${bucket_name}/*"
-        ],
-        "Condition": {
-          "Bool": {
-            "aws:SecureTransport": "false"
-          }
-        },
-        "Principal": "*"
-      }
-    ]
-  }
-```
-```
-# ---------------------------------------------------------------------------------------------------------------------
-# MODULE PARAMETERS
-# These are the variables we have to pass in to use the module specified in the terragrunt configuration above
-# ---------------------------------------------------------------------------------------------------------------------
-inputs = {
-  iam_name                  = local.iam_rolename
-  iam_description           = local.iam_description
-  iam_force_detach_policies = true
-  input_iam_inline_policy   = templatefile("mypolicy.json", { bucket_name="my_bucket_name" })
-  tags                      = local.tags
-}
-```
+    2.1 Create a new policy file (example: mypolicy.json)
+    ```
+    {
+        "Id": "ExamplePolicy",
+        "Version": "2012-10-17",
+        "Statement": [
+        {
+            "Sid": "AllowSSLRequestsOnly",
+            "Action": "s3:*",
+            "Effect": "Deny",
+            "Resource": [
+            "arn:aws:s3:::${bucket_name}",
+            "arn:aws:s3:::${bucket_name}/*"
+            ],
+            "Condition": {
+            "Bool": {
+                "aws:SecureTransport": "false"
+            }
+            },
+            "Principal": "*"
+        }
+        ]
+    }
+    ```
+    ```
+    # ---------------------------------------------------------------------------------------------------------------------
+    # MODULE PARAMETERS
+    # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
+    # ---------------------------------------------------------------------------------------------------------------------
+    inputs = {
+    iam_name                  = local.iam_rolename
+    iam_description           = local.iam_description
+    iam_force_detach_policies = true
+    input_iam_inline_policy   = templatefile("mypolicy.json", { bucket_name="my_bucket_name" })
+    tags                      = local.tags
+    }
+    ```
 
 3. Role With Trusted relationship policy
 Trust relationship – This policy defines which principals can assume the role, 
 and under which conditions. This is sometimes referred to as a resource-based policy 
 for the IAM role. We’ll refer to this policy simply as the ‘trust policy’. 
 
-3.1 You can create a file (example: assume_role_policy.json)
-```
-{
+    3.1 You can create a file (example: assume_role_policy.json)
+    ```
     {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "${account_id}"
-                },
-                "Action": "sts:AssumeRole",
-                "Condition": {
-                    "StringEquals": {
-                        "sts:ExternalId": "${external_id}"
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": "${account_id}"
+                    },
+                    "Action": "sts:AssumeRole",
+                    "Condition": {
+                        "StringEquals": {
+                            "sts:ExternalId": "${external_id}"
+                        }
                     }
                 }
-            }
-        ]
+            ]
+        }
+    ```
+    ```
+    # ---------------------------------------------------------------------------------------------------------------------
+    # MODULE PARAMETERS
+    # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
+    # ---------------------------------------------------------------------------------------------------------------------
+    inputs = {
+    iam_name                  = local.iam_rolename
+    iam_description           = local.iam_description
+    iam_force_detach_policies = true
+    iam_assume_role_policy    = templatefile("assume_role_policy.json", { account_id = local.account_id, external_id = local.iam_external_id})
+    tags                      = local.tags
     }
-```
-```
-# ---------------------------------------------------------------------------------------------------------------------
-# MODULE PARAMETERS
-# These are the variables we have to pass in to use the module specified in the terragrunt configuration above
-# ---------------------------------------------------------------------------------------------------------------------
-inputs = {
-  iam_name                  = local.iam_rolename
-  iam_description           = local.iam_description
-  iam_force_detach_policies = true
-  iam_assume_role_policy    = templatefile("assume_role_policy.json", { account_id = local.account_id, external_id = local.iam_external_id})
-  tags                      = local.tags
-}
-```
+    ```
