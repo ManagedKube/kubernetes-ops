@@ -36,3 +36,163 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_iam_arn"></a> [iam\_arn](#output\_iam\_arn) | Amazon Resource Name (ARN) specifying the role. |
+
+
+## How to use the module?
+1. Input values
+  ```
+iam_name                  = local.iam_rolename
+  iam_description           = local.iam_description
+  iam_force_detach_policies = true
+  iam_managed_policy_arns   = ["arn:aws:iam::aws:policy/ReadOnlyAccess"] #you can add more than one policy
+  iam_assume_role_policy    = templatefile("assume_role_policy.json", { some parameters}) # This json is for the trusted policy
+  iam_inline_policy         = templatefile("prowler-additions-plus-s3-policy.json", {}) # You can add in line policy created by you
+  tags                      = local.tags
+```
+
+2. Terraform Apply Log
+```
+aws-vault exec exact-ops -- terragrunt apply
+Acquiring state lock. This may take a few moments...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_role.this will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Condition = {
+                          + StringEquals = {
+                              + sts:ExternalId = "xxxxxxxxxx"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "arn:aws:iam::xxxxxxxx:root"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + description           = "x2-ops-tenable-scan: Specific read-only role for tenable scans in aws account"
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = [
+          + "arn:aws:iam::aws:policy/ReadOnlyAccess",
+        ]
+      + max_session_duration  = 3600
+      + name                  = "x2-ops-tenable-scan"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "ops_env"              = "ops"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "gruntwork-infrastructure-live"
+          + "ops_source_repo_path" = "xxxx/tenable-scan"
+        }
+      + tags_all              = {
+          + "ops_env"              = "ops"
+          + "ops_managed_by"       = "terraform"
+          + "ops_owners"           = "devops"
+          + "ops_source_repo"      = "xxxxxx"
+          + "ops_source_repo_path" = "xxxxxxx/tenable-scan"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy {
+          + name   = "x2-ops-tenable-scan"
+          + policy = jsonencode(
+                {
+                  + Statement = [
+                      + {
+                          + Action   = [
+                              + "s3:ListBucket",
+                            ]
+                          + Effect   = "Allow"
+                          + Resource = [
+                              + "arn:aws:s3:::testing",
+                            ]
+                        },
+                      + {
+                          + Action   = [
+                              + "s3:PutObject",
+                              + "s3:GetObject",
+                              + "s3:DeleteObject",
+                              + "s3:PutObjectAcl",
+                            ]
+                          + Effect   = "Allow"
+                          + Resource = [
+                              + "arn:aws:s3:::testing/*",
+                            ]
+                        },
+                      + {
+                          + Action   = [
+                              + "ds:Get*",
+                              + "ds:Describe*",
+                              + "ds:List*",
+                              + "ec2:GetEbsEncryptionByDefault",
+                              + "ecr:Describe*",
+                              + "elasticfilesystem:DescribeBackupPolicy",
+                              + "glue:GetConnections",
+                              + "glue:GetSecurityConfiguration",
+                              + "glue:SearchTables",
+                              + "lambda:GetFunction",
+                              + "s3:GetAccountPublicAccessBlock",
+                              + "shield:DescribeProtection",
+                              + "shield:GetSubscriptionState",
+                              + "ssm:GetDocument",
+                              + "support:Describe*",
+                              + "tag:GetTagKeys",
+                            ]
+                          + Effect   = "Allow"
+                          + Resource = "*"
+                          + Sid      = "AllowMoreReadForProwler"
+                        },
+                      + {
+                          + Action   = [
+                              + "apigateway:GET",
+                            ]
+                          + Effect   = "Allow"
+                          + Resource = [
+                              + "arn:aws:apigateway:*::/restapis/*",
+                            ]
+                        },
+                    ]
+                  + Version   = "2012-10-17"
+                }
+            )
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + iam_arn = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_iam_role.this: Creating...
+aws_iam_role.this: Creation complete after 2s [id=x2-ops-tenable-scan]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+Releasing state lock. This may take a few moments...
+
+Outputs:
+
+iam_arn = "arn:aws:iam::xxxxxxx:role/x2-ops-tenable-scan"
+```
