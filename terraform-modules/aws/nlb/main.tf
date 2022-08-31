@@ -6,20 +6,15 @@ resource "aws_lb" "nlb" {
 
   enable_deletion_protection = var.enable_deletion_protection
 
-  access_logs {
-    bucket  = var.nlb_s3_bucket_name
-    prefix  = "test-lb"
-    enabled = true
+dynamic "access_logs" {
+    # The contents of the list is irrelevant. The only important thing is whether or not to create this block.
+    for_each = var.enable_nlb_access_logs ? ["use_access_logs"] : []
+    content {
+      bucket  = var.nlb_s3_bucket_name
+      prefix  = local.nlb_access_logs_s3_prefix
+      enabled = true
+    }
   }
-# dynamic "access_logs" {
-#     # The contents of the list is irrelevant. The only important thing is whether or not to create this block.
-#     for_each = var.enable_nlb_access_logs
-#     content {
-#       bucket  = var.nlb_s3_bucket_name
-#       prefix  = local.nlb_access_logs_s3_prefix
-#       enabled = true
-#     }
-#   }
 
 
  enable_cross_zone_load_balancing = var.enable_cross_zone_load_balancing
