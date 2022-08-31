@@ -11,7 +11,7 @@ dynamic "access_logs" {
     for_each = var.enable_nlb_access_logs
     content {
       bucket  = access_logs.value["bucket_name"]
-      prefix  = local.nlb_access_logs_s3_prefix
+      prefix  = access_logs.value["bucket_prefix"]
       enabled = true
     }
   }
