@@ -8,9 +8,9 @@ resource "aws_lb" "nlb" {
 
 dynamic "access_logs" {
     # The contents of the list is irrelevant. The only important thing is whether or not to create this block.
-    for_each = var.enable_nlb_access_logs ? ["use_access_logs"] : []
+    for_each = var.enable_nlb_access_logs
     content {
-      bucket  = var.nlb_s3_bucket_name
+      bucket  = access_logs.value["bucket_name"]
       prefix  = local.nlb_access_logs_s3_prefix
       enabled = true
     }
