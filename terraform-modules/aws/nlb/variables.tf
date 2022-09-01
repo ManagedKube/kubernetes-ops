@@ -21,7 +21,7 @@ variable "nlb_name" {
 }
 
 variable "enable_nlb_access_logs" {
-  description = "Set to true to enable the NLB to log all requests. Ideally, this variable wouldn't be necessary, but because Terraform can't interpolate dynamic variables in counts, we must explicitly include this. Enter true or false."
+  description = "This is Optional, Only used to output the NLB logs to S3. we need to input bucket_name and bucket_prefix to the list. if left empty it will not output the logs to S3"
   type        = list(any)
   default     = []
 }
