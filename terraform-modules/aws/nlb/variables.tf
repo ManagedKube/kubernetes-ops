@@ -1,51 +1,51 @@
 variable "enable_deletion_protection" {
-    type = bool
-    description = "Enable deletion protection"
-    default = false
+  type        = bool
+  description = "Enable deletion protection"
+  default     = false
 }
 
 variable "enable_internal" {
-    type = bool
-    description = "Enable internal load balancer"
-    default = true
+  type        = bool
+  description = "Enable internal load balancer"
+  default     = true
 }
 
 variable "nlb_name" {
   description = "The name of the NLB. Do not include the environment name since this module will automatically append it to the value of this variable."
   type        = string
-  # AWS imposes a 32 character limit on the names of ALBs, so here we catch any overages client-side
+  # AWS imposes a 32 character limit on the names of NLBs, so here we catch any overages client-side
   validation {
     condition     = length(var.nlb_name) <= 32
-    error_message = "Your alb_name must be 32 characters or less in length."
+    error_message = "Your nlb_name must be 32 characters or less in length."
   }
 }
 
 variable "enable_nlb_access_logs" {
-  description = "Set to true to enable the ALB to log all requests. Ideally, this variable wouldn't be necessary, but because Terraform can't interpolate dynamic variables in counts, we must explicitly include this. Enter true or false."
+  description = "Set to true to enable the NLB to log all requests. Ideally, this variable wouldn't be necessary, but because Terraform can't interpolate dynamic variables in counts, we must explicitly include this. Enter true or false."
   type        = list(any)
   default     = []
 }
 
 variable "nlb_access_logs_s3_bucket_name" {
-  description = "The S3 Bucket name where ALB logs should be stored. If left empty, no ALB logs will be captured. Tip: It's easiest to create the S3 Bucket using the Gruntwork Module https://github.com/gruntwork-io/terraform-aws-monitoring/tree/master/modules/logs/load-balancer-access-logs."
+  description = "The S3 Bucket name where NLB logs should be stored. If left empty, no NLB logs will be captured. Tip: It's easiest to create the S3 Bucket using the Gruntwork Module https://github.com/gruntwork-io/terraform-aws-monitoring/tree/master/modules/logs/load-balancer-access-logs."
   type        = string
   default     = null
 }
 
 variable "custom_nlb_access_logs_s3_prefix" {
-  description = "Prefix to use for access logs to create a sub-folder in S3 Bucket name where ALB logs should be stored. Only used if var.enable_custom_alb_access_logs_s3_prefix is true."
+  description = "Prefix to use for access logs to create a sub-folder in S3 Bucket name where NLB logs should be stored. Only used if var.enable_custom_nlb_access_logs_s3_prefix is true."
   type        = string
   default     = null
 }
 
 variable "enable_custom_nlb_access_logs_s3_prefix" {
-  description = "Set to true to use the value of alb_access_logs_s3_prefix for access logs prefix. If false, the alb_name will be used. This is useful if you wish to disable the S3 prefix. Only used if var.enable_alb_access_logs is true."
+  description = "Set to true to use the value of nlb_access_logs_s3_prefix for access logs prefix. If false, the nlb_name will be used. This is useful if you wish to disable the S3 prefix. Only used if var.enable_nlb_access_logs is true."
   type        = bool
   default     = false
 }
 
 variable "access_logs_s3_bucket_name" {
-  description = "The name to use for the S3 bucket where the ALB access logs will be stored. If you set this to null, a name will be generated automatically based on var.alb_name."
+  description = "The name to use for the S3 bucket where the NLB access logs will be stored. If you set this to null, a name will be generated automatically based on var.nlb_name."
   type        = string
   default     = null
 }
@@ -73,38 +73,40 @@ variable "force_destroy" {
 }
 
 variable "nlb_subnets" {
-    type = list(string)
-    description = "NLB Subnets"  
+  type        = list(string)
+  description = "NLB Subnets"
 }
 
-variable "enable_alb_access_logs" {
-  description = "Set to true to enable the ALB to log all requests. Ideally, this variable wouldn't be necessary, but because Terraform can't interpolate dynamic variables in counts, we must explicitly include this. Enter true or false."
+
+variable "enable_cross_zone_load_balancing" {
+  description = "Set enable_cross_zone_load_balancing"
   type        = bool
   default     = false
 }
 
-variable "enable_cross_zone_load_balancing" {
-  description = "Set enable_cross_zone_load_balancing"
-  type = bool
-  default = false
-}
-
 variable "enable_http2" {
-    description = "enable_http2"
-    type = bool
-    default = false 
+  description = "enable_http2"
+  type        = bool
+  default     = false
 }
 
 
 variable "nlb_access_logs_s3_prefix" {
-    description = "nlb_access_logs_s3_prefix"
-    type = string
-    default = null  
+  description = "nlb_access_logs_s3_prefix"
+  type        = string
+  default     = null
 }
 
 variable "nlb_s3_bucket_name" {
-    description = "nlb_s3_bucket_name"
-    type = string
-    default = null   
-  
+  description = "nlb_s3_bucket_name"
+  type        = string
+  default     = null
+}
+
+variable "nlb_tags" {
+  description = "Tags"
+  type        = map(any)
+  default = {
+    appname = "nlb"
+  }
 }
