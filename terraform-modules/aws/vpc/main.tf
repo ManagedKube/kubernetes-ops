@@ -24,6 +24,9 @@ module "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support
 
+  manage_default_route_table = var.manage_default_route_table
+  default_route_table_routes = var.default_route_table_routes
+
   # Removed k8s tagging of public subnets as this makes LB to route to public subnets too - Sridhar
   # public_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/elb" = "1" })
 
@@ -46,10 +49,23 @@ module "vpc" {
   tags = var.tags
 }
 
+resource "aws_route" "private_tgw" {
+  count                  = length(var.private_subnets) > 0 ? length(var.route_cidr_blocks) : 0
+  route_table_id         = module.vpc.private_route_table_ids[0]
+  destination_cidr_block = element(var.route_cidr_blocks, count.index)
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_tgw" {
+  count                  = length(var.public_subnets) > 0 ? length(var.route_cidr_blocks) : 0
+  route_table_id         = module.vpc.public_route_table_ids[0]
+  destination_cidr_block = element(var.route_cidr_blocks, count.index)
+  transit_gateway_id     = var.transit_gateway_id
+}
+
 locals {
   eks_tags = {}
   # eks_tags = {
-  #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
   #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
   #   "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
   #   "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
