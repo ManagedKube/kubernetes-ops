@@ -32,3 +32,7 @@ output "public_route_table_ids" {
   description = "List of IDs of public route tables"
   value       = module.vpc.public_route_table_ids
 }
+
+output "private_routes" {
+  value = aws_route.private_tgw
+}
