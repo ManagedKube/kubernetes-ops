@@ -21,3 +21,21 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_tgw_static_route" {
+  description = "Create tgw static route if TRUE"
+  type        = bool
+  default     = true
+}
+
+variable "destination_cidr_blocks" {
+  description = "List of destination cidr blocks"
+  type        = list(string)
+  default     = []
+}
+
+variable "tgw_route_table_id" {
+    description = "TGW default route table ID where the static routes need to be created"
+    type        = string
+    default     = null
+}

@@ -7,3 +7,10 @@ resource "aws_ec2_transit_gateway_peering_attachment" "this" {
 
   tags = var.tags
 }
+
+resource "aws_ec2_transit_gateway_route" "tgw_route" {
+  count                          = var.create_tgw_static_route ? length(var.destination_cidr_blocks) : 0
+  destination_cidr_block         = element(var.destination_cidr_blocks, count.index)
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.this[count.index].id
+  transit_gateway_route_table_id = var.tgw_route_table_id
+}
