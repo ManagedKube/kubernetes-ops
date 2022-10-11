@@ -62,10 +62,12 @@ In this case it is: `arn:aws:iam::476264531111:role/aws-reserved/sso.amazonaws.c
 
 You will then add this user or role to the appropriate section in the Terragrunt/Terraform instantiation of it: https://github.com/ManagedKube/kubernetes-ops/blob/main/terraform-environments/aws/terragrunt-dev/us-east-1/terragrunt-dev/200-eks/terragrunt.hcl
 
+It seems that you have to remove everything in between the `role` and role name.  Remove `/aws-reserved/sso.amazonaws.com`.  Which will give you:
+
 ```
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::476264531111:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_devops_admin_595c0f4da82205f0"
+      rolearn  = "arn:aws:iam::476264531111:role/AWSReservedSSO_devops_admin_595c0f4da82205f0"
       username = "devops-admin"
       groups   = ["system:masters"]
     },
