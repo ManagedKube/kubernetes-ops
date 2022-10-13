@@ -25,7 +25,7 @@ provider "helm" {
     # avoid this issue, we use an exec-based plugin here to fetch an up-to-date token. Note that this code requires the
     # kubergrunt binary to be installed and on your PATH.
     exec {
-      api_version = "client.authentication.k8s.io/v1alpha1"
+      api_version = "client.authentication.k8s.io/v1beta1"
       command     = "${kubergrunt_exec}"
       args        = ["eks", "token", "--cluster-id", "${eks_cluster_name}"]
     }
