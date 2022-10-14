@@ -41,3 +41,42 @@ variable "amazon_side_asn" {
   description = "The Autonomous System Number (ASN) for the Amazon side of the gateway. By default the TGW is created with the current default Amazon ASN."
   type        = string
 }
+
+variable "route_cidr_blocks" {
+  description = "Configuration block of routes. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table#route"
+  type        = list(string)
+  default     = []
+}
+
+variable "route_table_id" {
+  type = string
+  default = ""
+}
+
+variable "private_route_table_id" {
+  type = string
+  default = ""
+}
+
+variable "public_route_table_id" {
+  type = string
+  default = ""
+}
+
+variable "create_public_route" {
+  type = bool
+  default = true
+  
+}
+
+variable "create_private_route" {
+  type = bool
+  default = true
+  
+}
+
+variable "transit_gateway_id" {
+  type = string
+  default = ""
+  
+}

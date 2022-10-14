@@ -93,13 +93,3 @@ variable "default_route_table_routes" {
   default     = []
 }
 
-variable "route_cidr_blocks" {
-  description = "Configuration block of routes. See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table#route"
-  type        = list(string)
-  default     = []
-}
-
-variable "transit_gateway_id" {
-  type    = string
-  default = ""
-}
