@@ -48,11 +48,6 @@ variable "route_cidr_blocks" {
   default     = []
 }
 
-variable "route_table_id" {
-  type = string
-  default = ""
-}
-
 variable "private_route_table_id" {
   type = string
   default = ""
