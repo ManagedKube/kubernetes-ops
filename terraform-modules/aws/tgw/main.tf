@@ -17,3 +17,17 @@ module "tgw" {
   share_tgw = var.share_tgw
   tags = var.tags
 }
+
+resource "aws_route" "private_tgw" {
+  count                  = var.create_private_route ? length(var.route_cidr_blocks) : 0
+  route_table_id         = var.private_route_table_id
+  destination_cidr_block = element(var.route_cidr_blocks, count.index)
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_tgw" {
+  count                  = var.create_public_route ? length(var.route_cidr_blocks) : 0
+  route_table_id         = var.public_route_table_id
+  destination_cidr_block = element(var.route_cidr_blocks, count.index)
+  transit_gateway_id     = var.transit_gateway_id
+}

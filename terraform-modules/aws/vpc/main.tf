@@ -49,19 +49,7 @@ module "vpc" {
   tags = var.tags
 }
 
-resource "aws_route" "private_tgw" {
-  count                  = length(var.private_subnets) > 0 ? length(var.route_cidr_blocks) : 0
-  route_table_id         = module.vpc.private_route_table_ids[0]
-  destination_cidr_block = element(var.route_cidr_blocks, count.index)
-  transit_gateway_id     = var.transit_gateway_id
-}
 
-resource "aws_route" "public_tgw" {
-  count                  = length(var.public_subnets) > 0 ? length(var.route_cidr_blocks) : 0
-  route_table_id         = module.vpc.public_route_table_ids[0]
-  destination_cidr_block = element(var.route_cidr_blocks, count.index)
-  transit_gateway_id     = var.transit_gateway_id
-}
 
 locals {
   eks_tags = {}
