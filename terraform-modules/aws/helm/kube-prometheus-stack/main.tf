@@ -18,7 +18,7 @@ resource "helm_release" "helm_chart" {
   values = [
     templatefile("${path.module}/values.yaml", {
       enable_grafana_aws_role = var.enable_iam_assumable_role_grafana
-      aws_account_id          = aws_caller_identity.current.account_id
+      aws_account_id          = data.aws_caller_identity.current.account_id
       role_name               = "${local.base_name}-${var.environment_name}"
     }),
     var.helm_values,
