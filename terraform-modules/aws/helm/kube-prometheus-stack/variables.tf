@@ -29,7 +29,8 @@ variable helm_values {
 }
 
 variable "tags" {
-  type = map(any)
+  type    = map(any)
+  default = {}
 }
 
 variable "aws_account_id" {
