@@ -39,7 +39,7 @@ module "iam_assumable_role_grafana" {
   create_role                   = true
   role_name                     = "${local.base_name}-${var.environment_name}"
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns              = [aws_iam_policy.grafana.arn]
+  role_policy_arns              = [aws_iam_policy.grafana[0].arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${local.k8s_service_account_name}-${var.environment_name}"]
   tags                          = var.tags
 }
