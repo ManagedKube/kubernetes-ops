@@ -13,10 +13,13 @@ resource "helm_release" "helm_chart" {
   repository       = "https://prometheus-community.github.io/helm-charts"
 
   values = [
-    file("${path.module}/values.yaml"),
+    templatefile("${path.module}/values.yaml", {
+      enable_grafana_aws_role = var.enable_iam_assumable_role_grafana
+      aws_account_id          = aws_caller_identity.current.account_id
+      role_name               = "${local.base_name}-${var.environment_name}"
+    }),
     var.helm_values,
   ]
-
 }
 
 ############################

@@ -50,7 +50,10 @@ grafana:
   #   operator: "Equal"
   #   value: "my-app"
   #   effect: "NoSchedule"
-
+ %{ if ${enable_grafana_aws_role} == true }
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::${aws_account_id}:role/${role_name}
+  %{ endif }
 
 ## Configuration for alertmanager
 ## ref: https://prometheus.io/docs/alerting/alertmanager/
