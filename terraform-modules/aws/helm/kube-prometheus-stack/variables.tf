@@ -32,6 +32,12 @@ variable "tags" {
   type = map(any)
 }
 
+variable "eks_cluster_oidc_issuer_url" {
+  type        = string
+  default     = ""
+  description = "EKS cluster oidc issuer url"
+}
+
 variable "enable_iam_assumable_role_grafana" {
   type        = bool
   default     = false
