@@ -76,7 +76,7 @@ spec:
       channel: ${channel_name}
       username: prom-${account_name}
       title: '{{ if ne .Status "firing" }}[{{ .Status | toUpper }}]{{ end }} {{ .CommonAnnotations.summary }}{{ .CommonAnnotations.message }}'
-      titleLink: https://alertmanager.${domain_name}
+      titleLink: https://alertmanager.domain_name
       text: |-
           {{ range .Alerts }}
               Annotations:
