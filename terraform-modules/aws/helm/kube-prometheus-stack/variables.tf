@@ -32,6 +32,12 @@ variable "tags" {
   type = map(any)
 }
 
+variable "aws_account_id" {
+  type        = string
+  default     = ""
+  description = "AWS account ID.  Used in creating IAM assumable role if enabled"
+}
+
 variable "eks_cluster_oidc_issuer_url" {
   type        = string
   default     = ""
