@@ -3,6 +3,9 @@ locals {
   k8s_service_account_name = "kube-prometheus-stack-grafana"
 }
 
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
 resource "helm_release" "helm_chart" {
   chart            = "kube-prometheus-stack"
   namespace        = var.namespace
@@ -29,9 +32,6 @@ resource "helm_release" "helm_chart" {
 # * If you want to give Grafana IAM permission to query AWS Cloudwatch logs
 #
 ############################
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 module "iam_assumable_role_grafana" {
   count                         = var.enable_iam_assumable_role_grafana ? 1 : 0
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
