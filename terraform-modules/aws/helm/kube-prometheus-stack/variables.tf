@@ -72,7 +72,8 @@ variable "aws_policy_grafana" {
                 "logs:StartQuery",
                 "logs:StopQuery",
                 "logs:TestMetricFilter",
-                "logs:FilterLogEvents"
+                "logs:FilterLogEvents",
+                "cloudwatch:ListMetrics"
             ],
             "Effect": "Allow",
             "Resource": "*"
