@@ -114,3 +114,33 @@ variable "auto_scaler_balance_similar_node_groups" {
 variable "auto_scaler_expander" {
   default = "least-waste"
 }
+
+variable "local_account_disabled" {
+  type = bool
+  default = true
+  description = "(Optional) - If true local accounts will be disabled. Defaults to true.  This forces the usage of Azure AD auth (which shold be what you want)."
+}
+
+variable "azure_active_directory_role_based_access_control_managed" {
+  type = bool
+  default = true
+  description = "Optional) Is the Azure Active Directory integration Managed, meaning that Azure will create/manage the Service Principal used for integration."
+}
+
+variable "azure_active_directory_role_based_access_control_tenant_id" {
+  type = string
+  default = null
+  description = "(Optional) The Tenant ID used for Azure Active Directory Application. If this isn't specified the Tenant ID of the current Subscription is used."
+}
+
+variable "azure_active_directory_role_based_access_control_admin_group_object_ids" {
+  type = string
+  default = null
+  description = "When managed is set to true the following properties can be specified.  (Optional) A list of Object IDs of Azure Active Directory Groups which should have Admin Role on the Cluster."
+}
+
+variable "azure_active_directory_role_based_access_control_azure_rbac_enabled" {
+  type = string
+  default = null
+  description = "When managed is set to true the following properties can be specified.  (Optional) Is Role Based Access Control based on Azure AD enabled?"
+}
