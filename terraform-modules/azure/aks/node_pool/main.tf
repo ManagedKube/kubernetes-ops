@@ -1,11 +1,14 @@
 terraform {
-  backend "azurerm" {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">=2.48.0"
+    }
   }
 }
 
 provider "azurerm" {
-    version = "~>2.8.0"
-    features {}
+  features {}
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
