@@ -134,7 +134,7 @@ variable "azure_active_directory_role_based_access_control_tenant_id" {
 }
 
 variable "azure_active_directory_role_based_access_control_admin_group_object_ids" {
-  type = string
+  type = list
   default = []
   description = "When managed is set to true the following properties can be specified.  (Optional) A list of Object IDs of Azure Active Directory Groups which should have Admin Role on the Cluster."
 }
