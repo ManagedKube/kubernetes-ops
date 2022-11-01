@@ -83,3 +83,15 @@ variable "kms_key_arn" {
   description = "kms key arn for encryp env vars."
   default     = ""
 }
+
+variable "s3_bucket_filter_prefix" {
+  type        = string
+  description = "The S3 bucket filter prefix"
+  default     = "AWSLogs/"
+}
+
+variable "s3_bucket_filter_suffix" {
+  type        = string
+  description = "The S3 bucket filter_suffix"
+  default     = ".log.gz"
+}
