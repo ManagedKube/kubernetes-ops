@@ -16,39 +16,39 @@ variable "kubernetes_cluster_id" {
 }
 
 variable "node_pool_name" {
-    default = "generic"
+  default = "generic"
 }
 
 variable "vm_size" {
-    default = "Standard_B2s"
+  default = "Standard_B2s"
 }
 
 variable "enable_auto_scaling" {
-    default = true
+  default = true
 }
 
 variable "node_count" {
-    default = 1
+  default = 1
 }
 
 variable "max_count" {
-    default = 1
+  default = 1
 }
 
 variable "min_count" {
-    default = 1
+  default = 1
 }
 
 variable "os_disk_size_gb" {
-    default = "20"
+  default = "20"
 }
 
 variable "node_labels" {
-    type = map(string)
-    default = {}
+  type    = map(string)
+  default = {}
 }
 
 variable "node_taints" {
-    type = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }

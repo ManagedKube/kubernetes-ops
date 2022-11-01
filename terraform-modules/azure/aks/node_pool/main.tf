@@ -17,8 +17,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   vm_size               = var.vm_size
   node_count            = var.node_count
   enable_auto_scaling   = var.enable_auto_scaling
-  max_count = var.max_count
-  min_count = var.min_count
+  max_count             = var.max_count
+  min_count             = var.min_count
 
   node_labels = var.node_labels
   node_taints = var.node_taints
