@@ -140,7 +140,7 @@ variable "azure_active_directory_role_based_access_control_admin_group_object_id
 }
 
 variable "azure_active_directory_role_based_access_control_azure_rbac_enabled" {
-  type = string
-  default = null
+  type = bool
+  default = true
   description = "When managed is set to true the following properties can be specified.  (Optional) Is Role Based Access Control based on Azure AD enabled?"
 }
