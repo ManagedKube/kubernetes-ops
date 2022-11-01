@@ -28,9 +28,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
   enable_pod_security_policy = var.enable_pod_security_policy
 
-  role_based_access_control {
-      enabled = var.role_based_access_control_enabled
-  }
+  role_based_access_control_enabled = var.role_based_access_control_enabled
 
   network_profile {
       network_plugin = var.network_profile_network_plugin
