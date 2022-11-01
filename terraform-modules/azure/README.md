@@ -31,7 +31,7 @@ Quick start guide: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-
 
 ```bash
 RESOURCE_GROUP_NAME=kubernetes-ops
-LOCATION="East US 2"
+LOCATION="eastus2"
 STORAGE_ACCOUNT_NAME=kubernetesops
 CONTAINER_NAME=tfstate
 ```
