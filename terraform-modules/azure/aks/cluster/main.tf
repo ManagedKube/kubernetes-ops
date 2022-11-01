@@ -1,13 +1,3 @@
-# terraform {
-#   backend "azurerm" {
-#   }
-# }
-
-# provider "azurerm" {
-#     version = "~>2.8.0"
-#     features {}
-# }
-
 terraform {
   required_providers {
     azurerm = {
