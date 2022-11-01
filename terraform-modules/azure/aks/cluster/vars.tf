@@ -28,7 +28,7 @@ variable "dns_prefix" {
 }
 
 variable "kubernetes_version" {
-    default = "1.15.10"
+    default = "1.24.3"
 }
 
 variable "private_cluster_enabled" {
