@@ -7,5 +7,6 @@ output "client_certificate" {
 }
 
 output "kube_config" {
+  sensitive = true
   value = azurerm_kubernetes_cluster.cluster.kube_config_raw
 }
