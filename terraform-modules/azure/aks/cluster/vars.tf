@@ -102,3 +102,7 @@ variable "network_profile_pod_cidr" {
 variable "kube_dashboard_enabled" {
     default = false
 }
+
+var "default_node_pool_enable_host_encryption" {
+    default = true
+}

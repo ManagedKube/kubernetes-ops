@@ -38,6 +38,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
   default_node_pool {
     name       = var.default_node_pool_name
+    enable_host_encryption = var.default_node_pool_enable_host_encryption
     node_count = var.default_node_pool_node_count
     vm_size    = var.default_node_pool_instance_size
     enable_auto_scaling = var.default_node_pool_enable_auto_scaling
@@ -47,12 +48,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
     node_labels = var.default_node_pool_node_labels
     node_taints = var.default_node_pool_node_taints
-  }
-
-  addon_profile {
-    kube_dashboard {
-      enabled = var.kube_dashboard_enabled
-    }
   }
 
   identity {
