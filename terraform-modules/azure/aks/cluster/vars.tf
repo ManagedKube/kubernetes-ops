@@ -103,6 +103,6 @@ variable "kube_dashboard_enabled" {
     default = false
 }
 
-var "default_node_pool_enable_host_encryption" {
+variable "default_node_pool_enable_host_encryption" {
     default = true
 }
