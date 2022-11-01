@@ -36,6 +36,11 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       pod_cidr       = var.network_profile_pod_cidr
   }
 
+  auto_scaler_profile {
+    balance_similar_node_groups = var.auto_scaler_balance_similar_node_groups
+    expander = var.auto_scaler_expander
+  }
+
   default_node_pool {
     name       = var.default_node_pool_name
     enable_host_encryption = var.default_node_pool_enable_host_encryption

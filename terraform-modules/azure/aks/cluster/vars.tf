@@ -106,3 +106,11 @@ variable "kube_dashboard_enabled" {
 variable "default_node_pool_enable_host_encryption" {
     default = true
 }
+
+variable "auto_scaler_balance_similar_node_groups" {
+  default = false
+}
+
+variable "auto_scaler_expander" {
+  default = "least-waste"
+}
