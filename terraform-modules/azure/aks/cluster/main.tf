@@ -31,14 +31,15 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   local_account_disabled            = var.local_account_disabled
   role_based_access_control_enabled = var.role_based_access_control_enabled
 
-  azure_active_directory_role_based_access_control {
-    managed = var.azure_active_directory_role_based_access_control_managed
-    tenant_id = var.azure_active_directory_role_based_access_control_tenant_id
+  ## Disabling for now
+  # azure_active_directory_role_based_access_control {
+  #   managed = var.azure_active_directory_role_based_access_control_managed
+  #   tenant_id = var.azure_active_directory_role_based_access_control_tenant_id
 
-    # if managed == true the following can be set
-    admin_group_object_ids = var.azure_active_directory_role_based_access_control_admin_group_object_ids
-    azure_rbac_enabled     = var.azure_active_directory_role_based_access_control_azure_rbac_enabled
-  }
+  #   # if managed == true the following can be set
+  #   admin_group_object_ids = var.azure_active_directory_role_based_access_control_admin_group_object_ids
+  #   azure_rbac_enabled     = var.azure_active_directory_role_based_access_control_azure_rbac_enabled
+  # }
 
   network_profile {
     network_plugin = var.network_profile_network_plugin
