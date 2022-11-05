@@ -131,6 +131,9 @@ Looks like this guy did it in Terraform!
 COPY THIS!
 
 
+The workload identity helm chart:
+* https://github.com/Azure/azure-workload-identity/tree/main/charts/workload-identity-webhook
+
 
 
 
