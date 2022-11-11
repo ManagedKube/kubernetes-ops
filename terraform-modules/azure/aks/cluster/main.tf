@@ -31,6 +31,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   local_account_disabled            = var.local_account_disabled
   role_based_access_control_enabled = var.role_based_access_control_enabled
 
+  oidc_issuer_enabled = var.oidc_issuer_enabled
+
   ## Disabling for now
   # azure_active_directory_role_based_access_control {
   #   managed = var.azure_active_directory_role_based_access_control_managed

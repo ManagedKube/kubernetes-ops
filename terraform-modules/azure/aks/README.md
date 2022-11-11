@@ -136,6 +136,12 @@ The workload identity helm chart:
 
 
 
+Generic helm for all clouds?
+* Instead of a specific aws or azure one for external-secrets, external-dns, etc
+* Can we create one cloud generic one that has switches to enable it for a cloud?
+* This will make it easier to maintain going forward for each chart
+
+
 
 
 

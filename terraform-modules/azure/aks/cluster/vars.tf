@@ -144,3 +144,9 @@ variable "azure_active_directory_role_based_access_control_azure_rbac_enabled" {
   default = true
   description = "When managed is set to true the following properties can be specified.  (Optional) Is Role Based Access Control based on Azure AD enabled?"
 }
+
+variable "oidc_issuer_enabled" {
+  type = bool
+  default = true
+  description = "(Required) Enable or Disable"
+}
