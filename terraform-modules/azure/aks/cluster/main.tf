@@ -74,3 +74,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
   tags = var.tags
 }
+
+# Sourcing this so that we can output this data.  This will help downstream
+# items such as the azure-workload-identity helm chart to get the tenant ID.
+data "azurerm_client_config" "current" {
+}
