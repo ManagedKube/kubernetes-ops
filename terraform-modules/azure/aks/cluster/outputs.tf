@@ -11,3 +11,7 @@ output "kube_config" {
   sensitive = true
   value     = azurerm_kubernetes_cluster.cluster.kube_config_raw
 }
+
+output "oidc_issuer_url" {
+  value = azurerm_kubernetes_cluster.cluster.oidc_issuer_url
+}
