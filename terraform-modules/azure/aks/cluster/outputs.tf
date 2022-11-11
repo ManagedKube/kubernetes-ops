@@ -15,3 +15,7 @@ output "kube_config" {
 output "oidc_issuer_url" {
   value = azurerm_kubernetes_cluster.cluster.oidc_issuer_url
 }
+
+output "tenant_id" {
+  value = azurerm_kubernetes_cluster.cluster.tenant_id
+}
