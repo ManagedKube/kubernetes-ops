@@ -51,3 +51,9 @@ variable "azure_tenant_id" {
   default     = ""
   description = "The Azure tenant id. If using the kubernetes-ops/azure creation it would be in the AKS output."
 }
+
+variable "azurerm_key_vault_id" {
+  type        = string
+  default     = ""
+  description = "(Required) Specifies the id of the Key Vault resource. Changing this forces a new resource to be created."
+}

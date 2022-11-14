@@ -62,3 +62,20 @@ resource "helm_release" "helm_chart" {
     azuread_application.app
   ]
 }
+
+################################################
+## Grant external-secrets deployment permissions to the Azure Vault
+################################################
+resource "azurerm_key_vault_access_policy" "this" {
+  key_vault_id = var.azurerm_key_vault_id
+  tenant_id    = var.azure_tenant_id
+  object_id    = azuread_service_principal.app.object_id
+
+  key_permissions = [
+    "Get",
+  ]
+
+  secret_permissions = [
+    "Get",
+  ]
+}
