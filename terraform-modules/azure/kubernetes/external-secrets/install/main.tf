@@ -29,7 +29,7 @@ resource "azuread_application_federated_identity_credential" "app" {
   description           = "The federated identity used to federate K8s with Azure AD with the app service running in k8s ${var.env}"
   audiences             = ["api://AzureADTokenExchange"]
   issuer                = var.oidc_k8s_issuer_url
-  subject               = "system:serviceaccount:${local.namespace_name}:foo-${local.service_account_name}"
+  subject               = "system:serviceaccount:${local.namespace_name}:${local.service_account_name}"
 }
 
 output "app_client_id" {
