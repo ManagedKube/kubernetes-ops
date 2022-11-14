@@ -33,3 +33,9 @@ variable "public_network_access_enabled" {
   default = true
   description = "(Optional) Whether public network access is allowed for this Key Vault. Defaults to true."
 }
+
+variable "soft_delete_retention_days" {
+  type = number
+  default = 90
+  description = "(Optional) The number of days that items should be retained for once soft-deleted. This value can be between 7 and 90 (the default) days."
+}

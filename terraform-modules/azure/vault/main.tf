@@ -5,5 +5,7 @@ resource "azurerm_key_vault" "this" {
   tenant_id           = var.tenant_id
   sku_name            = var.sku_name
 
-  public_network_access_enabled = var.public_network_access_enabled 
+  public_network_access_enabled = var.public_network_access_enabled
+
+  soft_delete_retention_days = var.soft_delete_retention_days
 }
