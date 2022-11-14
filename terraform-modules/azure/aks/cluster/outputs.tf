@@ -29,13 +29,13 @@ output "subscription_id" {
 }
 
 output "azurerm_resource_group_id" {
-  value = azurerm_resource_group.resource_group.id
+  value = azurerm_resource_group.this.id
 }
 
 output "azurerm_resource_group_name" {
-  value = azurerm_resource_group.resource_group.name
+  value = azurerm_resource_group.this.name
 }
 
 output "azurerm_resource_group_location" {
-  value = azurerm_resource_group.resource_group.location
+  value = azurerm_resource_group.this.location
 }

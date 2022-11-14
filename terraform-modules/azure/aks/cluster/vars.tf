@@ -1,6 +1,6 @@
-variable "location" {
-  default = "eastus2"
-}
+# variable "location" {
+#   default = "eastus2"
+# }
 
 variable "resource_group_name" {
   default = "kubernetes-ops-aks"
