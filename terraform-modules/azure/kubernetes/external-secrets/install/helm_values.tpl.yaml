@@ -1,0 +1,20 @@
+---
+# extraEnv:
+# - name: AWS_REGION
+#   value: ${awsRegion}
+# - name: AWS_DEFAULT_REGION
+#   value: ${awsRegion}
+
+serviceAccount:
+  name: ${resource_name}
+  # annotations:
+  #   eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/${resource_name}"
+
+  # Labels to add to the service account
+  extraLabels:
+    azure.workload.identity/use: "true" # Represents the service account is to be used for workload identity, see https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html
+  # Annotations to add to the service account
+  annotations:
+    azure.workload.identity/client-id: ${client_id}
+    azure.workload.identity/tenant-id: ${tenant_id}
+    azure.workload.identity/service-account-token-expiration: "86400" # Token is valid for 1 day
