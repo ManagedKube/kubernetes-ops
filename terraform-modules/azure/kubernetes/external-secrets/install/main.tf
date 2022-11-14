@@ -2,7 +2,7 @@ locals {
   base_name      = "external-secrets"
   namespace_name = var.namespace
   ## This should match the name of the service account created by helm chart
-  service_account_name = "app-${local.namespace_name}"
+  service_account_name = "${var.env}-${local.namespace_name}"
 }
 
 ################################################
@@ -42,12 +42,9 @@ output "app_client_id" {
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
-    # awsAccountID       = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
-    # awsRegion          = data.aws_region.current.name
-    #serviceAccountName = local.k8s_service_account_name
-    resource_name  = "${local.base_name}-${var.env}"
-    client_id      = azuread_application.app.application_id
-    tenant_id      = var.azure_tenant_id
+    serviceAccountName = local.service_account_name
+    client_id          = azuread_application.app.application_id
+    tenant_id          = var.azure_tenant_id
   }
 }
 
