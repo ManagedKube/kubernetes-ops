@@ -32,10 +32,6 @@ resource "azuread_application_federated_identity_credential" "app" {
   subject               = "system:serviceaccount:${local.namespace_name}:${local.service_account_name}"
 }
 
-output "app_client_id" {
-  value = azuread_application.app.application_id
-}
-
 ################################################
 ## Helm Chart install
 ################################################
