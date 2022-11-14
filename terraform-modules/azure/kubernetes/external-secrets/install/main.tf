@@ -64,7 +64,7 @@ resource "helm_release" "helm_chart" {
 }
 
 ################################################
-## Grant external-secrets deployment permissions to the Azure Vault
+## Grant external-secrets deployment permissions to an Azure Vault
 ################################################
 resource "azurerm_key_vault_access_policy" "this" {
   key_vault_id = var.azurerm_key_vault_id
