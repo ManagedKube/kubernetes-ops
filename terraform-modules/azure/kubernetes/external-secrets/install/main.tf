@@ -11,7 +11,7 @@ locals {
 
 ## Azure AD application that represents the app
 resource "azuread_application" "app" {
-  display_name = "${base_name}-${var.env}"
+  display_name = "${local.base_name}-${var.env}"
 }
 
 resource "azuread_service_principal" "app" {
@@ -25,8 +25,8 @@ resource "azuread_service_principal_password" "app" {
 ## Azure AD federated identity used to federate kubernetes with Azure AD
 resource "azuread_application_federated_identity_credential" "app" {
   application_object_id = azuread_application.app.object_id
-  display_name          = "fed-identity-${base_name}-${var.env}"
-  description           = "The federated identity used to federate K8s with Azure AD with the app service running in k8s ${base_name} ${var.env}"
+  display_name          = "fed-identity-${local.base_name}-${var.env}"
+  description           = "The federated identity used to federate K8s with Azure AD with the app service running in k8s ${local.base_name} ${var.env}"
   audiences             = ["api://AzureADTokenExchange"]
   issuer                = var.oidc_k8s_issuer_url
   subject               = "system:serviceaccount:${local.namespace_name}:${local.service_account_name}"
@@ -68,7 +68,7 @@ resource "helm_release" "helm_chart" {
 ##
 ## The azuread_service_principal.app.object_id will be granted access
 ## Azure console -> vault -> <this vault instance -> Access Policies
-## * should see "${base_name}-${var.env}" in the list.
+## * should see "${local.base_name}-${var.env}" in the list.
 ################################################
 resource "azurerm_key_vault_access_policy" "this" {
   key_vault_id = var.azurerm_key_vault_id
