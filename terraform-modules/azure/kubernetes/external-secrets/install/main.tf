@@ -45,7 +45,7 @@ data "template_file" "helm_values" {
     # awsAccountID       = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
     # awsRegion          = data.aws_region.current.name
     #serviceAccountName = local.k8s_service_account_name
-    resource_name  = "${local.base_name}-${var.environment_name}"
+    resource_name  = "${local.base_name}-${var.env}"
     client_id      = azuread_application.app.application_id
     tenant_id      = var.azure_tenant_id
   }
