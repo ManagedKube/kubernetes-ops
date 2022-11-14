@@ -27,3 +27,9 @@ variable "sku_name" {
   default = "standard"
   description = "(Required) The Name of the SKU used for this Key Vault. Possible values are standard and premium."
 }
+
+variable "public_network_access_enabled" {
+  type = bool
+  default = true
+  description = "(Optional) Whether public network access is allowed for this Key Vault. Defaults to true."
+}
