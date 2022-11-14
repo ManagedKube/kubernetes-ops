@@ -27,3 +27,15 @@ output "client_id" {
 output "subscription_id" {
   value = data.azurerm_client_config.current.subscription_id
 }
+
+output "azurerm_resource_group_id" {
+  value = azurerm_resource_group.resource_group.id
+}
+
+output "azurerm_resource_group_name" {
+  value = azurerm_resource_group.resource_group.name
+}
+
+output "azurerm_resource_group_location" {
+  value = azurerm_resource_group.resource_group.location
+}
