@@ -17,8 +17,8 @@ data "azurerm_resource_group" "this" {
 
 resource "azurerm_kubernetes_cluster" "cluster" {
   name                            = var.cluster_name
-  location                        = azurerm_resource_group.this.location
-  resource_group_name             = azurerm_resource_group.this.name
+  location                        = data.azurerm_resource_group.this.location
+  resource_group_name             = data.azurerm_resource_group.this.name
   kubernetes_version              = var.kubernetes_version
   private_cluster_enabled         = var.private_cluster_enabled
   dns_prefix                      = var.dns_prefix
