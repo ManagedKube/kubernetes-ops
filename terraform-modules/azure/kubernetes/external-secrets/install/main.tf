@@ -1,4 +1,5 @@
 locals {
+  base_name      = "external-secrets"
   namespace_name = var.namespace
   ## This should match the name of the service account created by helm chart
   service_account_name = "app-${local.namespace_name}"
