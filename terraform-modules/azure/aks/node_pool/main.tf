@@ -1,15 +1,15 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">=3.29.0"
-    }
-  }
-}
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = ">=3.29.0"
+#     }
+#   }
+# }
 
-provider "azurerm" {
-  features {}
-}
+# provider "azurerm" {
+#   features {}
+# }
 
 resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   name                  = var.node_pool_name
