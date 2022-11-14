@@ -66,6 +66,6 @@ resource "helm_release" "helm_chart" {
   ]
 
   depends_on = [
-    module.iam_assumable_role_admin
+    azuread_application.app
   ]
 }
