@@ -30,7 +30,8 @@ Quick start guide: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-
 ## Set parameters
 
 ```bash
-RESOURCE_GROUP_NAME=kubernetes-ops
+ENVIRONMENT=dev
+RESOURCE_GROUP_NAME=kubernetes-ops-${ENVIRONMENT}
 LOCATION="eastus2"
 STORAGE_ACCOUNT_NAME=kubernetesops
 CONTAINER_NAME=tfstate
