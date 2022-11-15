@@ -67,7 +67,11 @@ resource "kubernetes_manifest" "k8s_service_account" {
 
   depends_on = [
     azuread_application.app,
-    azuread_application_federated_identity_credential.app
+    azuread_service_principal.app,
+    azuread_service_principal_password.app,
+    azuread_application_federated_identity_credential.app,
+    azurerm_key_vault_access_policy.this,
+    kubernetes_manifest.cluster_secret_store
   ]
 }
 
