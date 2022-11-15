@@ -28,8 +28,18 @@ to implement the Azure Workload Identity method (which is the recommended method
 There is an Azure Vault module in the main `azure` folder here or if you already have one, you can use
 that.
 
-### (2) Install the external DNS Helm Chart
+### (2) Install the external secrets Helm Chart
+This installs the external-secrets helm chart
 
+(no azure resources)
+
+### (3) Install the secret_store
+One or more of these can be created.
+
+This creates:
+* The external-secrets CRD for a ClusterSecretStore
+* The Azure app and principals with Azure Workload Identity federation
+* K8s service account connected to the Azure Workload Identity
 
 
 ## Testing
