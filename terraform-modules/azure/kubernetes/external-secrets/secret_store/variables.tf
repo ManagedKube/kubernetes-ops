@@ -21,3 +21,21 @@ variable "vault_url" {
   default     = ""
   description = "The Azure Vault URL"
 }
+
+variable "oidc_k8s_issuer_url" {
+  type        = string
+  default     = ""
+  description = "The OIDC k8s issuer url.  If using the kubernetes-ops/azure creation it would be in the AKS output."
+}
+
+variable "azure_tenant_id" {
+  type        = string
+  default     = ""
+  description = "The Azure tenant id. If using the kubernetes-ops/azure creation it would be in the AKS output."
+}
+
+variable "azurerm_key_vault_id" {
+  type        = string
+  default     = ""
+  description = "(Required) Specifies the id of the Key Vault resource. Changing this forces a new resource to be created."
+}
