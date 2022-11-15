@@ -65,7 +65,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
   }))
 
   depends_on = [
-    azuread_application.app.application_id
+    azuread_application.app
   ]
 }
 
