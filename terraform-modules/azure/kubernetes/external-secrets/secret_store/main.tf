@@ -63,6 +63,10 @@ resource "kubernetes_manifest" "k8s_service_account" {
     client_id          = azuread_application.app.application_id
     tenant_id          = var.azure_tenant_id
   }))
+
+  depends_on = [
+    azuread_application.app.application_id
+  ]
 }
 
 ################################################
