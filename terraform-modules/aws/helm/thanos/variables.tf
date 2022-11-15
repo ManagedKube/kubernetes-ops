@@ -1,6 +1,6 @@
 variable helm_version {
   type        = string
-  default     = "34.1.1"
+  default     = "11.5.9"
   description = "Helm chart version"
 }
 
