@@ -37,7 +37,11 @@ locals {
 ################################################
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
-  vars = {}
+  vars = {
+    # serviceAccountName = local.service_account_name
+    # client_id          = azuread_application.app.application_id
+    # tenant_id          = var.azure_tenant_id
+  }
 }
 
 resource "helm_release" "helm_chart" {
