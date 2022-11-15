@@ -58,6 +58,7 @@ resource "azurerm_key_vault_access_policy" "this" {
 ################################################
 resource "kubernetes_manifest" "k8s_service_account" {
   manifest = yamldecode(templatefile("yaml/service_account.yaml", {
+    namespace_name     = local.namespace_name
     serviceAccountName = local.service_account_name
     # The Application ID (also called Client ID).
     client_id          = azuread_application.app.application_id
@@ -105,6 +106,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
 
 resource "kubernetes_manifest" "cluster_secret_store" {
   manifest = yamldecode(templatefile("yaml/cluster_secret_store.yaml", {
+    namespace_name          = local.namespace_name
     secret_store_name       = var.secret_store_name
     vault_url               = var.vault_url
     k8s_serviceaccount_name = local.service_account_name
