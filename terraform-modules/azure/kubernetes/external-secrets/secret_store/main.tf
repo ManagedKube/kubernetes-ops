@@ -56,7 +56,7 @@ resource "azurerm_key_vault_access_policy" "this" {
 ################################################
 ## External-secrets k8s service account
 ################################################
-resource "kubernetes_manifest" "cluster_secret_store" {
+resource "kubernetes_manifest" "k8s_service_account" {
   manifest = yamldecode(templatefile("yaml/cluster_secret_store.yaml", {
     serviceAccountName = "${local.base_name}-${var.environment_name}"
     # The application service client_id/application_id

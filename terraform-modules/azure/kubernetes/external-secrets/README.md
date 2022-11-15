@@ -29,3 +29,19 @@ There is an Azure Vault module in the main `azure` folder here or if you already
 that.
 
 ### (2) Install the external DNS Helm Chart
+
+
+
+## Testing
+
+### (1) Manually adding a secret
+The easiest way is to manually add a secret from the Azure web console:
+
+You will need to first give yourself permissions to this Vault by going here:
+* Home -> Key vaults -> <the vault instance> -> Access policies
+* Create
+* Permissions - all
+* Principal - search for your name and select it
+* Click through to create the access
+
+
