@@ -60,7 +60,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
   manifest = yamldecode(templatefile("yaml/service_account.yaml", {
     serviceAccountName = "${local.base_name}-${var.environment_name}"
     # # The application service client_id/application_id
-    # client_id          = azuread_application.app.application_id
+    client_id          = azuread_application.app.application_id
     tenant_id          = var.azure_tenant_id
   }))
 
