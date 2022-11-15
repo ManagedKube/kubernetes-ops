@@ -2,7 +2,7 @@ locals {
   base_name                = "external-secrets"
   namespace_name = var.namespace
   ## This should match the name of the service account created by helm chart
-  service_account_name = "${var.environment_name}-${local.namespace_name}"
+  service_account_name = "secret-store-${var.environment_name}-${local.namespace_name}"
 }
 
 ################################################
@@ -58,7 +58,7 @@ resource "azurerm_key_vault_access_policy" "this" {
 ################################################
 resource "kubernetes_manifest" "k8s_service_account" {
   manifest = yamldecode(templatefile("yaml/service_account.yaml", {
-    serviceAccountName = "secret-store-${local.base_name}-${var.environment_name}"
+    serviceAccountName = local.service_account_name
     # The Application ID (also called Client ID).
     client_id          = azuread_application.app.application_id
     tenant_id          = var.azure_tenant_id
@@ -105,8 +105,9 @@ resource "kubernetes_manifest" "k8s_service_account" {
 
 resource "kubernetes_manifest" "cluster_secret_store" {
   manifest = yamldecode(templatefile("yaml/cluster_secret_store.yaml", {
-    secret_store_name = var.secret_store_name
-    vault_url         = var.vault_url
+    secret_store_name       = var.secret_store_name
+    vault_url               = var.vault_url
+    k8s_serviceaccount_name = local.service_account_name
   }))
 }
 
