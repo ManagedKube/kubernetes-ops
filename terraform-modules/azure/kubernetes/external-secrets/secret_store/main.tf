@@ -61,7 +61,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
     namespace_name     = local.namespace_name
     serviceAccountName = local.service_account_name
     # The Application ID (also called Client ID).
-    client_id          = trimspace(chomp(azuread_application.app.object_id))
+    client_id          = trimspace(chomp(azuread_application.app.application_id))
     tenant_id          = var.azure_tenant_id
   }))
 
