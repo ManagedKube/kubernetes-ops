@@ -106,6 +106,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
 
 resource "kubernetes_manifest" "cluster_secret_store" {
   manifest = yamldecode(templatefile("yaml/cluster_secret_store.yaml", {
+    namespace_name          = local.namespace_name
     secret_store_name       = var.secret_store_name
     vault_url               = var.vault_url
     k8s_serviceaccount_name = local.service_account_name
