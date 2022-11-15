@@ -1,36 +1,6 @@
 locals {
   base_name      = "external-secrets"
-  # namespace_name = var.namespace
-  # ## This should match the name of the service account created by helm chart
-  # service_account_name = "${var.env}-${local.namespace_name}"
 }
-
-# ################################################
-# ## Setting up the Azure OIDC Federation
-# ################################################
-
-# ## Azure AD application that represents the app
-# resource "azuread_application" "app" {
-#   display_name = "${local.base_name}-${var.env}"
-# }
-
-# resource "azuread_service_principal" "app" {
-#   application_id = azuread_application.app.application_id
-# }
-
-# resource "azuread_service_principal_password" "app" {
-#   service_principal_id = azuread_service_principal.app.id
-# }
-
-# ## Azure AD federated identity used to federate kubernetes with Azure AD
-# resource "azuread_application_federated_identity_credential" "app" {
-#   application_object_id = azuread_application.app.object_id
-#   display_name          = "fed-identity-${local.base_name}-${var.env}"
-#   description           = "The federated identity used to federate K8s with Azure AD with the app service running in k8s ${local.base_name} ${var.env}"
-#   audiences             = ["api://AzureADTokenExchange"]
-#   issuer                = var.oidc_k8s_issuer_url
-#   subject               = "system:serviceaccount:${local.namespace_name}:${local.service_account_name}"
-# }
 
 ################################################
 ## Helm Chart install
@@ -62,24 +32,3 @@ resource "helm_release" "helm_chart" {
   #   azuread_application.app
   # ]
 }
-
-# ################################################
-# ## Grant external-secrets deployment permissions to an Azure Vault
-# ##
-# ## The azuread_service_principal.app.object_id will be granted access
-# ## Azure console -> vault -> <this vault instance -> Access Policies
-# ## * should see "${local.base_name}-${var.env}" in the list.
-# ################################################
-# resource "azurerm_key_vault_access_policy" "this" {
-#   key_vault_id = var.azurerm_key_vault_id
-#   tenant_id    = var.azure_tenant_id
-#   object_id    = azuread_service_principal.app.object_id
-
-#   key_permissions = [
-#     "Get",
-#   ]
-
-#   secret_permissions = [
-#     "Get",
-#   ]
-# }
