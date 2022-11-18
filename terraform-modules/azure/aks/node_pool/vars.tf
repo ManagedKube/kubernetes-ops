@@ -52,3 +52,8 @@ variable "node_taints" {
   type    = list(string)
   default = []
 }
+
+variable "vnet_subnet_id" {
+  type = string
+  default = null
+}

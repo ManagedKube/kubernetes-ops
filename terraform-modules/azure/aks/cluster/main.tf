@@ -47,6 +47,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     max_count              = var.default_node_pool_max_count
     min_count              = var.default_node_pool_min_count
     os_disk_size_gb        = var.default_node_pool_os_disk_size_gb
+    vnet_subnet_id         = var.default_node_pool_vnet_subnet_id
 
     node_labels = var.default_node_pool_node_labels
     node_taints = var.default_node_pool_node_taints

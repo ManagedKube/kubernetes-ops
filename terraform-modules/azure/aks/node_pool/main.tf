@@ -20,6 +20,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   max_count             = var.max_count
   min_count             = var.min_count
 
+  vnet_subnet_id = var.vnet_subnet_id
+
   node_labels = var.node_labels
   node_taints = var.node_taints
 

@@ -150,3 +150,9 @@ variable "oidc_issuer_enabled" {
   default = true
   description = "(Required) Enable or Disable"
 }
+
+variable "default_node_pool_vnet_subnet_id" {
+  type = string
+  default = null
+  description = "The vnet subnet ID to put the default node pool into"
+}
