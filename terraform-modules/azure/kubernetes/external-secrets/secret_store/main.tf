@@ -61,32 +61,13 @@ resource "kubernetes_manifest" "k8s_service_account" {
     namespace_name     = local.namespace_name
     serviceAccountName = local.service_account_name
     # The Application ID (also called Client ID).
-    client_id          = trimspace(chomp(azuread_application.app.application_id))
+    client_id          = azuread_application.app.application_id
     tenant_id          = var.azure_tenant_id
   }))
 
   depends_on = [
     azuread_application.app,
-    azuread_service_principal.app,
-    azuread_service_principal_password.app,
-    azuread_application_federated_identity_credential.app,
-    azurerm_key_vault_access_policy.this,
-    kubernetes_manifest.cluster_secret_store
   ]
-}
-
-resource "time_sleep" "wait_30_seconds" {
-  depends_on = [
-    time_sleep.wait_30_seconds,
-    azuread_application.app,
-    azuread_service_principal.app,
-    azuread_service_principal_password.app,
-    azuread_application_federated_identity_credential.app,
-    azurerm_key_vault_access_policy.this,
-    kubernetes_manifest.cluster_secret_store
-  ]
-
-  create_duration = "30s"
 }
 
 ################################################
