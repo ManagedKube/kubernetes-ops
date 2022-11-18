@@ -56,25 +56,35 @@ resource "azurerm_key_vault_access_policy" "this" {
 ################################################
 ## External-secrets k8s service account
 ################################################
-resource "kubernetes_manifest" "k8s_service_account" {
-  manifest = yamldecode(templatefile("yaml/service_account.yaml", {
-    namespace_name     = local.namespace_name
-    serviceAccountName = local.service_account_name
-    # The Application ID (also called Client ID).
-    client_id          = azuread_service_principal.app.id #azuread_application.app.application_id
-    tenant_id          = var.azure_tenant_id
-  }))
+# resource "kubernetes_manifest" "k8s_service_account" {
+#   manifest = yamldecode(templatefile("yaml/service_account.yaml", {
+#     namespace_name     = local.namespace_name
+#     serviceAccountName = local.service_account_name
+#     # The Application ID (also called Client ID).
+#     client_id          = azuread_service_principal.app.id #azuread_application.app.application_id
+#     tenant_id          = var.azure_tenant_id
+#   }))
 
-  depends_on = [
-    time_sleep.wait_30_seconds,
-    azuread_application.app,
-  ]
-}
+#   depends_on = [
+#     time_sleep.wait_30_seconds,
+#     azuread_application.app,
+#   ]
+# }
 
-resource "time_sleep" "wait_30_seconds" {
-  depends_on = [azuread_application.app]
+# resource "time_sleep" "wait_30_seconds" {
+#   depends_on = [azuread_application.app]
 
-  create_duration = "30s"
+#   create_duration = "30s"
+# }
+
+resource "kubernetes_service_account" "example" {
+  metadata {
+    name = local.service_account_name
+    namespace = local.namespace_name
+    annotations = {
+      "azure.workload.identity/tenant-id" = var.azure_tenant_id
+    }
+  }
 }
 
 ################################################
