@@ -81,8 +81,15 @@ resource "kubernetes_service_account" "example" {
   metadata {
     name = local.service_account_name
     namespace = local.namespace_name
+    labels = {
+      "azure.workload.identity/use" = "true"
+      "created-by" = "terraform"
+      "repo-source" = "kubernetes-ops"
+    }
     annotations = {
       "azure.workload.identity/tenant-id" = var.azure_tenant_id
+      "azure.workload.identity/client-id" = azuread_application.app.application_id
+      "azure.workload.identity/service-account-token-expiration" = "86400"
     }
   }
 }
