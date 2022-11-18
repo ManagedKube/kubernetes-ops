@@ -77,6 +77,13 @@ resource "azurerm_key_vault_access_policy" "this" {
 #   create_duration = "30s"
 # }
 
+## Need to use kubernetes_service_account instead of the kubernetes_manifest
+## The kubernetes_manifest will try to parse out all of the fields
+## on plan.  When it is trying to parse out azuread_application.app.application_id
+## it does not exist yet on plan and will error out.  There is no way around
+## the kubernetes_manifest limitations for now.  Using kubernetes_service_account
+## gets around this problem by using the terraform resource which it will actually
+## wait until that resource is created before trying to parse it (blah!).
 resource "kubernetes_service_account" "example" {
   metadata {
     name = local.service_account_name
