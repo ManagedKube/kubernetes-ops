@@ -72,7 +72,7 @@ resource "kubernetes_manifest" "k8s_service_account" {
 }
 
 resource "time_sleep" "wait_30_seconds" {
-  depends_on = [null_resource.previous]
+  depends_on = [azuread_application.app]
 
   create_duration = "30s"
 }
