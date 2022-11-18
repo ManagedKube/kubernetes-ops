@@ -75,6 +75,20 @@ resource "kubernetes_manifest" "k8s_service_account" {
   ]
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [
+    time_sleep.wait_30_seconds,
+    azuread_application.app,
+    azuread_service_principal.app,
+    azuread_service_principal_password.app,
+    azuread_application_federated_identity_credential.app,
+    azurerm_key_vault_access_policy.this,
+    kubernetes_manifest.cluster_secret_store
+  ]
+
+  create_duration = "30s"
+}
+
 ################################################
 ## External-secrets secret stores configurations
 ################################################
