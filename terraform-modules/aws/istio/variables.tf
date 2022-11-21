@@ -40,7 +40,7 @@ variable "namespace_annotations" {
 
 variable "istio_version" {
   type        = string
-  default     = "1.11.0"
+  default     = "1.13.0"
   description = "The version of istio to install"
 }
 
