@@ -11,7 +11,7 @@ variable "resource_group_name" {
 }
 
 variable "soa_record" {
-  type        = any
+  type        = list
   default     = null
   description = "(Optional) An soa_record block as defined below. Changing this forces a new resource to be created."
 }
