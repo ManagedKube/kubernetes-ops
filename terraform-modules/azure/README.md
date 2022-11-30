@@ -85,3 +85,44 @@ az extension add --name aks-preview
 az feature register --name PodSecurityPolicyPreview --namespace Microsoft.ContainerService
 az provider register --namespace Microsoft.ContainerService
 ```
+
+# Permissions for assigning roles to service principals
+A lot of the modules here uses the pattern where it creates a service principal and then assigns
+it a role or some permissions which is used by the Helm chart.  For example, giving the external-dns
+Helm chart permissions so that it can edit entries in a specific Azure DNS zone.  We do that because
+this is the most secure way to grant permissions to k8s pods (and VMs).  There are no passwords/keys or
+long lived certs involved.  It is all done via cryptographic identities that are federated with Azure.
+
+If you didnt create the Azure Subscription and were not assigned to the subscription with the proper
+role, you might not be able to create the necessary role assignments to the service principal even if
+you are a global admin on the account.
+
+This doc describes the permission needed: Doc:
+* https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
+* https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli
+
+You will see errors such as:
+```
+Error: authorization.RoleAssignmentsClient#Create: Failure responding to 
+request: StatusCode=403 -- Original Error: autorest/azure: Service returned an error. 
+Status=403 Code="AuthorizationFailed" 
+```
+
+Check what role you have: Azure portal -> Subscriptions -> <the subscription in question> -> Settings -> My Permissions -> Go to subscription access control (IAM) -> Check Access -> View My access
+* The "contributor" role is not enough.  Per the doc you need: Owner role or User Access Administrator role
+
+To set the user to the proper role:
+* Azure portal -> Subscriptions -> <subscription> -> Settings -> My Permissions -> Go to subscription access control (IAM) -> Access Control IAM -> Role Assignment
+* Set to either `owner` or `User Access Administrator` role
+
+# To view an Azure Application
+* Azure portal -> Azure Active Directory -> Manage -> App Registrations -> All applications
+
+This will list the various applications such as `external-dns`, `external-secrets`, etc
+
+Doc:
+* Creating an application and assigning it a role
+* https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
+
+# Azure built in roles list
+* https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles

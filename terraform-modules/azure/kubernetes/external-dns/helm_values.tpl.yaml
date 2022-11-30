@@ -1,11 +1,14 @@
 ---
+commonLabels:
+  azure.workload.identity/use: "true" # Represents the service account is to be used for workload identity, see https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
   annotations:
-    # This value should match the ARN of the role created by module.iam_assumable_role_admin in irsa.tf
-    eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/${chartName}-${clusterName}"
+    azure.workload.identity/client-id: "${client_id}"
+    azure.workload.identity/tenant-id: "${tenant_id}"
+    azure.workload.identity/service-account-token-expiration: "86400" # Token is valid for 1 day
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ${serviceAccountName}
+  # name: foo
