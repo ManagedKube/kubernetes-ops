@@ -12,6 +12,14 @@ Various sources that attributed to this module:
 az aks get-credentials --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 ```
 
+By default it will output to the `~/.kube/config` file on your local system.  You can point it to another
+file by setting the envar `KUBECONFIG`:
+
+```
+export KUBECONFIG=~/Downloads/kubeconfig-dev01
+```
+Then run the above `az aks get-credentials` command.  
+
 Pre-req:
 * kubelogin binary (https://github.com/Azure/kubelogin)
 * The kubeconfig uses this binary to get the auth information
