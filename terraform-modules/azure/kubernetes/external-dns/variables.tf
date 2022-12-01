@@ -21,7 +21,7 @@ variable "helm_values_2" {
 variable "azure_dns_id" {
   type = string
   default = ""
-  description = "The Azure DNS ID. Can be the zone ID output: /subscriptions/7b3b906c-8d7c-4ad2-9c2f-1234566788/resourceGroups/kubernetes-ops-dev/providers/Microsoft.Network/dnsZones/mydomain.example.com"
+  description = "The Azure DNS ID. Can be the zone ID output: /subscriptions/1a2b3c4d-8d7c-4ad2-9c2f-12345678/resourceGroups/kubernetes-ops-dev/providers/Microsoft.Network/dnsZones/mydomain.example.com"
 }
 
 variable "azure_tenant_id" {
@@ -46,4 +46,16 @@ variable "role_definition_name" {
   type        = string
   default     = "Private DNS Zone Contributor"
   description = "The pre-defined azure role to use"
+}
+
+# variable "azure_subscription_id" {
+#   type        = string
+#   default     = null
+#   description = "The Azure subscription id"
+# }
+
+variable "azure_resource_group_name" {
+  type        = string
+  default     = null
+  description = "The Azure resource group"
 }

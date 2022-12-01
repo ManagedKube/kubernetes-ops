@@ -6,6 +6,9 @@ locals {
   service_account_name = "${local.base_name}-${var.environment_name}-${var.k8s_namespace}"
 }
 
+data "azurerm_subscription" "current" {
+}
+
 ################################################
 ## Setting up the Azure OIDC Federation
 ################################################
@@ -72,6 +75,8 @@ data "template_file" "helm_values" {
     # serviceAccountName = local.service_account_name
     client_id          = azuread_application.app.application_id
     tenant_id          = var.azure_tenant_id
+    subscription_id    = data.azurerm_subscription.current.subscription_id
+    azure_resource_group_name = var.azure_resource_group_name
   }
 }
 
@@ -89,4 +94,33 @@ module "external-dns" {
   depends_on = [
     azurerm_role_assignment.app_storage_contributor
   ]
+}
+
+################################################
+## The `azure.json` configuration file
+################################################
+data "template_file" "azure_json_file" {
+  template = file("${path.module}/azure.json")
+  vars = {
+    client_id                 = azuread_application.app.application_id
+    tenant_id                 = var.azure_tenant_id
+    azure_resource_group_name = var.azure_resource_group_name
+    subscription_id           = data.azurerm_subscription.current.subscription_id
+  }
+}
+
+## The `azure.json` configuration file
+## Doc: https://github.com/kubernetes-sigs/external-dns/blob/91f912bc26f7012cedfce99bd608bc19e2b023dd/docs/tutorials/azure.md#configuration-file
+resource "kubernetes_secret_v1" "example" {
+  metadata {
+    name        = "azure-config-file"
+    namespace   = var.k8s_namespace
+    annotations = {
+      "created-by" = "kubernetes-ops"
+    }
+  }
+
+  data = {
+    "azure.json" = data.template_file.azure_json_file.rendered
+  }
 }

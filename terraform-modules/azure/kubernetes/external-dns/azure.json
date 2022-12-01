@@ -1,0 +1,7 @@
+{
+    "tenantId": "${tenant_id}",
+    "subscriptionId": "${subscription_id}",
+    "resourceGroup": "${azure_resource_group_name}",
+    "useManagedIdentityExtension": true,
+    "userAssignedIdentityID": "${client_id}"
+}

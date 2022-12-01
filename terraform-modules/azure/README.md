@@ -86,6 +86,25 @@ az feature register --name PodSecurityPolicyPreview --namespace Microsoft.Contai
 az provider register --namespace Microsoft.ContainerService
 ```
 
+# AKS Pod Identities
+There has been a bunch of changes to the way identities are given to pods and how that identity is
+linked/federated to Azure Active Directory so that the pod can access Azure resources without hardcoded
+keys given to the pod.
+
+Going forward from (10/2022) the preferred method is:  Azure Workload Identity 
+* https://azure.github.io/azure-workload-identity/docs/
+* https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview
+* https://github.com/kubernetes-sigs/external-dns/issues/2724
+
+```
+AWI (Azure Workload Identity) is essentially the equivalent of AWS's IAM Roles for Service Accounts and works the same. I.e, you cluster becomes an OIDC identity provider and a specific service account in a specific namespace can be designated as federated principal to which Azure IAM roles can be attached. This is significantly more secure than using credentials (i.e. Service Principals with client secrets) or Managed Service Identities (for which the whole Node is able to assume the identity).
+```
+
+Deprecated:
+* AAD Pod Identity (https://github.com/Azure/aad-pod-identity)
+  * CRDs: AzureIdentity, AzureIdentityBinding (dont use this!  It is old.)
+
+
 # Permissions for assigning roles to service principals
 A lot of the modules here uses the pattern where it creates a service principal and then assigns
 it a role or some permissions which is used by the Helm chart.  For example, giving the external-dns
