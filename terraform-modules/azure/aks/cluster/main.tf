@@ -9,6 +9,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   kubernetes_version              = var.kubernetes_version
   private_cluster_enabled         = var.private_cluster_enabled
   dns_prefix                      = var.dns_prefix
+  private_cluster_public_fqdn_enabled = var.private_cluster_public_fqdn_enabled
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
   enable_pod_security_policy      = var.enable_pod_security_policy
 

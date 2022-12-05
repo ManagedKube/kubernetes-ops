@@ -27,6 +27,12 @@ variable "dns_prefix" {
   default = "dev"
 }
 
+variable "private_cluster_public_fqdn_enabled" {
+  type        = bool
+  default     = false
+  description = "(Optional) Specifies whether a Public FQDN for this Private Cluster should be added. Defaults to false."
+}
+
 variable "kubernetes_version" {
   default = "1.24.3"
 }
