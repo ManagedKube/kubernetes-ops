@@ -39,3 +39,15 @@ variable "tags" {
   default     = {}
   description = "Tags to place on the resources" 
 }
+
+variable "peer_1_allow_forwarded_traffic" {
+  type        = bool
+  default     = false
+  description = "(Optional) Controls if forwarded traffic from VMs in the remote virtual network is allowed. Defaults to false." 
+}
+
+variable "peer_2_allow_forwarded_traffic" {
+  type        = bool
+  default     = false
+  description = "(Optional) Controls if forwarded traffic from VMs in the remote virtual network is allowed. Defaults to false." 
+}
