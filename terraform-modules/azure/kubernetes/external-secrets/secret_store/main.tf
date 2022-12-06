@@ -63,7 +63,7 @@ resource "azurerm_key_vault_access_policy" "this" {
 ## the kubernetes_manifest limitations for now.  Using kubernetes_service_account
 ## gets around this problem by using the terraform resource which it will actually
 ## wait until that resource is created before trying to parse it (blah!).
-resource "kubernetes_service_account" "example" {
+resource "kubernetes_service_account" "this" {
   metadata {
     name = local.service_account_name
     namespace = local.namespace_name
