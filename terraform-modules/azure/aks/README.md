@@ -9,8 +9,11 @@ Various sources that attributed to this module:
 ## Getting the kubeconfig
 
 ```
-az aks get-credentials --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
+az aks get-credentials --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name) --public-fqdn
 ```
+
+The `--public-fqdn` flag returns the public fqdn for the Kube API endpoint URL instead of the private-link
+one for a private cluster.  This is generally the one you want to use.
 
 By default it will output to the `~/.kube/config` file on your local system.  You can point it to another
 file by setting the envar `KUBECONFIG`:
