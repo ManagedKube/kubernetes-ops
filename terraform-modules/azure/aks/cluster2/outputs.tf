@@ -12,13 +12,9 @@
 #   value     = azurerm_kubernetes_cluster.cluster.kube_config_raw
 # }
 
-# output "oidc_issuer_url" {
-#   value = azurerm_kubernetes_cluster.cluster.oidc_issuer_url
-# }
-
-# output "tenant_id" {
-#   value = data.azurerm_client_config.current.tenant_id
-# }
+output "tenant_id" {
+  value = data.azurerm_client_config.current.tenant_id
+}
 
 # output "client_id" {
 #   value = data.azurerm_client_config.current.client_id
@@ -39,3 +35,18 @@
 # output "azurerm_resource_group_location" {
 #   value = data.azurerm_resource_group.this.location
 # }
+
+output "oidc_issuer_url" {
+  value = module.aks_cluster.oidc_issuer_url
+}
+
+output "aks_cluster_all" {
+  sensitive = true
+  value = module.aks_cluster
+}
+
+output "aks_cluster_cluster_fqdn" {
+  sensitive = true
+  value = module.aks_cluster.cluster_fqdn
+  description = "The public/private FQDN"
+}
