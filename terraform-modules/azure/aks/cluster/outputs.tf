@@ -39,3 +39,28 @@ output "azurerm_resource_group_name" {
 output "azurerm_resource_group_location" {
   value = data.azurerm_resource_group.this.location
 }
+
+output "admin_host" {
+  sensitive = true
+  value     = azurerm_kubernetes_cluster.cluster.admin_host
+}
+
+output "cluster_fqdn" {
+  sensitive = true
+  value     = azurerm_kubernetes_cluster.cluster.cluster_fqdn
+}
+
+output "cluster_portal_fqdn" {
+  sensitive = true
+  value     = azurerm_kubernetes_cluster.cluster.cluster_portal_fqdn
+}
+
+output "cluster_private_fqdn" {
+  sensitive = true
+  value     = azurerm_kubernetes_cluster.cluster.cluster_private_fqdn
+}
+
+output "host" {
+  sensitive = true
+  value     = azurerm_kubernetes_cluster.cluster.host
+}
