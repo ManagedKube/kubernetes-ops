@@ -210,3 +210,15 @@ KMS for etcd
 * https://learn.microsoft.com/en-us/azure/aks/use-kms-etcd-encryption
 
 
+## Use an Azure AD workload identity (preview) on Azure Kubernetes Service (AKS)
+* https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview
+
+* Pod annotations
+* Service account settings
+
+## Enable Workload Identity preview:
+* https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#install-the-aks-preview-azure-cli-extension
+
+## Enable end-to-end encryption using encryption at host
+
+https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
