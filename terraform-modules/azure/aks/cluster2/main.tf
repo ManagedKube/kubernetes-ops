@@ -108,15 +108,7 @@ module "aks_cluster" {
   agents_labels	   = var.default_node_pool_node_labels
 
 
-  maintenance_window = {
-    allowed = [
-      {
-        day   = "Sunday",
-        hours = [22, 23]
-      },
-    ]
-    not_allowed = []
-  }
+  maintenance_window = var.maintenance_window
 
   # net_profile_pod_cidr              = "10.1.0.0/16"
   private_cluster_enabled           = true

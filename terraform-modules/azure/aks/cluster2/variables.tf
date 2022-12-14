@@ -187,3 +187,16 @@ variable "agents_tags" {
   description = "Additional tags on the default node pool"
 }
 
+variable "maintenance_window" {
+  type = any
+  default = {
+    allowed = [
+      {
+        day   = "Sunday",
+        hours = [22, 23]
+      },
+    ]
+    not_allowed = []
+  }
+  description = "(Optional) A maintenance_window block as defined below."
+}
