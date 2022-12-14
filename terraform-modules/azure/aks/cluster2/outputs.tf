@@ -16,3 +16,18 @@ output "aks_cluster_cluster_fqdn" {
   value = module.aks_cluster.cluster_fqdn
   description = "The public/private FQDN"
 }
+
+output "aks_id" {
+  sensitive = true
+  value = module.aks_cluster.aks_id
+}
+
+output "aks_name" {
+  sensitive = true
+  value = module.aks_cluster.aks_name
+}
+
+output "location" {
+  sensitive = true
+  value = module.aks_cluster.location
+}
