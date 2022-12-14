@@ -18,16 +18,13 @@ output "aks_cluster_cluster_fqdn" {
 }
 
 output "aks_id" {
-  sensitive = true
   value = module.aks_cluster.aks_id
 }
 
 output "aks_name" {
-  sensitive = true
   value = module.aks_cluster.aks_name
 }
 
 output "location" {
-  sensitive = true
   value = module.aks_cluster.location
 }
