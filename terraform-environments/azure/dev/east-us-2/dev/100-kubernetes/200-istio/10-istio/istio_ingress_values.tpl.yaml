@@ -1,0 +1,32 @@
+---
+gateways:
+  istio-ingressgateway:
+    # ports:
+    # ## You can add custom gateway ports in user values overrides, but it must include those ports since helm replaces.
+    # # Note that AWS ELB will by default perform health checks on the first port
+    # # on this list. Setting this to the health check port will ensure that health
+    # # checks always work. https://github.com/istio/istio/issues/12503
+    # - port: 15021
+    #   targetPort: 15021
+    #   name: status-port
+    #   protocol: TCP
+    # - port: 80
+    #   targetPort: 8080
+    #   name: http2
+    #   protocol: TCP
+    # # Routing 443/TLS to the http/clear port for now since we have not decided to use cert-manager yet
+    # # To route it to Istio 443, it needs a cert.
+    # # example: https://istio.io/latest/docs/tasks/traffic-management/ingress/secure-ingress/
+    # - port: 443
+    #   targetPort: 8080
+    #   name: http
+    #   protocol: TCP
+    serviceAnnotations:
+      # Setting to an internal load balancer
+      # https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+      # service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      # service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+      # external-dns.alpha.kubernetes.io/hostname: "*.$ {domain_name},my-app.$ {domain_name},my-app2.$ {domain_name}"
+      # service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
