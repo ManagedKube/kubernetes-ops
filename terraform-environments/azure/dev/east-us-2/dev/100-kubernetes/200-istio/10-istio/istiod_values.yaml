@@ -1,0 +1,16 @@
+---
+## Discovery Settings
+# pilot:
+#   # Resources for a small pilot install
+#   # This setting is for development only.  It is recommended to comment this out for production systems
+#   # and use the istio defaults.
+#   resources:
+#     requests:
+#       cpu: 10m
+#       memory: 256Mi
+# global:
+#   proxy:
+#     ## Sets privileged to true for the istio-proxy container for debugging 
+#     ## Doc: https://github.com/istio/istio/issues/30982#issuecomment-782972271
+#     ## If set to true, istio-proxy container will have privileged securityContext
+#     privileged: false

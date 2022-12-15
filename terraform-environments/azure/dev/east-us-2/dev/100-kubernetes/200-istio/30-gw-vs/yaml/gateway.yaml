@@ -1,0 +1,28 @@
+# Doc: https://istio.io/latest/docs/tasks/traffic-management/ingress/secure-ingress/#configure-a-tls-ingress-gateway-for-a-single-host
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: main-gateway
+  namespace: ${namespace}
+spec:
+  selector:
+    # use Istio default gateway implementation
+    app: istio-ingressgateway
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: domain-wildcard # This should match the Certificate secretName
+    hosts:
+    - "*" # This should match a DNS name in the Certificate
