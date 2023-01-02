@@ -79,6 +79,9 @@ inputs = {
   api_server_authorized_ip_ranges = []
 
   # This will select the subnet with the name "SNET-AKS-Private-1" in the output
+  # Only one AKS cluster can be created in the subnet.  If you want to create multiple AKS clusters in your own vnets
+  # they must be placed into another subnet or you will get and error:
+  # │ Resource Name: "<your cluster name>"): managedclusters.ManagedClustersClient#CreateOrUpdate: Failure sending request: StatusCode=0 -- Original Error: Code="CustomRouteTableWithUnsupportedMSIType" Message="Clusters using managed identity type SystemAssigned do not support bringing your own route table. Please see https://aka.ms/aks/customrt for more information"
   default_node_pool_vnet_subnet_id = [for output in dependency.vnet.outputs.subnets : output.id if output.name == "SNET-AKS-Private-1"][0]
   
   # Default pool autoscaling setting
