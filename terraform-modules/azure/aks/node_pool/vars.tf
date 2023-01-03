@@ -57,3 +57,9 @@ variable "vnet_subnet_id" {
   type = string
   default = null
 }
+
+variable "zones" {
+  type        = list(string)
+  default     = ["1", "2", "3"]
+  description = "(Optional) Specifies a list of Availability Zones in which this Kubernetes Cluster Node Pool should be located. Changing this forces a new Kubernetes Cluster Node Pool to be created."
+}
