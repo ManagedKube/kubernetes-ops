@@ -2,22 +2,8 @@ locals {
   name = "loki-stack"
 }
 
-resource "aws_kms_key" "loki-stack" {
-  description             = "${local.name}-${var.cluster_name}"
-  deletion_window_in_days = 10
-}
-
 resource "aws_s3_bucket" "loki-stack" {
   bucket = "${local.name}-${var.cluster_name}"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.loki-stack.arn
-        sse_algorithm     = "aws:kms"
-      }
-    }
-  }
 
   depends_on = [aws_kms_key.loki-stack]
 }
@@ -35,7 +21,7 @@ resource "aws_s3_bucket_acl" "this" {
 }
 
 resource "aws_kms_key" "this" {
-  description             = "This key is used to encrypt bucket objects"
+  description             = "${local.name}-${var.cluster_name}"
   deletion_window_in_days = 10
 }
 
