@@ -4,8 +4,6 @@ locals {
 
 resource "aws_s3_bucket" "loki-stack" {
   bucket = "${local.name}-${var.cluster_name}"
-
-  depends_on = [aws_kms_key.loki-stack]
 }
 
 resource "aws_s3_bucket_versioning" "this" {
