@@ -98,6 +98,7 @@ module "loki" {
   helm_version        = "2.5.0"
   namespace           = "monitoring"
   helm_values         = data.template_file.helm_values.rendered
+  helm_values_2       = var.helm_values_2
 
   depends_on = [
     aws_s3_bucket.loki-stack, aws_iam_policy.loki-stack
