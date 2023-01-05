@@ -21,3 +21,15 @@ variable "helm_values_2" {
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module and would overwrite the helm_values input"
 }
+
+variable "namespace" {
+  type        = string
+  default     = "monitoring"
+  description = "Kubernetes namespace to deploy into"
+}
+
+variable "helm_chart_version" {
+  type        = string
+  default     = "2.8.9"
+  description = "The version of the Loki helm chart to use"
+}

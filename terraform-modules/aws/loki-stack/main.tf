@@ -95,8 +95,8 @@ module "loki" {
   repository          = "https://grafana.github.io/helm-charts"
   official_chart_name = local.name
   user_chart_name     = local.name
-  helm_version        = "2.5.0"
-  namespace           = "monitoring"
+  helm_version        = var.helm_chart_version
+  namespace           = var.namespace
   helm_values         = data.template_file.helm_values.rendered
   helm_values_2       = var.helm_values_2
 
