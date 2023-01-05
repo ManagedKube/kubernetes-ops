@@ -9,11 +9,6 @@ resource "aws_kms_key" "loki-stack" {
 
 resource "aws_s3_bucket" "loki-stack" {
   bucket = "${local.name}-${var.cluster_name}"
-  acl    = "private"
-
-  versioning {
-    enabled = true
-  }
 
   server_side_encryption_configuration {
     rule {
@@ -25,6 +20,18 @@ resource "aws_s3_bucket" "loki-stack" {
   }
 
   depends_on = [aws_kms_key.loki-stack]
+}
+
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.loki-stack.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.loki-stack.id
+  acl    = "private"
 }
 
 module "iam_assumable_role_admin" {
