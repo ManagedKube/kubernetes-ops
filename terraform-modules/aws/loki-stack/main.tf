@@ -87,7 +87,7 @@ data "aws_caller_identity" "current" {}
 # Helm - ${local.name}
 #
 data "template_file" "helm_values" {
-  template = file("${path.module}/values.yaml")
+  template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
     s3           = aws_s3_bucket.loki-stack.bucket
     awsAccountID = data.aws_caller_identity.current.account_id
