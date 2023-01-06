@@ -29,6 +29,8 @@ module "aks_cluster" {
   enable_host_encryption = var.enable_host_encryption
 
   vnet_subnet_id   = var.default_node_pool_vnet_subnet_id
+  
+  agents_availability_zones = var.agents_availability_zones
 
   agents_count	   = var.default_node_pool_node_count
   agents_max_count = var.default_node_pool_max_count

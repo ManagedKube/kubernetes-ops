@@ -200,3 +200,9 @@ variable "maintenance_window" {
   }
   description = "(Optional) A maintenance_window block as defined below."
 }
+
+variable "agents_availability_zones" {
+  type = list(string)
+  default = ["1", "2", "3"]
+  description = "(Optional) A list of Availability Zones across which the Node Pool should be spread. Changing this forces a new resource to be created."
+}
