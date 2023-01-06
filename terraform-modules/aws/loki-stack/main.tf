@@ -74,7 +74,8 @@ data "aws_iam_policy_document" "loki-stack" {
       "dynamodb:UpdateItem",
       "dynamodb:UpdateTable",
       "dynamodb:CreateTable",
-      "dynamodb:DeleteTable"
+      "dynamodb:DeleteTable",
+      "kms:GenerateDataKey"
     ]
 
     resources = ["*"]
