@@ -18,9 +18,10 @@ loki:
             period: 24h
             tags: {}
 
+    # https://grafana.com/docs/loki/latest/configuration/examples/#s3-expanded-configyaml
     storage_config:
       aws:
-        s3: ${s3}
+        s3: s3://${s3}
         region: ${awsRegion}
         s3forcepathstyle: true
         dynamodb:
