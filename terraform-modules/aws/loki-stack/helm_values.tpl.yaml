@@ -1,10 +1,10 @@
 ---
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/loki-stack-${clusterName}"
+
 loki:
   enabled: true
-
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/loki-stack-${clusterName}"
 
   # config:
   #   schema_config:
