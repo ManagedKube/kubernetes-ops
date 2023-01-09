@@ -1,6 +1,12 @@
 # Doc - journald support: https://github.com/grafana/helm-charts/tree/main/charts/promtail#journald-support
 
 config:
+
+  # Custom endpoint: https://github.com/grafana/helm-charts/tree/main/charts/promtail#customize-client-config-options
+  clients:
+    - url: http://loki-distributed-gateway/loki/api/v1/push
+      tenant_id: 1
+
   snippets:
     extraScrapeConfigs: |
       # Add an additional scrape config for syslog
