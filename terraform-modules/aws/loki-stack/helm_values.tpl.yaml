@@ -113,8 +113,38 @@ loki:
 #       mountPath: /var/log/journal
 #       readOnly: true
 
-fluent-bit:
-  enabled: false
+# fluent-bit:
+#   enabled: false
 
-grafana:
-  enabled: false
+# grafana:
+#   enabled: false
+
+gateway:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 2
+
+distributor:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 2
+
+ingester:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 2
+
+querier:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 2
+
+queryFrontend:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 2
