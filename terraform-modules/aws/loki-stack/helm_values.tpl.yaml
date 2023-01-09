@@ -123,28 +123,28 @@ gateway:
   autoscaling:
     enabled: true
     maxReplicas: 3
-    minReplicas: 2
+    minReplicas: 1
 
 distributor:
   autoscaling:
     enabled: true
     maxReplicas: 3
-    minReplicas: 2
+    minReplicas: 1
 
 ingester:
   autoscaling:
     enabled: true
     maxReplicas: 3
-    minReplicas: 2
+    minReplicas: 1
 
 querier:
   autoscaling:
     enabled: true
     maxReplicas: 3
-    minReplicas: 2
+    minReplicas: 1
 
 queryFrontend:
   autoscaling:
     enabled: true
     maxReplicas: 3
-    minReplicas: 2
+    minReplicas: 1
