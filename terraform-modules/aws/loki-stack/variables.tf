@@ -28,8 +28,9 @@ variable "namespace" {
   description = "Kubernetes namespace to deploy into"
 }
 
+# Chart: https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed
 variable "helm_chart_version" {
   type        = string
-  default     = "2.8.9"
+  default     = "0.67.2" #"2.8.9"
   description = "The version of the Loki helm chart to use"
 }

@@ -6,26 +6,50 @@ loki:
     annotations:
       eks.amazonaws.com/role-arn: "arn:aws:iam::${awsAccountID}:role/loki-stack-${clusterName}"
 
-  config:
-    schema_config:
-      configs:
-        - from: 2021-11-09
-          store: aws
-          object_store: s3
-          schema: v11
-          index:
-            prefix: index_
-            period: 24h
-            tags: {}
+  # config:
+  #   schema_config:
+  #     configs:
+  #       - from: 2021-11-09
+  #         store: aws
+  #         object_store: s3
+  #         schema: v11
+  #         index:
+  #           prefix: index_
+  #           period: 24h
+  #           tags: {}
 
-    # https://grafana.com/docs/loki/latest/configuration/examples/#s3-expanded-configyaml
+    # # https://grafana.com/docs/loki/latest/configuration/examples/#s3-expanded-configyaml
+    # storage_config:
+    #   aws:
+    #     s3: s3://${s3}
+    #     region: ${awsRegion}
+    #     s3forcepathstyle: true
+    #     dynamodb:
+    #       dynamodb_url: dynamodb://${awsRegion}
+
+  structuredConfig:
+    ingester:
+      # Disable chunk transfer which is not possible with statefulsets
+      # and unnecessary for boltdb-shipper
+      max_transfer_retries: 0
+      chunk_idle_period: 1h
+      chunk_target_size: 1536000
+      max_chunk_age: 1h
     storage_config:
       aws:
-        s3: s3://${s3}
-        region: ${awsRegion}
-        s3forcepathstyle: true
-        dynamodb:
-          dynamodb_url: dynamodb://${awsRegion}
+        s3: s3://eu-central-1
+        bucketnames: my-loki-s3-bucket
+      boltdb_shipper:
+        shared_store: s3
+    schema_config:
+      configs:
+        - from: 2020-09-07
+          store: boltdb-shipper
+          object_store: aws
+          schema: v11
+          index:
+            prefix: loki_index_
+            period: 24h
 
 promtail:
   enabled: true

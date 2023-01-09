@@ -1,5 +1,6 @@
 locals {
-  name = "loki-stack"
+  # name = "loki-stack"
+  name = "loki-distributed"
 }
 
 resource "aws_s3_bucket" "loki-stack" {
