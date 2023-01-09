@@ -122,29 +122,29 @@ loki:
 gateway:
   autoscaling:
     enabled: true
-    maxReplicas: 3
+    maxReplicas: 1
     minReplicas: 1
 
 distributor:
   autoscaling:
     enabled: true
-    maxReplicas: 3
+    maxReplicas: 1
     minReplicas: 1
 
 ingester:
   autoscaling:
     enabled: true
-    maxReplicas: 3
+    maxReplicas: 1
     minReplicas: 1
 
 querier:
   autoscaling:
     enabled: true
-    maxReplicas: 3
+    maxReplicas: 1
     minReplicas: 1
 
 queryFrontend:
   autoscaling:
     enabled: true
-    maxReplicas: 3
+    maxReplicas: 1
     minReplicas: 1
