@@ -27,6 +27,7 @@ loki:
     #     dynamodb:
     #       dynamodb_url: dynamodb://${awsRegion}
 
+  # S3 config: https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#example-configuration-using-memberlist-boltdb-shipper-and-s3-for-storage
   structuredConfig:
     ingester:
       # Disable chunk transfer which is not possible with statefulsets
@@ -35,6 +36,23 @@ loki:
       chunk_idle_period: 1h
       chunk_target_size: 1536000
       max_chunk_age: 1h
+
+    storage_config:
+      aws:
+        s3: s3://${awsRegion}
+        bucketnames: ${s3}
+      boltdb_shipper:
+        shared_store: s3
+    schema_config:
+      configs:
+        - from: 2020-09-07
+          store: boltdb-shipper
+          object_store: aws
+          schema: v11
+          index:
+            prefix: loki_index_
+            period: 24h
+
     # storage_config:
     #   aws:
     #     s3: s3://${s3}
@@ -51,19 +69,19 @@ loki:
     #         prefix: loki_index_
     #         period: 24h
 
-    storage_config:
-      aws:
-        s3: s3://${awsRegion}/${s3}
-        dynamodb:
-          dynamodb_url: dynamodb://region
-    schema_config:
-      configs:
-      - from: 2020-05-15
-        store: aws
-        object_store: s3
-        schema: v11
-        index:
-          prefix: loki_
+    # storage_config:
+    #   aws:
+    #     s3: s3://${awsRegion}/${s3}
+    #     dynamodb:
+    #       dynamodb_url: dynamodb://region
+    # schema_config:
+    #   configs:
+    #   - from: 2020-05-15
+    #     store: aws
+    #     object_store: s3
+    #     schema: v11
+    #     index:
+    #       prefix: loki_
 
 
 # promtail:
