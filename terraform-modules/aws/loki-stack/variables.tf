@@ -34,3 +34,16 @@ variable "helm_chart_version" {
   default     = "0.67.2" #"2.8.9"
   description = "The version of the Loki helm chart to use"
 }
+
+# Chart: https://github.com/grafana/helm-charts/tree/main/charts/promtail
+variable "helm_chart_version_promtail" {
+  type        = string
+  default     = "6.8.1"
+  description = "The version of the Loki helm chart to use"
+}
+
+variable "helm_values_2_promtail" {
+  type        = string
+  default     = ""
+  description = "Additional helm values to pass in.  These values would override the default in this module and would overwrite the helm_values input"
+}

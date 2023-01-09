@@ -1,6 +1,7 @@
 locals {
   # name = "loki-stack"
-  name = "loki-distributed"
+  name          = "loki-distributed"
+  name_promtail = "promtail"
 }
 
 resource "aws_s3_bucket" "loki-stack" {
@@ -112,5 +113,31 @@ module "loki" {
 
   depends_on = [
     aws_s3_bucket.loki-stack, aws_iam_policy.loki-stack
+  ]
+}
+
+data "template_file" "helm_values_promtail" {
+  template = file("${path.module}/helm_values_promtail.tpl.yaml")
+  vars = {
+    # s3           = aws_s3_bucket.loki-stack.bucket
+    # awsAccountID = data.aws_caller_identity.current.account_id
+    # awsRegion    = var.aws_region
+    # clusterName  = var.cluster_name
+  }
+}
+
+module "promtail" {
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.30"
+
+  repository          = "https://grafana.github.io/helm-charts"
+  official_chart_name = local.name_promtail
+  user_chart_name     = local.name_promtail
+  helm_version        = var.helm_chart_version_promtail
+  namespace           = var.namespace
+  helm_values         = data.template_file.helm_values_promtail.rendered
+  helm_values_2       = var.helm_values_2_promtail
+
+  depends_on = [
+    module.loki
   ]
 }
