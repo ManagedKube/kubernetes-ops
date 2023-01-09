@@ -57,25 +57,26 @@ data "aws_iam_policy_document" "loki-stack" {
 
     # https://grafana.com/docs/loki/latest/operations/storage/
     actions = [
-      "s3:ListBucket",
-      "s3:PutObject",
-      "s3:GetObject",
-      "dynamodb:ListTables",
-      "dynamodb:BatchGetItem",
-      "dynamodb:BatchWriteItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:DescribeTable",
-      "dynamodb:GetItem",
-      "dynamodb:ListTagsOfResource",
-      "dynamodb:PutItem",
-      "dynamodb:Query",
-      "dynamodb:TagResource",
-      "dynamodb:UntagResource",
-      "dynamodb:UpdateItem",
-      "dynamodb:UpdateTable",
-      "dynamodb:CreateTable",
-      "dynamodb:DeleteTable",
-      "kms:GenerateDataKey"
+      "*",
+      # "s3:ListBucket",
+      # "s3:PutObject",
+      # "s3:GetObject",
+      # "dynamodb:ListTables",
+      # "dynamodb:BatchGetItem",
+      # "dynamodb:BatchWriteItem",
+      # "dynamodb:DeleteItem",
+      # "dynamodb:DescribeTable",
+      # "dynamodb:GetItem",
+      # "dynamodb:ListTagsOfResource",
+      # "dynamodb:PutItem",
+      # "dynamodb:Query",
+      # "dynamodb:TagResource",
+      # "dynamodb:UntagResource",
+      # "dynamodb:UpdateItem",
+      # "dynamodb:UpdateTable",
+      # "dynamodb:CreateTable",
+      # "dynamodb:DeleteTable",
+      # "kms:GenerateDataKey"
     ]
 
     resources = ["*"]
