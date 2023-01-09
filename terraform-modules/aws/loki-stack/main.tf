@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "loki-stack" {
 
     resources = [
       "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}",
-      "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}/",
+      "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}/*",
     ]
   }
 
