@@ -54,34 +54,63 @@ resource "aws_iam_policy" "loki-stack" {
 
 data "aws_iam_policy_document" "loki-stack" {
   statement {
-    sid    = replace(local.name, "-", "")
+    # sid    = replace(local.name, "-", "")
     effect = "Allow"
 
     # https://grafana.com/docs/loki/latest/operations/storage/
     actions = [
-      "*",
-      # "s3:ListBucket",
-      # "s3:PutObject",
-      # "s3:GetObject",
-      # "dynamodb:ListTables",
-      # "dynamodb:BatchGetItem",
-      # "dynamodb:BatchWriteItem",
-      # "dynamodb:DeleteItem",
-      # "dynamodb:DescribeTable",
-      # "dynamodb:GetItem",
-      # "dynamodb:ListTagsOfResource",
-      # "dynamodb:PutItem",
-      # "dynamodb:Query",
-      # "dynamodb:TagResource",
-      # "dynamodb:UntagResource",
-      # "dynamodb:UpdateItem",
-      # "dynamodb:UpdateTable",
-      # "dynamodb:CreateTable",
-      # "dynamodb:DeleteTable",
-      # "kms:GenerateDataKey"
+      "s3:ListBucket",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}",
+      "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}/",
+    ]
+  }
+
+  statement {
+    # sid    = replace(local.name, "-", "")
+    effect = "Allow"
+
+    # https://grafana.com/docs/loki/latest/operations/storage/
+    actions = [
+      "kms:GenerateDataKey"
+    ]
+
+    resources = [
+      aws_kms_key.this.arn,
+    ]
+  }
+
+  statement {
+    # sid    = replace(local.name, "-", "")
+    effect = "Allow"
+
+    # https://grafana.com/docs/loki/latest/operations/storage/
+    actions = [
+      "dynamodb:ListTables",
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:ListTagsOfResource",
+      "dynamodb:PutItem",
+      "dynamodb:Query",
+      "dynamodb:TagResource",
+      "dynamodb:UntagResource",
+      "dynamodb:UpdateItem",
+      "dynamodb:UpdateTable",
+      "dynamodb:CreateTable",
+      "dynamodb:DeleteTable",
+    ]
+
+    resources = [
+      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name}-${var.cluster_name}*",
+    ]
   }
 }
 
