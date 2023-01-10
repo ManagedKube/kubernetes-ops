@@ -33,6 +33,7 @@ loki:
     #         period: 24h
 
     # Doc: https://github.com/grafana/loki/blob/main/docs/sources/configuration/examples.md#aws-basic-config-no-credsyaml
+    # Doc: https://grafana.com/docs/loki/latest/operations/storage/boltdb-shipper/#example-configuration
     # Using S3 for chunk storage
     # Using dynamodb for index storage
     schema_config:
@@ -43,13 +44,16 @@ loki:
           prefix: ${dyanmodb_table_prefix}
         object_store: s3
         schema: v11
-        store: aws
+        store: boltdb-shipper
     storage_config:
       aws:
         s3: s3://${awsRegion}/${s3}
-        dynamodb:
-          dynamodb_url: dynamodb://${awsRegion}
-
+        # dynamodb:
+        #   dynamodb_url: dynamodb://${awsRegion}
+      boltdb_shipper:
+        active_index_directory: /loki/index
+        shared_store: s3
+        cache_location: /loki/boltdb-cache
 
 gateway:
   autoscaling:
