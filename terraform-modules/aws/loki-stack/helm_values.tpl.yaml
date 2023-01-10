@@ -43,7 +43,7 @@ loki:
           prefix: ${dyanmodb_table_prefix}
         object_store: s3
         schema: v11
-        store: boltdb-shipper
+        store: aws
     storage_config:
       aws:
         s3: s3://${awsRegion}/${s3}
