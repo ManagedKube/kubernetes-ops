@@ -16,21 +16,40 @@ loki:
       chunk_target_size: 1536000
       max_chunk_age: 1h
 
-    storage_config:
-      aws:
-        s3: s3://${awsRegion}
-        bucketnames: ${s3}
-      boltdb_shipper:
-        shared_store: s3
+    # storage_config:
+    #   aws:
+    #     s3: s3://${awsRegion}
+    #     bucketnames: ${s3}
+    #   boltdb_shipper:
+    #     shared_store: s3
+    # schema_config:
+    #   configs:
+    #     - from: 2020-09-07
+    #       store: boltdb-shipper
+    #       object_store: aws
+    #       schema: v11
+    #       index:
+    #         prefix: loki_index_
+    #         period: 24h
+
+    # Doc: https://github.com/grafana/loki/blob/main/docs/sources/configuration/examples.md#aws-basic-config-no-credsyaml
+    # Using S3 for chunk storage
+    # Using dynamodb for index storage
     schema_config:
       configs:
-        - from: 2020-09-07
-          store: boltdb-shipper
-          object_store: aws
-          schema: v11
-          index:
-            prefix: loki_index_
-            period: 24h
+      - from: "2020-09-07"
+        index:
+          period: 24h
+          prefix: ${dyanmodb_table_prefix}
+        object_store: s3
+        schema: v11
+        store: aws
+    storage_config:
+      aws:
+        s3: s3://${awsRegion}/${s3}
+        dynamodb:
+          dynamodb_url: dynamodb://${awsRegion}
+
 
 gateway:
   autoscaling:

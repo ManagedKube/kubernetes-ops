@@ -47,3 +47,9 @@ variable "helm_values_2_promtail" {
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module and would overwrite the helm_values input"
 }
+
+variable "dyanmodb_table_prefix" {
+  type        = string
+  default     = "loki_index_"
+  description = "The DynamoDB table prefix to use.  This prefix will be used for the Loki table index and also used for the IAM permissions to only allow Loki access to this set of DynamoDB tables."
+}

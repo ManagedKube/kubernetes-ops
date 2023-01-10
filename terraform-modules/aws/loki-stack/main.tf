@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "loki-stack" {
     ]
 
     resources = [
-      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name}-${var.cluster_name}*",
+      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${var.dyanmodb_table_prefix}*",
     ]
   }
 }
@@ -122,10 +122,11 @@ data "aws_caller_identity" "current" {}
 data "template_file" "helm_values" {
   template = file("${path.module}/helm_values.tpl.yaml")
   vars = {
-    s3           = aws_s3_bucket.loki-stack.bucket
-    awsAccountID = data.aws_caller_identity.current.account_id
-    awsRegion    = var.aws_region
-    clusterName  = var.cluster_name
+    s3                    = aws_s3_bucket.loki-stack.bucket
+    awsAccountID          = data.aws_caller_identity.current.account_id
+    awsRegion             = var.aws_region
+    clusterName           = var.cluster_name
+    dyanmodb_table_prefix = var.dyanmodb_table_prefix
   }
 }
 
