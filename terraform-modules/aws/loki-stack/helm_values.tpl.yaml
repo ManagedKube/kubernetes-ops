@@ -79,12 +79,28 @@ ingester:
     enabled: true
     maxReplicas: 1
     minReplicas: 1
+  # Extra emtpyDir for the Loki's boltdb_shipper usage
+  # Source: https://github.com/grafana/loki/issues/4466#issuecomment-1078960849
+  extraVolumes:
+    - name: boltdb-shipper
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: boltdb-shipper
+      mountPath: /loki
 
 querier:
   autoscaling:
     enabled: true
     maxReplicas: 1
     minReplicas: 1
+  # Extra emtpyDir for the Loki's boltdb_shipper usage
+  # Source: https://github.com/grafana/loki/issues/4466#issuecomment-1078960849
+  extraVolumes:
+    - name: boltdb-shipper
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: boltdb-shipper
+      mountPath: /loki
 
 queryFrontend:
   autoscaling:
