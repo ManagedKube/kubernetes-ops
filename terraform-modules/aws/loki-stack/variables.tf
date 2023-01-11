@@ -53,3 +53,9 @@ variable "dyanmodb_table_prefix" {
   default     = "loki_index_"
   description = "The DynamoDB table prefix to use.  This prefix will be used for the Loki table index and also used for the IAM permissions to only allow Loki access to this set of DynamoDB tables."
 }
+
+variable "tags" {
+  type        = any
+  default     = {}
+  description = "AWS Tags"
+}

@@ -6,6 +6,7 @@ locals {
 
 resource "aws_s3_bucket" "loki-stack" {
   bucket = "${local.name}-${var.cluster_name}"
+  tags   = var.tags
 }
 
 resource "aws_s3_bucket_versioning" "this" {
@@ -23,6 +24,7 @@ resource "aws_s3_bucket_acl" "this" {
 resource "aws_kms_key" "this" {
   description             = "${local.name}-${var.cluster_name}"
   deletion_window_in_days = 10
+  tags                    = var.tags
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
