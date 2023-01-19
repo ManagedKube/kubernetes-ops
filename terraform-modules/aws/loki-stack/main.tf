@@ -21,19 +21,12 @@ resource "aws_s3_bucket_acl" "this" {
   acl    = "private"
 }
 
-# resource "aws_kms_key" "this" {
-#   description             = "${local.name}-${var.cluster_name}"
-#   deletion_window_in_days = 10
-#   tags                    = var.tags
-# }
-
 # Using the default AWS KMS master key in your account
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.loki-stack.bucket
 
   rule {
     apply_server_side_encryption_by_default {
-      # kms_master_key_id = aws_kms_key.this.arn
       sse_algorithm     = "AES256" #"aws:kms"
     }
   }
@@ -73,20 +66,6 @@ data "aws_iam_policy_document" "loki-stack" {
       "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}/*",
     ]
   }
-
-  # statement {
-  #   # sid    = replace(local.name, "-", "")
-  #   effect = "Allow"
-
-  #   # https://grafana.com/docs/loki/latest/operations/storage/
-  #   actions = [
-  #     "kms:GenerateDataKey"
-  #   ]
-
-  #   resources = [
-  #     aws_kms_key.this.arn,
-  #   ]
-  # }
 
   statement {
     # sid    = replace(local.name, "-", "")
