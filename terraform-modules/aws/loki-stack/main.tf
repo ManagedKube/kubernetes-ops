@@ -66,34 +66,36 @@ data "aws_iam_policy_document" "loki-stack" {
       "arn:aws:s3:::${aws_s3_bucket.loki-stack.bucket}/*",
     ]
   }
+  
+  ## We are using Grafana boltdb-shipper which will put the logs and index in the same S3 location
+  ## Which means that DynamoDB is not required
+  # statement {
+  #   # sid    = replace(local.name, "-", "")
+  #   effect = "Allow"
 
-  statement {
-    # sid    = replace(local.name, "-", "")
-    effect = "Allow"
+  #   # https://grafana.com/docs/loki/latest/operations/storage/
+  #   actions = [
+  #     "dynamodb:ListTables",
+  #     "dynamodb:BatchGetItem",
+  #     "dynamodb:BatchWriteItem",
+  #     "dynamodb:DeleteItem",
+  #     "dynamodb:DescribeTable",
+  #     "dynamodb:GetItem",
+  #     "dynamodb:ListTagsOfResource",
+  #     "dynamodb:PutItem",
+  #     "dynamodb:Query",
+  #     "dynamodb:TagResource",
+  #     "dynamodb:UntagResource",
+  #     "dynamodb:UpdateItem",
+  #     "dynamodb:UpdateTable",
+  #     "dynamodb:CreateTable",
+  #     "dynamodb:DeleteTable",
+  #   ]
 
-    # https://grafana.com/docs/loki/latest/operations/storage/
-    actions = [
-      "dynamodb:ListTables",
-      "dynamodb:BatchGetItem",
-      "dynamodb:BatchWriteItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:DescribeTable",
-      "dynamodb:GetItem",
-      "dynamodb:ListTagsOfResource",
-      "dynamodb:PutItem",
-      "dynamodb:Query",
-      "dynamodb:TagResource",
-      "dynamodb:UntagResource",
-      "dynamodb:UpdateItem",
-      "dynamodb:UpdateTable",
-      "dynamodb:CreateTable",
-      "dynamodb:DeleteTable",
-    ]
-
-    resources = [
-      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${var.dyanmodb_table_prefix}*",
-    ]
-  }
+  #   resources = [
+  #     "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${var.dyanmodb_table_prefix}*",
+  #   ]
+  # }
 }
 
 data "aws_caller_identity" "current" {}
