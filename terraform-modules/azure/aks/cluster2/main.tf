@@ -4,17 +4,6 @@ locals {
   }
 }
 
-## Registering a preview service: 
-## https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#register-the-enableworkloadidentitypreview-feature-flag
-resource "azurerm_resource_provider_registration" "this" {
-  name = "Microsoft.ContainerService"
-
-  feature {
-    name       = "EnableWorkloadIdentityPreview"
-    registered = true
-  }
-}
-
 # Sourcing this so that we can output this data.  This will help downstream
 # items such as the azure-workload-identity helm chart to get the tenant ID.
 data "azurerm_client_config" "current" {
@@ -59,10 +48,6 @@ module "aks_cluster" {
   workload_identity_enabled         = true
 
   tags = var.tags
-  
-  depends_on = [
-    azurerm_resource_provider_registration.this
-  ]
 }
 
 ########################################
