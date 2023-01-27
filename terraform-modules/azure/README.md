@@ -33,7 +33,8 @@ Quick start guide: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-
 ENVIRONMENT=dev
 RESOURCE_GROUP_NAME=kubernetes-ops-${ENVIRONMENT}
 LOCATION="eastus2"
-STORAGE_ACCOUNT_NAME=kubernetesops
+COMPANY_NAME="managedkube" # Your company name here, since these names are globally unique. Lowercase and letters only
+STORAGE_ACCOUNT_NAME=kubernetesops${COMPANY_NAME}
 CONTAINER_NAME=tfstate
 ```
 

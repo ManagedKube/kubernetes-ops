@@ -2,6 +2,9 @@
 
 Source module: https://github.com/Azure/terraform-azurerm-aks
 
+# Enable enableworkloadidentitypreview
+The AKS cluster uses the Workload Identity which is still in preview.  To enable, follow these instructions: https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#register-the-enableworkloadidentitypreview-feature-flag
+
 ## Notes:
 
 ### Creating two clusters in the same subnets
