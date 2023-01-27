@@ -42,10 +42,15 @@ module "aks_cluster" {
 
   maintenance_window = var.maintenance_window
 
-  private_cluster_enabled           = true
-  rbac_aad_managed                  = false
+  private_cluster_enabled           = var.private_cluster_enabled
+
+  rbac_aad                          = var.rbac_aad
+  rbac_aad_managed                  = var.rbac_aad_managed
   role_based_access_control_enabled = var.role_based_access_control_enabled
-  workload_identity_enabled         = true
+  sku_tier                          = var.sku_tier
+
+
+  workload_identity_enabled         = var.workload_identity_enabled
 
   tags = var.tags
 }

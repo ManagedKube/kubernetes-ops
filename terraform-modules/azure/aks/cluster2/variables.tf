@@ -50,10 +50,6 @@ variable "enable_pod_security_policy" {
   default = false
 }
 
-variable "role_based_access_control_enabled" {
-  default = true
-}
-
 variable "default_node_pool_name" {
   default = "default"
 }
@@ -205,4 +201,38 @@ variable "agents_availability_zones" {
   type = list(string)
   default = ["1", "2", "3"]
   description = "(Optional) A list of Availability Zones across which the Node Pool should be spread. Changing this forces a new resource to be created."
+}
+
+variable "rbac_aad" {
+  type = bool
+  default = true
+  description = "(Optional) Is Azure Active Directory ingration enabled?	"
+}
+
+variable "rbac_aad_managed" {
+  type = bool
+  default = true
+  description = "Is the Azure Active Directory integration Managed, meaning that Azure will create/manage the Service Principal used for integration.	"
+}
+
+variable "role_based_access_control_enabled" {
+  type = bool
+  default = true
+  description = "Enable Role Based Access Control.	"
+}
+
+variable "sku_tier" {
+  type = string
+  default = "Free"
+  description = "The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid	"
+}
+
+variable "private_cluster_enabled" {
+  type = bool
+  default = false
+}
+
+variable "workload_identity_enabled" {
+  type = bool
+  default = true
 }
