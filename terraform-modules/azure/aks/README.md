@@ -27,6 +27,15 @@ Pre-req:
 * kubelogin binary (https://github.com/Azure/kubelogin)
 * The kubeconfig uses this binary to get the auth information
 
+# AKS Get the admin creds:
+```
+az aks get-credentials --resource-group myResourceGroup --name myManagedCluster --admin
+```
+* The is is the admin local account
+* You will have to enable this with this input var: `local_account_disabled`
+
+Doc: https://learn.microsoft.com/en-us/azure/aks/managed-aad
+
 ## Give users AKS/Kubernetes Permissions
 
 In Azure there are "Azure RBAC" which are like AWS Roles/Policies.
@@ -222,3 +231,55 @@ KMS for etcd
 ## Enable end-to-end encryption using encryption at host
 
 https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
+
+# AKS RBAC
+The Azure Active Directory integration is set to be enabled by default (changable
+via the input variables if you want to turn this off).
+
+Doc: https://learn.microsoft.com/en-us/azure/aks/control-kubeconfig-access
+
+This will:
+* Create an Azure Active Directory Group and set that as the AKS default admin group
+which will set this group to the Kubernetes RBAC `cluster-admin` role.
+
+You can control this group via the following input variables:
+```
+  ## The owner of the default admin group
+  ## This is an Azure Active Directory group and this is setting the owner of that group
+  default_admin_group_owners = [
+    "xxxxxxx-6893-4ffa-b650-xxxxxxxxx", # bob#EXT#@managedkube.onmicrosoft.com
+  ]
+
+  ## The Azure Active Directory group which is given cluster-admin access to the AKS cluster.
+  ## This list has to be populated by at least one person who will have access to this cluster.
+  default_admin_group_members = [
+    # "0e3b5f48-02a3-4315-9b8b-9e4131e102ab", # joe.com#EXT#@managedkube.onmicrosoft.com
+  ]
+```
+* Everyone in the `default_admin_group_members` groups will have `cluster-admin` access.
+
+You can then grant additional access to other groups with more grandular roles via the normal
+Kubernetes RBAC `ClusterRoleBindings`.  Here is an example:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/cluster-service: "true"
+    managedkube/created-by: terraform
+    managedkube/created-by-repo: foo
+    managedkube/created-by-repo-path: bar
+  name: rbac-test-1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  ## Azure Active Directory group ID
+  ## group name: managedkube-temp1
+  name: xxxxxx-4b4c-4522-ac4c-xxxxx
+```
