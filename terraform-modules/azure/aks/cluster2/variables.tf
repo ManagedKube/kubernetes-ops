@@ -37,10 +37,6 @@ variable "kubernetes_version" {
   default = "1.24.3"
 }
 
-variable "private_cluster_enabled" {
-  default = false
-}
-
 variable "api_server_authorized_ip_ranges" {
   type    = list(string)
   default = ["1.1.1.1/32"]
@@ -48,10 +44,6 @@ variable "api_server_authorized_ip_ranges" {
 
 variable "enable_pod_security_policy" {
   default = false
-}
-
-variable "role_based_access_control_enabled" {
-  default = true
 }
 
 variable "default_node_pool_name" {
@@ -205,4 +197,68 @@ variable "agents_availability_zones" {
   type = list(string)
   default = ["1", "2", "3"]
   description = "(Optional) A list of Availability Zones across which the Node Pool should be spread. Changing this forces a new resource to be created."
+}
+
+variable "rbac_aad" {
+  type = bool
+  default = true
+  description = "(Optional) Is Azure Active Directory ingration enabled?	"
+}
+
+variable "rbac_aad_managed" {
+  type = bool
+  default = true
+  description = "Is the Azure Active Directory integration Managed, meaning that Azure will create/manage the Service Principal used for integration.	"
+}
+
+variable "role_based_access_control_enabled" {
+  type = bool
+  default = true
+  description = "Enable Role Based Access Control.	"
+}
+
+variable "sku_tier" {
+  type = string
+  default = "Free"
+  description = "The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid	"
+}
+
+variable "private_cluster_enabled" {
+  type = bool
+  default = false
+}
+
+variable "workload_identity_enabled" {
+  type = bool
+  default = true
+}
+
+variable "rbac_aad_admin_group_object_ids" {
+  description = "Object ID of groups with admin access."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_default_admin_group" {
+  description = "Should this module create the default admin group for you.  If not, you will have to populate the rbac_aad_admin_group_object_ids variable for access to this cluster."
+  type        = bool
+  default     = true
+}
+
+variable "default_admin_group_name" {
+  description = "The name of the default admin group"
+  type        = string
+  default     = "aks_admins"
+}
+
+variable "default_admin_group_members" {
+  description = "A list of the group member to add into the default_admin_group.  The items in the list are the user's object ID"
+  type        = list(string)
+  default     = []
+}
+
+variable "default_admin_group_owners" {
+  description = "Optional) A set of object IDs of principals that will be granted ownership of the group. Supported object types are users or service principals. By default, the principal being used to execute Terraform is assigned as the sole owner. Groups cannot be created with no owners or have all their owners removed."
+  type        = list(string)
+  default     = []
 }
