@@ -232,3 +232,33 @@ variable "workload_identity_enabled" {
   type = bool
   default = true
 }
+
+variable "rbac_aad_admin_group_object_ids" {
+  description = "Object ID of groups with admin access."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_default_admin_group" {
+  description = "Should this module create the default admin group for you.  If not, you will have to populate the rbac_aad_admin_group_object_ids variable for access to this cluster."
+  type        = bool
+  default     = true
+}
+
+variable "default_admin_group_name" {
+  description = "The name of the default admin group"
+  type        = string
+  default     = "aks_admins"
+}
+
+variable "default_admin_group_members" {
+  description = "A list of the group member to add into the default_admin_group.  The items in the list are the user's object ID"
+  type        = list(string)
+  default     = []
+}
+
+variable "default_admin_group_owners" {
+  description = "Optional) A set of object IDs of principals that will be granted ownership of the group. Supported object types are users or service principals. By default, the principal being used to execute Terraform is assigned as the sole owner. Groups cannot be created with no owners or have all their owners removed."
+  type        = list(string)
+  default     = []
+}

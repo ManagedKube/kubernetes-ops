@@ -10,9 +10,8 @@ data "azurerm_client_config" "current" {
 }
 
 module "aks_cluster" {
-  # source  = "Azure/aks/azurerm"
-  # version = "6.5.0"
-  source = "github.com/Azure/terraform-azurerm-aks.git//?ref=main"
+  source  = "Azure/aks/azurerm"
+  version = "6.6.0"
 
   prefix                               = var.dns_prefix
   resource_group_name                  = local.resource_group.name
@@ -46,6 +45,7 @@ module "aks_cluster" {
   private_cluster_enabled           = var.private_cluster_enabled
 
   rbac_aad                          = var.rbac_aad
+  rbac_aad_admin_group_object_ids	  = concat(var.rbac_aad_admin_group_object_ids, [azuread_group.default_admin_group[0].id])
   rbac_aad_managed                  = var.rbac_aad_managed
   role_based_access_control_enabled = var.role_based_access_control_enabled
   sku_tier                          = var.sku_tier
@@ -79,4 +79,27 @@ resource "azurerm_role_assignment" "cluster_service_principal" {
   scope                = data.azurerm_resource_group.grant.id
   role_definition_name = "Contributor"
   principal_id         = module.aks_cluster.cluster_identity["principal_id"]
+}
+
+
+########################################
+## Groups and users management for access to the AKS cluster
+##
+## Docs: https://learn.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin
+##
+########################################
+resource "azuread_group" "default_admin_group" {
+  count            = var.create_default_admin_group ? 1 : 0
+  display_name     = var.default_admin_group_name
+  security_enabled = true
+  # mail_enabled     = true
+  # types            = ["Unified"]
+  # mail_nickname    = var.default_admin_group_name
+  owners           = var.default_admin_group_owners
+}
+
+resource "azuread_group_member" "default_admin_group_members" {
+  count = length(var.default_admin_group_members)
+  group_object_id  = azuread_group.default_admin_group[0].id
+  member_object_id = var.default_admin_group_members[count.index]
 }

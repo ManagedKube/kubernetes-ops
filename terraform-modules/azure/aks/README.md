@@ -27,6 +27,15 @@ Pre-req:
 * kubelogin binary (https://github.com/Azure/kubelogin)
 * The kubeconfig uses this binary to get the auth information
 
+# AKS Get the admin creds:
+```
+az aks get-credentials --resource-group myResourceGroup --name myManagedCluster --admin
+```
+* The is is the admin local account
+* You will have to enable this with this input var: `local_account_disabled`
+
+Doc: https://learn.microsoft.com/en-us/azure/aks/managed-aad
+
 ## Give users AKS/Kubernetes Permissions
 
 In Azure there are "Azure RBAC" which are like AWS Roles/Policies.
