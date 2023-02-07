@@ -15,8 +15,8 @@ variable "subnets" {
   type        = any
   default     = [
     {
-      name           = "SNET-AKS-Private-1"
-      address_prefix = ["10.10.10.0/24"]
+      name             = "SNET-AKS-Private-1"
+      address_prefixes = ["10.10.10.0/24"]
     },
   ]
 }
