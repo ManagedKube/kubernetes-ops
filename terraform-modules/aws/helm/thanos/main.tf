@@ -2,7 +2,7 @@ resource "helm_release" "helm_chart" {
   chart            = "thanos"
   namespace        = var.namespace
   create_namespace = "true"
-  name             = var.chart_name
+  name             = "${var.chart_name}-${var.eks_cluster_id}"
   version          = var.helm_version
   verify           = var.verify
   repository       = "https://charts.bitnami.com/bitnami"
