@@ -27,3 +27,8 @@ variable helm_values {
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module."
 }
+variable "eks_cluster_id" {
+  type        = string
+  default     = ""
+  description = "EKS cluster ID"
+}
