@@ -60,12 +60,12 @@ data "aws_iam_policy_document" "csi" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
+      variable = "${replace(module.eks.oidc_provider, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
 
     principals {
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
+      identifiers = [module.eks.oidc_provider_arn]
       type        = "Federated"
     }
   }
