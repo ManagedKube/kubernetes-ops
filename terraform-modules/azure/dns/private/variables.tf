@@ -29,7 +29,7 @@ variable "enable_azurerm_private_dns_zone_virtual_network_link" {
 }
 
 variable "virtual_network_id" {
-  type        = bool
-  default     = false
+  type        = string
+  default     = null
   description = "(Required if enable_azurerm_private_dns_zone_virtual_network_link is true) The ID of the Virtual Network that should be linked to the DNS Zone. Changing this forces a new resource to be created."
 }
