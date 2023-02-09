@@ -10,7 +10,7 @@ data "azurerm_resource_group" "this" {
 resource "azurerm_container_registry" "acr" {
   name                = var.name
   resource_group_name = var.azurerm_resource_group
-  location            = azurerm_resource_group.this.location
+  location            = data.azurerm_resource_group.this.location
   sku                 = var.sku
 
 #   identity {
@@ -34,7 +34,7 @@ resource "azurerm_container_registry" "acr" {
 
 resource "azurerm_user_assigned_identity" "this" {
   resource_group_name = var.azurerm_resource_group
-  location            = azurerm_resource_group.this.location
+  location            = data.azurerm_resource_group.this.location
 
   name = "registry-uai"
 }
