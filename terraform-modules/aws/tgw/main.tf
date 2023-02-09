@@ -18,6 +18,16 @@ module "tgw" {
   tags = var.tags
 }
 
+resource "aws_ec2_transit_gateway_policy_table" "tgw_policy_table" {
+  count              = var.create_tgw ? 1 : 0
+  transit_gateway_id = module.tgw.ec2_transit_gateway_id
+  depends_on = [
+     module.tgw.aws_ec2_transit_gateway
+  ]
+
+  tags = var.tags
+}
+
 resource "aws_route" "private_tgw" {
   count                  = var.create_private_route ? length(var.route_cidr_blocks) : 0
   route_table_id         = var.private_route_table_id
