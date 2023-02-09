@@ -50,8 +50,9 @@ module "aks_cluster" {
   role_based_access_control_enabled = var.role_based_access_control_enabled
   sku_tier                          = var.sku_tier
 
-
   workload_identity_enabled         = var.workload_identity_enabled
+
+  private_dns_zone_id	= var.private_dns_zone_id
 
   tags = var.tags
 }
