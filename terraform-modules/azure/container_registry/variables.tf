@@ -19,6 +19,10 @@ variable "sku" {
 #     default     = ["xxxxx"]
 # }
 
+variable "azurerm_key_vault_key_name" {
+  description = "Specifies the name of the Key Vault Key."
+}
+
 variable "key_vault_id" {
   description = "(Required) The ID of the Key Vault where the Key should be created. Changing this forces a new resource to be created."
 }

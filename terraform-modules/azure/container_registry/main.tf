@@ -1,8 +1,3 @@
-# resource "azurerm_resource_group" "example" {
-#   name     = "example-resources"
-#   location = "West Europe"
-# }
-
 data "azurerm_resource_group" "this" {
   name = var.azurerm_resource_group
 }
@@ -26,7 +21,7 @@ resource "azurerm_container_registry" "acr" {
 
   encryption {
     enabled            = true
-    key_vault_key_id   = data.azurerm_key_vault_key.example.id
+    key_vault_key_id   = data.azurerm_key_vault_key.this.id
     identity_client_id = azurerm_user_assigned_identity.this.client_id
   }
 
@@ -39,7 +34,7 @@ resource "azurerm_user_assigned_identity" "this" {
   name = "registry-uai"
 }
 
-data "azurerm_key_vault_key" "example" {
-  name         = "container-registry-${var.name}"
+data "azurerm_key_vault_key" "this" {
+  name         = var.azurerm_key_vault_key_name
   key_vault_id = var.key_vault_id
 }
