@@ -28,8 +28,14 @@ variable "enable_azurerm_private_dns_zone_virtual_network_link" {
   description = "Enable the private DNS link to a vnet or not"
 }
 
-variable "virtual_network_id" {
+variable "vnet_name" {
   type        = string
   default     = null
-  description = "(Required if enable_azurerm_private_dns_zone_virtual_network_link is true) The ID of the Virtual Network that should be linked to the DNS Zone. Changing this forces a new resource to be created."
+  description = "(Required if enable_azurerm_private_dns_zone_virtual_network_link is true) The name of the vnet."
+}
+
+variable "vnet_resource_group" {
+  type        = string
+  default     = null
+  description = "(Required if enable_azurerm_private_dns_zone_virtual_network_link) The name of the resource group the vnet belongs to."
 }
