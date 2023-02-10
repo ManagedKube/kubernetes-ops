@@ -39,3 +39,8 @@ variable "soft_delete_retention_days" {
   default = 90
   description = "(Optional) The number of days that items should be retained for once soft-deleted. This value can be between 7 and 90 (the default) days."
 }
+
+variable "purge_protection_enabled" {
+  description = "(Optional) Is Purge Protection enabled for this Key Vault?"
+  default     = false
+}
