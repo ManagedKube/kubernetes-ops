@@ -87,6 +87,31 @@ az feature register --name PodSecurityPolicyPreview --namespace Microsoft.Contai
 az provider register --namespace Microsoft.ContainerService
 ```
 
+# Show tenant
+```
+az account tenant list
+
+az account show
+```
+
+# change tenant:
+
+## sign in as a different user
+```
+az login --user <myAlias@myCompany.com> -password <myPassword>
+```
+
+## sign in with a different tenant
+```
+az login --tenant <myTenantID>
+```
+
+## clear local creds
+```
+az account clear
+```
+
+
 # AKS Pod Identities
 There has been a bunch of changes to the way identities are given to pods and how that identity is
 linked/federated to Azure Active Directory so that the pod can access Azure resources without hardcoded
