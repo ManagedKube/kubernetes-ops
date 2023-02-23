@@ -27,7 +27,7 @@ variable "cluster_name" {
 }
 
 variable "cluster_version" {
-  default = "1.21"
+  default = "1.23"
 }
 
 variable "enable_irsa" {
