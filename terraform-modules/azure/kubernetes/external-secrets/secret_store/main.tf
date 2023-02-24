@@ -44,13 +44,10 @@ resource "azurerm_key_vault_access_policy" "this" {
   tenant_id    = var.azure_tenant_id
   object_id    = azuread_service_principal.app.object_id
 
-  key_permissions = [
-    "Get",
-  ]
-
-  secret_permissions = [
-    "Get",
-  ]
+  certificate_permissions = var.certificate_permissions
+  key_permissions         = var.key_permissions
+  secret_permissions      = var.secret_permissions
+  storage_permissions     = var.storage_permissions
 }
 
 ################################################
