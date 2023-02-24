@@ -6,6 +6,10 @@ data "local_file" "policy"{
    filename = var.core_network_policy_document
 }
 
+locals {
+  transit_gateway_arns = toset(var.transit_gateway_arn)
+}
+
 module "cloudwan" {
   source = "aws-ia/cloudwan/aws"
   version = "v1.0.0"
@@ -26,7 +30,7 @@ module "cloudwan" {
 }
 
 resource "aws_networkmanager_transit_gateway_registration" "tgw-register" {
-  count = length(var.transit_gateway_arn)
+  for_each = local.transit_gateway_arns
   global_network_id   = "${module.cloudwan.global_network.id}"
-  transit_gateway_arn = element(var.transit_gateway_arn, count.index)
+  transit_gateway_arn = each.key
 }
