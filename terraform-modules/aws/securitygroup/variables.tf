@@ -14,12 +14,12 @@ variable "vpc_id" {
 }
 
 variable "ingress_rules" {
-  type        = list(map(any))
+  type        = list(object)
   description = "A list of ingress rules to apply to the security group"
 }
 
 variable "egress_rules" {
-  type        = list(map(any))
+  type        = list(object)
   description = "A list of egress rules to apply to the security group"
 }
 
