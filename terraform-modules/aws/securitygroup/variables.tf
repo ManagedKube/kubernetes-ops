@@ -15,6 +15,7 @@ variable "vpc_id" {
 
 variable "ingress_rules" {
   type = list(object({
+    description = string
     from_port   = number
     to_port     = number
     protocol    = string
@@ -25,6 +26,7 @@ variable "ingress_rules" {
 
 variable "egress_rules" {
   type = list(object({
+    description = string
     from_port   = number
     to_port     = number
     protocol    = string
