@@ -20,6 +20,7 @@ variable "ingress_rules" {
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
+    ipv6_cidr_blocks = list(string)
     self        = bool
   }))
   description = "A list of ingress rules to apply to the security group"
@@ -32,6 +33,7 @@ variable "egress_rules" {
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
+    ipv6_cidr_blocks = list(string)
     self        = bool
   }))
   description = "A list of egress rules to apply to the security group"
