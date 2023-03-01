@@ -32,3 +32,8 @@ variable "egress_rules" {
   }))
   description = "A list of egress rules to apply to the security group"
 }
+
+variable "tags" {
+    type = map(any)
+    description = "A list of tags"
+}
