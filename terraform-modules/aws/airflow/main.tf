@@ -4,9 +4,10 @@ resource "aws_mwaa_environment" "this" {
   environment_class  = var.environment_class
   max_workers        = var.max_workers
   min_workers        = var.min_workers
-  source_bucket_arn  = var.source_bucket_arn
+  source_bucket_arn  = aws_s3_bucket.mwaa.arn
   dag_s3_path        = var.dag_s3_path
   execution_role_arn = module.iam_assumable_role_admin.iam_role_arn
+  webserver_access_mode = var.webserver_access_mode
 
   logging_configuration {
     dag_processing_logs {
@@ -45,9 +46,37 @@ resource "aws_mwaa_environment" "this" {
 
 data "aws_caller_identity" "current" {}
 
+resource "aws_s3_bucket" "mwaa" {
+  bucket = var.source_bucket_name
+  tags   = var.tags
+}
+
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.mwaa.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.mwaa.id
+  acl    = "private"
+}
+
+# Using the default AWS KMS master key
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.mwaa.arn
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "AES256" #"aws:kms"
+    }
+  }
+}
+
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version                       = "4.14.0"
+  version                       = "5.11.2"
 
   create_role             = true
   role_name               = "airflow-${var.airflow_name}"
