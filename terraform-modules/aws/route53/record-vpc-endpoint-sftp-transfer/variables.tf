@@ -25,3 +25,10 @@ variable "transfer_server_id" {
   default     = ""
   description = "The ID of the AWS Transfer Server"
 }
+
+variable vpc_id {
+  type        = string
+  default     = ""
+  description = "The VPC ID Where VPC enpoint is configured"
+}
+
