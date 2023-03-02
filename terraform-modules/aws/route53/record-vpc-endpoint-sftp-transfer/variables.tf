@@ -14,17 +14,6 @@ variable "type" {
   description = "Also known as an Address record, is used to map a domain name to an IP address."
 }
 
-
-variable "vpc_endpoint_dns_name" {
-  description = "The DNS name of the VPC Endpoint."
-  type        = string
-}
-
-variable "vpc_endpoint_zone_id" {
-  description = "The ID of the Hosted Zone for the VPC Endpoint."
-  type        = string
-}
-
 variable "evaluate_target_health" {
   type        = bool
   default     = false

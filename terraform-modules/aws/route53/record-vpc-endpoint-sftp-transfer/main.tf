@@ -24,8 +24,8 @@ module "record" {
     name    = var.record_name
     type    = var.type
     alias {
-        name                   = var.vpc_endpoint_dns_name
-        zone_id                = var.vpc_endpoint_zone_id
+        name                   = data.aws_vpc_endpoint_service.dns_name
+        zone_id                = data.aws_vpc_endpoint_service.zone_id
         evaluate_target_health = false
     }
   }
