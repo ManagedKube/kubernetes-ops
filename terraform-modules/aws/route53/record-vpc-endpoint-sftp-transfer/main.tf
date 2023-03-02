@@ -1,5 +1,6 @@
 
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 # Get the ARN of the Transfer Server
 data "aws_transfer_server" "this" {
@@ -8,7 +9,7 @@ data "aws_transfer_server" "this" {
 
 # Get the VPC Endpoint Service Name for the Transfer Service
 data "aws_vpc_endpoint_service" "this" {
-  service = "com.amazonaws.${data.aws_caller_identity.current.region}.transfer.server.${data.aws_transfer_server.this.id}"
+  service = "com.amazonaws.${data.aws_region.current.name}.transfer.server.${data.aws_transfer_server.this.id}"
 }
 
 # Get the VPC Endpoint ID for the Transfer Service
