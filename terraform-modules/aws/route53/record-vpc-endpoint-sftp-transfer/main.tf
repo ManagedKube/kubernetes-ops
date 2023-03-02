@@ -22,6 +22,6 @@ module "record" {
   source = "../record/"
   route53_zone_id = var.route53_zone_id
   record_name = var.record_name
-  vpc_endpoint_dns_name = data.aws_vpc_endpoint.this.dns_name
-  vpc_endpoint_zone_id = data.aws_vpc_endpoint.this.zone_id
+  vpc_endpoint_dns_name = data.aws_vpc_endpoint.this.dns_entry.dns_name
+  vpc_endpoint_zone_id = data.aws_vpc_endpoint.this.dns_entry.hosted_zone_id
 }
