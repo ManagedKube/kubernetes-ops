@@ -1,4 +1,4 @@
-output "vpc_endpoint_id" {
+output "name" {
   value       = module.record.name
   description = "The name for the Route 53 record."
 }
