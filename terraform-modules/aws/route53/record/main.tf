@@ -1,4 +1,4 @@
-resource "aws_route53_record" "example_record" {
+resource "aws_route53_record" "this" {
   zone_id = var.route53_zone_id
   name    = var.record_name
   type    = var.type
