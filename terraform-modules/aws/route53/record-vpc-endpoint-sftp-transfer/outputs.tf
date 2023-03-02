@@ -14,11 +14,11 @@ output "vpc_endpoint_id" {
 }
 
 output "vpc_endpoint_dns_name" {
-  value = data.aws_vpc_endpoint.this.dns_entry.dns_name
+  value = data.aws_vpc_endpoint.this.dns_entry.dns_name[0]
   description = "Retrieve the DNS name associated with an AWS VPC Endpoint."
 }
 
 output "vpc_endpoint_hosted_zone_id" {
-  value = data.aws_vpc_endpoint.this.dns_entry.hosted_zone_id
+  value = data.aws_vpc_endpoint.this.dns_entry.hosted_zone_id[0]
   description = "Retrieves the Zona ID name associated with the VPC Endpoint"
 }
