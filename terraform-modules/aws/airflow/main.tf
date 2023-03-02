@@ -17,7 +17,7 @@ resource "aws_s3_bucket_acl" "this" {
 
 # Using the default AWS KMS master key
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-  bucket = aws_s3_bucket.airflow.arn
+  bucket = aws_s3_bucket.airflow.bucket
 
   rule {
     apply_server_side_encryption_by_default {
@@ -41,7 +41,7 @@ resource "aws_mwaa_environment" "this" {
   environment_class  = var.environment_class
   max_workers        = var.max_workers
   min_workers        = var.min_workers
-  source_bucket_arn  = aws_s3_bucket.mwaa.arn
+  source_bucket_arn  = aws_s3_bucket.airflow.arn
   dag_s3_path        = var.dag_s3_path
   execution_role_arn = module.iam_assumable_role_admin.iam_role_arn
   webserver_access_mode = var.webserver_access_mode
