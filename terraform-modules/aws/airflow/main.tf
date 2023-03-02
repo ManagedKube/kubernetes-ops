@@ -1,3 +1,40 @@
+resource "aws_s3_bucket" "airflow" {
+  bucket = var.source_bucket_name
+  tags   = var.tags
+}
+
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.airflow.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.airflow.id
+  acl    = "private"
+}
+
+# Using the default AWS KMS master key
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.airflow.arn
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "AES256" #"aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket = aws_s3_bucket.airflow.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_mwaa_environment" "this" {
   name               = var.airflow_name
   airflow_version    = var.airflow_version
@@ -45,34 +82,6 @@ resource "aws_mwaa_environment" "this" {
 }
 
 data "aws_caller_identity" "current" {}
-
-resource "aws_s3_bucket" "mwaa" {
-  bucket = var.source_bucket_name
-  tags   = var.tags
-}
-
-resource "aws_s3_bucket_versioning" "this" {
-  bucket = aws_s3_bucket.mwaa.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_acl" "this" {
-  bucket = aws_s3_bucket.mwaa.id
-  acl    = "private"
-}
-
-# Using the default AWS KMS master key
-resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-  bucket = aws_s3_bucket.mwaa.arn
-
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm     = "AES256" #"aws:kms"
-    }
-  }
-}
 
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
