@@ -19,17 +19,8 @@ data "aws_vpc_endpoint" "this" {
 
 module "record" {
   source = "../record/"
-  inputs {
-    zone_id = var.route53_zone_id
-    name    = var.record_name
-    type    = var.type
-    alias {
-        name                   = data.aws_vpc_endpoint_service.dns_name
-        zone_id                = data.aws_vpc_endpoint_service.zone_id
-        evaluate_target_health = false
-    }
-  }
+  route53_zone_id = var.route53_zone_id
+  record_name = var.record_name
+  vpc_endpoint_dns_name = data.aws_vpc_endpoint.this.dns_name
+  vpc_endpoint_zone_id = data.aws_vpc_endpoint.this.zone_id
 }
-
-
-
