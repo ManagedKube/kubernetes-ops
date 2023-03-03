@@ -27,7 +27,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_accepter_allow_remote_vpc_dns_resolution"></a> [accepter\_allow\_remote\_vpc\_dns\_resolution](#input\_accepter\_allow\_remote\_vpc\_dns\_resolution) | Specifies whether DNS resolution is enabled for the VPC peering connection | `bool` | `true` | no |
 | <a name="input_auto_accept"></a> [auto\_accept](#input\_auto\_accept) | Specifies whether the peering connection should be automatically accepted | `bool` | `true` | no |
-| <a name="input_peer_vpc_id"></a> [peer\_vpc\_id](#input\_peer\_vpc\_id) | ID of the VPC B | `string` | n/a | yes |
+| <a name="input_peer_vpc_id"></a> [peer\_vpc\_id](#input\_peer\_vpc\_id) | The ID of the VPC with which you are creating the VPC Peering Connection. | `string` | n/a | yes |
 | <a name="input_requester_allow_remote_vpc_dns_resolution"></a> [requester\_allow\_remote\_vpc\_dns\_resolution](#input\_requester\_allow\_remote\_vpc\_dns\_resolution) | Specifies whether DNS resolution is enabled for the VPC peering connection | `bool` | `true` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs for which to retrieve the associated route tables | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to apply to the VPC peering connection | `map(any)` | `{}` | no |

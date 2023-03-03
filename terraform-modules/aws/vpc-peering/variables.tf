@@ -1,10 +1,10 @@
 variable "vpc_id" {
-  description = "ID of the VPC A"
-  type        = string
+  type = string
+  description = "The ID of the VPC in which the subnets are located"
 }
 
 variable "peer_vpc_id" {
-  description = "ID of the VPC B"
+  description = "The ID of the VPC with which you are creating the VPC Peering Connection."
   type        = string
 }
 
@@ -29,11 +29,6 @@ variable "requester_allow_remote_vpc_dns_resolution" {
 variable "subnet_ids" {
   type = list(string)
   description = "A list of subnet IDs for which to retrieve the associated route tables"
-}
-
-variable "vpc_id" {
-  type = string
-  description = "The ID of the VPC in which the subnets are located"
 }
 
 variable "tags" {
