@@ -31,6 +31,6 @@ resource "aws_route_table_association" "association" {
 resource "aws_vpc_endpoint_route_table_association" "endpoint_association" {
   for_each = { for id in var.subnet_ids : id => id }
   vpc_endpoint_id = var.vpc_endpoint_id
-  route_table_id  = aws_route_table.route_table[each.key].id
+  route_table_id  = data.aws_route_table.route_table[each.key].id
 }
 
