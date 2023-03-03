@@ -15,12 +15,12 @@ data "template_file" "log_name" {
 
 data "local_file" "get-vpc-endpoint-id-value" {
     filename = "${data.template_file.log_name.rendered}"
-    depends_on = ["null_resource.output-vpc-endpoint-id"]
+    depends_on = [null_resource.output-vpc-endpoint-id]
 } 
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = data.local_file.get-vpc-endpoint-id-value
+  id = data.local_file.get-vpc-endpoint-id-value.content
 
   depends_on = [
     data.local_file.get-vpc-endpoint-id-value
