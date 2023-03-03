@@ -24,13 +24,13 @@ data "aws_route_table" "route_table" {
 resource "aws_route_table_association" "association" {
   for_each = { for id in var.subnet_ids : id => id }
   subnet_id      = each.value
-  route_table_id = data.aws_route_table.route_table_b[each.key].id
+  route_table_id = data.aws_route_table.route_table[each.key].id
 }
 
 # Create endpoint access policy for VPC B
 resource "aws_vpc_endpoint_route_table_association" "endpoint_association" {
   for_each = { for id in var.subnet_ids : id => id }
   vpc_endpoint_id = var.vpc_endpoint_id
-  route_table_id  = aws_route_table.route_table_b[each.key].id
+  route_table_id  = aws_route_table.route_table[each.key].id
 }
 
