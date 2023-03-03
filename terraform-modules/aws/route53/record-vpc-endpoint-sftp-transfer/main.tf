@@ -14,7 +14,7 @@ resource "null_resource" "extract_vpc_endpoint_id" {
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = data.null_resource.extract_vpc_endpoint_id.stdout
+  id = null_resource.extract_vpc_endpoint_id.stdout
 
   depends_on = [
     null_resource.extract_vpc_endpoint_id
