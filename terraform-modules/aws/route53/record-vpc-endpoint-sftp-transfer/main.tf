@@ -8,15 +8,17 @@ data "aws_transfer_server" "this" {
 }
 
 # Get the VPC Endpoint Service Name for the Transfer Service
-data "aws_vpc_endpoint_service" "this" {
-  id = data.aws_transfer_server.this.endpoint_details[0].vpc_endpoint_id
-}
-
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  service_name = data.aws_vpc_endpoint_service.this.service_name
-  vpc_id       = var.vpc_id
+  count  = local.is_enabled
+  vpc_id = var.vpc_id
+
+  filter {
+    name   = "vpc-endpoint-id"
+    values = ["${data.aws_transfer_server.this[0].endpoint_details[0].vpc_endpoint_id}"]
+  }
 }
+
 
 module "record" {
   source = "../record/"
