@@ -2,11 +2,19 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+/*
 # Get the ARN of the Transfer Server
 data "aws_transfer_server" "this" {
   server_id = var.transfer_server_id
 }
+*/
 
+data "aws_vpc_endpoint" "this" {
+  service_name = "com.amazonaws.${data.aws_region.current.name}.transfer.server.c-0008"
+  vpc_id = var.vpc_id
+}
+
+/*
 # Get the VPC Endpoint Service Name for the Transfer Service
 data "aws_vpc_endpoint_service" "this" {
   id = data.aws_transfer_server.this.endpoint_details[0].vpc_endpoint_id
@@ -17,6 +25,7 @@ data "aws_vpc_endpoint" "this" {
   service_name = data.aws_vpc_endpoint_service.this.service_name
   vpc_id       = var.vpc_id
 }
+*/
 
 module "record" {
   source = "../record/"
