@@ -3,18 +3,22 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 resource "null_resource" "extract_vpc_endpoint_id" {
+  triggers = {
+    output = "${local_executed_output}"
+  }
   provisioner "local-exec" {
     command = "aws transfer describe-server --server-id ${var.transfer_server_id} --query 'Server.EndpointDetails.VpcEndpointId' --output text"
 
     environment = {
       AWS_REGION = data.aws_region.current.name
+      LOCAL_EXECUTED_OUTPUT = "${local_executed_output}"
     }
   }
 }
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = null_resource.extract_vpc_endpoint_id.stdout
+  id = null_resource.cluster.triggers.output
 
   depends_on = [
     null_resource.extract_vpc_endpoint_id
