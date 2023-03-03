@@ -31,6 +31,11 @@ variable "subnet_ids" {
   description = "A list of subnet IDs for which to retrieve the associated route tables"
 }
 
+variable "vpc_endpoint_id" {
+  type = string
+  description = "VPC endpoint Id where you want to point"
+}
+
 variable "tags" {
   description = "A map of tags to apply to the VPC peering connection"
   type        = map(any)
