@@ -2,26 +2,28 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-resource "null_resource" "extract_vpc_endpoint_id" {
-  triggers = {
-    output = "${local_executed_output}"
-  }
-  provisioner "local-exec" {
-    command = "aws transfer describe-server --server-id ${var.transfer_server_id} --query 'Server.EndpointDetails.VpcEndpointId' --output text"
 
-    environment = {
-      AWS_REGION = data.aws_region.current.name
-      LOCAL_EXECUTED_OUTPUT = "${local_executed_output}"
-    }
+resource "null_resource" "output-vpc-endpoint-id" {
+  provisioner "local-exec" {
+    command = "aws transfer describe-server --server-id "${var.transfer_server_id}" --query 'Server.EndpointDetails.VpcEndpointId' --output text > ${data.template_file.log_name.rendered}"
   }
 }
 
+data "template_file" "log_name" {
+    template = "${path.module}/output.log"
+}
+
+data "local_file" "get-vpc-endpoint-id-value" {
+    filename = "${data.template_file.log_name.rendered}"
+    depends_on = ["null_resource.output-vpc-endpoint-id"]
+} 
+
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = null_resource.cluster.triggers.output
+  id = data.local_file.
 
   depends_on = [
-    null_resource.extract_vpc_endpoint_id
+    data.local_file.get-vpc-endpoint-id-value
   ]
 }
 
