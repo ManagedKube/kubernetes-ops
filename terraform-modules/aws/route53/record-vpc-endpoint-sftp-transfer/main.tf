@@ -10,7 +10,7 @@ resource "null_resource" "output-vpc-endpoint-id" {
 }
 
 data "template_file" "log_name" {
-    template = "${path.module}/output.log"
+    template = "${path.module}/vpc-endpoint-id.txt"
 }
 
 data "local_file" "get-vpc-endpoint-id-value" {
