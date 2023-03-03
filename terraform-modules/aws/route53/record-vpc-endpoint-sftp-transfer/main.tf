@@ -14,7 +14,7 @@ resource "null_resource" "extract_vpc_endpoint_id" {
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = vpc_id
+  id = data.null_resource.extract_vpc_endpoint_id.stdout
 
   depends_on = [
     null_resource.extract_vpc_endpoint_id
@@ -29,6 +29,6 @@ module "record" {
   vpc_endpoint_zone_id = data.aws_vpc_endpoint.this.dns_entry[0].hosted_zone_id
 
   depends_on = [
-    aws_vpc_endpoint.this
+    data.aws_vpc_endpoint.this
   ]
 }
