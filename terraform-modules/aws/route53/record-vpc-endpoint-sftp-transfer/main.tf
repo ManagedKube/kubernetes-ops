@@ -9,7 +9,7 @@ data "aws_transfer_server" "this" {
 
 # Get the VPC Endpoint Service Name for the Transfer Service
 data "aws_vpc_endpoint_service" "this" {
-  service = "com.amazonaws.${data.aws_region.current.name}.transfer.server.${data.aws_transfer_server.this.id}"
+  id = data.aws_transfer_server.this.vpc_endpoint_id
 }
 
 # Get the VPC Endpoint ID for the Transfer Service
