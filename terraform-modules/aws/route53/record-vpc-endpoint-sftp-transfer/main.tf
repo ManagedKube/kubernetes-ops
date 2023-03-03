@@ -5,7 +5,7 @@ data "aws_region" "current" {}
 
 resource "null_resource" "output-vpc-endpoint-id" {
   provisioner "local-exec" {
-    command = "aws transfer describe-server --server-id "${var.transfer_server_id}" --query 'Server.EndpointDetails.VpcEndpointId' --output text > ${data.template_file.log_name.rendered}"
+    command = "aws transfer describe-server --server-id ${var.transfer_server_id} --query 'Server.EndpointDetails.VpcEndpointId' > ${data.template_file.log_name.rendered}"
   }
 }
 
@@ -20,7 +20,7 @@ data "local_file" "get-vpc-endpoint-id-value" {
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  id = data.local_file.
+  id = data.local_file.get-vpc-endpoint-id-value
 
   depends_on = [
     data.local_file.get-vpc-endpoint-id-value
