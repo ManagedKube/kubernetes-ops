@@ -20,8 +20,8 @@ data "local_file" "get-vpc-endpoint-id-value" {
 
 # Get the VPC Endpoint ID for the Transfer Service
 data "aws_vpc_endpoint" "this" {
-  # Remove quotes
-  id = trim(replace(data.local_file.get-vpc-endpoint-id-value.content, "\"", ""), "")
+  # Remove quotes and new lines
+  id = trim(replace(replace(data.local_file.get-vpc-endpoint-id-value.content, "\"", ""),"/\"|\r\n|\r|\n/",""), "")
   vpc_id = var.vpc_id
 
   depends_on = [
