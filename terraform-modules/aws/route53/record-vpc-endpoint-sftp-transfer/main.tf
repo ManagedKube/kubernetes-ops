@@ -22,6 +22,7 @@ data "local_file" "get-vpc-endpoint-id-value" {
 data "aws_vpc_endpoint" "this" {
   # Remove quotes
   id = trim(data.local_file.get-vpc-endpoint-id-value.content, "\"")
+  vpc_id = var.vpc_id
 
   depends_on = [
     data.local_file.get-vpc-endpoint-id-value
