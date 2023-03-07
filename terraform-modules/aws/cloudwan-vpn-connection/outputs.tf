@@ -1,3 +1,4 @@
 output "vpn_connection_arn" {
-  value = aws_vpn_connection.main.*.arn
+  value = [for my_arn in aws_vpn_connection.main: my_arn.arn]
+  sensitive = false
 }

@@ -1,9 +1,3 @@
-variable "create_VPN_connection" {
-    type = bool
-    default = true
-    description = "To create th VPN Connection"
-}
-
 variable "customer_gateway_id" {
   type = list(string)
 }
