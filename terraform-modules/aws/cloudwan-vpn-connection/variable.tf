@@ -1,3 +1,8 @@
+variable "create_VPN_connection" {
+  type = bool
+  default = true
+  description = "For creating VPN attachment to CloudWan"
+}
 variable "customer_gateway_id" {
   type = list(string)
 }
