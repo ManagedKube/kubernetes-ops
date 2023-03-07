@@ -16,7 +16,7 @@ resource "aws_networkmanager_site_to_site_vpn_attachment" "test" {
   for_each = local.vpn_connection_arn
   vpn_connection_arn = each.key
   core_network_id    = var.core_network_id
-  tags = {
+  tags = merge(var.tags, {
     env = var.segment_name
-  }
+  })
 }
