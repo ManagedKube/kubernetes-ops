@@ -16,6 +16,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_s3_bucket" "this" {
+  count  = var.s3_bucket_create ? 1 : 0
   bucket = var.s3_logs_bucket
   tags   = var.tags
 }
@@ -44,6 +45,7 @@ resource "aws_s3_bucket" "this" {
 # }
 
 data "aws_iam_policy_document" "acmpca_bucket_access" {
+  count = var.s3_bucket_create ? 1 : 0
   statement {
     actions = [
       "s3:GetBucketAcl",
@@ -53,8 +55,8 @@ data "aws_iam_policy_document" "acmpca_bucket_access" {
     ]
 
     resources = [
-      aws_s3_bucket.this.arn,
-      "${aws_s3_bucket.this.arn}/*",
+      aws_s3_bucket.this[0].arn,
+      "${aws_s3_bucket.this[0].arn}/*",
     ]
 
     principals {
@@ -65,8 +67,9 @@ data "aws_iam_policy_document" "acmpca_bucket_access" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.acmpca_bucket_access.json
+  count = var.s3_bucket_create ? 1 : 0
+  bucket = aws_s3_bucket.this[0].id
+  policy = data.aws_iam_policy_document.acmpca_bucket_access[0].json
 }
 
 #######################################

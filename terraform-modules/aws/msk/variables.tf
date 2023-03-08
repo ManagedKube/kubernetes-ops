@@ -89,9 +89,15 @@ variable "enhanced_monitoring" {
   description = "Specify the desired enhanced MSK CloudWatch monitoring level. Valid values: DEFAULT, PER_BROKER, and PER_TOPIC_PER_BROKER"
 }
 
+variable "s3_bucket_create" {
+  type        = bool
+  default     = false
+  description = "Set it to true if you want the process to create the S3 bucket for you, and false if you already have one."
+}
+
 variable "s3_logs_bucket" {
   type        = string
-  description = "Name of the S3 bucket to deliver logs to"
+  description = "Name of the S3 bucket to deliver logs to (only able if (s3_bucket_create = true), It is going to create a new resource by you"
 }
 
 variable "s3_logs_enabled" {
@@ -101,6 +107,7 @@ variable "s3_logs_enabled" {
 
 variable "s3_logs_prefix" {
   type        = string
+  default     = ""
   description = "Prefix to append to the S3 folder name logs are delivered to"
 }
 
@@ -155,3 +162,4 @@ variable "jmx_exporter_enabled" {
   default     = false
   description = "Set true to enable the Prometheus JMX Exporter"
 }
+
