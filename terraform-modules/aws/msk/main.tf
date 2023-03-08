@@ -115,7 +115,7 @@ resource "aws_acmpca_certificate_authority" "this" {
       custom_cname       = "crl.${var.common_name}"
       enabled            = true
       expiration_in_days = var.expiration_in_days
-      s3_bucket_name     = aws_s3_bucket.this.id
+      s3_bucket_name     = var.s3_logs_bucket
     }
   }
   
@@ -152,7 +152,7 @@ module "msk" {
   enhanced_monitoring            = var.enhanced_monitoring
   node_exporter_enabled          = var.node_exporter_enabled
   jmx_exporter_enabled           = var.jmx_exporter_enabled
-  s3_logs_bucket                 = var.s3_logs_enabled == true ? aws_s3_bucket.this.id : ""
+  s3_logs_bucket                 = var.s3_logs_enabled == true ? var.s3_logs_bucket : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
 
