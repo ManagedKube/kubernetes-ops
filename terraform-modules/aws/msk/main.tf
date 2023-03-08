@@ -18,7 +18,7 @@ resource "aws_kms_key" "this" {
 resource "aws_s3_bucket" "this" {
   count  = var.s3_bucket_create ? 1 : 0
   bucket = var.s3_logs_bucket
-  tags   = var.tags
+  tags   = var.tags 
 }
 
 # resource "aws_s3_bucket_acl" "this" {
