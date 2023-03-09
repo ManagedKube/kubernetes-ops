@@ -62,6 +62,6 @@ resource "aws_s3_bucket_ownership_controls" "bucket_ownership_controls" {
   count = var.enable_bucket_owner_enforced ? 1 : 0
   bucket = aws_s3_bucket.bucket.id
   rule {
-    object_ownership = "BucketOwnerEnforced"
+    object_ownership = var.bucket_ownership_controls_rule
   }
 }

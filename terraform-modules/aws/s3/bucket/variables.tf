@@ -91,3 +91,8 @@ variable "enable_bucket_owner_enforced" {
   default     = true 
 
 }
+variable "bucket_ownership_controls_rule" {
+  type        = string
+  default     = "BucketOwnerEnforced"
+  description = "It's compliance rule that helps ensure the ownership of Amazon S3 buckets is set to the correct AWS account or AWS account within the same organization. values (BucketOwnerPreferred, ObjectWriter or BucketOwnerEnforced)"
+}
