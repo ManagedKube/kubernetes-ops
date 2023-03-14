@@ -5,6 +5,7 @@ variable "create_VPN_connection" {
 }
 variable "customer_gateway_id" {
   type = list(string)
+  default = []
 }
 
 variable "tags" {
