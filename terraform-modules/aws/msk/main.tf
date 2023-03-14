@@ -21,29 +21,6 @@ resource "aws_s3_bucket" "this" {
   tags   = var.tags 
 }
 
-# resource "aws_s3_bucket_acl" "this" {
-#   bucket = aws_s3_bucket.this.id
-#   acl    = "private"
-# }
-
-# When turning on server side encryption the ACM creation failes with:
-# │ Error: error creating ACM PCA Certificate Authority: ValidationException: Permission error with your S3 bucket '476264532441-us-west-2-msk-logs'. Check that your bucket policy, encryption settings, S3 Block Public Access settings, and global account permissions are configured correctly. For more information, check the service documentation.
-# │       status code: 400, request id: 3ba26851-f96a-48b6-a9a2-ca7a68be8e5f
-# │ 
-# │   with aws_acmpca_certificate_authority.this,
-# │   on main.tf line 91, in resource "aws_acmpca_certificate_authority" "this":
-# │   91: resource "aws_acmpca_certificate_authority" "this" {
-# resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-#   bucket = aws_s3_bucket.this.bucket
-
-#   rule {
-#     apply_server_side_encryption_by_default {
-#       kms_master_key_id = aws_kms_key.this.arn
-#       sse_algorithm     = "aws:kms"
-#     }
-#   }
-# }
-
 data "aws_iam_policy_document" "acmpca_bucket_access" {
   count = var.s3_bucket_create ? 1 : 0
   statement {
@@ -129,7 +106,7 @@ resource "aws_acmpca_certificate_authority" "this" {
 #######################################
 module "msk" {
   source                         = "cloudposse/msk-apache-kafka-cluster/aws"
-  version                        = "v0.8.4"
+  version                        = " v1.1.0"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
