@@ -41,9 +41,10 @@ variable "kafka_version" {
   description = "The desired Kafka software version"
 }
 
-variable "number_of_broker_nodes" {
+variable "broker_per_zone" {
   type        = number
-  description = "The desired total number of broker nodes in the kafka cluster. It must be a multiple of the number of specified client subnets."
+  default     = 1
+  description = "Number of Kafka brokers per zone."
 }
 
 # https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types

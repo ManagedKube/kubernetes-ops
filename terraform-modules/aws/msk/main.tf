@@ -115,7 +115,9 @@ module "msk" {
   security_groups                = var.security_groups
   subnet_ids                     = var.subnet_ids
   kafka_version                  = var.kafka_version
-  number_of_broker_nodes         = var.number_of_broker_nodes
+  #it was deprecated , now the param is number_of_broker_nodes
+  # number_of_broker_nodes         = var.number_of_broker_nodes
+  broker_per_zone                = var.broker_per_zone
   broker_instance_type           = var.broker_instance_type
   broker_volume_size             = var.broker_volume_size
   tags                           = var.tags
