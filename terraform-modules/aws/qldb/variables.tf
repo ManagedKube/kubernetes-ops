@@ -21,3 +21,15 @@ variable "tags" {
   default     = {}
   description = "AWS Tags"
 }
+
+variable "subnet_ids" {
+  type        = list(string)
+  default     = []
+  description = "(Required) The private subnet IDs in which the environment should be created. MWAA requires two subnets."
+}
+
+variable "vpc_id" {
+  type        = string
+  default     = ""
+  description = "The vpc ID"
+}
