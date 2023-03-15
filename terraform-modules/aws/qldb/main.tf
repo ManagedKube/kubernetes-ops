@@ -3,14 +3,10 @@ resource "aws_qldb_ledger" "this" {
   permissions_mode    = var.permissions_mode
   deletion_protection = var.deletion_protection
   tags                = var.tags
-
-  vpc_configuration {
-    subnet_ids         = var.subnet_ids
-    security_group_ids = [aws_security_group.this.id]
-  }
 }
+
 resource "aws_security_group" "this" {
-  name        = var.name
+  name        = "qldb-${var.name}"
   description = "qldb security group"
   vpc_id      = var.vpc_id
 
