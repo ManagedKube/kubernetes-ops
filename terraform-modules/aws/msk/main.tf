@@ -105,7 +105,7 @@ resource "aws_acmpca_certificate_authority" "this" {
 # MSK Cluster
 #######################################
 module "msk" {
-  source                         = "git::https://github.com/ManagedKube/msk-apache-kafka-cluster.git?ref=remove-ebs_volume_size-deprecated"
+  source                         = "git::https://github.com/ManagedKube/terraform-aws-msk-apache-kafka-cluster.git?ref=remove-ebs_volume_size-deprecated"
   #version                        = "v1.1.1"
   namespace                      = var.namespace
   name                           = var.name
