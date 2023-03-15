@@ -105,8 +105,8 @@ resource "aws_acmpca_certificate_authority" "this" {
 # MSK Cluster
 #######################################
 module "msk" {
-  source                         = "cloudposse/msk-apache-kafka-cluster/aws"
-  version                        = "v1.1.1"
+  source                         = "git::https://github.com/ManagedKube/msk-apache-kafka-cluster.git?ref=remove-ebs_volume_size-deprecated"
+  #version                        = "v1.1.1"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
