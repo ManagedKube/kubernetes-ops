@@ -21,3 +21,47 @@ variable "tags" {
   default     = {}
   description = "AWS Tags"
 }
+
+variable "subnet_ids" {
+  type        = list(string)
+  default     = []
+  description = "(Required) The private subnet IDs in which the environment should be created. MWAA requires two subnets."
+}
+
+variable "vpc_id" {
+  type        = string
+  default     = ""
+  description = "The vpc ID"
+}
+
+variable "ingress_rule" {
+  type        = list(any)
+  description = "A list of ingress rules"
+  default = [
+    {
+      description      = "TLS from VPC"
+      //Port 443 is commonly used port for secure HTTPS traffic
+      from_port        = 443
+      to_port          = 443
+      protocol         = "tcp"
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ipv6_cidr_blocks = []
+    },
+  ]
+}
+
+variable "egress_rule" {
+  type        = list(any)
+  description = "A list of egress rules"
+  default = [
+    {
+      description      = "Allow outbound HTTPS traffic to VPC"
+      //Port 443 is commonly used port for secure HTTPS traffic
+      from_port        = 443
+      to_port          = 443
+      protocol         = "tcp"
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] 
+      ipv6_cidr_blocks = ["::/0"]
+    },
+  ]
+}
