@@ -164,3 +164,9 @@ variable "jmx_exporter_enabled" {
   description = "Set true to enable the Prometheus JMX Exporter"
 }
 
+variable "years_valid" {
+  type        = number
+  default     = 10
+  description = "The Certificate will be valid for a period of x years from the time it is issued."
+}
+

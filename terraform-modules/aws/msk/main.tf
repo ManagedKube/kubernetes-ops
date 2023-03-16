@@ -1,5 +1,5 @@
 locals{
-  years_valid = 10 
+  years_valid = var.years_valid 
 }
 
 resource "aws_cloudwatch_log_group" "msk_cloudwatch_log_group" {
@@ -105,6 +105,11 @@ resource "aws_acmpca_certificate_authority" "this" {
 # MSK Cluster
 #######################################
 module "msk" {
+  #Why we are poiting to an specific branch?
+  #----------------------------------------
+  #We are using this branch in exact payments,
+  #we are waiting for cloud posse 
+  #about this pr: cloudposse/terraform-aws-msk-apache-kafka-cluster#76
   source                         = "git::https://github.com/ManagedKube/terraform-aws-msk-apache-kafka-cluster.git?ref=remove-ebs_volume_size-deprecated"
   #version                        = "v1.1.1"
   namespace                      = var.namespace
