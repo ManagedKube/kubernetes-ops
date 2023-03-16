@@ -33,3 +33,33 @@ variable "vpc_id" {
   default     = ""
   description = "The vpc ID"
 }
+
+variable "ingress_rule" {
+  type        = list(any)
+  description = "A list of ingress rules"
+  default = [
+    {
+      description      = "All ports from internal addresses"
+      from_port        = 0
+      to_port          = 65535
+      protocol         = "tcp"
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ipv6_cidr_blocks = []
+    },
+  ]
+}
+
+variable "egress_rule" {
+  type        = list(any)
+  description = "A list of egress rules"
+  default = [
+    {
+      description      = "All ports from internal addresses"
+      from_port        = 0
+      to_port          = 65535
+      protocol         = "tcp"
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] 
+      ipv6_cidr_blocks = ["::/0"]
+    },
+  ]
+}
