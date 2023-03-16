@@ -39,9 +39,10 @@ variable "ingress_rule" {
   description = "A list of ingress rules"
   default = [
     {
-      description      = "All ports from internal addresses"
-      from_port        = 0
-      to_port          = 65535
+      description      = "TLS from VPC"
+      //Port 443 is commonly used port for secure HTTPS traffic
+      from_port        = 443
+      to_port          = 443
       protocol         = "tcp"
       cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
       ipv6_cidr_blocks = []
@@ -54,9 +55,10 @@ variable "egress_rule" {
   description = "A list of egress rules"
   default = [
     {
-      description      = "All ports from internal addresses"
-      from_port        = 0
-      to_port          = 65535
+      description      = "Allow outbound HTTPS traffic to VPC"
+      //Port 443 is commonly used port for secure HTTPS traffic
+      from_port        = 443
+      to_port          = 443
       protocol         = "tcp"
       cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] 
       ipv6_cidr_blocks = ["::/0"]
