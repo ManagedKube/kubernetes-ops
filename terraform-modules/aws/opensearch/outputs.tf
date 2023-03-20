@@ -6,6 +6,6 @@ output "opensearch_security_group_id" {
   value = aws_security_group.opensearch_sg.id
 }
 
-output "aws_cloudwatch_log_group" "arn" {
+output "aws_cloudwatch_log_group_arn" {
   value = aws_cloudwatch_log_group.slow_logs.arn
 }
