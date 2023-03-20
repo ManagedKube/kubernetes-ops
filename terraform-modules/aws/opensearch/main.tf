@@ -1,3 +1,8 @@
+resource "aws_cloudwatch_log_group" "slow_logs" {
+  name              = "opensearch-slow-logs"
+  retention_in_days = 14
+}
+
 resource "aws_opensearch_domain" "this" {
   domain_name    = var.domain_name
   engine_version = "OpenSearch_2.5"
@@ -110,9 +115,4 @@ resource "aws_security_group" "opensearch_sg" {
   }
 
   tags = var.tags
-}
-
-resource "aws_cloudwatch_log_group" "slow_logs" {
-  name              = "opensearch-slow-logs"
-  retention_in_days = 14
 }
