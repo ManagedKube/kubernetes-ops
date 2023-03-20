@@ -5,6 +5,7 @@ resource "aws_opensearch_domain" "this" {
   cluster_config {
     instance_type = "r4.large.search"
     zone_awareness_enabled = true
+    instance_count = var.instance_count
   }
 
   ebs_options {

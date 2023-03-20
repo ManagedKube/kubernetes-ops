@@ -34,12 +34,18 @@ variable "vpc_id" {
   description = "The vpc ID"
 }
 
+variable "instance_count" {
+  type        = number
+  default     = 2
+  description = "Number of instances in the cluster"
+}
+
 variable "ingress_rule" {
   type        = list(any)
   description = "A list of ingress rules"
   default = [
     {
-      description      = "TLS from VPC"
+      description = "TLS from VPC"
       //Port 443 is commonly used port for secure HTTPS traffic
       from_port        = 443
       to_port          = 443
@@ -55,12 +61,12 @@ variable "egress_rule" {
   description = "A list of egress rules"
   default = [
     {
-      description      = "Allow outbound HTTPS traffic to VPC"
+      description = "Allow outbound HTTPS traffic to VPC"
       //Port 443 is commonly used port for secure HTTPS traffic
       from_port        = 443
       to_port          = 443
       protocol         = "tcp"
-      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] 
+      cidr_blocks      = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
       ipv6_cidr_blocks = ["::/0"]
     },
   ]
