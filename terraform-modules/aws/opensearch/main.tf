@@ -1,6 +1,6 @@
 resource "aws_opensearch_domain" "this" {
   domain_name             = var.domain_name
-  engine_version          = "Elasticsearch_7.10"
+  engine_version          = "OpenSearch_2.5"
 
   cluster_config {
     instance_type = "r4.large.search"
