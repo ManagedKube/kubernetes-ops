@@ -1,6 +1,6 @@
 resource "aws_opensearch_domain" "this" {
   domain_name           = var.domain_name
-  elasticsearch_version = "7.10"
+  engine_version        = "Elasticsearch_7.10"
 
   cluster_config {
     instance_type = "r4.large.search"
@@ -11,7 +11,7 @@ resource "aws_opensearch_domain" "this" {
     volume_size = 10
   }
 
-  encryption_at_rest {
+  encrypt_at_rest {
     enabled = true
   }
 
