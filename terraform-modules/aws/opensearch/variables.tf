@@ -23,7 +23,7 @@ variable "enforce_https" {
 }
 
 variable "vpc_enabled" {
-  type        = list(any)
+  type        = bool
   description = "enable vpc based open search, the dynamic block creates a vpc_options block with the specified security group and subnet IDs. If the variable is set to false, the dynamic block is not created, and the aws_opensearch_domain resource will not include a vpc_options block, creating the OpenSearch domain publicly."
   default     = true
 }
