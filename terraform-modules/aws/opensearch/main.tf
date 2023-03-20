@@ -22,13 +22,20 @@ resource "aws_opensearch_domain" "this" {
   }
 
   domain_endpoint_options {
-    enforce_https                   = true
+    enforce_https                   = var.enforce_https
     tls_security_policy             = "Policy-Min-TLS-1-2-2019-07"
   }
 
-  vpc_options {
-    security_group_ids = [aws_security_group.opensearch_sg.id]
-    subnet_ids         = var.subnet_ids
+# the dynamic block creates a vpc_options block with the specified security group and subnet IDs.
+# If the variable vpc_enabled is set to false, the dynamic block is not created, 
+# and the aws_opensearch_domain resource will not include a vpc_options block, 
+# creating the OpenSearch domain publicly.
+  dynamic "vpc_options" {
+    for_each = var.vpc_enabled ? [1] : []
+    content {
+      security_group_ids = [aws_security_group.opensearch_sg.id]
+      subnet_ids         = var.subnet_ids
+    }
   }
 
   access_policies = jsonencode({
@@ -41,11 +48,11 @@ resource "aws_opensearch_domain" "this" {
           AWS = "*"
         }
         Resource = "arn:aws:es:${var.aws_region}:${var.account_id}:domain/${var.domain_name}/*"
-        Condition = {
-          Bool = {
-            "aws:SecureTransport" = "true"
-          }
+        Condition = var.vpc_enabled ? {
+        Bool = {
+          "aws:SecureTransport" = "true"
         }
+      } : {}
       }
     ]
   })

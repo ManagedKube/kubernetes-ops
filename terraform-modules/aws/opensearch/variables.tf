@@ -16,6 +16,18 @@ variable "account_id" {
   description = "The account_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws_caller_id showing *** by obtaining the value of account_id "
 }
 
+variable "enforce_https" {
+  type        = bool
+  default     = true
+  description = "Whether or not to require HTTPS. Defaults to true"
+}
+
+variable "vpc_enabled" {
+  type        = list(any)
+  description = "enable vpc based open search, the dynamic block creates a vpc_options block with the specified security group and subnet IDs. If the variable is set to false, the dynamic block is not created, and the aws_opensearch_domain resource will not include a vpc_options block, creating the OpenSearch domain publicly."
+  default     = true
+}
+
 variable "tags" {
   type        = any
   default     = {}
