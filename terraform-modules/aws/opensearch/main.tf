@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "opensearch_slow_logs" {
-  name              = "opensearch-slow-logs"
-  retention_in_days = 14
+  name              = "${var.domain_name}-slow-logs"
+  retention_in_days = var.retention_in_days
 }
 
 resource "aws_cloudwatch_log_resource_policy" "opensearch_slow_logs_policy" {
-  policy_name = "opensearch-slow-logs-policy"
+  policy_name = "${var.domain_name}-policy"
   policy_document = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -29,14 +29,14 @@ resource "aws_opensearch_domain" "this" {
   engine_version = "OpenSearch_2.5"
 
   cluster_config {
-    instance_type          = "r4.large.search"
-    zone_awareness_enabled = true
+    instance_type          = var.instance_type
+    zone_awareness_enabled = var.zone_awareness_enabled
     instance_count         = var.instance_count
   }
 
   ebs_options {
-    ebs_enabled = true
-    volume_size = 10
+    ebs_enabled = var.ebs_enabled
+    volume_size = var.volume_size
   }
 
   encrypt_at_rest {
@@ -49,7 +49,7 @@ resource "aws_opensearch_domain" "this" {
 
   domain_endpoint_options {
     enforce_https       = var.enforce_https
-    tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+    tls_security_policy = var.tls_security_policy
   }
 
   # the dynamic block creates a vpc_options block with the specified security group and subnet IDs.
@@ -59,7 +59,7 @@ resource "aws_opensearch_domain" "this" {
   dynamic "vpc_options" {
     for_each = var.vpc_enabled ? [1] : []
     content {
-      security_group_ids = [aws_security_group.opensearch_sg.id]
+      security_group_ids = concat([aws_security_group.opensearch_sg.id], var.additional_security_group_ids)
       subnet_ids         = var.subnet_ids
     }
   }

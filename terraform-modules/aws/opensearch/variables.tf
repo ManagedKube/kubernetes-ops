@@ -28,6 +28,30 @@ variable "vpc_enabled" {
   default     = true
 }
 
+variable "zone_awareness_enabled" {
+  type        = bool
+  description = "By Default 2 availability zones"
+  default     = true
+}
+
+variable "ebs_enabled" {
+  type        = bool
+  description = "Ebs Storage enabled or disabled"
+  default     = true
+}
+
+variable "volume_size" {
+  type        = number
+  default     = 10
+  description = "Size of EBS volumes attached to data nodes (in GiB)"
+}
+
+variable "retention_in_days" {
+  type        = number
+  default     = 14
+  description = "Specifies the number of days you want to retain log events in the specified log group"
+}
+
 variable "tags" {
   type        = any
   default     = {}
@@ -50,6 +74,24 @@ variable "instance_count" {
   type        = number
   default     = 2
   description = "Number of instances in the cluster"
+}
+
+variable "instance_type" {
+  type        = string
+  default     = "r4.large.search"
+  description = "Instance type of data nodes in the cluster."
+}
+
+variable "tls_security_policy" {
+  type        = string
+  default     = "Policy-Min-TLS-1-2-2019-07"
+  description = "HTTPS enforced with TLS security policy"
+}
+
+variable "additional_security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = "Additional security group IDs to be attached to the OpenSearch domain."
 }
 
 variable "ingress_rule" {
