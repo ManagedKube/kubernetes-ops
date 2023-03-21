@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_log_group" "slow_logs" {
+resource "aws_cloudwatch_log_group" "opensearch_slow_logs" {
   name              = "opensearch-slow-logs"
   retention_in_days = 14
 }
