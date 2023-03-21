@@ -91,7 +91,7 @@ resource "aws_opensearch_domain" "this" {
   # you can identify slow indexing operations and investigate potential causes, such as complex mappings, resource constraints, or heavy indexing loads.
 
   log_publishing_options {
-    cloudwatch_log_group_arn = aws_cloudwatch_log_group.slow_logs.arn
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_slow_logs.arn
     log_type                 = "INDEX_SLOW_LOGS"
   }
 
@@ -99,7 +99,7 @@ resource "aws_opensearch_domain" "this" {
   # Search operations involve running queries against the OpenSearch index to retrieve documents. By analyzing search slow logs, 
   # you can identify slow search operations and investigate potential causes, such as inefficient queries, resource constraints, or heavy search loads.
   log_publishing_options {
-    cloudwatch_log_group_arn = aws_cloudwatch_log_group.slow_logs.arn
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_slow_logs.arn
     log_type                 = "SEARCH_SLOW_LOGS"
   }
 
