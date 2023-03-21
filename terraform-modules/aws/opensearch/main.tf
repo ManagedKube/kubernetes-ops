@@ -64,6 +64,8 @@ resource "aws_opensearch_domain" "this" {
     }
   }
 
+  # The current configuration with Principal = { AWS = "*" } allows any authenticated AWS user or role to access the OpenSearch domain but the policy enforces that the access must be over a secure transport (HTTPS),
+  # as specified in the Condition block.
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -71,7 +73,7 @@ resource "aws_opensearch_domain" "this" {
         Action = "es:*"
         Effect = "Allow"
         Principal = {
-          AWS = "*"
+          AWS = var.allowed_roles
         }
         Resource = "arn:aws:es:${var.aws_region}:${var.account_id}:domain/${var.domain_name}/*"
         Condition = var.vpc_enabled ? {

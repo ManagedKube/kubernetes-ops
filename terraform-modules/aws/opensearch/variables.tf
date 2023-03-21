@@ -94,6 +94,12 @@ variable "additional_security_group_ids" {
   description = "Additional security group IDs to be attached to the OpenSearch domain."
 }
 
+variable "allowed_roles" {
+  type        = list(string)
+  description = "A list of AWS role ARNs allowed to access the OpenSearch domain"
+  default     = ["*"]
+}
+
 variable "ingress_rule" {
   type        = list(any)
   description = "A list of ingress rules"
