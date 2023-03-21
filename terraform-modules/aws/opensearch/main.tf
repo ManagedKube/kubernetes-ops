@@ -66,6 +66,8 @@ resource "aws_opensearch_domain" "this" {
 
   # The current configuration with Principal = { AWS = "*" } allows any authenticated AWS user or role to access the OpenSearch domain but the policy enforces that the access must be over a secure transport (HTTPS),
   # as specified in the Condition block.
+  # Plese refer the documentation for access policies https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearch_domain#access-policy
+  # use variable allowed_roles to update the policy with a user role who can access this
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
