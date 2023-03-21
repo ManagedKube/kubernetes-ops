@@ -3,6 +3,11 @@ output "vpc_id" {
   value       = module.vpc.vpc_id
 }
 
+output "vpc_arn" {
+  description = "The ID of the VPC"
+  value       = module.vpc.vpc_arn
+}
+
 output "vpc_cidr_block" {
   description = "The CIDR block of the VPC"
   value       = var.vpc_cidr
@@ -13,9 +18,19 @@ output "private_subnets" {
   value       = module.vpc.private_subnets
 }
 
+output "private_subnet_arns" {
+  description = "A list of private subnets"
+  value       = module.vpc.private_subnet_arns
+}
+
 output "public_subnets" {
   description = "A list of public subnets"
   value       = module.vpc.public_subnets
+}
+
+output "public_subnet_arns" {
+  description = "A list of public subnets"
+  value       = module.vpc.public_subnet_arns
 }
 
 output "k8s_subnets" {
