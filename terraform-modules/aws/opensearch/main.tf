@@ -1,8 +1,11 @@
 resource "aws_cloudwatch_log_group" "slow_logs" {
   name              = "opensearch-slow-logs"
   retention_in_days = 14
+}
 
-  policy = jsonencode({
+resource "aws_cloudwatch_log_resource_policy" "opensearch_slow_logs_policy" {
+  policy_name = "opensearch-slow-logs-policy"
+  policy_document = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
