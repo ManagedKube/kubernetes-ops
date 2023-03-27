@@ -102,3 +102,14 @@ variable "worker_log_level" {
   default     = "INFO"
   description = "The log level: INFO | WARNING | ERROR | CRITICAL"
 }
+
+variable "webserver_access_mode" {
+  description = "(Optional) Specifies whether the webserver should be accessible over the internet or via your specified VPC. Possible options: PRIVATE_ONLY (default) and PUBLIC_ONLY"
+  type        = string
+  default     = "PRIVATE_ONLY"
+
+  validation {
+    condition     = contains(["PRIVATE_ONLY", "PUBLIC_ONLY"], var.webserver_access_mode)
+    error_message = "Invalid input, options: \"PRIVATE_ONLY\", \"PUBLIC_ONLY\"."
+  }
+}
