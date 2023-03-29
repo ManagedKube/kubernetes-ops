@@ -1,3 +1,37 @@
+# s3_bucket
+Create an S3 bucket:
+* Versioning
+* Encryption
+* Logging
+* HTTPS access only
+
+## HTTPS access only
+This is a Prowler finding and cloud help with other compliancy.  This will set the bucket
+to accept HTTPS requests only.
+
+```
+var.policy = {
+    "Id": "ExamplePolicy",
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "AllowSSLRequestsOnly",
+        "Action": "s3:*",
+        "Effect": "Deny",
+        "Resource": [
+          "arn:aws:s3:::${bucket_name}",
+          "arn:aws:s3:::${bucket_name}/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        },
+        "Principal": "*"
+      }
+    ]
+  }
+```
 ## Requirements
 
 No requirements.
