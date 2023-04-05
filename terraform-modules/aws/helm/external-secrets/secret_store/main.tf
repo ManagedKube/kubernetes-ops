@@ -6,7 +6,7 @@ data "aws_region" "current" {}
 
 resource "kubernetes_manifest" "secret_store" {
   manifest = {
-    "apiVersion" = "external-secrets.io/v1beta1"
+    "apiVersion" = "external-secrets.io/v1alpha1"
     "kind"       = "SecretStore"
     "metadata" = {
       "name"      = var.secret_store_name
@@ -35,7 +35,7 @@ resource "kubernetes_manifest" "secret_store" {
 
 resource "kubernetes_manifest" "cluster_secret_store" {
   manifest = {
-    "apiVersion" = "external-secrets.io/v1beta1"
+    "apiVersion" = "external-secrets.io/v1alpha1"
     "kind"       = "ClusterSecretStore"
     "metadata" = {
       "name"      = var.secret_store_name
