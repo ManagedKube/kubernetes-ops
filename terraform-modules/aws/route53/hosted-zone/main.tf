@@ -53,6 +53,9 @@ resource "aws_route53_zone" "this" {
   tags = var.tags
 }
 
+## ONLY WORKS in us-east-1
+## Per the Terraform doc: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_key_signing_key#key_management_service_arn
+## "This key must be in the us-east-1 Region and meet certain requirements..."
 resource "aws_route53_key_signing_key" "this" {
   hosted_zone_id             = aws_route53_zone.this.id
   key_management_service_arn = aws_kms_key.this.arn
