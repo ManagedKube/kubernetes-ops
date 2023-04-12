@@ -15,3 +15,20 @@ variable "versioning" {
   type        = map(string)
   default     = {}
 }
+
+variable "block_public_policy" {
+  description = "Whether Amazon S3 should block public bucket policies for this bucket."
+  type        = bool
+  default     = false
+}
+
+variable "restrict_public_buckets" {
+  description = "Whether Amazon S3 should restrict public bucket policies for this bucket."
+  type        = bool
+  default     = false
+}
+variable "lifecycle_rule" {
+  description = "List of maps containing configuration of object lifecycle management."
+  type        = any
+  default     = []
+}
