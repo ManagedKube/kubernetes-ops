@@ -26,7 +26,7 @@ resource "aws_amplify_domain_association" "example" {
   app_id      = aws_amplify_app.amplify.id
   domain_name = var.domain_name
 
-  sub_domain_setting {
+  sub_domain {
     prefix      = var.sub_domain_prefix
     branch_name = var.sub_domain_branch
   }
