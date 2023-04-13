@@ -31,4 +31,7 @@ resource "aws_amplify_domain_association" "domain" {
     prefix      = var.sub_domain_prefix
     branch_name = var.sub_domain_branch
   }
+  timeouts {
+    create = "60m"
+  }
 }
