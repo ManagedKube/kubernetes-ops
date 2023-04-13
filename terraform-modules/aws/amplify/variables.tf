@@ -1,0 +1,50 @@
+variable "name" {
+  description = "The name of the Amplify App"
+  type        = string
+}
+
+variable "repository_url" {
+  description = "The URL of the Git repository for the Amplify App"
+  type        = string
+}
+
+variable "enable_branch_auto_build" {
+  description = "Enable branch auto-build for the Amplify App"
+  type        = bool
+  default     = false
+}
+
+variable "build_spec" {
+  description = "Build spec for the Amplify App"
+  type        = string
+  default     = null
+}
+
+variable "custom_rules" {
+  description = "Custom rules for the AWS Amplify App"
+  type        = list(object({
+    source    = string
+    target    = string
+    status    = string
+    condition = string
+  }))
+  default = []
+}
+
+variable "environment_variables" {
+  description = "Environment variables for the Amplify App"
+  type        = map(string)
+  default     = {}
+}
+
+variable "gh_access_token" {
+  description = "GitHub access token for the Amplify App"
+  type        = string
+  sensitive   = true
+}
+
+variable "branches_to_deploy" {
+  description = "List of branches to deploy with AWS Amplify"
+  type        = list(string)
+  default     = ["develop"]
+}

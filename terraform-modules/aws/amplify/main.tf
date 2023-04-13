@@ -1,0 +1,25 @@
+resource "aws_amplify_app" "amplify" {
+  name                     = var.name
+  repository               = var.repository_url
+  enable_branch_auto_build = var.enable_branch_auto_build
+  build_spec               = var.build_spec
+  oauth_token              = var.gh_access_token
+  dynamic "custom_rule" {
+    for_each = var.custom_rules
+    content {
+      source    = custom_rule.value.source
+      target    = custom_rule.value.target
+      status    = custom_rule.value.status
+      condition = custom_rule.value.condition
+    }
+  }
+
+  environment_variables = var.environment_variables
+}
+
+resource "aws_amplify_branch" "deploy_branches" {
+  for_each = toset(var.branches_to_deploy)
+
+  app_id      = aws_amplify_app.amplify.id
+  branch_name = each.value
+}
