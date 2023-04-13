@@ -130,6 +130,8 @@ module "msk" {
   certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
   client_tls_auth_enabled        = var.client_tls_auth_enabled
   client_sasl_iam_enabled        = var.client_sasl_iam_enabled
+  client_sasl_scram_enabled      = var.client_sasl_scram_enabled
+  client_sasl_scram_secret_association_arns = var.client_sasl_scram_secret_association_arns
   encryption_in_cluster          = var.encryption_in_cluster
   encryption_at_rest_kms_key_arn = var.encryption_at_rest_kms_key_arn != null ? var.encryption_at_rest_kms_key_arn : aws_kms_key.this.arn
   cloudwatch_logs_enabled        = var.cloudwatch_logs_enabled
