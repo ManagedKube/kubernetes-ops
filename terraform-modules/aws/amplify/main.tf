@@ -18,8 +18,16 @@ resource "aws_amplify_app" "amplify" {
 }
 
 resource "aws_amplify_branch" "deploy_branches" {
-  for_each = toset(var.branches_to_deploy)
-
   app_id      = aws_amplify_app.amplify.id
-  branch_name = each.value
+  branch_name = var.branch_name
+}
+
+resource "aws_amplify_domain_association" "example" {
+  app_id      = aws_amplify_app.amplify.id
+  domain_name = var.domain_name
+
+  sub_domain_setting {
+    prefix      = var.sub_domain_prefix
+    branch_name = var.sub_domain_branch
+  }
 }

@@ -26,7 +26,7 @@ variable "custom_rules" {
     source    = string
     target    = string
     status    = string
-    condition = string
+    condition = optional(string)
   }))
   default = []
 }
@@ -43,8 +43,22 @@ variable "gh_access_token" {
   sensitive   = true
 }
 
-variable "branches_to_deploy" {
-  description = "List of branches to deploy with AWS Amplify"
-  type        = list(string)
-  default     = ["develop"]
+variable "branch_name" {
+  description = "The branch name to be deployed."
+  type        = string
+}
+
+variable "domain_name" {
+  description = "The domain name to associate with the Amplify app."
+  type        = string
+}
+
+variable "sub_domain_prefix" {
+  description = "The subdomain prefix to associate with the branch."
+  type        = string
+}
+
+variable "sub_domain_branch" {
+  description = "The branch name to associate with the subdomain."
+  type        = string
 }
