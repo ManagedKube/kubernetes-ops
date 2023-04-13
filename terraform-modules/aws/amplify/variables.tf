@@ -52,13 +52,3 @@ variable "domain_name" {
   description = "The domain name to associate with the Amplify app."
   type        = string
 }
-
-variable "sub_domain_prefix" {
-  description = "The subdomain prefix to associate with the branch."
-  type        = string
-}
-
-variable "sub_domain_branch" {
-  description = "The branch name to associate with the subdomain."
-  type        = string
-}

@@ -25,13 +25,4 @@ resource "aws_amplify_branch" "deploy_branches" {
 resource "aws_amplify_domain_association" "domain" {
   app_id      = aws_amplify_app.amplify.id
   domain_name = var.domain_name
-
-  depends_on = [aws_amplify_branch.deploy_branches]
-  sub_domain {
-    prefix      = var.sub_domain_prefix
-    branch_name = var.sub_domain_branch
-  }
-  timeouts {
-    create = "60m"
-  }
 }
