@@ -164,6 +164,18 @@ variable "jmx_exporter_enabled" {
   description = "Set true to enable the Prometheus JMX Exporter"
 }
 
+variable "client_sasl_scram_enabled" {
+  type        = bool
+  default     = false
+  description = "Enables SCRAM client authentication via AWS Secrets Manager (cannot be set to `true` at the same time as `client_tls_auth_enabled`)."
+}
+
+variable "client_sasl_scram_secret_association_arns" {
+  type        = list(string)
+  default     = []
+  description = "List of AWS Secrets Manager secret ARNs for scram authentication (cannot be set to `true` at the same time as `client_tls_auth_enabled`)."
+}
+
 variable "years_valid" {
   type        = number
   default     = 10
