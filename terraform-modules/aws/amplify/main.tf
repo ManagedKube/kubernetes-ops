@@ -17,7 +17,7 @@ resource "aws_iam_role" "amplify" {
 
 resource "aws_iam_policy" "amplify-policy" {
   name   = "${var.name}-amplify-policy"
-  policy = file("${path.module}/default_iam_policy.json.json")
+  policy = file("${path.module}/default_iam_policy.json")
 }
 
 resource "aws_iam_role_policy_attachment" "amplify-attach-policy" {
