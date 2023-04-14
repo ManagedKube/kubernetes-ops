@@ -6,6 +6,7 @@ module "s3_bucket" {
   policy = var.bucket_policy
   acl    = var.acl
   versioning = var.versioning
+  block_public_acls = var.block_public_acls
   block_public_policy     = var.block_public_policy
   restrict_public_buckets = var.restrict_public_buckets
   lifecycle_rule = var.lifecycle_rule
