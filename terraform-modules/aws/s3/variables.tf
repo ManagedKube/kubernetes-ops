@@ -32,3 +32,14 @@ variable "lifecycle_rule" {
   type        = any
   default     = []
 }
+variable "attach_policy" {
+  description = "Controls if S3 bucket should have bucket policy attached (set to `true` to use value of `policy` as bucket policy)"
+  type        = bool
+  default     = false
+}
+variable "bucket_policy" {
+  description = "Bucket policy document to attach as bucket policy"
+  type = string
+  default = ""
+  
+}

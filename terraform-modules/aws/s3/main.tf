@@ -1,8 +1,9 @@
 module "s3_bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
-  version = "v3.0.1"
-
+  version = "v3.8.2"
   bucket = var.bucket
+  attach_policy= var.attach_policy
+  policy = var.bucket_policy
   acl    = var.acl
   versioning = var.versioning
   block_public_policy     = var.block_public_policy
