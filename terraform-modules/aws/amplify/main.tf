@@ -1,9 +1,37 @@
+resource "aws_iam_role" "amplify" {
+  name = "${var.name}-amplify-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "amplify.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "amplify-policy" {
+  name   = "${var.name}-amplify-policy"
+  policy = file("${path.module}/default_iam_policy.json.json")
+}
+
+resource "aws_iam_role_policy_attachment" "amplify-attach-policy" {
+  policy_arn = aws_iam_policy.amplify-policy.arn
+  role       = aws_iam_role.amplify.name
+}
+
 resource "aws_amplify_app" "amplify" {
   name                     = var.name
   repository               = var.repository_url
   enable_branch_auto_build = var.enable_branch_auto_build
   build_spec               = var.build_spec
   oauth_token              = var.gh_access_token
+  iam_service_role_arn     = aws_iam_role.amplify.arn
   dynamic "custom_rule" {
     for_each = var.custom_rules
     content {

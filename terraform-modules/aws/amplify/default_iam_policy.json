@@ -1,0 +1,121 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+              "acm:DescribeCertificate",
+              "acm:ListCertificates",
+              "acm:RequestCertificate"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "cloudfront:CreateCloudFrontOriginAccessIdentity",
+              "cloudfront:CreateDistribution",
+              "cloudfront:CreateInvalidation",
+              "cloudfront:GetDistribution",
+              "cloudfront:GetDistributionConfig",
+              "cloudfront:ListCloudFrontOriginAccessIdentities",
+              "cloudfront:ListDistributions",
+              "cloudfront:ListDistributionsByLambdaFunction",
+              "cloudfront:ListDistributionsByWebACLId",
+              "cloudfront:ListFieldLevelEncryptionConfigs",
+              "cloudfront:ListFieldLevelEncryptionProfiles",
+              "cloudfront:ListInvalidations",
+              "cloudfront:ListPublicKeys",
+              "cloudfront:ListStreamingDistributions",
+              "cloudfront:UpdateDistribution"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "cloudfront:TagResource",
+              "cloudfront:UntagResource",
+              "cloudfront:ListTagsForResource"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "iam:AttachRolePolicy",
+              "iam:CreateRole",
+              "iam:CreateServiceLinkedRole",
+              "iam:GetRole",
+              "iam:PutRolePolicy",
+              "iam:PassRole",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:DeleteRolePolicy"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "lambda:CreateFunction",
+              "lambda:EnableReplication",
+              "lambda:DeleteFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:PublishVersion",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:ListEventSourceMappings",
+              "lambda:CreateEventSourceMapping"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "route53:ChangeResourceRecordSets",
+              "route53:ListHostedZonesByName",
+              "route53:ListResourceRecordSets"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "s3:CreateBucket",
+              "s3:GetAccelerateConfiguration",
+              "s3:GetObject",
+              "s3:ListBucket",
+              "s3:PutAccelerateConfiguration",
+              "s3:PutBucketPolicy",
+              "s3:PutObject",
+              "s3:PutBucketTagging",
+              "s3:GetBucketTagging"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:CreateQueue",
+              "sqs:DeleteQueue",
+              "sqs:GetQueueAttributes",
+              "sqs:SetQueueAttributes"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "amplify:GetApp",
+                "amplify:GetBranch",
+                "amplify:UpdateApp",
+                "amplify:UpdateBranch"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
