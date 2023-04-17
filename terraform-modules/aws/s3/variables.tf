@@ -53,5 +53,11 @@ variable "bucket_policy" {
   description = "Bucket policy document to attach as bucket policy"
   type = string
   default = ""
+}
+
+variable "create_bucket" {
+  description = "flag to create bucket"
+  type = bool
+  default = true
   
 }

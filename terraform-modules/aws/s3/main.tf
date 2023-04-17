@@ -11,4 +11,5 @@ module "s3_bucket" {
   restrict_public_buckets = var.restrict_public_buckets
   ignore_public_acls = var.ignore_public_acls
   lifecycle_rule = var.lifecycle_rule
+  create_bucket = var.create_bucket
 }
