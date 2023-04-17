@@ -1,6 +1,7 @@
 variable "name" {
   description = "The name of the Amplify App"
   type        = string
+  default     = null
 }
 
 variable "repository_url" {
@@ -46,19 +47,23 @@ variable "gh_access_token" {
 variable "branch_name" {
   description = "The branch name to be deployed."
   type        = string
+  default     = null
 }
 
 variable "domain_name" {
   description = "The domain name to associate with the Amplify app."
   type        = string
+  default     = null
 }
 
 variable "sub_domain_prefix" {
   description = "The subdomain prefix to associate with the branch."
   type        = string
+  default     = null
 }
 
 variable "sub_domain_branch" {
   description = "The branch name to associate with the subdomain."
   type        = string
+  default     = null
 }
