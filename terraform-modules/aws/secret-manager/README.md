@@ -1,3 +1,34 @@
+# AWS Secret Manager
+Certainly! This Terraform configuration creates an empty AWS Secrets Manager secret. 
+When the secret is first created, it doesn't contain any secret value. You will need 
+to add a secret value to the newly created secret manually or programmatically after 
+the secret is created.
+
+To add a secret value to the empty secret, you can do it in two ways:
+
+1. Using the AWS Management Console:
+- Navigate to the AWS Secrets Manager service in the AWS Management Console.
+- Locate the created secret using its name, name prefix, or tags.
+- Click on the secret to view its details.
+- In the "Secret value" section, click on the "Retrieve secret value" button.
+- Click the "Edit" button to add a new secret value.
+- Enter the secret value in the "Plaintext" or "JSON" field, depending on your preference.
+- Click the "Save" button to store the secret value.
+
+2. Using the AWS CLI:
+You can use the aws secretsmanager put-secret-value command to add a secret value to the created 
+secret. Replace <SECRET_ARN> with the ARN of the created secret and <SECRET_VALUE> with the value 
+you want to store in the secret:
+
+```
+aws secretsmanager put-secret-value --secret-id <SECRET_ARN> --secret-string '<SECRET_VALUE>'
+```
+Alternatively, you can use the secret's name instead of the ARN:
+```
+aws secretsmanager put-secret-value --secret-id <SECRET_NAME> --secret-string '<SECRET_VALUE>'
+```
+Once you've added the secret value, you can retrieve it using the AWS Management Console, AWS CLI, SDKs, or APIs when needed.
+
 ## Requirements
 
 No requirements.
