@@ -56,15 +56,17 @@ data "aws_partition" "current" {
 }
 
 resource "aws_acmpca_certificate_authority_certificate" "cacert" {
-  certificate_authority_arn = aws_acmpca_certificate_authority.this.arn
+  count = var.create_private_ca ? 1 : 0
+  certificate_authority_arn = aws_acmpca_certificate_authority.this[0].arn
 
-  certificate       = aws_acmpca_certificate.cert.certificate
-  certificate_chain = aws_acmpca_certificate.cert.certificate_chain
+  certificate       = aws_acmpca_certificate.cert[0].certificate
+  certificate_chain = aws_acmpca_certificate.cert[0].certificate_chain
 }
 
 resource "aws_acmpca_certificate" "cert" {
-  certificate_authority_arn   = aws_acmpca_certificate_authority.this.arn
-  certificate_signing_request = aws_acmpca_certificate_authority.this.certificate_signing_request
+  count = var.create_private_ca ? 1 : 0
+  certificate_authority_arn   = aws_acmpca_certificate_authority.this[0].arn
+  certificate_signing_request = aws_acmpca_certificate_authority.this[0].certificate_signing_request
   signing_algorithm           = "SHA512WITHRSA"
 
   template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
@@ -76,6 +78,7 @@ resource "aws_acmpca_certificate" "cert" {
 }
 
 resource "aws_acmpca_certificate_authority" "this" {
+  count = var.create_private_ca ? 1 : 0
   certificate_authority_configuration {
     key_algorithm     = var.key_algorithm
     signing_algorithm = var.signing_algorithm
@@ -130,7 +133,7 @@ module "msk" {
   broker_instance_type           = var.broker_instance_type
   broker_volume_size             = var.broker_volume_size
   tags                           = var.tags
-  certificate_authority_arns     = [aws_acmpca_certificate_authority.this.arn]
+  certificate_authority_arns     = var.create_private_ca ? [aws_acmpca_certificate_authority.this[0].arn] : []
   client_tls_auth_enabled        = var.client_tls_auth_enabled
   client_sasl_iam_enabled        = var.client_sasl_iam_enabled
   client_sasl_scram_enabled      = var.client_sasl_scram_enabled
@@ -149,6 +152,6 @@ module "msk" {
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
     aws_s3_bucket.this,
-    aws_acmpca_certificate.cert
+    aws_acmpca_certificate.cert[0]
   ]
 }

@@ -182,3 +182,8 @@ variable "years_valid" {
   description = "The Certificate will be valid for a period of x years from the time it is issued."
 }
 
+variable "create_private_ca" {
+  description = "Boolean flag to control if the resources about CA Private should be created"
+  type        = bool
+  default     = false
+}
