@@ -6,6 +6,11 @@ resource "aws_kms_key" "this" {
   tags                    = var.tags
 }
 
+resource "aws_kms_alias" "a" {
+  name          = "alias/${var.secretsmanager_kms_name_alias}"
+  target_key_id = aws_kms_key.this.key_id
+}
+
 # Creates the Secrets Manager secret.
 resource "aws_secretsmanager_secret" "this" {
   name                      = var.secretsmanager_secret_name

@@ -11,6 +11,12 @@ variable "secretsmanager_kms_name" {
   default     = ""
 }
 
+variable "secretsmanager_kms_name_alias" {
+  description = "The Alias name of the KMS key"
+  type        = string
+  default     = ""
+}
+
 variable "secretsmanager_kms_deletion_window_in_days" {
   description = "The number of days to wait before deleting the KMS key"
   type        = number
