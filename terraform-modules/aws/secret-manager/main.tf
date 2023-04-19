@@ -7,8 +7,9 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "a" {
+  count         = var.create_kms_key ? 1 : 0
   name          = "alias/${var.secretsmanager_kms_name_alias}"
-  target_key_id = aws_kms_key.this.key_id
+  target_key_id = aws_kms_key.this[0].key_id
 }
 
 # Creates the Secrets Manager secret.
