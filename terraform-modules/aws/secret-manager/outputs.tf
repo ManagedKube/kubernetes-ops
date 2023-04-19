@@ -1,11 +1,11 @@
 output "secret_id" {
-  description = "ARN of the Secrets Manager secret"
+  description = "Id of the Secrets Manager secret"
   value       = aws_secretsmanager_secret.this.id
 }
 
 output "secret_arn" {
   description = "ARN of the Secrets Manager secret"
-  value       = aws_secretsmanager_secret.this
+  value       = aws_secretsmanager_secret.this.arn
 }
 
 output "kms_key_arn" {
