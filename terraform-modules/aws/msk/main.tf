@@ -111,8 +111,11 @@ module "msk" {
   # We are currently targeting a fixed branch in our code because we are waiting for authorization of a pull request (PR) in the provider 
   # https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster/pull/76 This branch is being used by client EP.
   # In addition, this pull request repairs a warning regarding the deprecated field 'ebs_volume_size' in Terraform, as it was deprecated by AWS.
-  source                         = "git::https://github.com/ManagedKube/terraform-aws-msk-apache-kafka-cluster.git?ref=remove-ebs_volume_size-deprecated"
-  #version                        = "v1.1.1"
+  source                         = "cloudposse/msk-apache-kafka-cluster/aws"
+  
+  # @bcarranza achieved a change approved by cloudposse which it was added in v1.2.0
+  # https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster/pull/76#issuecomment-1513345131
+  version                        = "v1.2.0"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
