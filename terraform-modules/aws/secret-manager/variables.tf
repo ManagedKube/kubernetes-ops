@@ -28,12 +28,6 @@ variable "secretsmanager_secret_description" {
   default     = ""
 }
 
-variable "secretsmanager_secret_name_prefix" {
-  description = "A prefix for the Secrets Manager secret name"
-  type        = string
-  default     = ""
-}
-
 variable "secretsmanager_secret_recovery_window_in_days" {
   description = "The number of days to wait before deleting the Secrets Manager secret"
   type        = number
