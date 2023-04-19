@@ -10,7 +10,6 @@ resource "aws_kms_key" "this" {
 resource "aws_secretsmanager_secret" "this" {
   name                      = var.secretsmanager_secret_name
   description               = var.secretsmanager_secret_description
-  name_prefix               = var.secretsmanager_secret_name_prefix
   recovery_window_in_days   = var.secretsmanager_secret_recovery_window_in_days
   
   #If you don't specify this value, then Secrets Manager defaults to using the AWS account's default KMS key (the one named aws/secretsmanager
