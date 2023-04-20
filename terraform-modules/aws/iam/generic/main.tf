@@ -14,3 +14,11 @@ resource "aws_iam_role" "this" {
   assume_role_policy    = var.iam_assume_role_policy
   tags                  = var.tags
 }
+
+resource "aws_iam_instance_profile" "this" {
+  count = var.create_iam_instance_profile ? 1 : 0
+
+  name = "${var.iam_name}-instance-profile"
+  role = var.iam_name
+  tags = var.tags
+}
