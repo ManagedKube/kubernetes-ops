@@ -1,9 +1,14 @@
 # AWS Secret Manager
-
-Certainly! This Terraform configuration creates an empty AWS Secrets Manager secret. 
+This Terraform configuration creates an empty AWS Secrets Manager secret. 
 When the secret is first created, it doesn't contain any secret value. You will need 
 to add a secret value to the newly created secret manually or programmatically after 
 the secret is created.
+
+# Why you would want to use this module?
+
+To be able to create the AWS Secret resource via IAC but be able to set the actual secret 
+value by ClickOps.
+
 
 To add a secret value to the empty secret, you can do it in two ways:
 
