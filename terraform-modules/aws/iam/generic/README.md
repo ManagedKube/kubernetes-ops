@@ -38,3 +38,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_iam_arn"></a> [iam\_arn](#output\_iam\_arn) | Amazon Resource Name (ARN) specifying the role. |
+| <a name="output_iam_instance_profile_arn"></a> [iam\_instance\_profile\_arn](#output\_iam\_instance\_profile\_arn) | Amazon Resource Name (ARN) specifying instance profiel the role. |
