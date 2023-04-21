@@ -113,3 +113,18 @@ variable "webserver_access_mode" {
     error_message = "Invalid input, options: \"PRIVATE_ONLY\", \"PUBLIC_ONLY\"."
   }
 }
+
+variable "iam_extra_policies" {
+  description = "List of additional policies to create and attach to the IAM role"
+  type        = list(object({
+    name_prefix = string
+    policy_json = string
+  }))
+  default     = []
+}
+
+variable "sg_extra_ids" {
+  description = "List of additional sg to create and attach to Airflow"
+  type        = list(string)
+  default     = []
+}

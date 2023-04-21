@@ -74,7 +74,7 @@ resource "aws_mwaa_environment" "this" {
   }
 
   network_configuration {
-    security_group_ids = [aws_security_group.this.id]
+    security_group_ids = concat([aws_security_group.this.id], var.sg_extra_ids)
     subnet_ids         = var.subnet_ids
   }
 
@@ -83,6 +83,10 @@ resource "aws_mwaa_environment" "this" {
 
 data "aws_caller_identity" "current" {}
 
+# This module creates an IAM role with an attached list of policies.
+# Best practices recommend using unique names and descriptions for each policy.
+# The custom_role_policy_arns at position 0 is the one defined in this module in the default_iam_policy.json file.
+# The rest of the list consists of policies that you can provide through the iam_extra_policies variable.
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version                       = "5.11.2"
@@ -91,7 +95,7 @@ module "iam_assumable_role_admin" {
   role_name               = "airflow-${var.airflow_name}"
   role_description        = "Airflow role"
   trusted_role_services   = ["airflow.amazonaws.com","airflow-env.amazonaws.com"]
-  custom_role_policy_arns = [aws_iam_policy.policy.arn]
+  custom_role_policy_arns = concat([aws_iam_policy.policy.arn], [for policy in aws_iam_policy.iam_extra_policies : policy.arn])
   role_requires_mfa       = false
   tags                    = var.tags
 }
@@ -108,6 +112,21 @@ resource "aws_iam_policy" "policy" {
 
   tags = var.tags
 }
+
+# This resource creates additional IAM policies based on a list of objects provided as input.
+# Best practices recommend providing unique names and descriptions for each policy.
+# The purpose of this resource is to allow users to attach custom policies to the IAM role,
+# making it more flexible and adaptable to specific use cases.
+resource "aws_iam_policy" "extra-policy" {
+  count = length(var.iam_extra_policies)
+
+  name_prefix = "${var.iam_extra_policies[count.index].name_prefix}-${var.airflow_name}"
+  description = "Airflow extra policy ${count.index}"
+  policy      = var.iam_extra_policies[count.index].policy_json
+
+  tags = var.tags
+}
+
 
 resource "aws_security_group" "this" {
   name        = var.airflow_name
