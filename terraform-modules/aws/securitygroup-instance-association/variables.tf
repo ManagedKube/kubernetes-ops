@@ -1,6 +1,7 @@
 variable "instance_security_group_pairs" {
   description = <<EOT
   List of objects containing EC2 instance IDs and Security Group IDs to associate.
+  if you set fetch_ec2_instances = true, This variable will not be functional. 
   Each object should have the following structure:
   {
     instance_id      = "i-0123456789abcdef0"
@@ -24,3 +25,28 @@ variable "instance_security_group_pairs" {
   }))
   default = []
 }
+
+variable "fetch_ec2_instances" {
+  description = "A boolean to decide whether to fetch EC2 instances"
+  type        = bool
+  default     = false
+}
+
+variable "fetch_ec2_instance_name" {
+  description = "The name of the EC2 instances to fetch"
+  type        = string
+  default     = ""
+}
+
+variable "fetch_ec2_instance_sg_id" {
+  description = "The id of the SG to associate to EC2 instances to fetch"
+  type        = string
+  default     = ""
+}
+
+variable "fetch_ec2_instance_tag_name" {
+  description = "The tag in order to filter of the EC2 instances to fetch"
+  type        = string
+  default     = ""
+}
+
