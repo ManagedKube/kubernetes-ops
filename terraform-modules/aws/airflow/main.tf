@@ -45,6 +45,7 @@ resource "aws_mwaa_environment" "this" {
   dag_s3_path        = var.dag_s3_path
   execution_role_arn = module.iam_assumable_role_admin.iam_role_arn
   webserver_access_mode = var.webserver_access_mode
+  requirements_s3_path  = var.requirements_s3_path
 
   logging_configuration {
     dag_processing_logs {

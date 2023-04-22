@@ -128,3 +128,9 @@ variable "sg_extra_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "requirements_s3_path" {
+  description = "The S3 path for the MWAA requirements file."
+  type        = string
+  default     = ""
+}
