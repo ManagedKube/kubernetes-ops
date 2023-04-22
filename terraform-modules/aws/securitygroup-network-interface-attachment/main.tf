@@ -10,7 +10,7 @@ locals {
     for instance_id in data.aws_instances.ec2list.ids:
     instance_id => {
       instance_id = instance_id
-      network_interface_id = data.aws_instance.ec2_details[instance_id].primary_network_interface_id
+      network_interface_id = data.aws_instance.ec2_details[instance_id].network_interface_id
     }
   }
 }
