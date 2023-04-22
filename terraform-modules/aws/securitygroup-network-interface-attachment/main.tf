@@ -6,15 +6,22 @@ data "aws_instances" "ec2list" {
 }
 
 locals {
-  network_interfaces = {
-    for instance_id in data.aws_instances.ec2list.ids :
-    id => data.aws_network_interface.primary[instance_id].id
+  instance_details = {
+    for instance_id in data.aws_instances.ec2list.ids:
+    instance_id => {
+      instance_id = instance_id
+      network_interface_id = data.aws_instance.ec2_details[instance_id].primary_network_interface_id
+    }
   }
 }
 
+data "aws_instance" "ec2_details" {
+  for_each = toset(data.aws_instances.ec2list.ids)
+  instance_id = each.value
+}
 
 resource "aws_network_interface_sg_attachment" "extra_sg_association" {
-  for_each = local.network_interfaces
-  network_interface_id = each.value.id
+  for_each             = local.instance_details
+  network_interface_id = each.value.network_interface_id
   security_group_id    = var.fetch_ec2_instance_sg_id
 }
