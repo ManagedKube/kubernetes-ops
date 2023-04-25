@@ -60,3 +60,39 @@ No requirements.
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | n/a |
 | <a name="output_webserver_url"></a> [webserver\_url](#output\_webserver\_url) | n/a |
+
+
+## Rough edges
+In default section we have a statement policy as the following
+```
+{
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:GenerateDataKey*",
+                "kms:Encrypt"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringLike": {
+                    "kms:ViaService": [
+                        "sqs.${aws_region}.amazonaws.com",
+                        "s3.${aws_region}.amazonaws.com"
+                    ]
+                }
+            }
+        }
+```
+We didn't want to leave this as 
+```
+"Resource": "*",
+``` 
+We were working hard to find out why this only works with asterisk, and in the end chat gtp helped me with the answer since there is little documentation.
+finally Chat GPT was able to help 
+
+### chat gpt said:
+if you are using the default aws/airflow (which is our case in airflow with default policy) KMS key, you do not need to include a specific policy for KMS in your 
+IAM role. The necessary permissions to use this key are already granted by the service to your Amazon MWAA environment.
+Since you are using the default aws/airflow KMS key, you cannot specify its ARN directly in the policy. You can set the "Resource" field to "*" to allow access to all 
+KMS keys in your account
