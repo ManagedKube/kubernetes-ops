@@ -38,13 +38,14 @@
                 "logs:GetQueryResults"
             ],
             "Resource": [
-                "arn:aws:logs:${aws_region}:${aws_account_id}:log-group:airflow-${airflow_name}-*"
+                "arn:aws:logs:${aws_region}:${aws_account_id}:log-group:airflow-${airflow_name}-*:*"
             ]
         },
         {
             "Effect": "Allow",
             "Action": [
-                "logs:DescribeLogGroups"
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams"
             ],
             "Resource": [
                 "*"
@@ -75,24 +76,6 @@
                 "sqs:SendMessage"
             ],
             "Resource": "arn:aws:sqs:${aws_region}:*:airflow-celery-*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:GenerateDataKey*",
-                "kms:Encrypt"
-            ],
-            "Resource": "arn:aws:kms:${aws_region}:${aws_account_id}:key/*",
-            "Condition": {
-                "StringLike": {
-                    "kms:ViaService": [
-                        "sqs.${aws_region}.amazonaws.com",
-                        "s3.${aws_region}.amazonaws.com"
-                    ]
-                }
-            }
         }
     ]
 }
