@@ -6,12 +6,14 @@ This Terraform module provisions an AWS Amplify App with customizable inputs.
 
   name                      = The name of the Amplify App
   repository_url            = The URL of the Git repository for the Amplify App
-  enable_branch_auto_build  = Enable branch auto-build for the Amplify App
   build_spec                = Build spec for the Amplify App
   custom_rules              = Custom rules for the AWS Amplify App
   environment_variables     = Environment variables for the Amplify App
-  oauth_token               = GitHub access token for the Amplify App
-  branches_to_deploy	    = List of branches to deploy with AWS Amplify
+  gh_access_token           = GitHub access token for the Amplify App
+  branch_name               = The branch to be deployed
+  domain_name               = The domain name to associate with the app
+  sub_domain_prefix         = The subdomain prefix for the domain association
+  sub_domain_branch         = The branch to associate with the subdomain
 
 
 ## Outputs

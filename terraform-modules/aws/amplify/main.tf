@@ -19,7 +19,8 @@ resource "aws_iam_policy" "amplify-policy" {
   name   = "${var.name}-amplify-policy"
   policy = file("${path.module}/default_iam_policy.json")
 }
-
+# we have added this policy to resolve the AccessDenied Issue during the Code deployment
+# https://github.com/aws-amplify/amplify-hosting/blob/main/FAQ.md#error-accessdenied-access-denied
 resource "aws_iam_role_policy_attachment" "amplify-attach-policy" {
   policy_arn = aws_iam_policy.amplify-policy.arn
   role       = aws_iam_role.amplify.name
