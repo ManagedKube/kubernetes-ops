@@ -19,16 +19,13 @@ No modules.
 | [aws_amplify_app.amplify](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_app) | resource |
 | [aws_amplify_branch.deploy_branches](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_branch) | resource |
 | [aws_amplify_domain_association.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_domain_association) | resource |
-| [aws_iam_policy.amplify-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.amplify](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy_attachment.amplify-attach-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.role_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The account\_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws\_caller\_id showing *** by obtaining the value of account\_id | `string` | `null` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region | `string` | `"us-west-2"` | no |
 | <a name="input_branch_name"></a> [branch\_name](#input\_branch\_name) | The branch name to be deployed. | `string` | `null` | no |
 | <a name="input_build_spec"></a> [build\_spec](#input\_build\_spec) | Build spec for the Amplify App | `string` | `null` | no |
 | <a name="input_custom_rules"></a> [custom\_rules](#input\_custom\_rules) | Custom rules for the AWS Amplify App | <pre>list(object({<br>    source    = string<br>    target    = string<br>    status    = string<br>    condition = optional(string)<br>  }))</pre> | `[]` | no |
