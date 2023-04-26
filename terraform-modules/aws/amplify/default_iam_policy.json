@@ -100,7 +100,7 @@
                 "amplify:UpdateApp",
                 "amplify:UpdateBranch"
             ],
-            "Resource": "arn:aws:amplify:${aws:region}:${aws:accountid}:apps/*"
+            "Resource": "arn:aws:amplify:${aws_region}:${aws_account_id}:apps/*"
         }
     ]
 }
