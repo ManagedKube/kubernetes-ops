@@ -58,5 +58,6 @@ variable "workspaces" {
 
 variable "tags" {
   description = "A map of key-value pairs to assign as tags to the AWS resources created by this Terraform configuration."
-  type        = map(any)
+  type    = map(any)
+  default = {}
 }
