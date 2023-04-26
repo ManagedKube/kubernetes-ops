@@ -29,7 +29,6 @@ resource "aws_iam_policy" "amplify-policy" {
 resource "aws_iam_role_policy_attachment" "amplify-attach-policy" {
   policy_arn = aws_iam_policy.amplify-policy.arn
   role       = aws_iam_role.amplify.name
-  tags       = var.tags
 }
 
 resource "aws_amplify_app" "amplify" {
