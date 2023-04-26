@@ -67,3 +67,21 @@ variable "sub_domain_branch" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  type        = any
+  default     = {}
+  description = "A set of tags to place on the items"
+}
+
+variable "account_id" {
+  type        = string
+  default     = null
+  description = "The account_id of your AWS Account. This allows sure the use of the account number in the role to mitigate issue of aws_caller_id showing *** by obtaining the value of account_id "
+}
+
+variable "aws_region" {
+  type        = string
+  default     = "us-west-2"
+  description = "The AWS region"
+}

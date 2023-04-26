@@ -1,6 +1,6 @@
 resource "aws_iam_role" "amplify" {
   name = "${var.name}-amplify-role"
-
+  tags = var.tags
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -16,14 +16,20 @@ resource "aws_iam_role" "amplify" {
 }
 
 resource "aws_iam_policy" "amplify-policy" {
-  name   = "${var.name}-amplify-policy"
-  policy = file("${path.module}/default_iam_policy.json")
+  name = "${var.name}-amplify-policy"
+  policy = templatefile("./default_iam_policy.json", {
+    aws_account_id = var.account_id,
+    aws_region     = var.aws_region,
+    role_name      = "${var.name}-amplify-role"
+  })
+  tags = var.tags
 }
 # we have added this policy to resolve the AccessDenied Issue during the Code deployment
 # https://github.com/aws-amplify/amplify-hosting/blob/main/FAQ.md#error-accessdenied-access-denied
 resource "aws_iam_role_policy_attachment" "amplify-attach-policy" {
   policy_arn = aws_iam_policy.amplify-policy.arn
   role       = aws_iam_role.amplify.name
+  tags       = var.tags
 }
 
 resource "aws_amplify_app" "amplify" {
@@ -44,6 +50,7 @@ resource "aws_amplify_app" "amplify" {
   }
 
   environment_variables = var.environment_variables
+  tags                  = var.tags
 }
 
 resource "aws_amplify_branch" "deploy_branches" {

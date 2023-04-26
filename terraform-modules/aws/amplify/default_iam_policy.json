@@ -8,7 +8,7 @@
               "acm:ListCertificates",
               "acm:RequestCertificate"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:acm:${aws_region}:${aws_account_id}:certificate/*"
         },
         {
             "Effect": "Allow",
@@ -27,18 +27,12 @@
               "cloudfront:ListInvalidations",
               "cloudfront:ListPublicKeys",
               "cloudfront:ListStreamingDistributions",
-              "cloudfront:UpdateDistribution"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              "cloudfront:UpdateDistribution",
               "cloudfront:TagResource",
               "cloudfront:UntagResource",
               "cloudfront:ListTagsForResource"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:cloudfront::${aws_account_id}:*"
         },
         {
             "Effect": "Allow",
@@ -52,7 +46,7 @@
               "iam:UpdateAssumeRolePolicy",
               "iam:DeleteRolePolicy"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:iam::${aws_account_id}:role/${role_name}"
         },
         {
             "Effect": "Allow",
@@ -71,16 +65,7 @@
               "lambda:ListEventSourceMappings",
               "lambda:CreateEventSourceMapping"
             ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-              "route53:ChangeResourceRecordSets",
-              "route53:ListHostedZonesByName",
-              "route53:ListResourceRecordSets"
-            ],
-            "Resource": "*"
+            "Resource": "arn:aws:lambda:${aws_region}:${aws_account_id}:function:*"
         },
         {
             "Effect": "Allow",
@@ -95,7 +80,7 @@
               "s3:PutBucketTagging",
               "s3:GetBucketTagging"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:s3:${aws_region}:${aws_account_id}:*"
         },
         {
             "Effect": "Allow",
@@ -105,7 +90,7 @@
               "sqs:GetQueueAttributes",
               "sqs:SetQueueAttributes"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:sqs:${aws_region}:${aws_account_id}:*"
         },
         {
             "Effect": "Allow",
@@ -115,7 +100,7 @@
                 "amplify:UpdateApp",
                 "amplify:UpdateBranch"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:amplify:${aws:region}:${aws:accountid}:apps/*"
         }
     ]
 }
