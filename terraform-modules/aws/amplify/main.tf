@@ -15,7 +15,8 @@ resource "aws_iam_role" "amplify" {
   })
 }
 
-#Base policy for Amplify app allows access to resources needed by Amplify applications.
+# Base policy for Amplify app allows access to resources needed by Amplify applications.
+# https://docs.aws.amazon.com/amplify/latest/userguide/security-iam-awsmanpol.html?authuser=1
 resource "aws_iam_role_policy_attachment" "role_attach" {
   role       = aws_iam_role.amplify.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
