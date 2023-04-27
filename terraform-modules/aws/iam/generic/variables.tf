@@ -46,6 +46,12 @@ variable iam_assume_role_policy {
 }
 #End Trust relationship section-----------------------------
 
+variable "create_iam_instance_profile" {
+  description = "Whether to create the IAM instance profile"
+  type        = bool
+  default     = false
+}
+
 
 variable tags {
   type = map(any)
