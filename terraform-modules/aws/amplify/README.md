@@ -28,7 +28,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_branch_name"></a> [branch\_name](#input\_branch\_name) | The branch name to be deployed. | `string` | `null` | no |
 | <a name="input_build_spec"></a> [build\_spec](#input\_build\_spec) | Build spec for the Amplify App | `string` | `null` | no |
-| <a name="input_custom_rules"></a> [custom\_rules](#input\_custom\_rules) | Custom rules for the AWS Amplify App | <pre>list(object({<br>    source    = string<br>    target    = string<br>    status    = string<br>    condition = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_custom_rules"></a> [custom\_rules](#input\_custom\_rules) | Custom rules for the AWS Amplify App | <pre>list(object({<br>    source    = string<br>    target    = string<br>    status    = string<br>  }))</pre> | `[]` | no |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name to associate with the Amplify app. | `string` | `null` | no |
 | <a name="input_enable_branch_auto_build"></a> [enable\_branch\_auto\_build](#input\_enable\_branch\_auto\_build) | Enable branch auto-build for the Amplify App | `bool` | `false` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | Environment variables for the Amplify App | `map(string)` | `{}` | no |
