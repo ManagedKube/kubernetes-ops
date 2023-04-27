@@ -20,7 +20,6 @@ resource "aws_iam_role" "amplify" {
 resource "aws_iam_role_policy_attachment" "role_attach" {
   role       = aws_iam_role.amplify.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
-  tags       = var.tags
 }
 
 resource "aws_amplify_app" "amplify" {
@@ -36,7 +35,6 @@ resource "aws_amplify_app" "amplify" {
       source    = custom_rule.value.source
       target    = custom_rule.value.target
       status    = custom_rule.value.status
-      condition = custom_rule.value.condition
     }
   }
 

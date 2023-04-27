@@ -27,7 +27,6 @@ variable "custom_rules" {
     source    = string
     target    = string
     status    = string
-    condition = optional(string)
   }))
   default = []
 }
