@@ -3,7 +3,7 @@ variable "directory_service_directory_name" {
   type        = string
   description = "Name of Directory Service in Directory Name"
 }
-variable "directory_service_directory_name_passowrd_secretsmanager_secret_name" {
+variable "directory_service_directory_name_password_secretsmanager_secret_name" {
   type        = string
   default     = ""
   description = "The name of the AWS Secrets Manager secret that stores the password for the AWS Managed Microsoft AD directory."
