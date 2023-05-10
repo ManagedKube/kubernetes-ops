@@ -1,6 +1,6 @@
 resource "aws_workspaces_directory" "directory" {
-  directory_id = var.directory_service_directory_id
-  subnet_ids   =var.subnet_ids
+  directory_id = aws_directory_service_directory.directory_service.id
+  subnet_ids   = var.workspaces_directory_subnet_ids
   tags = var.tags
 
   self_service_permissions {
@@ -51,7 +51,7 @@ resource "aws_directory_service_directory" "directory_service" {
 
   vpc_settings {
     vpc_id = var.vpc_id
-    subnet_ids = directory_service_directory_subnet_ids
+    subnet_ids = var.directory_service_directory_subnet_ids
   }
 }
 
