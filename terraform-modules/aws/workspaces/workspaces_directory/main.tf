@@ -47,10 +47,10 @@ data "aws_secretsmanager_secret_version" "directory_password" {
 resource "aws_directory_service_directory" "directory_service" {
   name     = var.directory_service_directory_name
   password = data.aws_secretsmanager_secret_version.directory_password.secret_string
-  size     = var.aws_directory_service_directory_size
+  size     = var.directory_service_directory_size
 
   vpc_settings {
-    vpc_id = var.vpc_id
+    vpc_id = var.directory_service_directory_vpc_id
     subnet_ids = var.directory_service_directory_subnet_ids
   }
 }
