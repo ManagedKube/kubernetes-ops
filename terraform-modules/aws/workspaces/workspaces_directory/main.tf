@@ -36,12 +36,8 @@ resource "aws_workspaces_directory" "directory" {
   ]
 }
 
-data "aws_secretsmanager_secret" "directory_password" {
-  name = var.directory_service_directory_name_password_secretsmanager_secret_name
-}
-
 data "aws_secretsmanager_secret_version" "directory_password" {
-  secret_id = data.aws_secretsmanager_secret.directory_password.id
+  secret_id = var.directory_service_directory_name_password_secretsmanager_id
 }
 
 resource "aws_directory_service_directory" "directory_service" {
