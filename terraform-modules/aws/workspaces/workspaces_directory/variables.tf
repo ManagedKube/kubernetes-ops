@@ -15,6 +15,12 @@ variable "directory_service_directory_size" {
   description = "(For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default."
 }
 
+variable "directory_service_enable_sso" {
+  type        = bool
+  default     = false
+  description = "Whether to enable single-sign on for the directory. Requires alias. Defaults to false."
+}
+
 variable "directory_service_directory_vpc_id" {
   description = "VPC ID for the AWS Directory Service"
   type        = string

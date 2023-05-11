@@ -22,7 +22,6 @@ No modules.
 | [aws_iam_role_policy_attachment.workspaces_default_service_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_workspaces_directory.directory](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/workspaces_directory) | resource |
 | [aws_iam_policy_document.workspaces](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_secretsmanager_secret.directory_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
 | [aws_secretsmanager_secret_version.directory_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 
 ## Inputs
@@ -30,10 +29,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_directory_service_directory_name"></a> [directory\_service\_directory\_name](#input\_directory\_service\_directory\_name) | Name of Directory Service in Directory Name | `string` | n/a | yes |
-| <a name="input_directory_service_directory_name_passowrd_secretsmanager_secret_name"></a> [directory\_service\_directory\_name\_passowrd\_secretsmanager\_secret\_name](#input\_directory\_service\_directory\_name\_passowrd\_secretsmanager\_secret\_name) | The name of the AWS Secrets Manager secret that stores the password for the AWS Managed Microsoft AD directory. | `string` | `""` | no |
+| <a name="input_directory_service_directory_name_password_secretsmanager_id"></a> [directory\_service\_directory\_name\_password\_secretsmanager\_id](#input\_directory\_service\_directory\_name\_password\_secretsmanager\_id) | The name of the AWS Secrets Manager secret that stores the password for the AWS Managed Microsoft AD directory. | `string` | `""` | no |
 | <a name="input_directory_service_directory_size"></a> [directory\_service\_directory\_size](#input\_directory\_service\_directory\_size) | (For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default. | `string` | `"Small"` | no |
 | <a name="input_directory_service_directory_subnet_ids"></a> [directory\_service\_directory\_subnet\_ids](#input\_directory\_service\_directory\_subnet\_ids) | List of subnet IDs to Directory Service | `list(string)` | `[]` | no |
 | <a name="input_directory_service_directory_vpc_id"></a> [directory\_service\_directory\_vpc\_id](#input\_directory\_service\_directory\_vpc\_id) | VPC ID for the AWS Directory Service | `string` | `""` | no |
+| <a name="input_directory_service_enable_sso"></a> [directory\_service\_enable\_sso](#input\_directory\_service\_enable\_sso) | Whether to enable single-sign on for the directory. Requires alias. Defaults to false. | `bool` | `false` | no |
 | <a name="input_self_service_permissions_change_compute_type"></a> [self\_service\_permissions\_change\_compute\_type](#input\_self\_service\_permissions\_change\_compute\_type) | Allow users to change compute type | `bool` | `true` | no |
 | <a name="input_self_service_permissions_increase_volume_size"></a> [self\_service\_permissions\_increase\_volume\_size](#input\_self\_service\_permissions\_increase\_volume\_size) | Allow users to increase volume size | `bool` | `true` | no |
 | <a name="input_self_service_permissions_rebuild_workspace"></a> [self\_service\_permissions\_rebuild\_workspace](#input\_self\_service\_permissions\_rebuild\_workspace) | Allow users to rebuild their workspace | `bool` | `true` | no |
