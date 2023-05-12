@@ -1,4 +1,4 @@
-output "workspaces_id" {
-  description = "Id - The IP group identifier."
-  value       = { for ws in aws_workspaces_workspace.this : ws.user_name => ws.id }
+output "workspaces_ip_group_id" {
+  description = "The IP group identifier."
+  value       = aws_workspaces_ip_group.users.id
 }

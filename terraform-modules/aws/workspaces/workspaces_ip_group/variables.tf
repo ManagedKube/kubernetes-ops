@@ -1,3 +1,8 @@
+variable "account_name" {
+  description = "The name of the AWS account"
+  type        = string
+}
+
 variable "ip_group_rules" {
   description = <<EOT
     A list of IP group rules with source and description.
