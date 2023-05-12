@@ -5,7 +5,7 @@ data "aws_workspaces_bundle" "value_windows_10" {
 resource "aws_workspaces_workspace" "this" {
   for_each = { for workspace in var.workspaces : workspace.user_name => workspace }
 
-  directory_id = aws_workspaces_directory.this.id
+  directory_id = var.workspaces_directory_id
   bundle_id    = data.aws_workspaces_bundle.value_windows_10.id
   user_name    = each.value.user_name
 

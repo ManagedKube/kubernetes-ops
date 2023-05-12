@@ -1,8 +1,14 @@
 variable "bundle_id" {
   description = "The bundle ID for the AWS WorkSpaces"
   type        = string
-  default     = "wsb-bh8rsxt14" # Value with Windows 10 (English)
+  default     = "wsb-bh8rsxt14" # Value of Windows 10 (English)
 }
+
+variable "workspaces_directory_id" {
+  description = "Directory ID where aws workspaces will store its users"
+  type        = string
+}
+
 
 variable "root_volume_encryption_enabled" {
   description = "A boolean value indicating whether the root volume encryption is enabled."
