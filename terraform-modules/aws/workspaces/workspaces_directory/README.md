@@ -57,4 +57,16 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_workspace_directory_alias"></a> [workspace\_directory\_alias](#output\_workspace\_directory\_alias) | The directory alias. |
+| <a name="output_workspace_directory_customer_user_name"></a> [workspace\_directory\_customer\_user\_name](#output\_workspace\_directory\_customer\_user\_name) | The user name for the service account. |
+| <a name="output_workspace_directory_directory_name"></a> [workspace\_directory\_directory\_name](#output\_workspace\_directory\_directory\_name) | The name of the directory. |
+| <a name="output_workspace_directory_directory_type"></a> [workspace\_directory\_directory\_type](#output\_workspace\_directory\_directory\_type) | The directory type. |
+| <a name="output_workspace_directory_dns_ip_addresses"></a> [workspace\_directory\_dns\_ip\_addresses](#output\_workspace\_directory\_dns\_ip\_addresses) | The IP addresses of the DNS servers for the directory. |
+| <a name="output_workspace_directory_iam_role_id"></a> [workspace\_directory\_iam\_role\_id](#output\_workspace\_directory\_iam\_role\_id) | The identifier of the IAM role. |
+| <a name="output_workspace_directory_id"></a> [workspace\_directory\_id](#output\_workspace\_directory\_id) | The WorkSpaces directory identifier. |
+| <a name="output_workspace_directory_ip_group_ids"></a> [workspace\_directory\_ip\_group\_ids](#output\_workspace\_directory\_ip\_group\_ids) | The identifiers of the IP access control groups associated with the directory. |
+| <a name="output_workspace_directory_registration_code"></a> [workspace\_directory\_registration\_code](#output\_workspace\_directory\_registration\_code) | The registration code for the directory. |
+| <a name="output_workspace_directory_tags_all"></a> [workspace\_directory\_tags\_all](#output\_workspace\_directory\_tags\_all) | A map of tags assigned to the resource. |
+| <a name="output_workspace_directory_workspace_security_group_id"></a> [workspace\_directory\_workspace\_security\_group\_id](#output\_workspace\_directory\_workspace\_security\_group\_id) | The identifier of the security group that is assigned to new WorkSpaces. |
