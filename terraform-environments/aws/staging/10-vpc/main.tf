@@ -1,13 +1,3 @@
-terraform {
-  cloud {
-    organization = "kubernetes-ops-05-2023"
-
-    workspaces {
-      name = "kubernetes-ops-1"
-    }
-  }
-}
-
 locals {
   aws_region       = "us-east-1"
   environment_name = "staging"
@@ -30,10 +20,10 @@ terraform {
 
   backend "remote" {
     # Update to your Terraform Cloud organization
-    organization = "managedkube"
+    organization = "kubernetes-ops-05-2023"
 
     workspaces {
-      name = "kubernetes-ops-staging-10-vpc"
+      name = "kubernetes-ops-1"
     }
   }
 }
