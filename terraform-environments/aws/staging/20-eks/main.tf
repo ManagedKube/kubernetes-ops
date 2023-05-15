@@ -47,7 +47,7 @@ data "terraform_remote_state" "vpc" {
 }
 
 #
-# EKS
+# EKS DEMO
 #
 module "eks" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.30"
