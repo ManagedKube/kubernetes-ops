@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "kubernetes-ops-05-2023"
+
+    workspaces {
+      name = "kubernetes-ops-1"
+    }
+  }
+}
+
 locals {
   aws_region       = "us-east-1"
   environment_name = "staging"
