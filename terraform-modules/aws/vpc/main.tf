@@ -52,11 +52,11 @@ module "vpc" {
 
 
 locals {
-  eks_tags = {}
-  # eks_tags = {
-  #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[3]}" = "shared"
-  # }
+  # eks_tags = {}
+    eks_tags = {
+    "kubernetes.io/cluster/${var.cluster_name[0]}" = "owned"
+    "kubernetes.io/cluster/${var.cluster_name[1]}" = "owned"
+    "kubernetes.io/cluster/${var.cluster_name[2]}" = "owned"
+    "kubernetes.io/cluster/${var.cluster_name[3]}" = "owned"
+  }
 }
