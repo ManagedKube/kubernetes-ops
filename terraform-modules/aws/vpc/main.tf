@@ -32,7 +32,6 @@ module "vpc" {
 
   private_subnet_tags = merge(local.eks_tags, { "kubernetes.io/role/intenal-elb" = "1" })
 
-  
   # dynamic "private_subnet_tags" {
   #   for_each = var.cluster_name
   #   content {
@@ -52,11 +51,7 @@ module "vpc" {
 
 
 locals {
-  eks_tags = {}
-  # eks_tags = {
-  #   "kubernetes.io/cluster/${var.cluster_name[0]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[1]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[2]}" = "shared"
-  #   "kubernetes.io/cluster/${var.cluster_name[3]}" = "shared"
-  # }
+  eks_tags = {
+    for cluster in var.cluster_name : "kubernetes.io/cluster/${cluster}" => "owned"
+  }
 }
