@@ -21,4 +21,7 @@ resource "aws_workspaces_workspace" "this" {
     running_mode_auto_stop_timeout_in_minutes = each.value.running_mode_auto_stop_timeout_in_minutes
   }
   tags = var.tags
+  timeouts {
+    create = "60m"
+  }
 }
