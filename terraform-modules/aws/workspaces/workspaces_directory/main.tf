@@ -44,6 +44,7 @@ resource "aws_directory_service_directory" "directory_service" {
   name     = var.directory_service_directory_name
   password = data.aws_secretsmanager_secret_version.directory_password.secret_string
   size     = var.directory_service_directory_size
+  type     = var.directory_service_directory_type
   enable_sso = var.directory_service_enable_sso
 
   vpc_settings {

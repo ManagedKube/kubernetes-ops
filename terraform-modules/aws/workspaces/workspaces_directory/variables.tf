@@ -9,9 +9,15 @@ variable "directory_service_directory_name_password_secretsmanager_id" {
   description = "The name of the AWS Secrets Manager secret that stores the password for the AWS Managed Microsoft AD directory."
 }
 
+variable "directory_service_directory_type" {
+  type        = string
+  default     = "SimpleAD"
+  description = "The directory type (SimpleAD, ADConnector or MicrosoftAD are accepted values). Defaults to SimpleAD."
+}
+
 variable "directory_service_directory_size" {
   type        = string
-  default     = "Small"
+  default     = "SimpleAD"
   description = "(For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default."
 }
 
