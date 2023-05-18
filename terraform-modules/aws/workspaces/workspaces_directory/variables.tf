@@ -15,9 +15,15 @@ variable "directory_service_directory_type" {
   description = "The directory type (SimpleAD, ADConnector or MicrosoftAD are accepted values). Defaults to SimpleAD."
 }
 
+variable "directory_service_directory_edition" {
+  type        = string
+  default     = "Standard"
+  description = "(Optional, for type MicrosoftAD only) The MicrosoftAD edition (Standard or Enterprise). Defaults to Enterprise."
+}
+
 variable "directory_service_directory_size" {
   type        = string
-  default     = "SimpleAD"
+  default     = "Small"
   description = "(For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default."
 }
 

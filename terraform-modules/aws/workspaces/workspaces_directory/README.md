@@ -28,9 +28,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_directory_service_directory_edition"></a> [directory\_service\_directory\_edition](#input\_directory\_service\_directory\_edition) | (Optional, for type MicrosoftAD only) The MicrosoftAD edition (Standard or Enterprise). Defaults to Enterprise. | `string` | `"Standard"` | no |
 | <a name="input_directory_service_directory_name"></a> [directory\_service\_directory\_name](#input\_directory\_service\_directory\_name) | Name of Directory Service in Directory Name | `string` | n/a | yes |
 | <a name="input_directory_service_directory_name_password_secretsmanager_id"></a> [directory\_service\_directory\_name\_password\_secretsmanager\_id](#input\_directory\_service\_directory\_name\_password\_secretsmanager\_id) | The name of the AWS Secrets Manager secret that stores the password for the AWS Managed Microsoft AD directory. | `string` | `""` | no |
-| <a name="input_directory_service_directory_size"></a> [directory\_service\_directory\_size](#input\_directory\_service\_directory\_size) | (For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default. | `string` | `"SimpleAD"` | no |
+| <a name="input_directory_service_directory_size"></a> [directory\_service\_directory\_size](#input\_directory\_service\_directory\_size) | (For SimpleAD and ADConnector types) The size of the directory (Small or Large are accepted values). Small by default. | `string` | `"Small"` | no |
 | <a name="input_directory_service_directory_subnet_ids"></a> [directory\_service\_directory\_subnet\_ids](#input\_directory\_service\_directory\_subnet\_ids) | List of subnet IDs to Directory Service | `list(string)` | `[]` | no |
 | <a name="input_directory_service_directory_type"></a> [directory\_service\_directory\_type](#input\_directory\_service\_directory\_type) | The directory type (SimpleAD, ADConnector or MicrosoftAD are accepted values). Defaults to SimpleAD. | `string` | `"SimpleAD"` | no |
 | <a name="input_directory_service_directory_vpc_id"></a> [directory\_service\_directory\_vpc\_id](#input\_directory\_service\_directory\_vpc\_id) | VPC ID for the AWS Directory Service | `string` | `""` | no |
