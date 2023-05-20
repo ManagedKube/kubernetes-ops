@@ -27,11 +27,8 @@ resource "helm_release" "helm_chart" {
   disable_openapi_validation = var.disable_openapi_validation
   wait                       = var.wait
   wait_for_jobs              = var.wait_for_jobs
-  set                        = var.set
-  set_sensitive              = var.set_sensitive
   dependency_update          = var.dependency_update
   replace                    = var.replace
-  postrender                 = var.postrender
   pass_credentials           = var.pass_credentials
   lint                       = var.lint
 
