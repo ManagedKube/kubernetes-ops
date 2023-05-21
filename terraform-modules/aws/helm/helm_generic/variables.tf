@@ -134,24 +134,12 @@ variable "wait_for_jobs" {
   default = false
 }
 
-variable "set" {
-  default = null
-}
-
-variable "set_sensitive" {
-  default = null
-}
-
 variable "dependency_update" {
   default = false
 }
 
 variable "replace" {
   default = false
-}
-
-variable "postrender" {
-  default = null
 }
 
 variable "pass_credentials" {
