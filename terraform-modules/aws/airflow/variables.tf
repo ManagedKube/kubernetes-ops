@@ -134,3 +134,9 @@ variable "requirements_s3_path" {
   type        = string
   default     = ""
 }
+
+variable "airflow_configuration_options" {
+  description = "(Optional) The airflow_configuration_options parameter specifies airflow override options. Check the Official documentation for all possible configuration options."
+  type        = map(string)
+  default     = null
+}
