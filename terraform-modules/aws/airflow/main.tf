@@ -46,7 +46,7 @@ resource "aws_mwaa_environment" "this" {
   execution_role_arn = module.iam_assumable_role_admin.iam_role_arn
   webserver_access_mode = var.webserver_access_mode
   requirements_s3_path  = var.requirements_s3_path
-
+  airflow_configuration_options = var.airflow_configuration_options
   logging_configuration {
     dag_processing_logs {
       enabled   = true
