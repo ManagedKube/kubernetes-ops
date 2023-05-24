@@ -134,3 +134,11 @@ variable "requirements_s3_path" {
   type        = string
   default     = ""
 }
+
+#You can looking for variables in the following link:
+#https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-env-variables.html
+variable "airflow_configuration_options" {
+  description = "The Airflow override options"
+  type        = any
+  default     = null
+}

@@ -33,6 +33,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_airflow_configuration_options"></a> [airflow\_configuration\_options](#input\_airflow\_configuration\_options) | (Optional) The airflow\_configuration\_options parameter specifies airflow override options. Check the Official documentation for all possible configuration options. | `map(string)` | `null` | no |
 | <a name="input_airflow_name"></a> [airflow\_name](#input\_airflow\_name) | Airflow name | `string` | `"airflow"` | no |
 | <a name="input_airflow_version"></a> [airflow\_version](#input\_airflow\_version) | (Optional) Airflow version of your environment, will be set by default to the latest version that MWAA supports. | `string` | `null` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region | `string` | `"us-east-1"` | no |
@@ -42,6 +43,7 @@ No requirements.
 | <a name="input_iam_extra_policies"></a> [iam\_extra\_policies](#input\_iam\_extra\_policies) | List of additional policies to create and attach to the IAM role | <pre>list(object({<br>    name_prefix = string<br>    policy_json = string<br>  }))</pre> | `[]` | no |
 | <a name="input_max_workers"></a> [max\_workers](#input\_max\_workers) | (Optional) The maximum number of workers that can be automatically scaled up. Value need to be between 1 and 25. Will be 10 by default. | `number` | `10` | no |
 | <a name="input_min_workers"></a> [min\_workers](#input\_min\_workers) | (Optional) The minimum number of workers that you want to run in your environment. Will be 1 by default. | `number` | `1` | no |
+| <a name="input_requirements_s3_path"></a> [requirements\_s3\_path](#input\_requirements\_s3\_path) | The S3 path for the MWAA requirements file. | `string` | `""` | no |
 | <a name="input_scheduler_log_level"></a> [scheduler\_log\_level](#input\_scheduler\_log\_level) | The log level: INFO \| WARNING \| ERROR \| CRITICAL | `string` | `"INFO"` | no |
 | <a name="input_sg_extra_ids"></a> [sg\_extra\_ids](#input\_sg\_extra\_ids) | List of additional sg to create and attach to Airflow | `list(string)` | `[]` | no |
 | <a name="input_source_bucket_arn"></a> [source\_bucket\_arn](#input\_source\_bucket\_arn) | The Dag's S3 bucket arn: arn:aws:s3:::bucketname | `string` | `"s3://foo"` | no |
@@ -60,7 +62,6 @@ No requirements.
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | n/a |
 | <a name="output_webserver_url"></a> [webserver\_url](#output\_webserver\_url) | n/a |
-
 
 ## Rough edges
 In default section we have a statement policy as the following
