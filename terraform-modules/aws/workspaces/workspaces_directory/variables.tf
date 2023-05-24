@@ -3,6 +3,7 @@ variable "directory_service_directory_name" {
   type        = string
   description = "Name of Directory Service in Directory Name"
 }
+
 variable "directory_service_directory_name_password_secretsmanager_id" {
   type        = string
   default     = ""
@@ -47,6 +48,12 @@ variable "directory_service_directory_subnet_ids" {
 
 variable "workspaces_directory_subnet_ids" {
   description = "List of subnet IDs to workspaces directory"
+  type        = list(string)
+  default     = []
+}
+
+variable "workspaces_ip_group_ids" {
+  description = "List of Ip Groups IDs to workspaces directory"
   type        = list(string)
   default     = []
 }
