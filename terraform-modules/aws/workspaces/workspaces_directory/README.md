@@ -56,6 +56,7 @@ No modules.
 | <a name="input_workspace_creation_properties_enable_maintenance_mode"></a> [workspace\_creation\_properties\_enable\_maintenance\_mode](#input\_workspace\_creation\_properties\_enable\_maintenance\_mode) | Enable maintenance mode for WorkSpaces | `bool` | `true` | no |
 | <a name="input_workspace_creation_properties_user_enabled_as_local_administrator"></a> [workspace\_creation\_properties\_user\_enabled\_as\_local\_administrator](#input\_workspace\_creation\_properties\_user\_enabled\_as\_local\_administrator) | Enable WorkSpaces users as local administrators | `bool` | `true` | no |
 | <a name="input_workspaces_directory_subnet_ids"></a> [workspaces\_directory\_subnet\_ids](#input\_workspaces\_directory\_subnet\_ids) | List of subnet IDs to workspaces directory | `list(string)` | `[]` | no |
+| <a name="input_workspaces_ip_group_ids"></a> [workspaces\_ip\_group\_ids](#input\_workspaces\_ip\_group\_ids) | List of Ip Groups IDs to workspaces directory | `list(string)` | `[]` | no |
 
 ## Outputs
 

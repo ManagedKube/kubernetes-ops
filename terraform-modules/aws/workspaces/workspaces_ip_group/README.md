@@ -30,4 +30,4 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_workspaces_id"></a> [workspaces\_id](#output\_workspaces\_id) | Id - The IP group identifier. |
+| <a name="output_workspaces_ip_group_id"></a> [workspaces\_ip\_group\_id](#output\_workspaces\_ip\_group\_id) | The IP group identifier. |
