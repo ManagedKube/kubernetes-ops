@@ -18,6 +18,12 @@ resource "aws_kms_key" "workspace" {
 POLICY
 }
 
+resource "aws_kms_alias" "workspace_alias" {
+  for_each          = { for workspace in var.workspaces : workspace.user_name => workspace }
+  name              = "alias/${each.value.user_name}"
+  target_key_id     = aws_kms_key.workspace[each.key].key_id
+}
+
 data "aws_workspaces_bundle" "value_windows_10" {
   bundle_id =  var.bundle_id 
 }
