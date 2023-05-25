@@ -1,6 +1,21 @@
 # AWS WORKSPACES
 
-This Terraform configuration creates an AWS WORKSPACES architecture integrated with AD (Simple, Microsoft or Connector) also include a white list
+This Terraform configuration creates an AWS WORKSPACES architecture integrated with AD (Simple, Microsoft or Connector) also include a white list.
+
+AWS WorkSpaces is a managed, secure Desktop-as-a-Service (DaaS) solution that helps you manage your desktop applications more easily. Here are a few reasons why it could be beneficial in the case of incompatibilities with your local machine:
+
+    - Consistent Environment: AWS WorkSpaces allows you to standardize the environment for your applications, minimizing the differences between local environments that can lead to incompatibilities. It ensures that everyone on your team is using the same version of the operating system and applications, which helps reduce configuration and compatibility issues.
+
+    - Scalability: WorkSpaces allows you to easily scale up or down depending on your needs. If you have new team members, you can quickly provision new WorkSpaces for them without worrying about hardware compatibility.
+
+    - Security: WorkSpaces are stored in the AWS Cloud, and not on the local machine. This means that sensitive data isn't stored on potentially insecure local hardware. Moreover, AWS has robust security protocols in place to protect your data.
+
+    - Flexibility: With AWS WorkSpaces, you can access your desktop anywhere, anytime, from any supported device. This allows employees to work with a familiar interface no matter where they are.
+
+    - Cost-effective: Instead of investing in new hardware to solve compatibility issues, AWS WorkSpaces offers a pay-as-you-go model. This can save costs associated with hardware procurement, maintenance, and upgrades.
+
+In summary, AWS WorkSpaces can provide a consistent, secure, and flexible working environment that can resolve many of the issues associated with local hardware and software incompatibilities.
+
 
 # Summary
 
