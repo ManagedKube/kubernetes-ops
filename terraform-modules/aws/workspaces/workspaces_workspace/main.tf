@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_kms_key" "workspace" {
   for_each = { for workspace in var.workspaces : workspace.user_name => workspace }
   description             = "KMS key for AWS Workspaces ${each.value.user_name}"
@@ -8,20 +10,10 @@ resource "aws_kms_key" "workspace" {
 
   policy = <<POLICY
   {
-    "Version": "2012-10-17",
-    "Id": "kms-workspaces-${each.value.user_name}",
-    "Statement": [
-      {
-        "Sid": "Allow Workspaces to use the key",
-        "Effect": "Allow",
-        "Principal": {"Service": "workspaces.amazonaws.com"},
-        "Action": [
-          "kms:Encrypt",
-          "kms:Decrypt"
-        ],
-        "Resource": "*"
-      }
-    ]
+      "Effect": "Allow",
+      "Principal": {"AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"},
+      "Action": "kms:*",
+      "Resource": "*"
   }
 POLICY
 }
