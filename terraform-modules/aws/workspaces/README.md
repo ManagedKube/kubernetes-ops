@@ -6,7 +6,7 @@ AWS WorkSpaces is a managed, secure Desktop-as-a-Service (DaaS) solution that he
 
     - Consistent Environment: AWS WorkSpaces allows you to standardize the environment for your applications, minimizing the differences between local environments that can lead to incompatibilities. It ensures that everyone on your team is using the same version of the operating system and applications, which helps reduce configuration and compatibility issues.
 
-    - Scalability: WorkSpaces allows you to easily scale up or down depending on your needs. If you have new team members, you can quickly provision new WorkSpaces for them without worrying about hardware compatibility.
+    - Scalability: WorkSpaces allows you to easily scale up or down depending on your needs. If you have new team members, you can quickly provision new WorkSpaces for them without worrying about hardware compatibility.ar
 
     - Security: WorkSpaces are stored in the AWS Cloud, and not on the local machine. This means that sensitive data isn't stored on potentially insecure local hardware. Moreover, AWS has robust security protocols in place to protect your data.
 
