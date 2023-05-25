@@ -1,3 +1,31 @@
+resource "aws_kms_key" "workspace" {
+  for_each = { for workspace in var.workspaces : workspace.user_name => workspace }
+  description             = "KMS key for AWS Workspaces ${each.value.user_name}"
+  deletion_window_in_days = 30
+  key_usage               = "ENCRYPT_DECRYPT"
+  is_enabled              = true
+  enable_key_rotation     = true
+
+  policy = <<POLICY
+  {
+    "Version": "2012-10-17",
+    "Id": "kms-workspaces-${each.value.user_name}",
+    "Statement": [
+      {
+        "Sid": "Allow Workspaces to use the key",
+        "Effect": "Allow",
+        "Principal": {"Service": "workspaces.amazonaws.com"},
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "*"
+      }
+    ]
+  }
+POLICY
+}
+
 data "aws_workspaces_bundle" "value_windows_10" {
   bundle_id =  var.bundle_id 
 }
@@ -11,7 +39,7 @@ resource "aws_workspaces_workspace" "this" {
 
   root_volume_encryption_enabled = var.root_volume_encryption_enabled
   user_volume_encryption_enabled = var.user_volume_encryption_enabled
-  volume_encryption_key          = var.volume_encryption_key
+  volume_encryption_key          = aws_kms_key.workspace[each.key].arn
 
   workspace_properties {
     compute_type_name                         = each.value.compute_type_name
