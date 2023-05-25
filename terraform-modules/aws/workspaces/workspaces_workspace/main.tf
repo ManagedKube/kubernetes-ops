@@ -27,7 +27,7 @@ resource "aws_kms_key" "workspace" {
 
 resource "aws_kms_alias" "workspace_alias" {
   for_each          = { for workspace in var.workspaces : workspace.user_name => workspace }
-  name              = "alias/${replace(each.value.user_name, ".", "")}"
+  name              = "alias/workspaces-${replace(each.value.user_name, ".", "")}"
   target_key_id     = aws_kms_key.workspace[each.key].key_id
 }
 
