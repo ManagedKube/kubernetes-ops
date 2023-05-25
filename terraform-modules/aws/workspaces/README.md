@@ -1,6 +1,6 @@
-# AWS Workspaces IP Group
+# AWS WORKSPACES
 
-This Terraform configuration creates an AWS Workspaces IP group. The IP group can be used to control access to AWS Workspaces instances.
+This Terraform configuration creates an AWS WORKSPACES architecture integrated with AD (Simple, Microsoft or Connector) alos include a white list
 
 # Summary
 
