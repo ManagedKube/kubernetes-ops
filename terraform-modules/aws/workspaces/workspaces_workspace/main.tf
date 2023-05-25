@@ -10,6 +10,8 @@ resource "aws_kms_key" "workspace" {
 
   policy = <<POLICY
   {
+      "Version": "2012-10-17"
+      "Id": "KMS-Workspaces-${each.value.user_name}"
       "Effect": "Allow",
       "Principal": {"AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"},
       "Action": "kms:*",
