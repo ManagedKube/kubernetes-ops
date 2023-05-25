@@ -1,6 +1,6 @@
 # AWS WORKSPACES
 
-This Terraform configuration creates an AWS WORKSPACES architecture integrated with AD (Simple, Microsoft or Connector) alos include a white list
+This Terraform configuration creates an AWS WORKSPACES architecture integrated with AD (Simple, Microsoft or Connector) also include a white list
 
 # Summary
 
