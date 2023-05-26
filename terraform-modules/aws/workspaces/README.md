@@ -17,7 +17,11 @@ AWS WorkSpaces is a managed, secure Desktop-as-a-Service (DaaS) solution that he
 In summary, AWS WorkSpaces can provide a consistent, secure, and flexible working environment that can resolve many of the issues associated with local hardware and software incompatibilities.
 
 
-# Summary
+# SUMMARY
+To have a successful application, you must follow the order presented here:
+1. WORKSPACES_IP_GROUP
+2. WORKSPACES_DIRECTORY
+3. WORKSPACES_WORKSPACES
 
 ## WORKSPACES_IP_GROUP
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/workspaces_ip_group 
