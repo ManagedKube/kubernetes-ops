@@ -24,6 +24,8 @@ module "aks_cluster" {
   oidc_issuer_enabled                  = var.oidc_issuer_enabled
   cluster_name                         = var.cluster_name
   log_analytics_workspace_enabled      = false
+  network_plugin                       = var.network_profile_network_plugin
+  network_policy                       = var.network_profile_network_policy
 
   enable_auto_scaling    = var.enable_auto_scaling
   enable_host_encryption = var.enable_host_encryption
