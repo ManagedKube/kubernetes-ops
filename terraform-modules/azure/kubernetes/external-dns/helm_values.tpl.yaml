@@ -1,0 +1,38 @@
+---
+commonLabels:
+  azure.workload.identity/use: "true" # Represents the service account is to be used for workload identity, see https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations:
+    azure.workload.identity/client-id: "${client_id}"
+    azure.workload.identity/tenant-id: "${tenant_id}"
+    azure.workload.identity/service-account-token-expiration: "86400" # Token is valid for 1 day
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  # name: foo
+
+
+## Azure configuration
+## Doc: https://github.com/kubernetes-sigs/external-dns/blob/91f912bc26f7012cedfce99bd608bc19e2b023dd/docs/tutorials/azure.md#configuration-file
+provider: azure-dns #azure-private-dns
+
+extraArgs:
+## By default the external-dns container looks for the `/etc/kubernetes/azure.json` file
+## no need to explicitly add the config file path here.  Placing this comment here just
+## in case this every changes in the future so that we know this is a configurable setting.
+# - --azure-config-file=/etc/kubernetes/azure.json
+- --azure-subscription-id=${subscription_id}
+- --azure-resource-group=${azure_resource_group_name}
+- --azure-user-assigned-identity-client-id=${client_id}
+
+extraVolumes:
+- name: azure-config-file
+  secret:
+    secretName: azure-config-file
+
+extraVolumeMounts:
+- name: azure-config-file
+  mountPath: /etc/kubernetes
+  readOnly: true
