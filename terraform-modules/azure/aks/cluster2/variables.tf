@@ -86,10 +86,12 @@ variable "default_node_pool_node_taints" {
 
 
 variable "network_profile_network_plugin" {
+  type = string
   default = "kubenet"
 }
 
 variable "network_profile_network_policy" {
+  type = string
   default = "calico"
 }
 
