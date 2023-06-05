@@ -113,3 +113,32 @@ variable "webserver_access_mode" {
     error_message = "Invalid input, options: \"PRIVATE_ONLY\", \"PUBLIC_ONLY\"."
   }
 }
+
+variable "iam_extra_policies" {
+  description = "List of additional policies to create and attach to the IAM role"
+  type        = list(object({
+    name_prefix = string
+    policy_json = string
+  }))
+  default     = []
+}
+
+variable "sg_extra_ids" {
+  description = "List of additional sg to create and attach to Airflow"
+  type        = list(string)
+  default     = []
+}
+
+variable "requirements_s3_path" {
+  description = "The S3 path for the MWAA requirements file."
+  type        = string
+  default     = ""
+}
+
+#You can looking for variables in the following link:
+#https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-env-variables.html
+variable "airflow_configuration_options" {
+  description = "The Airflow override options"
+  type        = any
+  default     = null
+}

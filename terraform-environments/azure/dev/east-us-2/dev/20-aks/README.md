@@ -1,5 +1,10 @@
 # Azure AKS
 
+## List AKS clusters
+```
+az aks list
+```
+
 ## Getting the kubeconfig
 
 ```
