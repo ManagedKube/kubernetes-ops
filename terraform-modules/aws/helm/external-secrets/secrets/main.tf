@@ -6,4 +6,5 @@ data "aws_region" "current" {}
 
 resource "kubernetes_manifest" "external_secret" {
   manifest = yamldecode(var.yaml)
+  computed_fields = ["spec.refreshInterval"]
 }

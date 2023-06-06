@@ -1,0 +1,19 @@
+---
+extraEnv: []
+# - name: foo
+#   value: bar
+
+## Kubernetes service accounts are created in the `secret_store` module.
+## This is the recommended path so that the k8s service account is not
+## tied to the external-secrets operator as a whole, which would allow
+## you to use multiple service accounts given specific Azure permissions
+## to a limited set of Vault secrets instances.
+# serviceAccount:
+#   name: serviceAccountName
+#   extraLabels:
+#     azure.workload.identity/use: "true" # Represents the service account is to be used for workload identity, see https://azure.github.io/azure-workload-identity/docs/topics/service-account-labels-and-annotations.html
+#   # Annotations to add to the service account
+#   annotations:
+#     azure.workload.identity/client-id: client_id
+#     azure.workload.identity/tenant-id: tenant_id
+#     azure.workload.identity/service-account-token-expiration: "86400" # Token is valid for 1 day

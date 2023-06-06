@@ -1,6 +1,6 @@
 variable "helm_version" {
   type        = string
-  default     = "0.8.1"
+  default     = "0.6.1"
   description = "Helm chart version"
 }
 
@@ -19,7 +19,7 @@ variable "create_namespace" {
 variable "namespace" {
   type        = string
   default     = "external-secrets"
-  description = "Namespace to install in"
+  description = "Namespace to install into"
 }
 
 variable "chart_name" {
@@ -32,22 +32,4 @@ variable "helm_values" {
   type        = string
   default     = ""
   description = "Additional helm values to pass in.  These values would override the default in this module."
-}
-
-variable "environment_name" {
-  type        = string
-  default     = "env"
-  description = "An environment name to attach to some resources.  Optional only needed if you are going to create more than one of these items in an AWS account"
-}
-
-variable "eks_cluster_oidc_issuer_url" {
-  type        = string
-  default     = ""
-  description = "EKS cluster oidc issuer url"
-}
-
-variable "secrets_prefix" {
-  type        = string
-  default     = ""
-  description = "The prefix to your AWS Secrets.  This allows this module to craft a more tightly controlled set of IAM policies to only allow it to get certain secrets"
 }
