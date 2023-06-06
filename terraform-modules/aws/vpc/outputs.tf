@@ -13,9 +13,19 @@ output "private_subnets" {
   value       = module.vpc.private_subnets
 }
 
+output "private_subnet_arns" {
+  description = "A list of private subnets"
+  value       = module.vpc.private_subnet_arns
+}
+
 output "public_subnets" {
   description = "A list of public subnets"
   value       = module.vpc.public_subnets
+}
+
+output "public_subnet_arns" {
+  description = "A list of public subnets"
+  value       = module.vpc.public_subnet_arns
 }
 
 output "k8s_subnets" {
