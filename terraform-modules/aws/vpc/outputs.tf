@@ -47,3 +47,9 @@ output "public_route_table_ids" {
   description = "List of IDs of public route tables"
   value       = module.vpc.public_route_table_ids
 }
+
+output "security_groups" {
+  description = "List of ARN's for the Security Groups"
+  value       = module.security-group.*
+}
+

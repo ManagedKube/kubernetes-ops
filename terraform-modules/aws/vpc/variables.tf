@@ -93,3 +93,26 @@ variable "default_route_table_routes" {
   default     = []
 }
 
+variable "create_security-group" {
+  description = "Whether to create security group"
+  type        = bool
+  default     = false
+}
+
+variable "security_groups"{
+  description = "security group configuration"
+  default     = []
+  type        = list(object(
+    {
+      sg_name                                      = string,
+      sg_description                               = string,
+      sg_tags                                      = map(string)  
+      ingress_with_cidr_blocks                     = list(map(string))
+      ingress_with_source_security_group_id        = list(map(string))
+      ingress_with_self                            = list(map(string))
+      egress_with_cidr_blocks                      = list(map(string))
+      egress_with_source_security_group_id         = list(map(string))
+      egress_with_self                             = list(map(string))
+    }
+  ))
+}
