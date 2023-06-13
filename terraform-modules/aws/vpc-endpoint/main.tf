@@ -10,6 +10,6 @@ resource "aws_vpc_endpoint" "execute_api_endpoint" {
 }
 
 data "aws_network_interface" "execute_api_nics" {
-  count = length(aws_vpc_endpoint.execute_api_endpoint.network_interface_ids)
-  id = aws_vpc_endpoint.execute_api_endpoint.network_interface_ids[count.index]
+  for_each = toset(aws_vpc_endpoint.execute_api_endpoint.network_interface_ids)
+  id = each.key
 }
