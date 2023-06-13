@@ -70,9 +70,16 @@ resource "aws_lb_target_group" "default" {
 resource "aws_lb_target_group_attachment" "this" {
   count             = var.nlb_target_ips ? length(var.target_ips) : 0
   target_group_arn  = aws_lb_target_group.default[0].arn
-  target_id         = var.nlb_target_ips ? var.target_ips[count.index].ip_address : ""
-  port              = var.nlb_target_ips ? var.target_ips[count.index].port : 0
-  availability_zone = var.nlb_target_ips ? var.target_ips[count.index].az : ""
+  target_id        = var.nlb_target_ips ? element([for ip in var.target_ips : ip.ip_address], count.index) : ""
+  port             = var.nlb_target_ips ? element([for ip in var.target_ips : ip.port], count.index) : 0
+}
+
+
+resource "aws_lb_target_group_attachment" "example" {
+  count            = var.nlb_target_ips ? length(var.target_ips) : 0
+  target_group_arn = aws_lb_target_group.example.arn
+  target_id        = var.nlb_target_ips ? element([for ip in var.target_ips : ip.ip_address], count.index) : ""
+  port             = var.nlb_target_ips ? element([for ip in var.target_ips : ip.port], count.index) : 0
 }
 
 
