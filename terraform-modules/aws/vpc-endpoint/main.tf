@@ -8,3 +8,8 @@ resource "aws_vpc_endpoint" "execute_api_endpoint" {
   private_dns_enabled   = var.private_dns_enabled
   tags = var.tags
 }
+
+data "aws_network_interface" "execute_api_nics" {
+  count = length(aws_vpc_endpoint.execute_api_endpoint.network_interface_ids)
+  id = aws_vpc_endpoint.execute_api_endpoint.network_interface_ids[count.index]
+}
