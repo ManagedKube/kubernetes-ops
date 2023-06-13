@@ -4,6 +4,7 @@ variable "vpc_link_name" {
 
 variable "vpc_link_description" {
   description = "Description of the API Gateway VPC link"
+  default = ""
 }
 
 variable "vpc_link_nbl_arn" {
