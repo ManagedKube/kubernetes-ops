@@ -202,7 +202,7 @@ variable "health_check_interval" {
 }
 
 variable "listener_port" {
-  Type      = number
+  type      = number
   default   = 80
   description = "Set listener port to forwarding (only if `nlb_target_ips` equals true)"
 }
