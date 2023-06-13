@@ -103,6 +103,110 @@ variable "nlb_s3_bucket_name" {
   default     = null
 }
 
+variable "nlb_target_ips" {
+  description = "Set true if you need to create target groups with Ips"
+  type        = bool
+  default     = false
+}
+
+variable "target_ips" {
+  description = "Set a list of ips with ports if you set `nlb_target_ips` equalss true (only if `nlb_target_ips` equals true)"
+  type = set(object({
+    ip_address = string
+    port       = number
+  }))
+  default  = []
+}
+
+variable "deregistration_delay" {
+  type        = number
+  default     = 15
+  description = "The amount of time to wait in seconds before changing the state of a deregistering target to unused (only if `nlb_target_ips` equals true)"
+}
+
+variable "target_group_name" {
+  type        = string
+  default     = ""
+  description = "The name for the default target group, uses a module label name if left empty (only if `nlb_target_ips` equals true)"
+}
+
+variable "target_group_port" {
+  type        = number
+  default     = 80
+  description = "The port for the default target group (only if `nlb_target_ips` equals true)"
+}
+
+variable "target_group_target_type" {
+  type        = string
+  default     = "ip"
+  description = "The type (`instance`, `ip` or `lambda`) of targets that can be registered with the default target group (only if `nlb_target_ips` equals true)"
+}
+
+variable "target_group_proxy_protocol_v2" {
+  type        = bool
+  default     = false
+  description = "A boolean flag to enable/disable proxy protocol v2 support (only if `nlb_target_ips` equals true)"
+}
+
+variable "slow_start" {
+  type        = number
+  default     = 0
+  description = "Amount time for targets to warm up before the load balancer sends them a full share of requests. The range is 30-900 seconds or 0 to disable. (only if `nlb_target_ips` equals true)"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "VPC ID to associate with Target Group (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_enabled" {
+  type        = bool
+  default     = true
+  description = "A boolean flag to enable/disable the NLB health checks (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_port" {
+  type        = number
+  default     = null
+  description = "The port to send the health check request to (defaults to `traffic-port`) (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_protocol" {
+  type        = string
+  default     = null
+  description = "The protocol to use for the health check request (only if `nlb_target_ips` equalss true)"
+}
+
+variable "health_check_path" {
+  type        = string
+  default     = "/"
+  description = "The destination for the health check request (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_threshold" {
+  type        = number
+  default     = 2
+  description = "The number of consecutive health checks successes required before considering an unhealthy target healthy. (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_unhealthy_threshold" {
+  type        = number
+  default     = null
+  description = "The number of consecutive health check failures required before considering the target unhealthy. If not set using value from `health_check_threshold` (only if `nlb_target_ips` equals true)"
+}
+
+variable "health_check_interval" {
+  type        = number
+  default     = 10
+  description = "The duration in seconds in between health checks (only if `nlb_target_ips` equals true)"
+}
+
+variable "listener_port" {
+  Type      = number
+  default   = 80
+  description = "Set listener port to forwarding (only if `nlb_target_ips` equals true)"
+}
+
 variable "nlb_tags" {
   description = "Tags"
   type        = map(any)
