@@ -68,12 +68,12 @@ resource "aws_lb_target_group" "default" {
 ###################################################
 
 resource "aws_lb_target_group_attachment" "this" {
-  count      = var.nlb_target_ips ? length(local.target_ips) : 0
+  count                = var.nlb_target_ips ? 1 : 0
   target_group_arn = aws_lb_target_group.default[0].arn
 
-  target_id         = local.target_ips[count.index].ip_address
-  port              = local.target_ips[count.index].port
-  availability_zone = local.target_ips[count.index].az
+  target_id         = var.target_ips[count.index].ip_address
+  port              = var.target_ips[count.index].port
+  availability_zone = var.target_ips[count.index].az
 }
 
 resource "aws_lb_listener" "default" {  
