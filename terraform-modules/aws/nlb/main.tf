@@ -77,6 +77,7 @@ resource "aws_lb_target_group_attachment" "this" {
 
 
 resource "aws_lb_listener" "default" {  
+  count                = var.nlb_target_ips ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   port              = var.listener_port
   protocol          = "TCP"
