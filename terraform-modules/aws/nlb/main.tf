@@ -77,7 +77,7 @@ resource "aws_lb_target_group_attachment" "this" {
 
 resource "aws_lb_target_group_attachment" "example" {
   count            = var.nlb_target_ips ? length(var.target_ips) : 0
-  target_group_arn = aws_lb_target_group.example.arn
+  target_group_arn = aws_lb_target_group.default.arn
   target_id        = var.nlb_target_ips ? element([for ip in var.target_ips : ip.ip_address], count.index) : ""
   port             = var.nlb_target_ips ? element([for ip in var.target_ips : ip.port], count.index) : 0
 }
