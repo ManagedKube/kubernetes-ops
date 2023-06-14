@@ -38,8 +38,8 @@ resource "aws_api_gateway_integration" "vpc_proxy" {
 
 #CORS
 resource "aws_api_gateway_method" "options_method" {
-    rest_api_id   = "${aws_api_gateway_rest_api.cors_api.id}"
-    resource_id   = "${aws_api_gateway_resource.cors_resource.id}"
+    rest_api_id   = "${aws_api_gateway_rest_api.my_api.id}"
+    resource_id   = "${aws_api_gateway_resource.proxy_resource.id}"
     http_method   = "OPTIONS"
     authorization = "NONE"
 }
