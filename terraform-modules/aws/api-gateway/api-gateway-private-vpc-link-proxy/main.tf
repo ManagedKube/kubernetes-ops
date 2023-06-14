@@ -31,7 +31,9 @@ resource "aws_api_gateway_integration" "vpc_proxy" {
   uri = var.api_gateway_b_uri
   integration_http_method = "ANY"
   passthrough_behavior = "WHEN_NO_MATCH"
-  request_parameters = {}
+  request_parameters = {
+    "method.request.path.proxy" = true
+  }
   type = "HTTP_PROXY"
 }
 
