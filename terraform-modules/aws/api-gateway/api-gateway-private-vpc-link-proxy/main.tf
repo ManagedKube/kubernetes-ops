@@ -23,9 +23,9 @@ resource "aws_api_gateway_method" "proxy_method" {
 }
 
 resource "aws_api_gateway_integration" "MyDemoIntegration" {
-  rest_api_id          = aws_api_gateway_rest_api.MyDemoAPI.id
-  resource_id          = aws_api_gateway_resource.MyDemoResource.id
-  http_method          = aws_api_gateway_method.MyDemoMethod.http_method
+  rest_api_id          = aws_api_gateway_rest_api.my_api.id
+  resource_id          = aws_api_gateway_resource.proxy_resource.id
+  http_method          = aws_api_gateway_method.proxy_method.http_method
   type                 = "HTTP_PROXY"
   uri                  = var.api_gateway_b_uri
   integration_http_method = "ANY"
