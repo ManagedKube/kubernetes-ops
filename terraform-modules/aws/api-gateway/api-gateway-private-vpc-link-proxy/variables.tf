@@ -13,7 +13,3 @@ variable "vpc_link_id" {
 variable "api_gateway_b_uri" {
   description = "Api gateway URI of another account to connect and make a proxy"
 }
-
-variable "policy" {
-  description = "Api gateway URI of another account to connect and make a proxy"
-}

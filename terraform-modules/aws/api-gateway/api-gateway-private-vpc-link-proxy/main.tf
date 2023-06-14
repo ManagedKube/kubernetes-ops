@@ -4,8 +4,33 @@ resource "aws_api_gateway_rest_api" "my_api" {
     types = ["PRIVATE"]
     vpc_endpoint_ids = ["${var.vpc_endpoint_id}"]  # Replace with your VPC endpoint ID
   }
-  policy = var.policy
 }
+
+#Resource Policy
+data "aws_iam_policy_document" "resourcePolicy" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions   = ["execute-api:Invoke"]
+    resources = [aws_api_gateway_rest_api.my_api.execution_arn]
+
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = ["123.123.123.123/32"]
+    }
+  }
+}
+resource "aws_api_gateway_rest_api_policy" "test" {
+  rest_api_id = aws_api_gateway_rest_api.test.id
+  policy      = data.aws_iam_policy_document.test.json
+}
+
 
 resource "aws_api_gateway_resource" "proxy_resource" {
   rest_api_id = aws_api_gateway_rest_api.my_api.id
