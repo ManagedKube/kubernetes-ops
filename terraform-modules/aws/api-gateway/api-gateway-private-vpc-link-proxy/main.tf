@@ -17,18 +17,13 @@ resource "aws_api_gateway_method" "proxy_method" {
   resource_id   = aws_api_gateway_resource.proxy_resource.id
   http_method   = "ANY"
   authorization = "NONE"
-}
 
-resource "aws_api_gateway_integration" "proxy_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.my_api.id
-  resource_id             = aws_api_gateway_resource.proxy_resource.id
-  http_method             = aws_api_gateway_method.proxy_method.http_method
-  integration_http_method = "ANY"
-  type                    = "VPC_PROXY"  # Update the integration type
-  uri                     = var.api_gateway_b_uri  # Replace with the desired endpoint
-
-  request_parameters = {
-    "integration.request.path.proxy" = "method.request.path.proxy"  # Update the path mapping
+  integration {
+    type              = "HTTP_PROXY"
+    uri               = var.api_gateway_b_uri  # Replace with your VPC link endpoint
+    http_method       = "ANY"
+    connection_type   = "VPC_LINK"
+    connection_id     = var.vpc_link_id  # Replace with your VPC link ID
   }
 }
 
