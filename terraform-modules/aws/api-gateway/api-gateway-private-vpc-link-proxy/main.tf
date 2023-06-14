@@ -17,27 +17,36 @@ resource "aws_api_gateway_method" "proxy_method" {
   resource_id   = aws_api_gateway_resource.proxy_resource.id
   http_method   = "ANY"
   authorization = "NONE"
-
-  integration {
-    type              = "HTTP_PROXY"
-    uri               = var.api_gateway_b_uri  # Replace with your VPC link endpoint
-    http_method       = "ANY"
-    connection_type   = "VPC_LINK"
-    connection_id     = var.vpc_link_id  # Replace with your VPC link ID
+  request_parameters = {
+    "method.request.path.proxy" = true
   }
 }
 
-resource "aws_api_gateway_integration_response" "proxy_integration_response" {
-  rest_api_id     = aws_api_gateway_rest_api.my_api.id
-  resource_id     = aws_api_gateway_resource.proxy_resource.id
-  http_method     = aws_api_gateway_method.proxy_method.http_method
-  status_code     = aws_api_gateway_method_response.proxy_method_response.status_code
+resource "aws_api_gateway_integration" "MyDemoIntegration" {
+  rest_api_id          = aws_api_gateway_rest_api.MyDemoAPI.id
+  resource_id          = aws_api_gateway_resource.MyDemoResource.id
+  http_method          = aws_api_gateway_method.MyDemoMethod.http_method
+  type                 = "HTTP_PROXY"
+  uri                  = var.api_gateway_b_uri
+  integration_http_method = "ANY"
+
+  cache_key_parameters = ["method.request.path.proxy"]
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 }
 
-resource "aws_api_gateway_method_response" "proxy_method_response" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy_resource.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "200"
-}
+#resource "aws_api_gateway_integration_response" "proxy_integration_response" {
+#  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+#  resource_id     = aws_api_gateway_resource.proxy_resource.id
+#  http_method     = aws_api_gateway_method.proxy_method.http_method
+#  status_code     = aws_api_gateway_method_response.proxy_method_response.status_code
+#}
+
+#resource "aws_api_gateway_method_response" "proxy_method_response" {
+#  rest_api_id = aws_api_gateway_rest_api.my_api.id
+#  resource_id = aws_api_gateway_resource.proxy_resource.id
+#  http_method = aws_api_gateway_method.proxy_method.http_method
+#  status_code = "200"
+#}
 
