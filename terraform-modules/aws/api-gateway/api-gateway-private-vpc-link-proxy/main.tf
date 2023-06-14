@@ -20,9 +20,9 @@ data "aws_iam_policy_document" "resourcePolicy" {
     resources = [aws_api_gateway_rest_api.my_api.execution_arn]
 
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = ["123.123.123.123/32"]
+      test     = "StringEquals"
+      variable = "aws:SourceVpce"
+      values   = ["${var.vpc_endpoint_id}"]
     }
   }
 }
