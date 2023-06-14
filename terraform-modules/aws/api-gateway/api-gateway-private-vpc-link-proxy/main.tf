@@ -4,6 +4,7 @@ resource "aws_api_gateway_rest_api" "my_api" {
     types = ["PRIVATE"]
     vpc_endpoint_ids = ["${var.vpc_endpoint_id}"]  # Replace with your VPC endpoint ID
   }
+  policy = var.policy
 }
 
 resource "aws_api_gateway_resource" "proxy_resource" {
