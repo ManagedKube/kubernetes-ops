@@ -35,6 +35,29 @@ resource "aws_api_gateway_integration" "vpc_proxy" {
 }
 
 
+resource "aws_api_gateway_method_response" "200" {
+    rest_api_id = "${aws_api_gateway_rest_api.my_api.id}"
+    resource_id = "${aws_api_gateway_resource.proxy_resource.id}"
+    http_method = "${aws_api_gateway_method.proxy_method.http_method}"
+    status_code = "200"
+
+    response_models = {
+         "application/json" = "Empty"
+    }
+}
+
+resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
+   rest_api_id = "${aws_api_gateway_rest_api.my_api.id}"
+   resource_id = "${aws_api_gateway_resource.proxy_resource.id}"
+   http_method = "${aws_api_gateway_method.proxy_method.http_method}"
+   status_code = "${aws_api_gateway_method_response.200.status_code}"
+
+   response_templates = {
+       "application/json" = ""
+   } 
+}
+
+
 
 #CORS
 resource "aws_api_gateway_method" "options_method" {
