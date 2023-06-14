@@ -39,7 +39,7 @@ resource "aws_api_gateway_method_response" "proxy" {
   resource_id = aws_api_gateway_resource.proxy_resource.id
   http_method = aws_api_gateway_method.proxy_method.http_method
   status_code = "200"
-  response_parameteresponse_parameters = {
+  response_parameters = {
     "application/json" = ""
   }
 }
