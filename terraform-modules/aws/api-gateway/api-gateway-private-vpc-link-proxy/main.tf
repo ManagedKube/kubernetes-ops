@@ -26,9 +26,9 @@ data "aws_iam_policy_document" "resourcePolicy" {
     }
   }
 }
-resource "aws_api_gateway_rest_api_policy" "test" {
-  rest_api_id = aws_api_gateway_rest_api.test.id
-  policy      = data.aws_iam_policy_document.test.json
+resource "aws_api_gateway_rest_api_policy" "api_resourcePolicy" {
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  policy      = data.aws_iam_policy_document.resourcePolicy.json
 }
 
 
