@@ -4,18 +4,16 @@ data "aws_instances" "existing_instances" {
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  tags = {
-    for instance_id, instance_tags in data.aws_instances.existing_instances.ids : instance_id => {
-      for variable in ["Env", "Platform", "Domain_2", "Domain_3"] : variable => var.account_tags[data.aws_caller_identity.current.account_id][variable]
-      if var.account_tags[data.aws_caller_identity.current.account_id][variable] != null
-    }
-  }
-}
-
 resource "aws_ec2_tag" "tag_existing_instances" {
-  count       = length(data.aws_instances.existing_instances.ids)
-  instance_id = data.aws_instances.existing_instances.ids[count.index]
+  for_each = toset(data.aws_instances.existing_instances.ids)
 
-  tags = local.tags[data.aws_instances.existing_instances.ids[count.index]]
+  resource_id = each.key
+
+  tags = merge(
+    {
+      "Platform" = contains(keys(local.tags), "Platform") ? local.tags["Platform"] : "null"
+      "Env"     = contains(keys(local.tags), "Env")    ? local.tags["Env"]    : "null"
+    },
+    local.tags
+  )
 }
