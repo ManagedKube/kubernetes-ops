@@ -13,7 +13,7 @@ locals {
   }
 }
 
-resource "aws_instance_tag" "tag_existing_instances" {
+resource "aws_ec2_tag" "tag_existing_instances" {
   count       = length(data.aws_instances.existing_instances.ids)
   instance_id = data.aws_instances.existing_instances.ids[count.index]
 
