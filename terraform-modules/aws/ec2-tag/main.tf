@@ -2,15 +2,22 @@ data "aws_instances" "existing_instances" {
   instance_state_names = ["running"]
 }
 
-data "aws_caller_identity" "current" {}
+locals {
+  instance_tags = flatten([
+    for instance in data.aws_instances.running_instances.instances : [
+      for key, value in instance.tags : {
+        resource_id = instance.id
+        key         = key
+        value       = value
+      }
+    ]
+  ])
+}
 
 resource "aws_ec2_tag" "tag_instances" {
-  for_each = data.aws_instances.running_instances.instances
+  for_each = { for idx, tag in local.instance_tags : idx => tag }
 
-  resource_id = each.value.id
-
-  tags = {
-    for key, value in each.value.tags : key => value
-  }
-  propagate_at_launch = false
+  resource_id   = each.value.resource_id
+  key           = each.value.key
+  value         = each.value.value
 }
