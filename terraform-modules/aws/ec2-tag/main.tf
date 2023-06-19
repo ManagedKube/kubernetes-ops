@@ -2,6 +2,8 @@ data "aws_instances" "existing_instances" {
   instance_state_names = ["running"]
 }
 
+data "aws_caller_identity" "current" {}
+
 locals {
   instance_tags = flatten([
     for instance in data.aws_instances.running_instances.instances : [
