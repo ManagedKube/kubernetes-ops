@@ -4,16 +4,13 @@ data "aws_instances" "existing_instances" {
 
 data "aws_caller_identity" "current" {}
 
-resource "aws_ec2_tag" "tag_existing_instances" {
-  for_each = toset(data.aws_instances.existing_instances.ids)
+resource "aws_ec2_tag" "tag_instances" {
+  for_each = data.aws_instances.running_instances.instances
 
-  resource_id = each.key
+  resource_id = each.value.id
 
-  tags = merge(
-    {
-      "Platform" = contains(keys(local.tags), "Platform") ? local.tags["Platform"] : "null"
-      "Env"     = contains(keys(local.tags), "Env")    ? local.tags["Env"]    : "null"
-    },
-    local.tags
-  )
+  tags = {
+    for key, value in each.value.tags : key => value
+  }
+  propagate_at_launch = false
 }
