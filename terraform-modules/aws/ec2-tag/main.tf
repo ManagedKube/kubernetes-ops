@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   instance_tags = flatten([
-    for instance in data.aws_instances.running_instances.instances : [
+    for instance in data.aws_instances.existing_instances.ids : [
       for key, value in instance.tags : {
         resource_id = instance.id
         key         = key
