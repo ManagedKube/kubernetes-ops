@@ -9,7 +9,13 @@ resource "aws_ec2_tag" "tag_existing_instances" {
   resource_id = each.key
 
   dynamic "tag" {
-    for_each = var.account_tags[data.aws_caller_identity.current.account_id]
+    for_each = [
+      for tag_key, tag_value in var.account_tags[data.aws_caller_identity.current.account_id] : {
+        key   = tag_key
+        value = tag_value
+      }
+      if tag_key in ["Env", "Platform", "Domain_2", "Domain_3"]
+    ]
 
     content {
       key   = tag.key
