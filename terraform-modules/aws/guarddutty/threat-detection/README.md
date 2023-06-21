@@ -27,8 +27,8 @@ The code you provided is written in HashiCorp Configuration Language (HCL) and i
         This resource creates an email subscription for the SNS topic.
         The topic_arn attribute specifies the ARN of the SNS topic to subscribe to.
         The protocol attribute specifies the protocol to use for the subscription, which is email in this case.
-        The endpoint attribute provides a list of email addresses that will receive notifications when events are published to the SNS topic. In this example, the email addresses are "dramesh@exactpay.com," "jsmillie@exactpay.com," and "pkarunakaran@exactpay.com."
-
+        The endpoint attribute provides a list of email addresses that will receive notifications when events are published to the SNS topic. 
+        
 ## Requirements
 
 No requirements.
