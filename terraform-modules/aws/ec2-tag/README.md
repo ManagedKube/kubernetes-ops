@@ -1,3 +1,9 @@
+## EC2 Tagging
+- It collects information about running instances in the AWS (Amazon Web Services) cloud.
+- It retrieves the identity of the AWS account that is executing the code.
+- It creates a local variable called "instance_tags" that contains information about the instances and their associated tags.
+- It applies the AWS EC2 tag to each instance based on the collected information.
+
 ## Requirements
 
 No requirements.
