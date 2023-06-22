@@ -1,0 +1,7 @@
+variable "tags" {
+  
+}
+
+variable "name" {
+  
+}
