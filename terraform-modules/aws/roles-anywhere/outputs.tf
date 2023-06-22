@@ -7,9 +7,9 @@ output "trust_anchor_id" {
 }
 
 output "profile_arn" {
-    value = aws_rolesanywhere_profile.profile[*].arn
+    value = [ for r in aws_rolesanywhere_profile.profile : r[*].arn ]
 }
 
 output "profile_id" {
-    value = aws_rolesanywhere_profile.profile[*].id
+   value = [ for r in aws_rolesanywhere_profile.profile : r[*].id ]
 }

@@ -13,25 +13,20 @@ variable "trust_anchor_name" {
 variable "cert_bundle" {
     type           = string
     description    = "Path to the certificate bundle document"
-    default        = ""
+    default        = "./"
+}
+
+variable "profiles" {
+    type = any
+    description = "Profiles to create"
+    default = {}
+  
 }
 
 variable "enable_profile" {
     type           =bool
     description    ="Whether to create the profile"
-    default        =false
-}
-
-variable "profile_name" {
-    type           = string
-    description    = "Name of the profile you want to create"
-    default        = ""
-}
-
-variable "role_arns" {
-    type            = list(string)
-    description     = "Role ARN's to be used for the roles-anywhere profile "
-    default         = []
+    default        =true
 }
 
 variable "tags" {

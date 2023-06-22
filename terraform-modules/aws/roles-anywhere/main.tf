@@ -17,9 +17,9 @@ resource "aws_rolesanywhere_trust_anchor" "trust_anchor" {
 }
 
 resource "aws_rolesanywhere_profile" "profile" {
-    count = var.enable_profile ? 1:0
-    name = var.profile_name
+    for_each =  var.profiles
+    name = each.key
     enabled   = var.enable_profile
-    role_arns = var.role_arns
+    role_arns = each.value.role_arns
     tags = var.tags
 }
