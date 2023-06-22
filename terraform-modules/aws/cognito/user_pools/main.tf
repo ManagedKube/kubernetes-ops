@@ -19,4 +19,8 @@ resource "aws_cognito_identity_provider" "main" {
   provider_details = {
     MetadataURL = var.metadata_url
   }
+
+  attribute_mapping = {
+    email    = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+  }
 }
