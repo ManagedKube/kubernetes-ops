@@ -11,5 +11,5 @@ output "endpoint" {
 }
 
 output "cognito_domain" {
-  value = "https://${var.name}.auth.${data.aws_region.current}.amazoncognito.com"
+  value = "https://${var.name}.auth.${data.aws_region.current.name}.amazoncognito.com"
 }
