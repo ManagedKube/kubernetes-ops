@@ -26,7 +26,7 @@ variable "aws_cognito_user_pool_client_logout_urls" {
 
 variable "aws_cognito_user_pool_client_supported_identity_providers" {
   description = "Identity provider list for server-side authentication flow."
-  default     = ["COGNITO", "OKTA"]
+  default     = ["COGNITO", "Okta"]
 }
 
 variable "aws_cognito_user_pool_client_allowed_oauth_flows_user_pool_client" {
