@@ -16,11 +16,13 @@ variable "metadata_url" {
 
 variable "aws_cognito_user_pool_client_callback_urls" {
   description = "A URL where you want your users to be redirected after they log in"
+  type        = list(string)
   default     = ["https://example.com"]
 }
 
 variable "aws_cognito_user_pool_client_logout_urls" {
   description = "A URL where you want your users to be redirected after they log out"
+  type        = list(string)
   default     = ["https://example.com"] 
 }
 
