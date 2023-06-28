@@ -1,3 +1,10 @@
+variable "version" {
+  type = string
+  description = "version of the module"
+  default = "v2.0.0"
+  
+}
+
 variable "global_network_create" {
   type        = bool
   description = "To create Global network"
