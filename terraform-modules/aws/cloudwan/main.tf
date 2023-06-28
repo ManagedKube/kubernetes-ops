@@ -12,7 +12,7 @@ locals {
 
 module "cloudwan" {
   source = "aws-ia/cloudwan/aws"
-  version = "v1.0.0"
+  version = "v2.0.0"
 
   global_network = {
     create      = var.global_network_create
