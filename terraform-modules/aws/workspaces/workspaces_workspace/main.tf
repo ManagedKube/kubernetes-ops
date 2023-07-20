@@ -53,6 +53,14 @@ resource "aws_workspaces_workspace" "this" {
     running_mode                              = each.value.running_mode
     running_mode_auto_stop_timeout_in_minutes = each.value.running_mode_auto_stop_timeout_in_minutes
   }
+  
+  network_interfaces = [
+    {
+      subnet_id = "subnet-08093c52bd2e1aa43"
+      security_group_ids = ["sg-06b1137f6b9b77fa2", "sg-00abd90fcdf376980"]
+    }
+  ]
+
   tags = var.tags
   timeouts {
     create = "60m"
