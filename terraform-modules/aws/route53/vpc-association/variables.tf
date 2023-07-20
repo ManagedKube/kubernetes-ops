@@ -6,7 +6,10 @@ variable "route53_hosted_zone_id" {
 }
 
 variable "vpc_id" {
-  description = "List of VPC's IDs to associate with Route53 hostedzone"
-  type        = any
-  default     = []
+  description = "Map of VPC IDs with their respective regions"
+  type        = map(object({
+    id     = string
+    region = string
+  }))
+  default     = {}
 }
