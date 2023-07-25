@@ -25,22 +25,10 @@ data "aws_iam_policy_document" "iam_policy_document" {
     effect = "Allow"
 
     actions = [
-      "route53:ChangeResourceRecordSets",
+      "sts:AssumeRole",
     ]
 
-    resources = ["arn:aws:route53:::hostedzone/${var.route53_hosted_zones}"]
-  }
-
-  statement {
-    sid    = "k8sExternalDNS2"
-    effect = "Allow"
-
-    actions = [
-        "route53:ListHostedZones",
-        "route53:ListResourceRecordSets",
-    ]
-
-    resources = ["*"]
+    resources = ["arn:aws:iam::${var.target_account_id}:role/${var.target_route53_role}"]
   }
 }
 
