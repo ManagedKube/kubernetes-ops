@@ -47,3 +47,14 @@ variable "route53_hosted_zones" {
   default = "*"
   description = "The hosted zone permissions granted to: arn:aws:route53:::hostedzone/<route53_hosted_zones ID"
 }
+variable "target_route53_role" {
+  type = string
+  default = "*"
+  description = "The role from target account to access route53 hostedzone: arn:aws:iam::242263716472:role/<target_route53_role>"
+}
+
+variable "target_account_id" {
+  type = string
+  default = "*"
+  description = "The aws account which has the IAM role to access route53 hostedzone"
+}
