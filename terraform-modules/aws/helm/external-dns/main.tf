@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "iam_policy_document" {
       "sts:AssumeRole",
     ]
 
-    resources = ["arn:aws:iam::${var.target_account_id}:role/external-dns-${var.target_route53_role}"]
+    resources = ["arn:aws:iam::${var.target_account_id}:role/${var.target_route53_role}"]
   }
 }
 
