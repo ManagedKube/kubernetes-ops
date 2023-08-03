@@ -14,7 +14,7 @@ locals {
 }
 
 resource "aws_route53_zone_association" "this" {
-  for_each = { for idx, assoc in local.zone_associations : idx => assoc }
+  for_each = { for assoc in local.zone_associations : "${assoc.zone_id}-${assoc.vpc_id}" => assoc }
 
   zone_id    = each.value.zone_id
   vpc_id     = each.value.vpc_id
