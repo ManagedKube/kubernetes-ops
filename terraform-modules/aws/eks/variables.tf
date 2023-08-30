@@ -90,7 +90,7 @@ variable "eks_managed_node_groups" {
   type        = any
   default = {
     ng1 = {
-      disk_size      = 20
+      disk_size      = 100
       desired_size   = 1
       max_sise       = 1
       min_size       = 1
@@ -98,11 +98,20 @@ variable "eks_managed_node_groups" {
       additional_tags = {
         Name = "foo",
       }
-      k8s_labels = {}
+      labels = {}
+      taints = {}
     }
   }
 }
 
+# variable "eks_managed_node_group_defaults" {
+#   description = "Map of EKS managed node group definitions to create"
+#   type        = any
+#   default = {
+#     create_launch_template = false
+#     use_custom_launch_template = false
+#   }
+# }
 
 variable "cluster_enabled_log_types" {
   type = list(string)
