@@ -3,11 +3,15 @@ variable "bucket_name" {
 }
 
 variable "folder_structure" {
-  description = "The folder structure to create in S3 (list of objects)"
-  type        = list(object({
-    key       = string
-    subfolders = list(object({
-      key = string
-    }))
-  }))
+  type = list(string)
+  description = <<-EOT
+    The folder structure to create in S3. 
+    Example usage:
+    [
+        "folder1",
+        "folder2",
+        "folder3",
+        "folder4/subfolder1/subfolder2"
+    ]
+  EOT
 }
