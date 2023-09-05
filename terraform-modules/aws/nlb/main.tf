@@ -43,6 +43,13 @@ resource "aws_lb_target_group_attachment" "tg-attachment-2" {
   port             = var.tg_attachment_port_2
 }
 
+# Attach instance 3 to the target group
+resource "aws_lb_target_group_attachment" "tg-attachment-3" {
+  target_group_arn = aws_lb_target_group.tg.arn
+  target_id        = var.tg_attachment_ip_3
+  port             = var.tg_attachment_port_3
+}
+
 # Define a listener for the ALB
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.nlb.arn

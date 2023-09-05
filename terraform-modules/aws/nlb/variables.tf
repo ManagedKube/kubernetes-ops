@@ -19,54 +19,19 @@ variable "nlb_name" {
   }
 }
 
+variable "nlb_security_groups" {
+  description = "Security Group to filter traffict to load balancer"
+  type        = string
+}
+
 variable "enable_nlb_access_logs" {
   description = "Set to a list containing bucket_name and bucket_prefix to enable NLB access logs. Leave empty to disable NLB access logs to S3."
   type        = list(any)
   default     = []
 }
 
-variable "nlb_access_logs_s3_bucket_name" {
-  description = "The name of the S3 bucket where NLB logs should be stored. Leave empty to disable NLB access logs."
-  type        = string
-  default     = null
-}
-
-variable "custom_nlb_access_logs_s3_prefix" {
-  description = "Prefix to use for NLB access logs in the S3 bucket. Used if enable_custom_nlb_access_logs_s3_prefix is set to true."
-  type        = string
-  default     = null
-}
-
 variable "enable_custom_nlb_access_logs_s3_prefix" {
   description = "Set to true to use custom_nlb_access_logs_s3_prefix for access logs. Set to false to use nlb_name as the prefix."
-  type        = bool
-  default     = false
-}
-
-variable "access_logs_s3_bucket_name" {
-  description = "The name of the S3 bucket for storing NLB access logs. Leave it null to auto-generate based on nlb_name."
-  type        = string
-  default     = null
-}
-
-variable "should_create_access_logs_bucket" {
-  description = "Set to true to create a new S3 bucket for access logs. Set to false if the bucket already exists."
-  type        = bool
-  default     = true
-}
-
-variable "num_days_after_which_archive_log_data" {
-  description = "The number of days after which log files should be archived to Glacier. Set to 0 to never archive log data."
-  type        = number
-}
-
-variable "num_days_after_which_delete_log_data" {
-  description = "The number of days after which log files should be deleted from S3. Set to 0 to never delete log data."
-  type        = number
-}
-
-variable "force_destroy" {
-  description = "Set to true to allow the access logs bucket to be destroyed during Terraform destroy, even if it contains files. Set to false for safety."
   type        = bool
   default     = false
 }
@@ -86,18 +51,6 @@ variable "enable_http2" {
   description = "Set to true to enable HTTP/2 for the NLB."
   type        = bool
   default     = false
-}
-
-variable "nlb_access_logs_s3_prefix" {
-  description = "The prefix used for NLB access logs in the S3 bucket. Leave it null to use the default prefix."
-  type        = string
-  default     = null
-}
-
-variable "nlb_s3_bucket_name" {
-  description = "The name of the S3 bucket for NLB-related resources."
-  type        = string
-  default     = null
 }
 
 variable "nlb_tags" {
@@ -149,6 +102,18 @@ variable "tg_attachment_port_2" {
   description = "The port number on which the second target listens, used for attaching to the Target Group."
   type        = number
 }
+
+
+variable "tg_attachment_ip_3" {
+  description = "The IP address of the third target to attach to the Target Group."
+  type        = string
+}
+
+variable "tg_attachment_port_3" {
+  description = "The port number on which the third target listens, used for attaching to the Target Group."
+  type        = number
+}
+
 
 variable "listener_port" {
   description = "The port on which the listener listens."
