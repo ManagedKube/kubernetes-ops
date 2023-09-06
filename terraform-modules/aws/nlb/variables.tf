@@ -30,12 +30,6 @@ variable "enable_nlb_access_logs" {
   default     = []
 }
 
-variable "enable_custom_nlb_access_logs_s3_prefix" {
-  description = "Set to true to use custom_nlb_access_logs_s3_prefix for access logs. Set to false to use nlb_name as the prefix."
-  type        = bool
-  default     = false
-}
-
 variable "nlb_subnets" {
   type        = list(string)
   description = "List of subnets where the NLB will be deployed."
