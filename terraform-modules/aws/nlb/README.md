@@ -28,7 +28,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_cross_zone_load_balancing"></a> [enable\_cross\_zone\_load\_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Set to true to enable cross-zone load balancing for the NLB. | `bool` | `false` | no |
-| <a name="input_enable_custom_nlb_access_logs_s3_prefix"></a> [enable\_custom\_nlb\_access\_logs\_s3\_prefix](#input\_enable\_custom\_nlb\_access\_logs\_s3\_prefix) | Set to true to use custom\_nlb\_access\_logs\_s3\_prefix for access logs. Set to false to use nlb\_name as the prefix. | `bool` | `false` | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Set to true to enable deletion protection for the NLB. | `bool` | `false` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Set to true to enable HTTP/2 for the NLB. | `bool` | `false` | no |
 | <a name="input_enable_internal"></a> [enable\_internal](#input\_enable\_internal) | Set to true to create an internal load balancer, otherwise set to false for a public load balancer. | `bool` | `true` | no |
