@@ -19,9 +19,7 @@ No modules.
 | [aws_lb.nlb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.listener](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_target_group.tg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
-| [aws_lb_target_group_attachment.tg-attachment-1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
-| [aws_lb_target_group_attachment.tg-attachment-2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
-| [aws_lb_target_group_attachment.tg-attachment-3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
+| [aws_lb_target_group_attachment.tg_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 
 ## Inputs
 
@@ -35,19 +33,14 @@ No modules.
 | <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | The port on which the listener listens. | `string` | `"80"` | no |
 | <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the listener. | `string` | `"HTTP"` | no |
 | <a name="input_nlb_name"></a> [nlb\_name](#input\_nlb\_name) | The name of the Network Load Balancer (NLB). It should be 32 characters or less. | `string` | n/a | yes |
-| <a name="input_nlb_security_groups"></a> [nlb\_security\_groups](#input\_nlb\_security\_groups) | Security Group to filter traffict to load balancer | `string` | n/a | yes |
-| <a name="input_nlb_subnets"></a> [nlb\_subnets](#input\_nlb\_subnets) | List of subnets where the NLB will be deployed. | `list(string)` | n/a | yes |
+| <a name="input_nlb_security_groups"></a> [nlb\_security\_groups](#input\_nlb\_security\_groups) | Security Group to filter traffict to load balancer | `list(string)` | n/a | yes |
+| <a name="input_nlb_subnets"></a> [nlb\_subnets](#input\_nlb\_subnets) | List of subnets where the NLB will be deployed. | `list(any)` | n/a | yes |
 | <a name="input_nlb_tags"></a> [nlb\_tags](#input\_nlb\_tags) | A map of tags to apply to the NLB resource. | `map(any)` | <pre>{<br>  "appname": "nlb"<br>}</pre> | no |
+| <a name="input_target_attachments"></a> [target\_attachments](#input\_target\_attachments) | List of target attachments | <pre>list(object({<br>    target_id = string<br>    port      = number<br>  }))</pre> | n/a | yes |
 | <a name="input_target_group_name"></a> [target\_group\_name](#input\_target\_group\_name) | The name of the Target Group. | `any` | n/a | yes |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the Target Group listens. | `number` | `80` | no |
 | <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the Target Group. | `string` | `"HTTP"` | no |
 | <a name="input_target_vpc_id"></a> [target\_vpc\_id](#input\_target\_vpc\_id) | The VPC where the targets' endpoints are deployed. | `string` | n/a | yes |
-| <a name="input_tg_attachment_ip_1"></a> [tg\_attachment\_ip\_1](#input\_tg\_attachment\_ip\_1) | The IP address of the first target to attach to the Target Group. | `string` | n/a | yes |
-| <a name="input_tg_attachment_ip_2"></a> [tg\_attachment\_ip\_2](#input\_tg\_attachment\_ip\_2) | The IP address of the second target to attach to the Target Group. | `string` | n/a | yes |
-| <a name="input_tg_attachment_ip_3"></a> [tg\_attachment\_ip\_3](#input\_tg\_attachment\_ip\_3) | The IP address of the third target to attach to the Target Group. | `string` | n/a | yes |
-| <a name="input_tg_attachment_port_1"></a> [tg\_attachment\_port\_1](#input\_tg\_attachment\_port\_1) | The port number on which the first target listens, used for attaching to the Target Group. | `number` | n/a | yes |
-| <a name="input_tg_attachment_port_2"></a> [tg\_attachment\_port\_2](#input\_tg\_attachment\_port\_2) | The port number on which the second target listens, used for attaching to the Target Group. | `number` | n/a | yes |
-| <a name="input_tg_attachment_port_3"></a> [tg\_attachment\_port\_3](#input\_tg\_attachment\_port\_3) | The port number on which the third target listens, used for attaching to the Target Group. | `number` | n/a | yes |
 
 ## Outputs
 

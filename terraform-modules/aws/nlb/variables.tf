@@ -77,38 +77,6 @@ variable "target_vpc_id" {
   type        = string
 }
 
-variable "tg_attachment_ip_1" {
-  description = "The IP address of the first target to attach to the Target Group."
-  type        = string
-}
-
-variable "tg_attachment_port_1" {
-  description = "The port number on which the first target listens, used for attaching to the Target Group."
-  type        = number
-}
-
-variable "tg_attachment_ip_2" {
-  description = "The IP address of the second target to attach to the Target Group."
-  type        = string
-}
-
-variable "tg_attachment_port_2" {
-  description = "The port number on which the second target listens, used for attaching to the Target Group."
-  type        = number
-}
-
-
-variable "tg_attachment_ip_3" {
-  description = "The IP address of the third target to attach to the Target Group."
-  type        = string
-}
-
-variable "tg_attachment_port_3" {
-  description = "The port number on which the third target listens, used for attaching to the Target Group."
-  type        = number
-}
-
-
 variable "listener_port" {
   description = "The port on which the listener listens."
   type        = string
@@ -119,4 +87,12 @@ variable "listener_protocol" {
   description = "The protocol used by the listener."
   type        = string
   default     = "HTTP"
+}
+
+variable "target_attachments" {
+  type = list(object({
+    target_id = string
+    port      = number
+  }))
+  description = "List of target attachments"
 }

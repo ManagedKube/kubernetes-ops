@@ -30,24 +30,33 @@ resource "aws_lb_target_group" "tg" {
 }
 
 # Attach instance 1 to the target group
-resource "aws_lb_target_group_attachment" "tg-attachment-1" {
-  target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = var.tg_attachment_ip_1
-  port             = var.tg_attachment_port_1
-}
+#resource "aws_lb_target_group_attachment" "tg-attachment-1" {
+#  target_group_arn = aws_lb_target_group.tg.arn
+#  target_id        = var.tg_attachment_ip_1
+#  port             = var.tg_attachment_port_1
+#}
 
 # Attach instance 2 to the target group
-resource "aws_lb_target_group_attachment" "tg-attachment-2" {
-  target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = var.tg_attachment_ip_2
-  port             = var.tg_attachment_port_2
-}
+#resource "aws_lb_target_group_attachment" "tg-attachment-2" {
+#  target_group_arn = aws_lb_target_group.tg.arn
+#  target_id        = var.tg_attachment_ip_2
+#  port             = var.tg_attachment_port_2
+#}
 
 # Attach instance 3 to the target group
-resource "aws_lb_target_group_attachment" "tg-attachment-3" {
+#resource "aws_lb_target_group_attachment" "tg-attachment-3" {
+#  target_group_arn = aws_lb_target_group.tg.arn
+#  target_id        = var.tg_attachment_ip_3
+#  port             = var.tg_attachment_port_3
+#}
+
+# Attach instances to the target group dynamically based on the variable
+resource "aws_lb_target_group_attachment" "tg_attachment" {
+  count = length(var.target_attachments)
+
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = var.tg_attachment_ip_3
-  port             = var.tg_attachment_port_3
+  target_id        = var.target_attachments[count.index].target_id
+  port             = var.target_attachments[count.index].port
 }
 
 # Define a listener for the ALB
