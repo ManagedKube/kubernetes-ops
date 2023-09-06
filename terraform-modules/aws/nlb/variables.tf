@@ -31,7 +31,7 @@ variable "enable_nlb_access_logs" {
 }
 
 variable "nlb_subnets" {
-  type    = list(any)  
+  type    = list(any)
   description = "List of subnets where the NLB will be deployed."
 }
 
