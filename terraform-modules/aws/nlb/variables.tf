@@ -21,7 +21,7 @@ variable "nlb_name" {
 
 variable "nlb_security_groups" {
   description = "Security Group to filter traffict to load balancer"
-  type        = string
+  type        = list(string)
 }
 
 variable "enable_nlb_access_logs" {
