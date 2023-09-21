@@ -1,6 +1,6 @@
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "3.6.0"
+  version                       = var.iam_assumable_role_admin_version
   create_role                   = true
   role_name                     = "cluster-autoscaler-${var.cluster_name}"
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
@@ -77,7 +77,7 @@ module "cluster-autoscaler" {
   repository          = "https://kubernetes.github.io/autoscaler"
   official_chart_name = "cluster-autoscaler"
   user_chart_name     = "cluster-autoscaler"
-  helm_version        = "9.24.0"
+  helm_version        = var.cluster-autoscaler_helm_version
   namespace           = "kube-system"
   helm_values         = data.template_file.helm_values.rendered
 
