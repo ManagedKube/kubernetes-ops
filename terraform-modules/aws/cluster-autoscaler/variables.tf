@@ -34,3 +34,15 @@ variable "k8s_service_account_name" {
   default     = "cluster-autoscaler-aws-cluster-autoscaler"
   description = "Service account name"
 }
+
+variable "cluster-autoscaler_helm_version" {
+  type        = string
+  default     = "9.24.0"
+  description = "cluster-autoscaler helm chart version.  https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler"
+}
+
+variable "iam_assumable_role_admin_version" {
+  type        = string
+  default     = "3.6.0"
+  description = "iam_assumable_role_admin module version"
+}
