@@ -87,9 +87,3 @@ variable "aws_policy_grafana" {
 EOF
   description = "The AWS policy for the Grafana AWS role.  The default is a read only role to all Cloudwatch logs."
 }
-
-variable "iam_assumable_role_grafana_version" {
-  type        = string
-  default     = "3.6.0"
-  description = "iam_assumable_role_grafana module version"
-}

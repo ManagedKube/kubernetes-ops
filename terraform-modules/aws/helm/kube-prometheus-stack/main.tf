@@ -33,7 +33,7 @@ resource "helm_release" "helm_chart" {
 module "iam_assumable_role_grafana" {
   count                         = var.enable_iam_assumable_role_grafana ? 1 : 0
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = var.iam_assumable_role_grafana_version
+  version                       = "3.6.0"
   create_role                   = true
   role_name                     = local.k8s_service_account_name
   provider_url                  = replace(var.eks_cluster_oidc_issuer_url, "https://", "")
