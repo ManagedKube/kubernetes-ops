@@ -244,3 +244,8 @@ variable "cluster_kms_enable_rotation" {
   default     = true
   description = "(Optional) Specifies whether key rotation is enabled. Defaults to true."
 }
+
+variable "eks_terraform_version" {
+  default     = "18.23.0"
+  description = "AWS EKS Terraform provider Version"
+}
