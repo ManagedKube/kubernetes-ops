@@ -109,7 +109,7 @@ resource "aws_acmpca_certificate_authority" "this" {
 #######################################
 module "msk" {
   source                         = "cloudposse/msk-apache-kafka-cluster/aws"
-  version                        = "v1.2.0"
+  version                        = "v2.3.0"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
@@ -139,6 +139,8 @@ module "msk" {
   s3_logs_bucket                 = var.s3_logs_enabled == true ? var.s3_logs_bucket : ""
   s3_logs_enabled                = var.s3_logs_enabled
   s3_logs_prefix                 = var.s3_logs_enabled == true ? var.s3_logs_prefix : ""
+
+  
 
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,

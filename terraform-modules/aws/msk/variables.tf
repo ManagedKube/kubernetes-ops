@@ -187,3 +187,10 @@ variable "create_private_ca" {
   type        = bool
   default     = false
 }
+
+#VPC Connectivity (Multi-vpc)
+variable "vpc_connectivity_client_authentication_iam_enabled" {
+  type        = bool
+  description = "Indicates whether you want to enable or disable streaming broker logs to S3"
+  default     = false
+}
