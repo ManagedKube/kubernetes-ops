@@ -109,7 +109,7 @@ resource "aws_acmpca_certificate_authority" "this" {
 #######################################
 module "msk" {
   source                         = "cloudposse/msk-apache-kafka-cluster/aws"
-  version                        = " v1.4.0"
+  version                        = "v2.3.0"
   namespace                      = var.namespace
   name                           = var.name
   vpc_id                         = var.vpc_id
