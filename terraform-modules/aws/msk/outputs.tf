@@ -33,11 +33,6 @@ output "bootstrap_brokers_iam" {
   value       = module.msk.bootstrap_brokers_iam
 }
 
-output "all_brokers" {
-  description = "A list of all brokers"
-  value       = module.msk.all_brokers
-}
-
 output "current_version" {
   description = "Current version of the MSK Cluster used for updates"
   value       = module.msk.current_version
