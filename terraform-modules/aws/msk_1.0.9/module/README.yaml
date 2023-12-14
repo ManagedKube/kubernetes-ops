@@ -1,0 +1,125 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-msk-apache-kafka-cluster
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Copyrights
+copyrights:
+  - name: "Cloud Posse, LLC"
+    url: "https://cloudposse.com"
+    year: "2020"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-msk-apache-kafka-cluster
+
+# Badges to display
+badges:
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-msk-apache-kafka-cluster.svg"
+    url: "https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster/releases/latest"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+  - name: "Discourse Forum"
+    image: "https://img.shields.io/discourse/https/ask.sweetops.com/posts.svg"
+    url: "https://ask.sweetops.com/"
+
+# List any related terraform modules that this module may be used with or that this module depends on.
+related:
+  - name: "terraform-null-label"
+    description: "Terraform module designed to generate consistent names and tags for resources. Use terraform-null-label to implement a strict naming convention."
+    url: "https://github.com/cloudposse/terraform-null-label"
+  - name: "terraform-aws-route53-cluster-hostname"
+    description: "Terraform module to define a consistent AWS Route53 hostname"
+    url: "https://github.com/cloudposse/terraform-aws-route53-cluster-hostname"
+  - name: "terraform-aws-vpc"
+    description: "Terraform module to provision a VPC with Internet Gateway."
+    url: "https://github.com/cloudposse/terraform-aws-vpc"
+
+# List any resources helpful for someone to get started. For example, link to the hashicorp documentation or AWS documentation.
+references:
+  - name: "Terraform Standard Module Structure"
+    description: "HashiCorp's standard module structure is a file and directory layout we recommend for reusable modules distributed in separate repositories."
+    url: "https://www.terraform.io/docs/modules/index.html#standard-module-structure"
+  - name: "Terraform Module Requirements"
+    description: "HashiCorp's guidance on all the requirements for publishing a module. Meeting the requirements for publishing a module is extremely easy."
+    url: "https://www.terraform.io/docs/registry/modules/publish.html#requirements"
+  - name: "Terraform `random_integer` Resource"
+    description: "The resource random_integer generates random values from a given range, described by the min and max attributes of a given resource."
+    url: "https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer"
+  - name: "Terraform Version Pinning"
+    description: "The required_version setting can be used to constrain which versions of the Terraform CLI can be used with your configuration"
+    url: "https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version"
+
+# Short description of this project
+description: |-
+  Terraform module to provision [Amazon Managed Streaming](https://aws.amazon.com/msk/) for [Apache Kafka](https://aws.amazon.com/msk/what-is-kafka/)
+
+  __Note:__ this module is intended for use with an existing VPC.
+    To create a new VPC, use [terraform-aws-vpc](https://github.com/cloudposse/terraform-aws-vpc) module.
+
+  **NOTE**: Release `0.8.0` contains breaking changes that will result in the destruction of your existing MSK cluster.
+  To preserve the original cluster, follow the instructions in the [0.7.x to 0.8.x+ migration path](./docs/migration-0.7.x-0.8.x+.md).
+
+# Introduction to the project
+#introduction: |-
+#  This is an introduction.
+
+# How to use this module. Should be an easy example to copy and paste.
+usage: |-
+  Here's how to invoke this example module in your projects
+
+  ```hcl
+  module "kafka" {
+    source = "cloudposse/msk-apache-kafka-cluster/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
+
+    kafka_version        = "3.3.2"
+    namespace            = "eg"
+    stage                = "prod"
+    name                 = "app"
+    vpc_id               = "vpc-XXXXXXXX"
+    subnet_ids           = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
+    broker_per_zone      = 2
+    broker_instance_type = "kafka.m5.large"
+
+    # A list of IDs of Security Groups to associate the created resource with, in addition to the created security group
+    associated_security_group_ids = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
+    
+    # A list of IDs of Security Groups to allow access to the cluster
+    allowed_security_group_ids = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
+  }
+  ```
+
+# Example usage
+examples: |-
+  Here is an example of using this module:
+  - [`examples/complete`](https://github.com/cloudposse/terraform-aws-msk-apache-kafka-cluster/) - complete example of using this module
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Erik Osterman"
+    github: "osterman"
+  - name: "Hugo Samayoa"
+    github: "htplbc"
+  - name: "RB"
+    github: "nitrocode"
+  - name: "Yonatan Koren"
+    github: "korenyoni"
+  - name: "Andriy Knysh"
+    github: "aknysh"
