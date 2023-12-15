@@ -117,6 +117,21 @@ variable "allowed_security_group_ids" {
   description = "The security_group_id_list output from the security_groups module"
 }
 
+variable "create_security_group" {
+  type        = bool
+  description = "Set `true` to create and configure a new security group. If false, `associated_security_group_ids` must be provided."
+  default     = true
+}
+
+variable "associated_security_group_ids" {
+  type        = list(string)
+  description = <<-EOT
+    A list of IDs of Security Groups to associate the created resource with, in addition to the created security group.
+    These security groups will not be modified and, if `create_security_group` is `false`, must have rules providing the desired access.
+    EOT
+  default     = []
+}
+
 variable "client_tls_auth_enabled" {
   type        = bool
   description = "Set true to enable the Client TLS Authentication"
