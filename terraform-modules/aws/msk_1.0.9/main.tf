@@ -144,6 +144,8 @@ module "msk" {
   multi_vpc_connectivity_iam_enabled  = var.multi_vpc_connectivity_iam_enabled
   properties                          = var.properties
   allowed_security_group_ids          = var.allowed_security_group_ids
+  associated_security_group_ids       = var.associated_security_group_ids
+  create_security_group               = var.create_security_group
   depends_on = [
     aws_cloudwatch_log_group.msk_cloudwatch_log_group,
     aws_s3_bucket.this,
