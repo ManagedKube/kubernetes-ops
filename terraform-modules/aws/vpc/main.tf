@@ -47,5 +47,7 @@ module "vpc" {
   default_security_group_egress   = var.default_security_group_egress
   default_security_group_ingress  = var.default_security_group_ingress
   default_security_group_tags     = var.default_security_group_tags
+
+  map_public_ip_on_launch         = var.map_public_ip_on_launch
   
 }
