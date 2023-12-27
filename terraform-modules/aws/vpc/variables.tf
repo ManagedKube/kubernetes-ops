@@ -177,3 +177,15 @@ variable "map_public_ip_on_launch" {
   type        = bool
   default     = false
 }
+
+variable "manage_default_network_acl" {
+  description = "Should be true to adopt and manage Default Network ACL"
+  type        = bool
+  default     = true
+}
+
+variable "manage_default_route_table" {
+  description = "Should be true to manage default route table"
+  type        = bool
+  default     = true
+}

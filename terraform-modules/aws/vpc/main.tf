@@ -49,5 +49,7 @@ module "vpc" {
   default_security_group_tags     = var.default_security_group_tags
 
   map_public_ip_on_launch         = var.map_public_ip_on_launch
+  manage_default_network_acl      = var.manage_default_network_acl
+  manage_default_route_table      = var.manage_default_route_table
   
 }
