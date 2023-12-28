@@ -58,24 +58,24 @@
 
 # data "aws_caller_identity" "current" {}
 
-module "cluster-autoscaler" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
+# module "cluster-autoscaler" {
+#   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
 
-  repository          = "https://kubernetes.github.io/autoscaler"
-  official_chart_name = "cluster-autoscaler"
-  user_chart_name     = "cluster-autoscaler"
-  helm_version        = var.cluster-autoscaler_helm_version
-  namespace           = "kube-system"
-  helm_values         = templatefile(
-                              "${path.module}/helm_values.yaml.tpl",
-                              {
-                                awsAccountID       = data.aws_caller_identity.current.account_id
-                                awsRegion          = var.aws_region
-                                clusterName        = var.cluster_name
-                                serviceAccountName = var.k8s_service_account_name
-                              }
-                            )
-  #depends_on = [
-  #  module.iam_assumable_role_admin
-  #]
-}
+#   repository          = "https://kubernetes.github.io/autoscaler"
+#   official_chart_name = "cluster-autoscaler"
+#   user_chart_name     = "cluster-autoscaler"
+#   helm_version        = var.cluster-autoscaler_helm_version
+#   namespace           = "kube-system"
+#   helm_values         = templatefile(
+#                               "${path.module}/helm_values.yaml.tpl",
+#                               {
+#                                 awsAccountID       = data.aws_caller_identity.current.account_id
+#                                 awsRegion          = var.aws_region
+#                                 clusterName        = var.cluster_name
+#                                 serviceAccountName = var.k8s_service_account_name
+#                               }
+#                             )
+#   #depends_on = [
+#   #  module.iam_assumable_role_admin
+#   #]
+# }
