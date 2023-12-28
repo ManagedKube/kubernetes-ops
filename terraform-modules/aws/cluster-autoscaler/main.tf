@@ -58,19 +58,6 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
 
 data "aws_caller_identity" "current" {}
 
-#THIS WAS DEPRECATED , IT IS NOT ABLE TO USE IN TERRAFORM 1.6.X
-# Helm - cluster-autoscaler
-#
-#data "template_file" "helm_values" {
-#  template = file("${path.module}/helm_values.yaml.tpl")
-#  vars = {
-#    awsAccountID       = data.aws_caller_identity.current.account_id
-#    awsRegion          = var.aws_region
-#    clusterName        = var.cluster_name
-#    serviceAccountName = var.k8s_service_account_name
-#  }
-#}
-
 module "cluster-autoscaler" {
   source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/helm/helm_generic?ref=v1.0.9"
 
