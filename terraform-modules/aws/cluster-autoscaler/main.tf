@@ -66,7 +66,6 @@ module "cluster-autoscaler" {
   user_chart_name     = "cluster-autoscaler"
   helm_version        = var.cluster-autoscaler_helm_version
   namespace           = "kube-system"
-  #helm_values         = data.template_file.helm_values.rendered
   helm_values         = templatefile(
                               "${path.module}/helm_values.yaml.tpl",
                               {
