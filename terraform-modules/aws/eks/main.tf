@@ -82,6 +82,55 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 }
 
 
+# CNI Driver for eks 1.25
+https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
+
+resource "aws_eks_addon" "cni_driver" {
+  cluster_name             = module.eks.cluster_id
+  addon_name               = "vpc-cni"
+  addon_version            = "v1.16.0-eksbuild.1"
+  service_account_role_arn = aws_iam_role.eks_cni.arn
+}
+
+resource "aws_iam_role" "eks_cni" {
+  assume_role_policy = data.aws_iam_policy_document.cni_assume_role_policy.json
+  name               = "eks-cni-role"
+}
+
+resource "aws_iam_role_policy_attachment" "example" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.eks_cni.name
+}
+
+data "aws_iam_policy_document" "cni_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(module.eks.oidc_provider, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-node"]
+    }
+
+    principals {
+      identifiers = [module.eks.oidc_provider_arn]
+      type        = "Federated"
+    }
+  }
+}
+
+# Kube Proxy Driver for eks 1.25
+https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html 
+resource "aws_eks_addon" "kubeproxy_driver" {
+  cluster_name             = module.eks.cluster_id
+  addon_name               = "kube-proxy"
+  addon_version            = "v1.25.16-minimal-eksbuild.1"
+}
+
+
+
+
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "18.23.0"
