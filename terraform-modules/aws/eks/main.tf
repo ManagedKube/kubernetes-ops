@@ -90,6 +90,7 @@ resource "aws_eks_addon" "cni_driver" {
   addon_name               = "vpc-cni"
   addon_version            = "v1.16.0-eksbuild.1"
   service_account_role_arn = aws_iam_role.eks_cni.arn
+  resolve_conflicts_on_update = "OVERWRITE"
 }
 
 resource "aws_iam_role" "eks_cni" {
@@ -97,7 +98,7 @@ resource "aws_iam_role" "eks_cni" {
   name               = "eks-cni-role"
 }
 
-resource "aws_iam_role_policy_attachment" "example" {
+resource "aws_iam_role_policy_attachment" "amazon_cni_driver" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.eks_cni.name
 }
@@ -126,6 +127,7 @@ resource "aws_eks_addon" "kubeproxy_driver" {
   cluster_name             = module.eks.cluster_id
   addon_name               = "kube-proxy"
   addon_version            = "v1.25.16-minimal-eksbuild.1"
+  resolve_conflicts_on_update = "OVERWRITE"
 }
 
 
