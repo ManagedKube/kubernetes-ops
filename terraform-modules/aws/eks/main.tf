@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 
 
 # CNI Driver for eks 1.25
-https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
+# https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
 
 resource "aws_eks_addon" "cni_driver" {
   cluster_name             = module.eks.cluster_id
@@ -121,7 +121,7 @@ data "aws_iam_policy_document" "cni_assume_role_policy" {
 }
 
 # Kube Proxy Driver for eks 1.25
-https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html 
+# https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html 
 resource "aws_eks_addon" "kubeproxy_driver" {
   cluster_name             = module.eks.cluster_id
   addon_name               = "kube-proxy"
