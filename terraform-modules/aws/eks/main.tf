@@ -84,7 +84,7 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
-  version          = "18.23.0"
+  version          = "18.31.2"
   cluster_name     = var.cluster_name
   cluster_version  = var.cluster_version
   enable_irsa      = var.enable_irsa
