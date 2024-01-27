@@ -36,7 +36,7 @@ data "aws_eks_cluster_auth" "cluster" {
 }
 
 data "aws_iam_role" "eks_csi_driver" {
-  name = aws_iam_role.eks_csi_driver.name
+  name = aws_iam_role.eks_ebs_csi_driver.name
 }
 
 data "aws_iam_role" "eks_cni_driver" {
