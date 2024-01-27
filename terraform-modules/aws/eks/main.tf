@@ -21,7 +21,7 @@ locals {
       preserve                      = v.preserve
       configuration_values          = v.configuration_values
       timeouts                      = v.timeouts
-      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? aws_iam_role.eks_cni_driver.arn : null)
+      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? data.aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? data.aws_iam_role.eks_cni_driver.arn : null)
     }
   }
 }
@@ -33,6 +33,14 @@ data "aws_eks_cluster" "cluster" {
 
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
+}
+
+data "aws_iam_role" "eks_csi_driver" {
+  name = aws_iam_role.eks_csi_driver.name
+}
+
+data "aws_iam_role" "eks_cni_driver" {
+  name = aws_iam_role.eks_cni_driver.name
 }
 
 provider "kubernetes" {
