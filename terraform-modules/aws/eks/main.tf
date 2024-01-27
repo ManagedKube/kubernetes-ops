@@ -13,10 +13,16 @@ terraform {
 
 locals {
   cluster_addons_iam = { 
-    for k, v in var.cluster_addons : k => 
-      k == "aws-ebs-csi-driver" ? merge(v, { service_account_role_arn = aws_iam_role.eks_ebs_csi_driver.arn }) :
-      k == "vpc-cni" ? merge(v, { service_account_role_arn = aws_iam_role.eks_cni_driver.arn }) :
-      v 
+    for k, v in var.cluster_addons : k => {
+      name                          = v.name
+      addon_version                 = v.addon_version
+      resolve_conflicts_on_create   = v.resolve_conflicts_on_create
+      resolve_conflicts_on_update   = v.resolve_conflicts_on_update
+      preserve                      = v.preserve
+      configuration_values          = v.configuration_values
+      timeouts                      = v.timeouts
+      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? aws_iam_role.eks_cni_driver.arn : null)
+    }
   }
 }
 
