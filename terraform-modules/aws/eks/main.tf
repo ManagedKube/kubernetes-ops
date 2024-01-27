@@ -124,7 +124,7 @@ resource "aws_iam_role" "eks_cni_driver" {
 
 resource "aws_iam_role_policy_attachment" "amazon_cni_driver" {
   role       = aws_iam_role.eks_cni_driver.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEKS_CNI_Policy"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
 
