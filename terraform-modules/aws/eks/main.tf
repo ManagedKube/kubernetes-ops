@@ -19,7 +19,6 @@ locals {
       resolve_conflicts_on_create   = v.resolve_conflicts_on_create
       resolve_conflicts_on_update   = v.resolve_conflicts_on_update
       preserve                      = v.preserve
-      configuration_values          = v.configuration_values
       timeouts                      = v.timeouts
       service_account_role_arn      = (k == "aws-ebs-csi-driver" ? data.aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? data.aws_iam_role.eks_cni_driver.arn : null)
     }
