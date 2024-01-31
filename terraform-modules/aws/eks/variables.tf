@@ -244,3 +244,12 @@ variable "cluster_kms_enable_rotation" {
   default     = true
   description = "(Optional) Specifies whether key rotation is enabled. Defaults to true."
 }
+
+################################################################################
+# EKS Addons
+################################################################################
+variable "cluster_addons" {
+  description = "Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`"
+  type        = any
+  default     = {}
+}

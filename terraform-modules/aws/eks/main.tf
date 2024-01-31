@@ -11,12 +11,35 @@ terraform {
   }
 }
 
+locals {
+  cluster_addons_iam = { 
+    for k, v in var.cluster_addons : k => {
+      name                          = v.name
+      addon_version                 = v.addon_version
+      resolve_conflicts_on_create   = v.resolve_conflicts_on_create
+      resolve_conflicts_on_update   = v.resolve_conflicts_on_update
+      preserve                      = v.preserve
+      timeouts                      = v.timeouts
+      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? data.aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? data.aws_iam_role.eks_cni_driver.arn : null)
+    }
+  }
+}
+
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
 
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
+}
+
+data "aws_iam_role" "eks_csi_driver" {
+  name = aws_iam_role.eks_ebs_csi_driver.name
+}
+
+data "aws_iam_role" "eks_cni_driver" {
+  name = aws_iam_role.eks_cni_driver.name
 }
 
 provider "kubernetes" {
@@ -46,13 +69,7 @@ that it's using this module.
 https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/
 */
 
-resource "aws_eks_addon" "csi_driver" {
-  cluster_name             = module.eks.cluster_id
-  addon_name               = "aws-ebs-csi-driver"
-  addon_version            = "v1.11.4-eksbuild.1"
-  service_account_role_arn = aws_iam_role.eks_ebs_csi_driver.arn
-}
-
+# IAM CSI Role
 data "aws_iam_policy_document" "csi" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -80,6 +97,37 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
   role       = aws_iam_role.eks_ebs_csi_driver.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
+
+# IAM CNI
+data "aws_iam_policy_document" "cni" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(module.eks.oidc_provider, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-node"]
+    }
+
+    principals {
+      identifiers = [module.eks.oidc_provider_arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "eks_cni_driver" {
+  assume_role_policy = data.aws_iam_policy_document.cni.json
+  name               = "eks-cni-driver"
+}
+
+resource "aws_iam_role_policy_attachment" "amazon_cni_driver" {
+  role       = aws_iam_role.eks_cni_driver.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+
 
 
 module "eks" {
@@ -124,4 +172,6 @@ module "eks" {
   aws_auth_users = var.aws_auth_users
 
   aws_auth_accounts = var.aws_auth_accounts
+
+  cluster_addons = local.cluster_addons_iam 
 }
