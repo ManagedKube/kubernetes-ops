@@ -21,7 +21,7 @@ module "kms_cloudtrail" {
 }
 
 module "cloudtrail_s3_bucket" {
-  source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=tf-upgrade"
+  source  = "github.com/ManagedKube/terraform-aws-cloudtrail-s3-bucket.git//?ref=0.25.0"
   #version = "master"
   force_destroy          = var.force_destroy
   versioning_enabled     = var.versioning_enabled
