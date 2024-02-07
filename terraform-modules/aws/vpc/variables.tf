@@ -172,3 +172,20 @@ variable "default_security_group_tags" {
   default = {}
 }
 
+variable "map_public_ip_on_launch" {
+  description = "Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is `false`"
+  type        = bool
+  default     = false
+}
+
+variable "manage_default_network_acl" {
+  description = "Should be true to adopt and manage Default Network ACL"
+  type        = bool
+  default     = true
+}
+
+variable "manage_default_route_table" {
+  description = "Should be true to manage default route table"
+  type        = bool
+  default     = true
+}

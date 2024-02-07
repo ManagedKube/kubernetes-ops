@@ -1,6 +1,6 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.7.0"
+  version = "5.0.0"
 
   name = var.environment_name
   cidr = var.vpc_cidr
@@ -47,5 +47,9 @@ module "vpc" {
   default_security_group_egress   = var.default_security_group_egress
   default_security_group_ingress  = var.default_security_group_ingress
   default_security_group_tags     = var.default_security_group_tags
+
+  map_public_ip_on_launch         = var.map_public_ip_on_launch
+  manage_default_network_acl      = var.manage_default_network_acl
+  manage_default_route_table      = var.manage_default_route_table
   
 }
