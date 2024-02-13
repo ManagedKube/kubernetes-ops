@@ -14,6 +14,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "encryption_config" {
+  count  = var.enable_kms_encryption ? 1 : 0
   bucket = aws_s3_bucket.bucket.bucket
 
   rule {
