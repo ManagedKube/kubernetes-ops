@@ -5,7 +5,7 @@
 data "aws_region" "current" {}
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "iam_for_lambda-${var.cluster_name}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -22,7 +22,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 resource "aws_iam_role_policy" "logs" {
-  name = "lambda-logs"
+  name = "lambda-logs-${var.cluster_name}"
   role = aws_iam_role.iam_for_lambda.name
   policy = jsonencode({
     "Statement" : [
