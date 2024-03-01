@@ -67,7 +67,7 @@ resource "aws_iam_role_policy" "logs" {
 }
 
 data "aws_iam_policy" "lambda_vpc_execution" {
-  name = "AWSLambdaVPCAccessExecutionRole-${var.cluster_name}"
+  name = "AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_vpc_execution" {
