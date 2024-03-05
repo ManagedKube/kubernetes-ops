@@ -269,6 +269,26 @@ variable "default_alerts" {
       # If is "metric_threshold_config" set, then "threshold_config" is not needed
       threshold_config = []
     },
+    {
+      event_type   = "OUTSIDE_METRIC_THRESHOLD"
+      enabled      = true
+      notification = []
+      matcher      = []
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      metric_threshold_config = [
+        {
+          metric_name = "NORMALIZED_SYSTEM_CPU_STEAL"
+          operator    = "GREATER_THAN"
+          threshold   = 15
+          units       = "RAW"
+          mode        = "AVERAGE"
+        }
+      ]
+      # This can only be a list of 1
+      # If is "metric_threshold_config" set, then "threshold_config" is not needed
+      threshold_config = []
+    },
   ]
   description = "description"
 }
