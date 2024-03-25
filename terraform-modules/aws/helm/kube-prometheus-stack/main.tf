@@ -14,7 +14,7 @@ resource "helm_release" "helm_chart" {
 
   values = [
     # templatefile("${path.module}/values.yaml", {
-    templatefile("./values_local.yaml", {
+    templatefile("${path.module}/values_local.yaml", {
       enable_grafana_aws_role = var.enable_iam_assumable_role_grafana
       aws_account_id          = var.aws_account_id
       role_name               = local.k8s_service_account_name
