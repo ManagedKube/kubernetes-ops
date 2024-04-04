@@ -160,10 +160,10 @@ global:
   # Default hub for Istio images.
   # Releases are published to docker hub under 'istio' project.
   # Dev builds from prow are on gcr.io
-  hub: gcr.io/istio-testing
+  hub: docker.io/istio
 
   # Default tag for Istio images.
-  tag: latest
+  tag: 1.20.0
 
   # Variant of the image to use.
   # Currently supported are: [debug, distroless]
