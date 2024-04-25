@@ -43,6 +43,15 @@ resource "helm_release" "helm_chart_istio_discovery" {
   ]
 }
 
+data "template_file" "helm_chart_istio_ingress" {
+  template = var.helm_values_istio_ingress
+  #file("${path.module}/values/istio_ingress_values.tpl.yaml")
+
+  vars = {
+    acmARN      = module.acm_request_certificate[0].arn
+  }
+}
+
 resource "helm_release" "helm_chart_istio_ingress" {
   count            = var.install_helm_chart_istio_ingress
   chart            = "${path.module}/istio-${var.istio_version}/manifests/charts/gateways/istio-ingress"
@@ -52,7 +61,8 @@ resource "helm_release" "helm_chart_istio_ingress" {
   verify           = var.verify
 
   values = [
-    var.helm_values_istio_ingress,
+    data.template_file.helm_chart_istio_ingress.rendered,
+    # var.helm_values_istio_ingress,
   ]
 
   depends_on = [
@@ -75,4 +85,17 @@ resource "helm_release" "helm_chart_istio_egress" {
   depends_on = [
     helm_release.helm_chart_istio_base
   ]
+}
+
+module "acm_request_certificate" {
+  source = "cloudposse/acm-request-certificate/aws"
+  version = "0.16.0"
+
+  count = var.create_acm_cert ? 1 : 0
+
+  domain_name                       = var.acm_domain_name
+  process_domain_validation_options = true
+  ttl                               = var.acm_ttl
+  subject_alternative_names         = var.acm_subject_alternative_names
+  zone_id                           = var.acm_route53_zone_id
 }
