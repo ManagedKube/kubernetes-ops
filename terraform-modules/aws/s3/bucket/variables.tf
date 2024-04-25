@@ -96,3 +96,9 @@ variable "bucket_ownership_controls_rule" {
   default     = "BucketOwnerEnforced"
   description = "It's compliance rule that helps ensure the ownership of Amazon S3 buckets is set to the correct AWS account or AWS account within the same organization. values (BucketOwnerPreferred, ObjectWriter or BucketOwnerEnforced)"
 }
+
+variable "enable_kms_encryption" {
+  description = "A boolean flag to enable server-side encryption on the S3 bucket"
+  type        = bool
+  default     = true
+}
