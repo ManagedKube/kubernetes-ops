@@ -20,7 +20,7 @@ locals {
       resolve_conflicts_on_update   = v.resolve_conflicts_on_update
       preserve                      = v.preserve
       timeouts                      = v.timeouts
-      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? data.aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? data.aws_iam_role.eks_cni_driver.arn : null)
+      service_account_role_arn      = (k == "aws-ebs-csi-driver" ? data.aws_iam_role.eks_csi_driver.arn : k == "vpc-cni" ? data.aws_iam_role.eks_cni_driver.arn : k == "amazon-cloudwatch-observability" ? data.aws_iam_role.eks_cloudwatch_observability.arn : null)
     }
   }
 }
@@ -40,6 +40,10 @@ data "aws_iam_role" "eks_csi_driver" {
 
 data "aws_iam_role" "eks_cni_driver" {
   name = aws_iam_role.eks_cni_driver.name
+}
+
+data "aws_iam_role" "eks_cloudwatch_observability" {
+  name = aws_iam_role.eks_cloudwatch_observability.name
 }
 
 provider "kubernetes" {
@@ -127,8 +131,34 @@ resource "aws_iam_role_policy_attachment" "amazon_cni_driver" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
+# IAM CloudWatch Observability Role
+data "aws_iam_policy_document" "cw" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
 
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(module.eks.oidc_provider, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
 
+    principals {
+      identifiers = [module.eks.oidc_provider_arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "eks_cloudwatch_observability" {
+  assume_role_policy = data.aws_iam_policy_document.cw.json
+  name               = "eks-cloudwatch-observability"
+}
+
+resource "aws_iam_role_policy_attachment" "amazon_cloudwatch_observability" {
+  role       = aws_iam_role.eks_cloudwatch_observability.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
 
 module "eks" {
   source           = "terraform-aws-modules/eks/aws"
