@@ -1,0 +1,15 @@
+variable "name" {
+  description = "The name of this vpc link"
+  type        = string
+}
+
+variable "private_link_target_arns" {
+  description = "A list of strings of the LB arns to link the API Gateway to"
+  type        = list(string)
+}
+
+resource "aws_api_gateway_vpc_link" "this" {
+  name        = var.name
+  description = "VPC Link"
+  target_arns = var.private_link_target_arns
+}
