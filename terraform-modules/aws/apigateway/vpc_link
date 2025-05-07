@@ -19,3 +19,8 @@ resource "aws_api_gateway_vpc_link" "this" {
   target_arns = var.private_link_target_arns
   tags        = var.tags
 }
+
+output "id" {
+  value = aws_api_gateway_vpc_link.this.id
+  description = "Identifier of the VpcLink"
+}
