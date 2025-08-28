@@ -5,7 +5,7 @@
 data "aws_region" "current" {}
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "iam_for_lambda-${var.cluster_name}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -22,7 +22,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 resource "aws_iam_role_policy" "logs" {
-  name = "lambda-logs"
+  name = "lambda-logs-${var.cluster_name}"
   role = aws_iam_role.iam_for_lambda.name
   policy = jsonencode({
     "Statement" : [
@@ -76,13 +76,13 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_execution" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_promtail" {
-  name              = "/aws/lambda/lambda_promtail"
+  name              = "/aws/lambda/lambda_promtail-${var.cluster_name}"
   retention_in_days = 14
 }
 
 resource "aws_lambda_function" "lambda_promtail" {
   image_uri     = var.lambda_promtail_image
-  function_name = "lambda_promtail"
+  function_name = "lambda_promtail-${var.cluster_name}"
   role          = aws_iam_role.iam_for_lambda.arn
   kms_key_arn   = var.kms_key_arn
 

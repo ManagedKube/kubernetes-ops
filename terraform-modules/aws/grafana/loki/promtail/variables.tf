@@ -95,3 +95,9 @@ variable "s3_bucket_filter_suffix" {
   description = "The S3 bucket filter_suffix"
   default     = ".log.gz"
 }
+
+variable "cluster_name" {
+  type        = string
+  description = "Cluster name where loki was installed and you need to add lambda-promtail."
+  default     = ""
+}
