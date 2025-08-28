@@ -1,0 +1,14 @@
+# gateways:
+#   istio-ingressgateway:
+#     serviceAnnotations:
+#       # Setting to an internal load balancer
+#       # https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+#       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+
+        # external-dns.alpha.kubernetes.io/hostname: app1.example.com,app2.example.com
+        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${acmARN}
+        # service.beta.kubernetes.io/aws-load-balancer-access-log-enabled: true
+        # service.beta.kubernetes.io/aws-load-balancer-access-log-emit-interval: 5
+        # service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name: "elb-logs-dev"
+        # https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html
+        # service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
